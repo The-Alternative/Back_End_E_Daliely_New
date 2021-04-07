@@ -15,19 +15,6 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-
-            $table->string('trans_lang');
-
-
-            $table->integer('trans_of')->unsigned();
-
-//            $table->unsigned('trans_of');
-//
-//
-//            $table->unsigned('trans_of');
-
-            $table->string('title');
-
             $table->string('slug');
             $table->string('image');
             $table->unsignedInteger('category_id')->index();

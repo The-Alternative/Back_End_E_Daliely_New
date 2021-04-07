@@ -28,11 +28,7 @@ class CategoryService
 
     public function __construct(Category $category , CategoryTranslation $categoryTranslation)
     {
-<<<<<<< HEAD
         $this->categoryModel=$category;
-=======
-        $this->categoryModel=$category;s
->>>>>>> 4f040a2d1fa709b991ab336f8922d6a88477b036
         $this->categoryTranslation=$categoryTranslation;
     }
 
@@ -55,6 +51,12 @@ class CategoryService
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
+    }
+
+    public function getCategoryBySelf($id)
+    {
+        $category=$this->categoryModel->with('Category')->get();
+        return $response= $this->returnData('Category',$category,'done');
     }
         /****ــــــThis Functions For Trashed category  ****/
     /****Get All Trashed Products Or By ID  ****/
@@ -122,26 +124,23 @@ class CategoryService
                 // //create the default language's product
                 $unTransCategory_id=$this->categoryModel->insertGetId([
                     'image' =>$request['image'],
-<<<<<<< HEAD
                     'slug' => $request['slug'],
-=======
-                    'slug' => $allcategorie['slug'],
->>>>>>> 4f040a2d1fa709b991ab336f8922d6a88477b036
                     'lang_id' =>$request['lang_id'],
                     'is_active' =>$request['is_active'],
+                    'section_id' =>$request['section_id'],
                     'parent_id'=>$request['parent_id']
                 ]);
                 //check the category and request
                 if(isset($allcategories) && count($allcategories))
                 {
                     //insert other traslations for products
-                    foreach ($allcategories as $allcategorie)
+                    foreach ($allcategories as $allcategory)
                     {
                         $transCategory_arr[]=[
-                            'name' => $allcategorie ['name'],
-                            'local' => $allcategorie['local'],
+                            'name' => $allcategory ['name'],
+                            'local' => $allcategory['local'],
                             'category_id' => $unTransCategory_id,
-                            'language_id' => $allcategorie['language_id']
+                            'language_id' => $allcategory['language_id']
                         ];
                     }
                     $transCategory_arr;
@@ -247,17 +246,9 @@ class CategoryService
     /****  Delete Product   ****/
     public function delete($id)
     {
-<<<<<<< HEAD
-
-        $category=$this->Category::find($id);
-        if ($category->is_active=0)
-
-=======
->>>>>>> 4f040a2d1fa709b991ab336f8922d6a88477b036
         try{
         $category=$this->categoryModel->find($id);
         if ($category->$is_active=0)
-
             {
                 $category=$this->categoryModel->destroy($id);
                  return $this->returnData('Category', $category,'This Category Is deleted Now');

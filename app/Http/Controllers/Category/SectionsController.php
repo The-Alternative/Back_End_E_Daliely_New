@@ -32,6 +32,11 @@ class SectionsController extends Controller
         $response= $this->sectionService->getById($id);
         return response($response, 200);
     }
+    public function getCategoryBySection()
+    {
+        $response= $this->sectionService->getCategoryBySection();
+        return response($response, 200);
+    }
     public function getTrashed()
     {
         $response= $this->sectionService->getTrashed();

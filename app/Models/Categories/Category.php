@@ -4,22 +4,32 @@ namespace App\Models\Categories;
 
 use App\Models\Language\Language;
 use App\Models\Categories\CategoryTranslation;
+use App\Models\Products\Product;
 use App\Scopes\CategoryScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-//use Spatie\Translatable\HasTranslations;
 
 class Category extends Model
 {
-//    use HasTranslations;
 
-//    public $translatable = ['name', 'slug'];
     use HasFactory;
 
     protected $table = 'categories';
-    public $timestamps = true;
+    protected $primaryKey = 'id';
     protected $fillable = [
-      'slug', 'parent_id', 'image', 'is_active'];
+      'slug', 'parent_id', 'image', 'is_active','category_id','section_id'];
+    protected $hidden = [
+        'created_at', 'updated_at'
+    ];
+    protected $casts = [
+        'is_active' => 'boolean'
+    ];
+    public $timestamps = false;
+
+    public function getIsActiveAttribute($value)
+    {
+        return $value==1 ? 'Active' : 'Not Active';
+    }
 
     //________________ scopes begin _________________//
 
@@ -28,15 +38,6 @@ class Category extends Model
         parent::booted();
         static::addGlobalScope(new CategoryScope);
     }
-
-//    public function scopeWithTrans($query)
-//    {
-//        return $query=Category::join('category_translations', 'category_translations.category_id', '=', 'categories.id')
-//            ->where('category_translations.locale','=',get_current_local())
-//            ->select('categories.*','category_translations.*');
-//    }
-
-
 
     //________________ scopes end _________________//
 
@@ -49,7 +50,17 @@ class Category extends Model
     {
         return $this->hasMany(CategoryTranslation::class,'category_id');
     }
-
+    public function Section()
+    {
+        return $this->belongsTo(Section::class);
+    }
+    function Category()
+    {
+        return $this->hasMany($this,'parent_id');
+    }
+    public function Product(){
+        return $this->belongsTo(Product::class,'category_id','id');
+    }
 
 ////    public function products(){
 ////        return $this->belongsToMany(product::class)->withTimestamps()->withPivot(['']);
