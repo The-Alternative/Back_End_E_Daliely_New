@@ -19,47 +19,6 @@ class StoresProductsService
 
     private $StoresProductsService;
     private $storeProductModel;
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-    public function __construct(StoreProduct $storeProduct)
-    {
-        $this->storeProductModel=$storeProduct;
-    }
-    public function viewStoresHasProduct($id){
-
-         $product = Product::with('Store')->find($id);
-        return $response= $this->returnData('Product in Store',$product,'done');
-
-//        $allProducts=StoreProduct::where('store_id',$id)->get();
-//         return $product_details=Store::with(['Product' => function ($q)
-//         {
-//              $q->join('products', 'products.id', '=', 'stores_products.product_id')
-////                 ->where('stores_products.product_id', 'products.id')
-//                 ->select(['products.*']);}])->get();
-
-//         where('store_id',$id)->join('products', 'products.id', '=', 'stores_products.product_id')
-//            ->where('stores_products.product_id','products.id')
-//            ->select(['products.*','stores_products.*'])->get();
-
-
-//       $collection1= $allProducts->collect($allProducts)->all();
-//        $allProducts->where();
-    }
-
-    public function insertProductToStore(Request $request){
-        $Products=collect($request->Product)->all();
-        $store = Store::find($request->store_id);
-        $storeProduct=new StoreProduct();
-        $storeProduct->store_id =$request->store_id;
-        $storeProduct->Product_id =$request->Product_id;
-        $storeProduct->price = $request->price;
-        $storeProduct->quantity =$request->quantity;
-        $storeProduct->save();
-        return $response= $this->returnData('Product in Store',[$store,$storeProduct],'done');
-=======
-=======
->>>>>>> 4f040a2d1fa709b991ab336f8922d6a88477b036
     private $productModel;
     private $storeModel;
 
@@ -123,10 +82,6 @@ class StoresProductsService
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
-<<<<<<< HEAD
->>>>>>> 4f040a2d1fa709b991ab336f8922d6a88477b036
-=======
->>>>>>> 4f040a2d1fa709b991ab336f8922d6a88477b036
     }
 //{
 //"store_id": 2,
@@ -134,24 +89,6 @@ class StoresProductsService
 //"price": "651",
 //"quantity": "5450"
 //}
-<<<<<<< HEAD
-<<<<<<< HEAD
-    public function updateProductInStore(Request $request){
-        $Products=collect($request->Product)->all();
-        $store = Store::find($request->store_id);
-        $storeProduct=new StoreProduct();
-        $storeProduct->store_id =$request->store_id;
-        $storeProduct->Product_id =$request->Product_id;
-        $storeProduct->price = $request->price;
-        $storeProduct->quantity =$request->quantity;
-        $storeProduct->save();
-        return $response= $this->returnData('Product in Store',[$store,$storeProduct],'done');
-    }
-
-
-=======
-=======
->>>>>>> 4f040a2d1fa709b991ab336f8922d6a88477b036
     public function updateProductInStore(Request $request,$id)
     {
         $Products=collect($request->Product)->all();
@@ -181,10 +118,6 @@ class StoresProductsService
             return $this->returnError('400','faild');
         }
         }
-<<<<<<< HEAD
->>>>>>> 4f040a2d1fa709b991ab336f8922d6a88477b036
-=======
->>>>>>> 4f040a2d1fa709b991ab336f8922d6a88477b036
 
 
 }

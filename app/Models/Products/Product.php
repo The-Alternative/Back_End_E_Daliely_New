@@ -2,16 +2,10 @@
 
 namespace App\Models\Products;
 
+use App\Models\Categories\Category;
 use App\Models\Products\ProductTranslation;
 use App\Models\Stores\Store;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 use App\Models\Stores\StoreProduct;
->>>>>>> 4f040a2d1fa709b991ab336f8922d6a88477b036
-=======
-use App\Models\Stores\StoreProduct;
->>>>>>> 4f040a2d1fa709b991ab336f8922d6a88477b036
 use App\Scopes\ProductScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -65,21 +59,7 @@ class Product extends Model
     {
         return $value==1 ? 'Appear' : 'Not Appear';
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-
     protected static function booted()
-    {
-        parent::booted();
-        static::addGlobalScope(new ProductScope);
-    }
-    public function scopeWithTrans($query)
-=======
-    protected static function booted()
->>>>>>> 4f040a2d1fa709b991ab336f8922d6a88477b036
-=======
-    protected static function booted()
->>>>>>> 4f040a2d1fa709b991ab336f8922d6a88477b036
     {
         parent::booted();
         static::addGlobalScope(new ProductScope);
@@ -109,21 +89,12 @@ class Product extends Model
             ->withTimestamps();
 
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
+
+        public function Category(){
+        return $this->belongsTo(Category::class);
+    }
 //    public function StoreProduct(){
 //        return $this->belongsTo(StoreProduct::class,'product_id');
-//    }
->>>>>>> 4f040a2d1fa709b991ab336f8922d6a88477b036
-=======
-//    public function StoreProduct(){
-//        return $this->belongsTo(StoreProduct::class,'product_id');
-//    }
->>>>>>> 4f040a2d1fa709b991ab336f8922d6a88477b036
-//    public function doctors()
-//    {
-//        return $this->hasManyThrough('App\Models\Doctor', 'App\Models\Hospital', 'country_id', 'hospital_id', 'id', 'id');
 //    }
 
 
@@ -156,11 +127,11 @@ class Product extends Model
 //        return $this->belongsTo(brand::class);
 //    }
 
-    public function product_store_ratings(){
-        return $this->hasMany(Product_Store_Rating::class);
-    }
-
-    public function order_details(){
-        return $this->hasMany(Order_Details::class);
-    }
+//    public function product_store_ratings(){
+//        return $this->hasMany(Product_Store_Rating::class);
+//    }
+//
+//    public function order_details(){
+//        return $this->hasMany(Order_Details::class);
+//    }
 }

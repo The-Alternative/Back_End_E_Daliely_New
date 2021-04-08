@@ -4,9 +4,6 @@ use App\Models\Language\Language;
 use Illuminate\Support\Facades\Config;
 use \Mcamara\LaravelLocalization\Traits\LoadsTranslatedCachedRoutes;
 
-
-
-
 function get_languages(){
     Language::selectActiveValue()->Selection();
 }

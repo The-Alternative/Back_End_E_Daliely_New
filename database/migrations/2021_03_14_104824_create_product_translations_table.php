@@ -19,15 +19,7 @@ class CreateProductTranslationsTable extends Migration
             $table->string('short_des');
             $table->string('long_des');
             $table->string('meta');
-<<<<<<< HEAD
-
-            $table->string('locale');
-
             $table->string('local');
-
-=======
-            $table->string('local');
->>>>>>> 4f040a2d1fa709b991ab336f8922d6a88477b036
             $table->unsignedInteger('product_id');
             $table->timestamps();
         });

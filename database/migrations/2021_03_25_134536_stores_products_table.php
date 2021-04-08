@@ -15,15 +15,6 @@ class StoresProductsTable extends Migration
     {
         Schema::create('stores_products', function (Blueprint $table) {
             $table->id();
-<<<<<<< HEAD
-
-           // $table->unsignedInteger('store_id');
-          //  $table->unsignedInteger('product_id');
-//            $table->unsignedInteger('price');
-//            $table->unsignedInteger('quantity');
-
-=======
->>>>>>> 4f040a2d1fa709b991ab336f8922d6a88477b036
             $table->unsignedInteger('store_id')->index();
             $table->unsignedInteger('product_id')->index();
             $table->unsignedInteger('price');

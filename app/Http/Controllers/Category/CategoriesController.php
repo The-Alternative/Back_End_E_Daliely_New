@@ -30,6 +30,11 @@ class CategoriesController extends Controller
         $response= $this->CategoryService->getById($id);
           return response($response, 200);
     }
+    public function getCategoryBySelf($id )
+    {
+        $response= $this->CategoryService->getCategoryBySelf($id);
+          return response($response, 200);
+    }
     public function getTrashed()
     {
      $response= $this->CategoryService->getTrashed();

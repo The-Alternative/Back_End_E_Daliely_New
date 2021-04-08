@@ -15,8 +15,6 @@ class ProductsController extends Controller
     private $ProductService;
     private $response;
 
-     /* ProductsController constructor.
-     */
     public function __construct(ProductService $ProductService,Response  $response)
     {
         $this->ProductService=$ProductService;
@@ -25,6 +23,11 @@ class ProductsController extends Controller
         public function getAll()
         {
          $response= $this->ProductService->getAll();
+            return response($response, 200);
+        }
+        public function getProductByCategory($id)
+        {
+         $response= $this->ProductService->getProductByCategory($id);
             return response($response, 200);
         }
         public function getById($id)
@@ -67,5 +70,4 @@ class ProductsController extends Controller
             $response= $this->ProductService->delete($id);
             return response($response, 200);
         }
-
 }

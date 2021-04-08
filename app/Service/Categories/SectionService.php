@@ -49,6 +49,12 @@ class SectionService
             return $this->returnError('400','faild');
         }
     }
+
+    public function getCategoryBySection()
+    {
+        $category=$this->SectionModel->with('Category')->get();
+        return $response= $this->returnData('Section',$category,'done');
+    }
         /****ــــــThis Functions For Trashed Sections  ****/
     /****Get All Trashed Sections Or By ID  ****/
 
