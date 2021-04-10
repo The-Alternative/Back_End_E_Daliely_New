@@ -9,7 +9,6 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
-        "astrotomic/laravel-translatable": "^11.9",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -17,7 +16,6 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
         "mcamara/laravel-localization": "^1.6",
-        "spatie/laravel-translatable": "^4.6",
         "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {
