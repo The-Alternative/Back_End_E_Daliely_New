@@ -21,9 +21,9 @@ class StoreController extends Controller
         $this->StoreService=$StoreService;
         $this->response=$response;
     }
-    public function get()
+    public function getAll()
     {
-        $response= $this->StoreService->get();
+        $response= $this->StoreService->getAll();
         return response($response, 200);
     }
     public function getById($id)
@@ -36,7 +36,6 @@ class StoreController extends Controller
         $response= $this->StoreService->getTrashed();
         return response($response, 200);
     }
-
     public function create(Request $request)
     {
         $response= $this->StoreService->create($request);
@@ -67,5 +66,9 @@ class StoreController extends Controller
         $response= $this->StoreService->delete($id);
         return response($response, 200);
     }
-
+    public function getSectionInStore($id)
+    {
+        $response= $this->StoreService->getSectionInStore($id);
+        return response($response, 200);
+    }
 }
