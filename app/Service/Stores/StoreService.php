@@ -36,53 +36,75 @@ class StoreService
     {
         try {
             $store = $this->storeModel->get();
-
-            return $response= $this->returnData('Store',$store,'done');
+            if (count($store) > 0){
+                return $response= $this->returnData('Store',$store,'done');
+            }else{
+                return $response= $this->returnSuccessMessage('Store','stores doesnt exist yet');
+            }
         } catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
+    /*___________________________________________________________________________*/
     public function getById($id)
     {
         try {
             $store = $this->storeModel->find($id);
-            return $response= $this->returnData('Store',$store,'done');
+            if (is_null($store) ){
+                return $response= $this->returnSuccessMessage('Store','This stores not found');
+            }else{
+                return $response= $this->returnData('Store',$store,'done');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
-
     }
+    /*___________________________________________________________________________*/
     /****ــــــThis Functions For Trashed category  ****/
     /****Get All Trashed Products Or By ID  ****/
     public function getTrashed()
     {
         try {
         $store = $this->storeModel->where('is_active',0)->get();
-        return $this -> returnData('Store',$store,'done');
+            if (count($store) > 0){
+                return $response= $this->returnData('Store',$store,'done');
+            }else{
+                return $response= $this->returnSuccessMessage('Store','stores doesnt exist yet');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
+    /*___________________________________________________________________________*/
     /****Restore category Fore Active status  ****/
     public function restoreTrashed( $id)
     {
         try{
             $store=$this->storeModel->find($id);
-            $store->is_active=true;
-            $store->save();
-              return $this->returnData('Store', $store,'This Store Is trashed Now');
+            if (is_null($store) ){
+                return $response= $this->returnSuccessMessage('Store','This stores not found');
+            }else{
+                $store->is_active=true;
+                $store->save();
+                return $this->returnData('Store', $store,'This Store Is trashed Now');
+            }
             }catch(\Exception $ex){
         return $this->returnError('400','faild');
         }
     }
+    /*___________________________________________________________________________*/
     /****   category's Soft Delete   ****/
     public function trash( $id)
     {
         try{
             $store=$this->storeModel->find($id);
-            $store->is_active=false;
-            $store->save();
+            if (is_null($store) ){
+                return $response= $this->returnSuccessMessage('Store','This stores not found');
+            }else{
+                $store->is_active=false;
+                $store->save();
                 return $this->returnData('Store', $store,'This Store Is trashed Now');
+            }
         }catch(\Exception $ex){
               return $this->returnError('400','faild');
         }
@@ -262,10 +284,13 @@ class StoreService
     }
     public function getSectionInStore($id)
     {
-        try
-        {
+        try {
             $store =$this->storeModel->with('Section')->find($id);
-            return $this->returnData('Category', $store,'This Store Is deleted Now');
+            if (is_null($store) ){
+                return $response= $this->returnSuccessMessage('Store','This stores not found');
+            }else {
+                return $this->returnData('Category', $store, 'This Store Is deleted Now');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }

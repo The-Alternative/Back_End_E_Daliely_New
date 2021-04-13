@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Service\Stores;
 
 use App\Models\Stores\Store;
@@ -16,13 +15,10 @@ use LaravelLocalization;
 class StoresProductsService
 {
     use GeneralTrait;
-
     private $StoresProductsService;
     private $storeProductModel;
     private $productModel;
     private $storeModel;
-
-
 
     public function __construct(StoreProduct $storeProduct,Product $product,Store $store )
     {
@@ -30,21 +26,31 @@ class StoresProductsService
         $this->productModel=$product;
         $this->storeModel=$store;
     }
+    /*__________________________________________________________________*/
     public function viewStoresHasProduct($id)
     {
         try{
          $product = $this->productModel->with('Store')->find($id);
-        return $response= $this->returnData('Product in Store',$product,'done');
+            if (is_null($product) ){
+                return $response= $this->returnSuccessMessage('This Product not found','done');
+            }else{
+                return $response= $this->returnData('Product in Store',$product,'done');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
+    /*__________________________________________________________________*/
     public function viewProductsInStore($id)
     {
         $product = $this->storeModel->with('Product')->find($id);
-        return $response= $this->returnData('Product in Store',$product,'done');
+        if (is_null($product) ){
+            return $response= $this->returnSuccessMessage('This Product not found','done');
+        }else{
+            return $response= $this->returnData('Product in Store',$product,'done');
+        }
     }
-
+    /*__________________________________________________________________*/
     public function rangeOfPrice($id)
     {
         try{
@@ -63,6 +69,7 @@ class StoresProductsService
             return $this->returnError('400','faild');
         }
         }
+    /*__________________________________________________________________*/
     public function insertProductToStore(Request $request)
     {
         try{
@@ -83,12 +90,15 @@ class StoresProductsService
             return $this->returnError('400','faild');
         }
     }
+    /*__________________________________________________________________*/
+//request
 //{
 //"store_id": 2,
 //"Product_id": 1,
 //"price": "651",
 //"quantity": "5450"
 //}
+    /*__________________________________________________________________*/
     public function updateProductInStore(Request $request,$id)
     {
         $Products=collect($request->Product)->all();
@@ -100,6 +110,7 @@ class StoresProductsService
         ]);
         return $response= $this->returnData('Product in Store',$storeProduct,'done');
     }
+    /*__________________________________________________________________*/
     public function hiddenProductByQuantity( $id)
     {
         try{
@@ -118,8 +129,7 @@ class StoresProductsService
             return $this->returnError('400','faild');
         }
         }
-
-
+    /*__________________________________________________________________*/
 }
 
 

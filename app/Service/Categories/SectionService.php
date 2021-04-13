@@ -20,88 +20,105 @@ class SectionService
     private $SectionModel;
     private $SectionTranslation;
 
-
-
-
     public function __construct(Section $sectionModel,SectionTranslation $sectionTranslation)
     {
         $this->SectionModel=$sectionModel;
         $this->SectionTranslation=$sectionTranslation;
     }
-
+    /*___________________________________________________________________________*/
     /****Get All Active category Or By ID  ****/
-
     public function getAll()
     {
         try{
         $section = $this->SectionModel->get();
-        return $response= $this->returnData('Section',$section,'done');
+            if (count($section) > 0){
+                return $response= $this->returnData('Section',$section,'done');
+            }else{
+                return $response= $this->returnSuccessMessage('Section','Section doesnt exist yet');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
+    /*___________________________________________________________________________*/
     public function getById($id )
     {
         try{
         $section = $this->SectionModel->find($id);
-        return $response= $this->returnData('Section',$section,'done');
+            if (is_null($section) ){
+                return $response= $this->returnSuccessMessage('This Section not found','done');
+            }else{
+                return $response= $this->returnData('Section',$section,'done');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
-
+    /*___________________________________________________________________________*/
     public function getCategoryBySection()
     {
         $category=$this->SectionModel->with('Category')->get();
-        return $response= $this->returnData('Section',$category,'done');
+        if (is_null($category) ){
+            return $response= $this->returnSuccessMessage('This category not found','done');
+        }else{
+            return $response= $this->returnData('category',$category,'done');
+        }
     }
-        /****ــــــThis Functions For Trashed Sections  ****/
+    /*___________________________________________________________________________*/
+    /****ــــــThis Functions For Trashed Sections  ****/
     /****Get All Trashed Sections Or By ID  ****/
-
     public function getTrashed()
     {
         try{
         $section = $this->SectionModel->where('is_active',0)->get();
-          return $this -> returnData('Section',$section,'done');
+            if (count($section) > 0){
+                return $this -> returnData('Section',$section,'done');
+            }else{
+                return $response= $this->returnSuccessMessage('Product','Products trashed doesnt exist yet');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
+    /*___________________________________________________________________________*/
     /****Restore category Fore Active status  ****/
-
     public function restoreTrashed( $id)
     {
         try{
         $section=$this->SectionModel->find($id);
-        $section->is_active=true;
-        $section->save();
-            return $this->returnData('Section', $section,'This Section Is trashed Now');
+            if (is_null($section) ){
+                return $response= $this->returnSuccessMessage('This Section not found','done');
+            }else{
+                $section->is_active=true;
+                $section->save();
+                return $this->returnData('Section', $section,'This Section Is trashed Now');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
-        /****   category's Soft Delete   ****/
-
+    /*___________________________________________________________________________*/
+    /****   category's Soft Delete   ****/
     public function trash( $id)
     {
         try{
         $section=$this->SectionModel->find($id);
-        $section->is_active=false;
-           $section->save();
-            return $this->returnData('Section', $section,'This Section Is trashed Now');
+            if (is_null($section) ){
+                return $response= $this->returnSuccessMessage('This Section not found','done');
+            }else{
+                $section->is_active=false;
+                $section->save();
+                return $this->returnData('Section', $section,'This Section Is trashed Now');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
-
-    /*ــــــــــــــــــــــــ  ـــــــــــــــــــــــ*/
-
+    /*___________________________________________________________________________*/
     /****  Create Section   ***
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-
-    /*___________________________________________________________________________*/
         public function create(Request $request)
         {
             try{
@@ -110,8 +127,6 @@ class SectionService
 //                $request->is_appear?$is_appear=true:$is_appear=false;
                 //transformation to collection
                 $allsections = collect($request->section)->all();
-
-
                 ///select folder to save the image
                 // $fileBath = "" ;
                 //     if($request->has('image'))
@@ -151,11 +166,12 @@ class SectionService
                 return $this->returnError('category','faild');
             }
         }
-
     /*___________________________________________________________________________*/
-
-    /****  Update category   ****/
-
+    /****  Update category   ***
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(Request $request,$id)
     {
 //        $validated = $request->validated();
@@ -218,7 +234,6 @@ class SectionService
      * @param $name
      * @return \Illuminate\Http\JsonResponse
      */
-
     public function search($name)
     {
         try{
@@ -238,9 +253,7 @@ class SectionService
         }
     }
     /*___________________________________________________________________________*/
-
     /****  Delete Product   ****/
-
     public function delete($id)
     {
         try{
@@ -254,6 +267,4 @@ class SectionService
             return $this->returnError('400','faild');
         }
     }
-
-
 }

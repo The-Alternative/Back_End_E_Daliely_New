@@ -26,7 +26,6 @@ class ProductService
      * @param ProductTranslation $productTranslation
      * @param Category $category
      */
-
     public function __construct(Product $product ,ProductTranslation $productTranslation ,Category $category,Section $sectionModel )
     {
         $this->productModel=$product;
@@ -40,7 +39,11 @@ class ProductService
     {
         try{
           $products = $this->productModel->get();
-            return $this->returnData('Product',$products,'done');
+            if (count($products) > 0){
+                return $response= $this->returnData('Store',$products,'done');
+            }else{
+                return $response= $this->returnSuccessMessage('Product','Products doesnt exist yet');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
@@ -49,12 +52,16 @@ class ProductService
     {
         try{
             $products = $this->categoryModel->with('Product')->find($id);
-            return $this->returnData('Category',$products,'done');
+            if (is_null($products) ){
+                return $response= $this->returnSuccessMessage('This stores not found','done');
+            }else{
+                return $response= $this->returnData('Store',$products,'done');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
-        /*__________________________________________________________________*/
+    /*__________________________________________________________________*/
     /****Get Active Product By ID  ***
      * @param $id
      * @return JsonResponse
@@ -63,25 +70,32 @@ class ProductService
     {
         try{
         $product = $this->productModel->find($id);
-        return $this->returnData('Product',$product,'done');
+            if (is_null($product) ){
+                return $response= $this->returnSuccessMessage('This stores not found','done');
+            }else{
+                return $this->returnData('Product',$product,'done');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
-        /*__________________________________________________________________*/
-        /****ــــــThis Functions For Trashed Productsــــــ  ****/
+    /*__________________________________________________________________*/
+    /****ــــــThis Functions For Trashed Productsــــــ  ****/
     /****Get All Trashed Products Or By ID  ****/
     public function getTrashed()
     {
         try{
         $product= $this->productModel->where('is_active',0)->get();
-          return $this -> returnData('Product',$product,'done');
+            if (count($product) > 0){
+                return $response= $this->returnData('Store',$product,'done');
+            }else{
+                return $response= $this->returnSuccessMessage('Product','Products trashed doesnt exist yet');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
-
-        /*__________________________________________________________________*/
+    /*__________________________________________________________________*/
     /****Restore Products Fore Active status  ***
      * @param $id
      * @return JsonResponse
@@ -90,15 +104,18 @@ class ProductService
     {
         try{
         $product=$this->productModel->find($id);
-            $product->is_active=true;
-            $product->save();
-            return $this->returnData('Product', $product,'This Product Is trashed Now');
+            if (is_null($product) ){
+                return $response= $this->returnSuccessMessage('Product','This Products not found');
+            }else {
+                $product->is_active = true;
+                $product->save();
+                return $this->returnData('Product', $product, 'This Product Is trashed Now');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
-
-        /*__________________________________________________________________*/
+    /*__________________________________________________________________*/
     /****   Product's Soft Delete   ***
      * @param $id
      * @return JsonResponse
@@ -107,21 +124,23 @@ class ProductService
     {
         try{
         $product= $this->productModel->find($id);
-            $product->is_active=false;
-            $product->save();
-            return $this->returnData('Product', $product,'This Product Is trashed Now');
+            if (is_null($product) ){
+                return $response= $this->returnSuccessMessage('Product','This Products not found');
+            }else {
+                $product->is_active=false;
+                $product->save();
+                return $this->returnData('Product', $product,'This Product Is trashed Now');
+            }
+
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
-
-        /*__________________________________________________________________*/
-
+    /*__________________________________________________________________*/
     /****  Create Products   ***
      * @param ProductRequest $request
      * @return JsonResponse
      */
-
     public function create(ProductRequest $request)
     {
         try{
@@ -176,7 +195,6 @@ class ProductService
             return $this->returnError('Product','faild');
         }
     }
-
     /*___________________________________________________________________________*/
     /****  Update Product   ***
      * @param ProductRequest $request
@@ -250,8 +268,7 @@ class ProductService
             return $this->returnError('400', 'saving failed');
         }
     }
-
-        /*__________________________________________________________________*/
+    /*__________________________________________________________________*/
     public function search($title)
     {
         try{
@@ -268,8 +285,7 @@ class ProductService
             return $this->returnError('400','faild');
         }
     }
-
-            /*__________________________________________________________________*/
+    /*__________________________________________________________________*/
     /****  Delete Product   ***
      * @param $id
      * @return JsonResponse
@@ -287,6 +303,4 @@ class ProductService
             return $this->returnError('400','faild');
         }
     }
-
-
 }
