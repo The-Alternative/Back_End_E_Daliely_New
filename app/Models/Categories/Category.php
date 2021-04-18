@@ -2,8 +2,7 @@
 
 namespace App\Models\Categories;
 
-use App\Models\Language\Language;
-use App\Models\Categories\CategoryTranslation;
+
 use App\Models\Products\Product;
 use App\Scopes\CategoryScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,6 +37,10 @@ class Category extends Model
         parent::booted();
         static::addGlobalScope(new CategoryScope);
     }
+    public function scopeSelection($query)
+    {
+        return $query->select('id')->get();
+    }
 
     //________________ scopes end _________________//
 
@@ -58,8 +61,11 @@ class Category extends Model
     {
         return $this->hasMany($this,'parent_id');
     }
-    public function Product(){
-        return $this->belongsTo(Product::class,'category_id','id');
+    public function Product()
+    {
+        return $this->belongsToMany(Product::class,'products_categories',
+            'category_id',
+            'product_id');
     }
 
 ////    public function products(){

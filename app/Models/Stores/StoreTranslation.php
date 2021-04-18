@@ -16,7 +16,7 @@ class StoreTranslation extends Model
 //        'is_active' => 'boolean',
 //        'is_approve'=> 'boolean'
 //    ];
-//    protected $table = 'stores';
+//    protected $table = 'stores';s
     protected $fillable = [
         'title','local','store_id'
     ];

@@ -4,11 +4,9 @@ namespace App\Exceptions;
 
 use App\Traits\GeneralTrait;
 //use Illuminate\Database\Eloquent\ModelNotFoundException;
+use BadMethodCallException;
 use Illuminate\Database\QueryException as QueryException;
-use Illuminate\Macroable\Traits;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\ModelNotFoundException as ModelNotFoundException;
-use Throwable;
+//use Illuminate\Macroable\Traits;
 use Exception;
 
 class GeneralHandler extends Exception

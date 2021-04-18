@@ -59,6 +59,20 @@ Route::group(
             Route::GET('/getTrashed','SectionsController@getTrashed');
             Route::DELETE('/delete/{id}','SectionsController@delete');
         });
+        /*_____________Category routes_____________*/
+        Route::group(['prefix'=>'customfields','namespace'=>'Custom_fields'],function()
+        {
+            Route::GET('/getAll','CustomFieldsController@getAll')->name('customfields/');
+            Route::GET('/getById/{id}','CustomFieldsController@getById');
+            Route::GET('/getCategoryBySelf/{id}','CustomFieldsController@getCategoryBySelf');
+            Route::POST('/create','CustomFieldsController@create');
+            Route::PUT('/update/{id}','CustomFieldsController@update');
+            Route::PUT('/trash/{id}','CustomFieldsController@trash');
+            Route::PUT('/restoreTrashed/{id}','CustomFieldsController@restoreTrashed');
+            Route::GET('/search/{name}','CustomFieldsController@search');
+            Route::GET('/getTrashed','CustomFieldsController@getTrashed');
+            Route::DELETE('/delete/{id}','CustomFieldsController@delete');
+        });
         /*_____________ Brand routes_____________*/
         // Route::group(['prefix'=> 'brands'] ,function ()
         //     {

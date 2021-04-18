@@ -2,18 +2,12 @@
 namespace App\Service\Categories;
 
 use App\Models\Categories\CategoryTranslation;
-use App\Models\Custom_Fildes\Custom_Field;
-use App\Models\Products\Product;
 use App\Models\Categories\Category;
 use App\Http\Requests\CategoryRequest;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use phpDocumentor\Reflection\Types\This;
-use App\Exceptions\GeneralHandler;
 use Exception;
-use LaravelLocalization;
 
 class CategoryService
 {
@@ -162,8 +156,6 @@ class CategoryService
                             'language_id' => $allcategory['language_id']
                         ];
                     }
-                    $transCategory_arr;
-
                     $this->categoryTranslation->insert($transCategory_arr);
                 }
                 DB::commit();

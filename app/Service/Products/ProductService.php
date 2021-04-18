@@ -5,12 +5,11 @@ use App\Models\Categories\Category;
 use App\Models\Categories\Section;
 use App\Models\Products\ProductTranslation;
 use App\Traits\GeneralTrait;
-use App\Models\Custom_Fildes\Custom_Field;
 use App\Http\Requests\ProductRequest;
 use App\Models\Products\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use LaravelLocalization;
+
 
 class ProductService
 {
@@ -25,8 +24,12 @@ class ProductService
      * @param Product $product
      * @param ProductTranslation $productTranslation
      * @param Category $category
+     * @param Section $sectionModel
      */
-    public function __construct(Product $product ,ProductTranslation $productTranslation ,Category $category,Section $sectionModel )
+    public function __construct(
+        Product $product ,ProductTranslation $productTranslation ,
+        Category $category,Section $sectionModel
+    )
     {
         $this->productModel=$product;
         $this->productTranslation=$productTranslation;
@@ -38,9 +41,10 @@ class ProductService
     public function getAll()
     {
         try{
-          $products = $this->productModel->get();
+             $products = $this->productModel->with(['Category','Custom_Field'])->get();
+//          $products->Custom_Field();
             if (count($products) > 0){
-                return $response= $this->returnData('Store',$products,'done');
+                return $response= $this->returnData('Products',$products,'done');
             }else{
                 return $response= $this->returnSuccessMessage('Product','Products doesnt exist yet');
             }
@@ -53,9 +57,9 @@ class ProductService
         try{
             $products = $this->categoryModel->with('Product')->find($id);
             if (is_null($products) ){
-                return $response= $this->returnSuccessMessage('This stores not found','done');
+                return $response= $this->returnSuccessMessage('This category not have products','done');
             }else{
-                return $response= $this->returnData('Store',$products,'done');
+                return $response= $this->returnData('category',$products,'done');
             }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
@@ -69,7 +73,7 @@ class ProductService
     public function getById(/*Request $request,*/ $id)
     {
         try{
-        $product = $this->productModel->find($id);
+        $product = $this->productModel->with(['Category','Custom_Field'])->find($id);
             if (is_null($product) ){
                 return $response= $this->returnSuccessMessage('This stores not found','done');
             }else{
@@ -138,7 +142,7 @@ class ProductService
     }
     /*__________________________________________________________________*/
     /****  Create Products   ***
-     * @param ProductRequest $request
+     * @param ProductRequest $requests
      * @return JsonResponse
      */
     public function create(ProductRequest $request)
@@ -147,14 +151,8 @@ class ProductService
 //                validated = $request->validated();
                 $request->is_active?$is_active=true:$is_active=false;
                 $request->is_appear?$is_appear=true:$is_appear=false;
-                //transformation to collection
+                /////////////transformation to collection/////////////////////////
                 $allproducts = collect($request->product)->all();
-                ///select folder to save the image
-                // $fileBath = "" ;
-                //     if($request->has('image'))
-                //     {
-                //         $fileBath=uploadImage('images/products',$request->image);
-                //     }
                 DB::beginTransaction();
                 // //create the default language's product
                 $unTransProduct_id=$this->productModel->insertGetId([
@@ -163,11 +161,9 @@ class ProductService
                     'barcode' =>$request['barcode'],
                     'is_active' =>$request['is_active'],
                     'is_appear' =>$request['is_appear'],
-                    'custom_feild_id' =>$request['custom_feild_id'],
                     'rating_id' =>$request['rating_id'],
                     'brand_id' =>$request['brand_id'],
                     'offer_id' =>$request['offer_id'],
-                    'category_id'=>$request['category_id']
                 ]);
                 //check the category and request
                 if(isset($allproducts) && count($allproducts))
@@ -195,7 +191,7 @@ class ProductService
             return $this->returnError('Product','faild');
         }
     }
-    /*___________________________________________________________________________*/
+    /*__________________________________________________________________*/
     /****  Update Product   ***
      * @param ProductRequest $request
      * @param $id

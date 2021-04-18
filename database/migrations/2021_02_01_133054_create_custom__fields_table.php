@@ -15,10 +15,8 @@ class CreateCustomFieldsTable extends Migration
     {
         Schema::create('custom_fields', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('product_id');
-            $table->unsignedInteger('custom_field_id');
-            $table->string('value');
-            $table->string('description');
+            $table->string('image');
+            $table->boolean('is_active');
             $table->timestamps();
         });
     }
