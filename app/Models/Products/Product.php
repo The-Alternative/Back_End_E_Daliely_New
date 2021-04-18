@@ -2,15 +2,14 @@
 
 namespace App\Models\Products;
 
+use App\Models\Brands\Brands;
 use App\Models\Categories\Category;
-use App\Models\Products\ProductTranslation;
+use App\Models\Custom_Fieldes\Custom_Field;
+use App\Models\Images\ProductImage;
 use App\Models\Stores\Store;
-use App\Models\Stores\StoreProduct;
 use App\Scopes\ProductScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use LaravelLocalization;
-
 
 class Product extends Model
 {
@@ -26,7 +25,7 @@ class Product extends Model
 ];
 
     protected $hidden = [
-        'created_at', 'updated_at'
+        'created_at', 'updated_at','pivot'
     ];
     protected $casts = [
         'is_active' => 'boolean',
@@ -34,7 +33,6 @@ class Product extends Model
     ];
 
     //________________ scopes begin _________________//
-
     /****ــــــ This Local Scopes For Products ــــــ  ***
      * @param $query
      * @return
@@ -91,19 +89,30 @@ class Product extends Model
     }
 
         public function Category(){
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class,
+            'products_categories',
+            'product_id',
+            'category_id');
     }
 //    public function StoreProduct(){
 //        return $this->belongsTo(StoreProduct::class,'product_id');
 //    }
 
 
-//    public function customfields()
-//    {
-//        return $this->belongsToMany(Custom_Field::class)
-//        ->withTimestamps()
-//        ->withPivot(['value','description']);
-//    }
+    public function Custom_Field()
+    {
+        return $this->belongsToMany(Custom_Field::class,
+            'products_custom_fields',
+            'product_id',
+            'custom_field_id');
+    }
+
+        public function ProductImage()
+        {
+        return $this->hasMany(ProductImage::class);
+    }
+
+
 //public function language()
 //{
 //    return $this->belongsToMany(language::class);
@@ -120,12 +129,10 @@ class Product extends Model
 //        ->withPivot(['is_active','is_approve','price','qty']);
 //    }
 //
-//    public function product_images(){
-//        return $this->hasMany(product_image::class);
-//    }
-//    public function brand(){
-//        return $this->belongsTo(brand::class);
-//    }
+
+    public function Brand(){
+        return $this->belongsTo(Brands::class);
+    }
 
 //    public function product_store_ratings(){
 //        return $this->hasMany(Product_Store_Rating::class);

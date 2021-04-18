@@ -2,10 +2,13 @@
 
 namespace App\Traits;
 
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Error;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Validation\ValidationException;
+//use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+//use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Core\User\UserInterface;
+//use Symfony\Component\Security\Core\User\UserInterface;
 
 trait GeneralTrait
 {
@@ -305,13 +308,14 @@ trait GeneralTrait
             ->header('Access-Control-Allow-Methods', '*');
     }
 
-    public function returnData( $key,$value, $msg)
+    public function returnData( $key,$value, $msg )
     {
         return response()->json([
             'status' => true,
             'stateNum' => '201',
             'msg' => $msg,
-            $key => $value
+            $key => $value,
+
         ])
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', '*');

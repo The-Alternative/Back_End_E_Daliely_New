@@ -2,18 +2,12 @@
 namespace App\Service\Categories;
 
 use App\Models\Categories\CategoryTranslation;
-use App\Models\Custom_Fildes\Custom_Field;
-use App\Models\Products\Product;
 use App\Models\Categories\Category;
 use App\Http\Requests\CategoryRequest;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use phpDocumentor\Reflection\Types\This;
-use App\Exceptions\GeneralHandler;
 use Exception;
-use LaravelLocalization;
 
 class CategoryService
 {
@@ -25,42 +19,49 @@ class CategoryService
      * @param Category $category
      * @param CategoryTranslation $categoryTranslation
      */
-
     public function __construct(Category $category , CategoryTranslation $categoryTranslation)
     {
         $this->categoryModel=$category;
         $this->categoryTranslation=$categoryTranslation;
     }
-
+    /*___________________________________________________________________________*/
     /****Get All Active category Or By ID  ****/
-
     public function getAll()
     {
         try{
         $category = $this->categoryModel->get();
-        return $response= $this->returnData('Category',$category,'done');
+            if (count($category) > 0){
+                return $response= $this->returnData('Category',$category,'done');
+            }else{
+                return $response= $this->returnSuccessMessage('Category','Category doesnt exist yet');
+            }
     }catch(\Exception $ex){
         return $this->returnError('400','faild');
         }
     }
-    public function getById($id )
+    /*___________________________________________________________________________*/
+    public function getById($id)
     {
         try{
         $category =$this->categoryModel->find($id);
-        return $response= $this->returnData('Category',$category,'done');
+            if (is_null($category) ){
+                return $response= $this->returnSuccessMessage('This Category not found','done');
+            }else{
+                return $response= $this->returnData('Category',$category,'done');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
-
+    /*___________________________________________________________________________*/
     public function getCategoryBySelf($id)
     {
         $category=$this->categoryModel->with('Category')->get();
         return $response= $this->returnData('Category',$category,'done');
     }
+    /*___________________________________________________________________________*/
         /****ــــــThis Functions For Trashed category  ****/
     /****Get All Trashed Products Or By ID  ****/
-
     public function getTrashed()
     {
         try{
@@ -70,42 +71,54 @@ class CategoryService
             return $this->returnError('400','faild');
         }
     }
-    /****Restore category Fore Active status  ****/
-
+    /*___________________________________________________________________________*/
+    /****Restore category Fore Active status  ***
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function restoreTrashed( $id)
     {
         try{
         $category=$this->categoryModel->find($id);
-            $category->is_active=true;
-            $category->save();
-            return $this->returnData('Category', $category,'This Category Is trashed Now');
+            if (is_null($category) ){
+                return $response= $this->returnSuccessMessage('This Category not found','done');
+            }else{
+                $category->is_active=true;
+                $category->save();
+                return $this->returnData('Category', $category,'This Category Is trashed Now');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
-        /****   category's Soft Delete   ****/
-
+    /*___________________________________________________________________________*/
+    /****   category's Soft Delete   ***
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function trash( $id)
     {
         try{
         $category=$this->categoryModel->find($id);
-            $category->is_active=false;
-            $category->save();
-            return $this->returnData('Category', $category,'This Category Is trashed Now');
+            $category=$this->categoryModel->find($id);
+            if (is_null($category) ){
+                return $response= $this->returnSuccessMessage('This Category not found','done');
+            }else{
+                $category->is_active=false;
+                $category->save();
+                return $this->returnData('Category', $category,'This Category Is trashed Now');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
-
-    /*ــــــــــــــــــــــــ  ـــــــــــــــــــــــ*/
-
+    /*___________________________________________________________________________*/
     /****  Create category   ***
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-
     /*___________________________________________________________________________*/
-        public function create(CategoryRequest $request)
+    public function create(CategoryRequest $request)
         {
             try
             {
@@ -143,8 +156,6 @@ class CategoryService
                             'language_id' => $allcategory['language_id']
                         ];
                     }
-                    $transCategory_arr;
-
                     $this->categoryTranslation->insert($transCategory_arr);
                 }
                 DB::commit();
@@ -156,9 +167,12 @@ class CategoryService
                 return $this->returnError('category','faild');
             }
         }
-
     /*___________________________________________________________________________*/
-    /****  Update category   ****/
+    /****  Update category   ***
+     * @param CategoryRequest $request
+     * @param $id
+     * @return Exception|\Illuminate\Http\JsonResponse
+     */
     public function update(CategoryRequest $request,$id)
     {
         try{
@@ -220,9 +234,11 @@ class CategoryService
             return $this->returnError('400', 'saving failed');
         }
     }
-
     /*___________________________________________________________________________*/
-                /****  ٍsearch for Product   ****/
+    /****  ٍsearch for Product   ***
+     * @param $name
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function search($name)
     {
         try {
@@ -241,14 +257,16 @@ class CategoryService
             return $this->returnError('400','faild');
         }
     }
-
     /*___________________________________________________________________________*/
-    /****  Delete Product   ****/
+    /****  Delete Product   ***
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delete($id)
     {
         try{
         $category=$this->categoryModel->find($id);
-        if ($category->$is_active=0)
+        if ($category->is_active=0)
             {
                 $category=$this->categoryModel->destroy($id);
                  return $this->returnData('Category', $category,'This Category Is deleted Now');
@@ -257,6 +275,4 @@ class CategoryService
             return $this->returnError('400','faild');
         }
     }
-
-
 }

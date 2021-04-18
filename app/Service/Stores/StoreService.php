@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Service\Stores;
 
 use App\Models\Stores\Store;
@@ -22,87 +21,99 @@ class StoreService
     private $StoreService;
     private $storeModel;
     private $storeTranslation;
-
-
     /**
      * Category Service constructor.
      * @param Store $store
      * @param StoreTranslation $storeTranslation
      */
-
     public function __construct(Store $store ,StoreTranslation $storeTranslation)
     {
         $this->storeModel=$store;
         $this->storeTranslation=$storeTranslation;
     }
-
     /****Get All Active category Or By ID  ****/
-
-    public function get()
+    public function getAll()
     {
         try {
             $store = $this->storeModel->get();
-
-            return $response= $this->returnData('Store',$store,'done');
+            if (count($store) > 0){
+                return $response= $this->returnData('Store',$store,'done');
+            }else{
+                return $response= $this->returnSuccessMessage('Store','stores doesnt exist yet');
+            }
         } catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
+    /*___________________________________________________________________________*/
     public function getById($id)
     {
         try {
             $store = $this->storeModel->find($id);
-            return $response= $this->returnData('Store',$store,'done');
+            if (is_null($store) ){
+                return $response= $this->returnSuccessMessage('Store','This stores not found');
+            }else{
+                return $response= $this->returnData('Store',$store,'done');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
-
     }
+    /*___________________________________________________________________________*/
     /****ــــــThis Functions For Trashed category  ****/
     /****Get All Trashed Products Or By ID  ****/
-
     public function getTrashed()
     {
         try {
         $store = $this->storeModel->where('is_active',0)->get();
-        return $this -> returnData('Store',$store,'done');
+            if (count($store) > 0){
+                return $response= $this->returnData('Store',$store,'done');
+            }else{
+                return $response= $this->returnSuccessMessage('Store','stores doesnt exist yet');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
+    /*___________________________________________________________________________*/
     /****Restore category Fore Active status  ****/
     public function restoreTrashed( $id)
     {
         try{
             $store=$this->storeModel->find($id);
-            $store->is_active=true;
-            $store->save();
-              return $this->returnData('Store', $store,'This Store Is trashed Now');
+            if (is_null($store) ){
+                return $response= $this->returnSuccessMessage('Store','This stores not found');
+            }else{
+                $store->is_active=true;
+                $store->save();
+                return $this->returnData('Store', $store,'This Store Is trashed Now');
+            }
             }catch(\Exception $ex){
         return $this->returnError('400','faild');
         }
     }
+    /*___________________________________________________________________________*/
     /****   category's Soft Delete   ****/
-
     public function trash( $id)
     {
         try{
             $store=$this->storeModel->find($id);
-            $store->is_active=false;
-            $store->save();
+            if (is_null($store) ){
+                return $response= $this->returnSuccessMessage('Store','This stores not found');
+            }else{
+                $store->is_active=false;
+                $store->save();
                 return $this->returnData('Store', $store,'This Store Is trashed Now');
+            }
         }catch(\Exception $ex){
               return $this->returnError('400','faild');
         }
     }
-
-    /*ــــــــــــــــــــــــ  ـــــــــــــــــــــــ*/
-
+    /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
     /****  Create category   ***
      * @param Request $request
      * @return JsonResponse
      */
-
     /*___________________________________________________________________________*/
     public function create(Request $request)
     {
@@ -161,14 +172,12 @@ class StoreService
                 return $this->returnError('store','faild');
             }
     }
-
     /*___________________________________________________________________________*/
     /****__________________  Update category   ___________________***
      * @param Request $request
      * @param $id
      * @return Exception|JsonResponse
      */
-
     public function update(Request $request,$id)
     {
         try{
@@ -235,7 +244,6 @@ class StoreService
      * @param $title
      * @return JsonResponse
      */
-
     public function search($title)
     {
         try{
@@ -255,12 +263,10 @@ class StoreService
         }
     }
     /*___________________________________________________________________________*/
-
     /****_______________  Delete Product   ________________***
      * @param $id
      * @return JsonResponse
      */
-
     public function delete($id)
     {
         try
@@ -276,5 +282,17 @@ class StoreService
            return $this->returnError('400','faild');
         }
     }
-
+    public function getSectionInStore($id)
+    {
+        try {
+            $store =$this->storeModel->with('Section')->find($id);
+            if (is_null($store) ){
+                return $response= $this->returnSuccessMessage('Store','This stores not found');
+            }else {
+                return $this->returnData('Category', $store, 'This Store Is deleted Now');
+            }
+        }catch(\Exception $ex){
+            return $this->returnError('400','faild');
+        }
+    }
 }

@@ -17,11 +17,10 @@ Route::group(
     ],
  function()
     {
-
         /*_____________ Product routes _____________*/
         Route::group(['prefix'=>'products','namespace'=>'Product'],function()
             {
-                Route::GET('/getAll','ProductsController@getAll');
+                Route::GET('/getAll','ProductsController@getAll')->name('products/');
                 Route::GET('/getProductByCategory/{id}','ProductsController@getProductByCategory');
                 Route::GET('/getById/{id}','ProductsController@getById');
                 Route::POST('/create','ProductsController@create');
@@ -32,12 +31,10 @@ Route::group(
                 Route::GET('/getTrashed','ProductsController@getTrashed');
                 Route::DELETE('/delete/{id}','ProductsController@delete');
             });
-        });////////////////////end of localization//////////////////////
-
         /*_____________Category routes_____________*/
         Route::group(['prefix'=>'categories','namespace'=>'Category'],function()
             {
-                Route::GET('/getAll','CategoriesController@getAll');
+                Route::GET('/getAll','CategoriesController@getAll')->name('categories/');
                 Route::GET('/getById/{id}','CategoriesController@getById');
                 Route::GET('/getCategoryBySelf/{id}','CategoriesController@getCategoryBySelf');
                 Route::POST('/create','CategoriesController@create');
@@ -48,11 +45,10 @@ Route::group(
                 Route::GET('/getTrashed','CategoriesController@getTrashed');
                 Route::DELETE('/delete/{id}','CategoriesController@delete');
             });
-
         /*_____________ Section routes_____________*/
         Route::group(['prefix'=>'sections','namespace'=>'Category'],function()
         {
-            Route::GET('/getAll','SectionsController@getAll');
+            Route::GET('/getAll','SectionsController@getAll')->name('sections/');
             Route::GET('/getCategoryBySection','SectionsController@getCategoryBySection');
             Route::GET('/getById/{id}','SectionsController@getById');
             Route::POST('/create','SectionsController@create');
@@ -63,7 +59,20 @@ Route::group(
             Route::GET('/getTrashed','SectionsController@getTrashed');
             Route::DELETE('/delete/{id}','SectionsController@delete');
         });
-
+        /*_____________Category routes_____________*/
+        Route::group(['prefix'=>'customfields','namespace'=>'Custom_fields'],function()
+        {
+            Route::GET('/getAll','CustomFieldsController@getAll')->name('customfields/');
+            Route::GET('/getById/{id}','CustomFieldsController@getById');
+            Route::GET('/getCategoryBySelf/{id}','CustomFieldsController@getCategoryBySelf');
+            Route::POST('/create','CustomFieldsController@create');
+            Route::PUT('/update/{id}','CustomFieldsController@update');
+            Route::PUT('/trash/{id}','CustomFieldsController@trash');
+            Route::PUT('/restoreTrashed/{id}','CustomFieldsController@restoreTrashed');
+            Route::GET('/search/{name}','CustomFieldsController@search');
+            Route::GET('/getTrashed','CustomFieldsController@getTrashed');
+            Route::DELETE('/delete/{id}','CustomFieldsController@delete');
+        });
         /*_____________ Brand routes_____________*/
         // Route::group(['prefix'=> 'brands'] ,function ()
         //     {
@@ -73,11 +82,9 @@ Route::group(
         //         Route::put('/updateBrand/{id}',  'Brand\BrandController@updateBrand');
         //         Route::put('/deleteBrand/{id}',  'Brand\BrandController@deleteBrand');
         //     });
-
         /*_____________ Language routes_____________*/
-
         Route::group(['prefix'=>'languages','namespace'=>'Language'],function(){
-            Route::POST('/getAll','LanguageController@getAll');
+            Route::POST('/getAll','LanguageController@getAll')->name('languages/');
             Route::POST('/getById/{id}','LanguageController@getById');
             Route::POST('/create','LanguageController@create');
             Route::post('/update/{id}','LanguageController@update');
@@ -87,8 +94,6 @@ Route::group(
             Route::POST('/getTrashed','LanguageController@getTrashed');
             Route::DELETE('/delete/{id}','LanguageController@delete');
         });
-
-
         /*_____________ Store routes_____________*/
          Route::group(['prefix'=>'stores','namespace'=>'Store'],function ()
             {
@@ -101,6 +106,7 @@ Route::group(
                 Route::GET('/search/{name}','StoreController@search');
                 Route::GET('/getTrashed','StoreController@getTrashed');
                 Route::DELETE('/delete/{id}','StoreController@delete');
+                Route::GET('/getSectionInStore/{id}','StoreController@getSectionInStore');
 
                 Route::POST('/insertProductToStore','StoresProductsController@insertProductToStore');
                 Route::PUT('/updateProductInStore/{id}','StoresProductsController@updateProductInStore');
@@ -110,6 +116,8 @@ Route::group(
                 Route::GET('/rangeOfPrice/{id}','StoresProductsController@rangeOfPrice');
 
             });
+    });////////////////////end of localization//////////////////////
+
 
 
 

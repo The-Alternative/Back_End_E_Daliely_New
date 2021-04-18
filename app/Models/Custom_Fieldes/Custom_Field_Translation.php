@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Stores;
+namespace App\Models\Custom_Fieldes;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class StoreTranslation extends Model
+class Custom_Field_Translation extends Model
 {
     use HasFactory;
     protected $primaryKey = 'id';
@@ -16,14 +16,13 @@ class StoreTranslation extends Model
 //        'is_active' => 'boolean',
 //        'is_approve'=> 'boolean'
 //    ];
-//    protected $table = 'stores';s
+//    protected $table = 'stores';
     protected $fillable = [
-        'title','local','store_id'
+        'name','description','local','custom_field_id'
     ];
-
-
-    public function Store()
+    public function Custom_Field()
     {
-        return $this->belongsTo(Store::class);
+        return $this->belongsToMany(Custom_Field::class);
     }
+
 }

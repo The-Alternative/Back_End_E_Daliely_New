@@ -5,12 +5,11 @@ use App\Models\Categories\Category;
 use App\Models\Categories\Section;
 use App\Models\Products\ProductTranslation;
 use App\Traits\GeneralTrait;
-use App\Models\Custom_Fildes\Custom_Field;
 use App\Http\Requests\ProductRequest;
 use App\Models\Products\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use LaravelLocalization;
+
 
 class ProductService
 {
@@ -25,9 +24,12 @@ class ProductService
      * @param Product $product
      * @param ProductTranslation $productTranslation
      * @param Category $category
+     * @param Section $sectionModel
      */
-
-    public function __construct(Product $product ,ProductTranslation $productTranslation ,Category $category,Section $sectionModel )
+    public function __construct(
+        Product $product ,ProductTranslation $productTranslation ,
+        Category $category,Section $sectionModel
+    )
     {
         $this->productModel=$product;
         $this->productTranslation=$productTranslation;
@@ -39,8 +41,13 @@ class ProductService
     public function getAll()
     {
         try{
-          $products = $this->productModel->get();
-            return $this->returnData('Product',$products,'done');
+             $products = $this->productModel->with(['Category','Custom_Field'])->get();
+//          $products->Custom_Field();
+            if (count($products) > 0){
+                return $response= $this->returnData('Products',$products,'done');
+            }else{
+                return $response= $this->returnSuccessMessage('Product','Products doesnt exist yet');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
@@ -49,12 +56,16 @@ class ProductService
     {
         try{
             $products = $this->categoryModel->with('Product')->find($id);
-            return $this->returnData('Category',$products,'done');
+            if (is_null($products) ){
+                return $response= $this->returnSuccessMessage('This category not have products','done');
+            }else{
+                return $response= $this->returnData('category',$products,'done');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
-        /*__________________________________________________________________*/
+    /*__________________________________________________________________*/
     /****Get Active Product By ID  ***
      * @param $id
      * @return JsonResponse
@@ -62,26 +73,33 @@ class ProductService
     public function getById(/*Request $request,*/ $id)
     {
         try{
-        $product = $this->productModel->find($id);
-        return $this->returnData('Product',$product,'done');
+        $product = $this->productModel->with(['Category','Custom_Field'])->find($id);
+            if (is_null($product) ){
+                return $response= $this->returnSuccessMessage('This stores not found','done');
+            }else{
+                return $this->returnData('Product',$product,'done');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
-        /*__________________________________________________________________*/
-        /****ــــــThis Functions For Trashed Productsــــــ  ****/
+    /*__________________________________________________________________*/
+    /****ــــــThis Functions For Trashed Productsــــــ  ****/
     /****Get All Trashed Products Or By ID  ****/
     public function getTrashed()
     {
         try{
         $product= $this->productModel->where('is_active',0)->get();
-          return $this -> returnData('Product',$product,'done');
+            if (count($product) > 0){
+                return $response= $this->returnData('Store',$product,'done');
+            }else{
+                return $response= $this->returnSuccessMessage('Product','Products trashed doesnt exist yet');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
-
-        /*__________________________________________________________________*/
+    /*__________________________________________________________________*/
     /****Restore Products Fore Active status  ***
      * @param $id
      * @return JsonResponse
@@ -90,15 +108,18 @@ class ProductService
     {
         try{
         $product=$this->productModel->find($id);
-            $product->is_active=true;
-            $product->save();
-            return $this->returnData('Product', $product,'This Product Is trashed Now');
+            if (is_null($product) ){
+                return $response= $this->returnSuccessMessage('Product','This Products not found');
+            }else {
+                $product->is_active = true;
+                $product->save();
+                return $this->returnData('Product', $product, 'This Product Is trashed Now');
+            }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
-
-        /*__________________________________________________________________*/
+    /*__________________________________________________________________*/
     /****   Product's Soft Delete   ***
      * @param $id
      * @return JsonResponse
@@ -107,35 +128,31 @@ class ProductService
     {
         try{
         $product= $this->productModel->find($id);
-            $product->is_active=false;
-            $product->save();
-            return $this->returnData('Product', $product,'This Product Is trashed Now');
+            if (is_null($product) ){
+                return $response= $this->returnSuccessMessage('Product','This Products not found');
+            }else {
+                $product->is_active=false;
+                $product->save();
+                return $this->returnData('Product', $product,'This Product Is trashed Now');
+            }
+
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
-
-        /*__________________________________________________________________*/
-
+    /*__________________________________________________________________*/
     /****  Create Products   ***
-     * @param ProductRequest $request
+     * @param ProductRequest $requests
      * @return JsonResponse
      */
-
     public function create(ProductRequest $request)
     {
         try{
 //                validated = $request->validated();
                 $request->is_active?$is_active=true:$is_active=false;
                 $request->is_appear?$is_appear=true:$is_appear=false;
-                //transformation to collection
+                /////////////transformation to collection/////////////////////////
                 $allproducts = collect($request->product)->all();
-                ///select folder to save the image
-                // $fileBath = "" ;
-                //     if($request->has('image'))
-                //     {
-                //         $fileBath=uploadImage('images/products',$request->image);
-                //     }
                 DB::beginTransaction();
                 // //create the default language's product
                 $unTransProduct_id=$this->productModel->insertGetId([
@@ -144,11 +161,9 @@ class ProductService
                     'barcode' =>$request['barcode'],
                     'is_active' =>$request['is_active'],
                     'is_appear' =>$request['is_appear'],
-                    'custom_feild_id' =>$request['custom_feild_id'],
                     'rating_id' =>$request['rating_id'],
                     'brand_id' =>$request['brand_id'],
                     'offer_id' =>$request['offer_id'],
-                    'category_id'=>$request['category_id']
                 ]);
                 //check the category and request
                 if(isset($allproducts) && count($allproducts))
@@ -176,8 +191,7 @@ class ProductService
             return $this->returnError('Product','faild');
         }
     }
-
-    /*___________________________________________________________________________*/
+    /*__________________________________________________________________*/
     /****  Update Product   ***
      * @param ProductRequest $request
      * @param $id
@@ -250,8 +264,7 @@ class ProductService
             return $this->returnError('400', 'saving failed');
         }
     }
-
-        /*__________________________________________________________________*/
+    /*__________________________________________________________________*/
     public function search($title)
     {
         try{
@@ -268,8 +281,7 @@ class ProductService
             return $this->returnError('400','faild');
         }
     }
-
-            /*__________________________________________________________________*/
+    /*__________________________________________________________________*/
     /****  Delete Product   ***
      * @param $id
      * @return JsonResponse
@@ -287,6 +299,4 @@ class ProductService
             return $this->returnError('400','faild');
         }
     }
-
-
 }

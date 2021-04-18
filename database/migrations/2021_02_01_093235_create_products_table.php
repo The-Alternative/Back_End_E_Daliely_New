@@ -17,9 +17,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('slug');
             $table->string('image');
-            $table->unsignedInteger('category_id')->index();
             $table->string('barcode');
-            $table->unsignedInteger('custom_feild_id')->index();
             $table->unsignedInteger('brand_id')->index();
             $table->unsignedInteger('rating_id')->index();
             $table->unsignedInteger('offer_id')->index();

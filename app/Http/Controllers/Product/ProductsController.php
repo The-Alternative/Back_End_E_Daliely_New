@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Service\Products\ProductService;
 use App\Traits\GeneralTrait;
 use App\Http\Controllers\Controller;
-use App\Service\Products\ProductService;
-use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Response;
 
