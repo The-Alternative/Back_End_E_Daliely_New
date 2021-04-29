@@ -12,16 +12,18 @@ class StoreProduct extends Pivot
     protected $table = 'stores_products';
 
     protected $primaryKey = 'id';
-    protected $hidden = [
+    protected $hidden =
+        [
         'created_at', 'updated_at'
-    ];
+        ];
     protected $casts = [
         'is_active' => 'boolean',
         'is_approve'=> 'boolean'
     ];
-    protected $fillable = [
+    protected $fillable =
+        [
         'price','quantity'
-    ];
+        ];
     public function Store(){
         return $this->belongsTo(Store::class);
     }

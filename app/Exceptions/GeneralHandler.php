@@ -6,7 +6,7 @@ use App\Traits\GeneralTrait;
 //use Illuminate\Database\Eloquent\ModelNotFoundException;
 use BadMethodCallException;
 use Illuminate\Database\QueryException as QueryException;
-//use Illuminate\Macroable\Traits;
+//use Illuminate\Marble\Traits;
 use Exception;
 
 class GeneralHandler extends Exception

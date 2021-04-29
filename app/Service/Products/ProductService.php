@@ -4,6 +4,8 @@ namespace App\Service\Products;
 use App\Models\Categories\Category;
 use App\Models\Categories\Section;
 use App\Models\Products\ProductTranslation;
+use App\Models\Stores\Store;
+use App\Models\Stores\StoreProduct;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\ProductRequest;
 use App\Models\Products\Product;
@@ -18,6 +20,8 @@ class ProductService
     private $productTranslation;
     private $categoryModel;
     private $SectionModel;
+    private $storeModel;
+    private $storeProductModel;
 
     /**
      * ProductService constructor.
@@ -28,25 +32,32 @@ class ProductService
      */
     public function __construct(
         Product $product ,ProductTranslation $productTranslation ,
-        Category $category,Section $sectionModel
+        Category $category,Section $sectionModel,Store $storeModel ,
+        StoreProduct $storeProduct
     )
     {
         $this->productModel=$product;
         $this->productTranslation=$productTranslation;
         $this->categoryModel=$category;
         $this->SectionModel=$sectionModel;
+        $this->storeModel=$storeModel;
+        $this->storeProductModel=$storeProduct;
     }
     /*__________________________________________________________________*/
     /****Get All Active Products  ****/
     public function getAll()
     {
         try{
-             $products = $this->productModel->with(['Category','Custom_Field'])->get();
-//          $products->Custom_Field();
-            if (count($products) > 0){
-                return $response= $this->returnData('Products',$products,'done');
-            }else{
-                return $response= $this->returnSuccessMessage('Product','Products doesnt exist yet');
+        $products = $this->productModel
+            ->with(['Category','Section'])
+            ->get();
+
+            if (count($products) > 0)
+            {
+                return $response=$this->returnData('Products',$products,'done');
+            }else
+            {
+                return $response=$this->returnSuccessMessage('Product','Products doesnt exist yet');
             }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
@@ -59,7 +70,7 @@ class ProductService
             if (is_null($products) ){
                 return $response= $this->returnSuccessMessage('This category not have products','done');
             }else{
-                return $response= $this->returnData('category',$products,'done');
+                return $response= $this->returnData($products,'$products','done');
             }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
@@ -70,15 +81,30 @@ class ProductService
      * @param $id
      * @return JsonResponse
      */
-    public function getById(/*Request $request,*/ $id)
+    public function getById( $id)
     {
         try{
-        $product = $this->productModel->with(['Category','Custom_Field'])->find($id);
-            if (is_null($product) ){
-                return $response= $this->returnSuccessMessage('This stores not found','done');
-            }else{
-                return $this->returnData('Product',$product,'done');
-            }
+        $product = $this->productModel->with(['Store','Category','ProductImage'])
+            ->find($id);
+//            $prices = $this->storeProductModel->where('product_id','=',$id)->get();
+////            if(isset($prices) && count($prices)){
+//            foreach($product->prices as $price)
+//            {
+//                $collection1[]=[
+//                $price['price']
+//            ];
+//            }
+//        $max = collect($collection1)->max();
+//        $min = collect($collection1)->min();
+        return $response=$this->returnData('Product',$product,'done');
+//            }
+
+//            if (!isset($product) ){
+////                return $response= $this->returnSuccessMessage('This Product not found','done');
+//                return $response=$this->returnData('Product',[$product,],'done');
+//            }
+//            return $response=$this->returnData('Product',$product,$max,$min,'done');
+
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
@@ -90,6 +116,7 @@ class ProductService
     {
         try{
         $product= $this->productModel->where('is_active',0)->get();
+
             if (count($product) > 0){
                 return $response= $this->returnData('Store',$product,'done');
             }else{
@@ -126,7 +153,7 @@ class ProductService
      */
     public function trash( $id)
     {
-        try{
+        try {
         $product= $this->productModel->find($id);
             if (is_null($product) ){
                 return $response= $this->returnSuccessMessage('Product','This Products not found');
@@ -200,7 +227,7 @@ class ProductService
     public function update(ProductRequest $request,$id)
     {
 //        $validated = $request->validated();
-        try{
+//        try{
             $product= $this->productModel->find($id);
             if(!$product)
                 return $this->returnError('400', 'not found this Category');
@@ -217,18 +244,18 @@ class ProductService
             //             'image' => $filePath,
             //         ]);
             // }
-            $unTransProduct=$this->productModel->where('id',$id)
+            $unTransProduct=$this->productModel->where('products.id',$id)
                 ->update([
                     'slug' =>$request['slug'],
                     'image' =>$request['image'],
                     'barcode' =>$request['barcode'],
                     'is_active' =>$request['is_active'],
                     'is_appear' =>$request['is_appear'],
-                    'custom_feild_id' =>$request['custom_feild_id'],
+//                    'custom_feild_id' =>$request['custom_feild_id'],
                     'rating_id' =>$request['rating_id'],
                     'brand_id' =>$request['brand_id'],
                     'offer_id' =>$request['offer_id'],
-                    'category_id'=>$request['category_id']
+//                    'category_id'=>$request['category_id']
                 ]);
             $ss=$this->productTranslation->where('product_id',$id);
             $collection1 = collect($allproducts);
@@ -256,13 +283,13 @@ class ProductService
                         ]);
                 }
             }
-            DB::commit();
+//            DB::commit();
             return $this->returnData('Category', $dbdproducts,'done');
-        }
-        catch(\Exception $ex){
-            DB::rollback();
-            return $this->returnError('400', 'saving failed');
-        }
+//        }
+//        catch(\Exception $ex){
+//            DB::rollback();
+//            return $this->returnError('400', 'saving failed');
+//        }
     }
     /*__________________________________________________________________*/
     public function search($title)

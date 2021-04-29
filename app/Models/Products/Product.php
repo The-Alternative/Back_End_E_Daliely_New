@@ -4,12 +4,14 @@ namespace App\Models\Products;
 
 use App\Models\Brands\Brands;
 use App\Models\Categories\Category;
+use App\Models\Categories\Section;
 use App\Models\Custom_Fieldes\Custom_Field;
 use App\Models\Images\ProductImage;
 use App\Models\Stores\Store;
 use App\Scopes\ProductScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 
 class Product extends Model
 {
@@ -57,17 +59,22 @@ class Product extends Model
     {
         return $value==1 ? 'Appear' : 'Not Appear';
     }
+
     protected static function booted()
     {
         parent::booted();
         static::addGlobalScope(new ProductScope);
     }
-//    public function scopeWithTrans($query)
-//    {
-//        return $query=Product::join('product_translations', 'product_translations.product_id', '=', 'products.id')
-//            ->where('product_translations.locale','=',get_current_local())
-//            ->select('products.*','product_translations.*')->get();
-//    }
+
+    public function scopeById($query)
+    {
+      return  $query->join('product_translations', 'product_translations.product_id', '=', 'products.id')
+            ->where('product_translations.local','=',Config::get('app.locale'))
+            ->select(['products.*',
+//                'products.id','products.image','products.is_appear','products.created_at',
+                'product_translations.name',
+                'product_translations.short_des'])->get();
+    }
 
     //______________________________ scopes end _____________________________//
     public function ProductTranslation()
@@ -104,13 +111,26 @@ class Product extends Model
         return $this->belongsToMany(Custom_Field::class,
             'products_custom_fields',
             'product_id',
-            'custom_field_id');
+            'customfield_id');
     }
 
         public function ProductImage()
         {
         return $this->hasMany(ProductImage::class);
     }
+    public function Section()
+    {
+        return $this->belongsToMany(
+            Section::class,
+            'products_sections',
+            'product_id',
+            'section_id'
+            );
+    }
+     public function Brand()
+     {
+        return $this->belongsTo(Brands::class);
+     }
 
 
 //public function language()
@@ -129,10 +149,6 @@ class Product extends Model
 //        ->withPivot(['is_active','is_approve','price','qty']);
 //    }
 //
-
-    public function Brand(){
-        return $this->belongsTo(Brands::class);
-    }
 
 //    public function product_store_ratings(){
 //        return $this->hasMany(Product_Store_Rating::class);

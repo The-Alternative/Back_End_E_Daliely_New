@@ -3,6 +3,7 @@
 namespace App\Models\Stores;
 
 
+use App\Models\Categories\Section;
 use App\Models\Products\Product;
 use App\Scopes\StoreScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -67,6 +68,19 @@ class Store extends Model
             ->withPivot(['price','quantity'])
             ->withTimestamps();
     }
+    public function Section()
+    {
+        return $this->belongsToMany(
+            Section::class,
+            'stores_sections',
+            'store_id',
+            'section_id');
+    }
+    public function StoreProduct()
+    {
+        return $this->hasMany(StoreProduct::class);
+    }
+
 //    public function StoreProduct(){
 //        return $this->belongsTo(StoreProduct::class,'store_id');
 //    }
