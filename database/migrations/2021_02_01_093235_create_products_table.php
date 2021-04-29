@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateProductsTable extends Migration
@@ -25,27 +26,21 @@ class CreateProductsTable extends Migration
             $table->boolean('is_appear');
             $table->timestamps();
         });
-    }
-//    public function up()
-//    {
-//        Schema::create('products', function (Blueprint $table) {
-//            $table->id();
-//            $table->string('trans_lang');
-//            $table->unsignedInteger('trans_of');
-//            $table->string('title');
-//            $table->string('slug');
-//            $table->unsignedInteger('brand_id');
-//            $table->string('barcode');
-//            $table->string('image');
-//            $table->string('short_des');
-//            $table->boolean('is_active')->default(true);
-//            $table->boolean('is_appear')->default(true);
-//            $table->string('meta');
-//            $table->string('description');
-//            $table->timestamps();
-//        });
-//    }
 
+        DB::table('products')->insert([
+            ['slug' => 'Admin', 'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy6iZq7N0bOew1ttlwpQRgf-SmI4MHbWZU3Q&usqp=CAU','barcode'=>'2121','brand_id'=>'1','rating_id'=>'1','offer_id'=>'1','is_active'=>'1','is_appear'=>'1'],
+            ['slug' => 'Admin', 'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy6iZq7N0bOew1ttlwpQRgf-SmI4MHbWZU3Q&usqp=CAU','barcode'=>'2121','brand_id'=>'1','rating_id'=>'1','offer_id'=>'1','is_active'=>'1','is_appear'=>'1'],
+            ['slug' => 'Admin', 'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy6iZq7N0bOew1ttlwpQRgf-SmI4MHbWZU3Q&usqp=CAU','barcode'=>'2121','brand_id'=>'1','rating_id'=>'1','offer_id'=>'1','is_active'=>'1','is_appear'=>'1'],
+            ['slug' => 'Admin', 'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy6iZq7N0bOew1ttlwpQRgf-SmI4MHbWZU3Q&usqp=CAU','barcode'=>'2121','brand_id'=>'1','rating_id'=>'1','offer_id'=>'1','is_active'=>'1','is_appear'=>'1'],
+            ['slug' => 'Admin', 'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy6iZq7N0bOew1ttlwpQRgf-SmI4MHbWZU3Q&usqp=CAU','barcode'=>'2121','brand_id'=>'1','rating_id'=>'1','offer_id'=>'1','is_active'=>'1','is_appear'=>'1'],
+            ['slug' => 'Admin', 'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy6iZq7N0bOew1ttlwpQRgf-SmI4MHbWZU3Q&usqp=CAU','barcode'=>'2121','brand_id'=>'1','rating_id'=>'1','offer_id'=>'1','is_active'=>'1','is_appear'=>'1'],
+            ['slug' => 'Admin', 'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy6iZq7N0bOew1ttlwpQRgf-SmI4MHbWZU3Q&usqp=CAU','barcode'=>'2121','brand_id'=>'1','rating_id'=>'1','offer_id'=>'1','is_active'=>'1','is_appear'=>'1'],
+            ['slug' => 'Admin', 'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy6iZq7N0bOew1ttlwpQRgf-SmI4MHbWZU3Q&usqp=CAU','barcode'=>'2121','brand_id'=>'1','rating_id'=>'1','offer_id'=>'1','is_active'=>'1','is_appear'=>'1'],
+            ['slug' => 'Admin', 'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy6iZq7N0bOew1ttlwpQRgf-SmI4MHbWZU3Q&usqp=CAU','barcode'=>'2121','brand_id'=>'1','rating_id'=>'1','offer_id'=>'1','is_active'=>'1','is_appear'=>'1'],
+            ['slug' => 'Admin', 'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy6iZq7N0bOew1ttlwpQRgf-SmI4MHbWZU3Q&usqp=CAU','barcode'=>'2121','brand_id'=>'1','rating_id'=>'1','offer_id'=>'1','is_active'=>'1','is_appear'=>'1'],
+            ['slug' => 'Admin', 'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy6iZq7N0bOew1ttlwpQRgf-SmI4MHbWZU3Q&usqp=CAU','barcode'=>'2121','brand_id'=>'1','rating_id'=>'1','offer_id'=>'1','is_active'=>'1','is_appear'=>'1'],
+        ]);
+    }
     /**
      * Reverse the migrations.
      *

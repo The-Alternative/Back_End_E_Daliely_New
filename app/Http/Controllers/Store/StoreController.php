@@ -21,54 +21,59 @@ class StoreController extends Controller
         $this->StoreService=$StoreService;
         $this->response=$response;
     }
+//
+//"files": [
+//"App/Helpers/GeneralHelpers.php"
+//]
     public function getAll()
     {
         $response= $this->StoreService->getAll();
-        return response($response, 200);
+//        return response($response, 200);
+        return $response;
     }
     public function getById($id)
     {
         $response= $this->StoreService->getById($id);
-        return response($response, 200);
+        return $response;
     }
     public function getTrashed()
     {
         $response= $this->StoreService->getTrashed();
-        return response($response, 200);
+        return $response;
     }
     public function create(Request $request)
     {
         $response= $this->StoreService->create($request);
-        return response($response, 200);
+        return $response;
     }
     public function update(Request $request,$id)
     {
         $response= $this->StoreService->update( $request,$id);
-        return response($response, 200);
+        return $response;
     }
     public function search($name)
     {
         $response= $this->StoreService->search($name);
-        return response($response, 200);
+        return $response;
     }
     public function trash($id)
     {
         $response= $this->StoreService->trash($id);
-        return response($response, 200);
+        return $response;
     }
     public function restoreTrashed($id)
     {
         $response= $this->StoreService->restoreTrashed($id);
-        return response($response, 200);
+        return $response;
     }
     public function delete($id)
     {
         $response= $this->StoreService->delete($id);
-        return response($response, 200);
+        return $response;
     }
     public function getSectionInStore($id)
     {
         $response= $this->StoreService->getSectionInStore($id);
-        return response($response, 200);
+        return $response;
     }
 }

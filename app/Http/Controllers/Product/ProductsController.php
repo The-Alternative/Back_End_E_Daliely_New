@@ -22,51 +22,51 @@ class ProductsController extends Controller
         public function getAll()
         {
          $response= $this->ProductService->getAll();
-            return response($response, 200);
+            return $response;
         }
         public function getProductByCategory($id)
         {
          $response= $this->ProductService->getProductByCategory($id);
-            return response($response, 200);
+            return $response;
         }
         public function getById($id)
         {
          $response= $this->ProductService->getById($id);
-            return response($response, 200);
+            return $response;
         }
         public function getTrashed()
         {
          $response= $this->ProductService->getTrashed();
-         return response($response, 200);
+            return $response;
         }
         public function create(ProductRequest $request)
         {
             $response= $this->ProductService->create($request);
-            return response($response, 200);
+            return $response;
         }
         public function update(ProductRequest $request,$pro_id)
         {
             $response= $this->ProductService->update($request,$pro_id);
-            return response($response, 200);
+            return $response;
         }
         public function search($title)
         {
             $response= $this->ProductService->search($title);
-            return response($response, 200);
+            return $response;
         }
         public function trash($id)
         {
             $response= $this->ProductService->trash($id);
-            return response($response, 200);
+            return $response;
         }
         public function restoreTrashed($id)
         {
             $response= $this->ProductService->restoreTrashed($id);
-            return response($response, 200);
+            return $response;
         }
         public function delete($id)
         {
             $response= $this->ProductService->delete($id);
-            return response($response, 200);
+            return $response;
         }
 }

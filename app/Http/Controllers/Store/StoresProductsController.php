@@ -21,31 +21,31 @@ class StoresProductsController extends Controller
     public function insertProductToStore(Request $request)
     {
         $response= $this->StoresProductsService->insertProductToStore($request);
-        return response($response, 200);
+        return $response;
     }
     public function updateProductInStore(Request $request,$id)
     {
         $response= $this->StoresProductsService->updateProductInStore($request,$id);
-        return response($response, 200);
+        return $response;
     }
     public function viewStoresHasProduct($id)
     {
         $response= $this->StoresProductsService->viewStoresHasProduct($id);
-        return response($response,200);
+        return $response;
     }
     public function viewProductsInStore($id)
     {
         $response= $this->StoresProductsService->viewProductsInStore($id);
-        return response($response,200);
+        return $response;
     }
     public function hiddenProductByQuantity($id)
     {
         $response= $this->StoresProductsService->hiddenProductByQuantity($id);
-        return response($response,200);
+        return $response;
     }
     public function rangeOfPrice($id)
     {
         $response= $this->StoresProductsService->rangeOfPrice($id);
-        return response($response,200);
+        return $response;
     }
 }

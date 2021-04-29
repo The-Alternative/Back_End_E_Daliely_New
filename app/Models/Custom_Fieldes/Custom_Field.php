@@ -29,6 +29,9 @@ class Custom_Field extends Model
 
     public function Product()
     {
-        return $this->belongsToMany(Product::class,'products_custom_fields','custom_field_id','product_id');
+        return $this->belongsToMany(Product::class,
+            'products_custom_fields',
+            'customfield_id',
+            'product_id');
     }
 }

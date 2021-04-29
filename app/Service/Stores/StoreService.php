@@ -2,18 +2,18 @@
 
 namespace App\Service\Stores;
 
-use App\Models\Stores\Store;
 use App\Models\Products\Product;
+use App\Models\Products\ProductTranslation;
+use App\Models\Stores\Store;
 use App\Models\Stores\StoreProduct;
 use App\Models\Stores\StoreTranslation;
-use App\Scopes\StoreScope;
 use App\Traits\GeneralTrait;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use LaravelLocalization;
-use Symfony\Component\Console\Input\Input;
 
 class StoreService
 {
@@ -21,6 +21,8 @@ class StoreService
     private $StoreService;
     private $storeModel;
     private $storeTranslation;
+    private $Store;
+
     /**
      * Category Service constructor.
      * @param Store $store
@@ -35,9 +37,10 @@ class StoreService
     public function getAll()
     {
         try {
-            $store = $this->storeModel->get();
+            $store =collect($this->storeModel->with(['Section','Product'])->get());
             if (count($store) > 0){
-                return $response= $this->returnData('Store',$store,'done');
+                return $this->returnData('Stores',$store,'done');
+//                return $response= array('Store'=>$store);
             }else{
                 return $response= $this->returnSuccessMessage('Store','stores doesnt exist yet');
             }
@@ -46,18 +49,27 @@ class StoreService
         }
     }
     /*___________________________________________________________________________*/
-    public function getById($id)
+    public function getById($store_id)
     {
-        try {
-            $store = $this->storeModel->find($id);
+//        try {
+            $store = $this->storeModel->with(['Product','Section'])->find($store_id);
+//        $store = Store::with('Product');
+
+//        foreach ($products as $product) {
+//           $price = $product['price'];
+//            $store->with($price)->get();
+//        }
+
             if (is_null($store) ){
                 return $response= $this->returnSuccessMessage('Store','This stores not found');
             }else{
-                return $response= $this->returnData('Store',$store,'done');
+//                return $response= array('Store'=>$store);
+                return $this->returnData('Store',$store,'done');
+
             }
-        }catch(\Exception $ex){
-            return $this->returnError('400','faild');
-        }
+//        }catch(\Exception $ex){
+//            return $this->returnError('400','faild');
+//        }
     }
     /*___________________________________________________________________________*/
     /****ــــــThis Functions For Trashed category  ****/
@@ -117,6 +129,65 @@ class StoreService
     /*___________________________________________________________________________*/
     public function create(Request $request)
     {
+//       return Product::get();
+//       $stores = collect($request->store)->all();
+//         $sto = collect($request)->all();
+//
+//        $arr1 =[
+//            'loc_id',
+//            'country_id',
+//            'gov_id',
+//            'city_id',
+//            'street_id',
+//            'offer_id',
+//            'socialMedia_id',
+//            'followers_id',
+//            'is_active',
+//            'is_approved',
+//            'delivery',
+//            'edalilyPoint',
+//            'rating',
+//            'workingHours',
+//            'logo',
+
+//
+//            'loc_id' =>$request['loc_id'],
+//            'country_id' =>$request['country_id'],
+//            'gov_id' =>$request['gov_id'],
+//            'city_id'=>$request['city_id'],
+//            'street_id'=>$request['street_id'],
+//            'offer_id'=>$request['offer_id'],
+//            'socialMedia_id'=>$request['socialMedia_id'],
+//            'followers_id'=>$request['followers_id'],
+//            'is_active'=>$request['is_active'],
+//            'is_approved'=>$request['is_approved'],
+//            'delivery'=>$request['delivery'],
+//            'edalilyPoint'=>$request['edalilyPoint'],
+//            'rating'=>$request['rating'],
+//            'workingHours'=>$request['workingHours'],
+//            'logo'=>$request['logo']
+//        ];
+//        for ( $i =1 ; $i<count($sto);$i++){
+//            for($j=0; $j<count($arr1);$j++){
+//                $i=$j;
+//            }
+//        }
+
+//        $arr2 =[
+//             'local',
+//             'title',
+////             'store_id'=>$int
+//        ];
+//        $arr3 =[
+//            $stores['local'],
+//            $stores['title'],
+////             'store_id'=>$int
+//        ];
+//        return $request;
+
+//         $product=$this->insert2(Store::class,StoreTranslation::class,$arr1,$arr2,$arr3);
+
+
         try {
 //        validated = $request->validated();
         $request->is_active?$is_active=true:$is_active=false;
@@ -129,7 +200,7 @@ class StoreService
         //     {
         //         $fileBath=uploadImage('images/products',$request->image);
         //     }
-//        DB::beginTransaction();
+        DB::beginTransaction();
         // //create the default language's product
         $unTransStore_id=$this->storeModel->insertGetId([
             //                'section_id' =>$request['section_id'],
@@ -182,8 +253,8 @@ class StoreService
     {
         try{
             //$validated = $request->validated();
-            $category= $this->storeModel->find($id);
-            if(!$category)
+            $store= $this->storeModel->find($id);
+            if(!$store)
                 return $this->returnError('400', 'not found this Store');
             if (!($request->has('category.is_active')))
                 $request->request->add(['is_active'=>0]);
@@ -198,10 +269,8 @@ class StoreService
             //         ]);
             // }
             DB::beginTransaction();
-
-            $nStore=$this->storeModel->where('id',$id)
+            $nStore=$this->storeModel->where('stores.id',$id)
                 ->update([
-                    'section_id' => $request['section_id'],
                     'loc_id' => $request['loc_id'],
                     'country_id' => $request['country_id'],
                     'gov_id' => $request['gov_id'],

@@ -3,12 +3,15 @@
 namespace App\Traits;
 
 use Error;
+use http\Env\Request;
+use http\Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
-//use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
-//use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-//use Symfony\Component\Security\Core\User\UserInterface;
 
 trait GeneralTrait
 {
@@ -31,7 +34,6 @@ trait GeneralTrait
             ], $statusCode, $headers
         );
     }
-
     /**
      * @param array $data
      * @param int $statusCode
@@ -77,13 +79,10 @@ trait GeneralTrait
         }
         return ["content" => $responseStructure, "statusCode" => $statusCode, "headers" => $headers];
     }
-
-
     /*
      *
      * Just a wrapper to facilitate abstract
      */
-
     /**
      * Return generic json response with the given data.
      *
@@ -104,12 +103,10 @@ trait GeneralTrait
             $result['content'], $result['statusCode'], $result['headers']
         );
     }
-
     /*
      *
      * Just a wrapper to facilitate abstract
      */
-
     /**
      * @param ResourceCollection $resourceCollection
      * @param null $message
@@ -129,7 +126,6 @@ trait GeneralTrait
             ], $statusCode, $headers
         );
     }
-
     /**
      * Respond with success.
      *
@@ -141,7 +137,6 @@ trait GeneralTrait
     {
         return $this->apiResponse(['success' => true, 'message' => $message]);
     }
-
     /**
      * Respond with created.
      *
@@ -153,7 +148,6 @@ trait GeneralTrait
     {
         return $this->apiResponse($data, 201);
     }
-
     /**
      * Respond with no content.
      *
@@ -165,7 +159,6 @@ trait GeneralTrait
     {
         return $this->apiResponse(['success' => false, 'message' => $message], 200);
     }
-
     /**
      * Respond with no content.
      *
@@ -188,7 +181,6 @@ trait GeneralTrait
     {
         return $this->respondWithResourceCollection(new EmptyResourceCollection([]), $message);
     }
-
     /**
      * Respond with unauthorized.
      *
@@ -200,7 +192,6 @@ trait GeneralTrait
     {
         return $this->respondError($message, 401);
     }
-
     /**
      * Respond with error.
      *
@@ -223,7 +214,6 @@ trait GeneralTrait
             ], $statusCode
         );
     }
-
     /**
      * Respond with forbidden.
      *
@@ -235,7 +225,6 @@ trait GeneralTrait
     {
         return $this->respondError($message, 403);
     }
-
     /**
      * Respond with not found.
      *
@@ -247,7 +236,6 @@ trait GeneralTrait
     {
         return $this->respondError($message, 404);
     }
-
     // /**
     //  * Respond with failed login.
     //  *
@@ -261,7 +249,6 @@ trait GeneralTrait
     //         ]
     //     ], 422);
     // }
-
     /**
      * Respond with internal error.
      *
@@ -273,7 +260,6 @@ trait GeneralTrait
     {
         return $this->respondError($message, 500);
     }
-
     protected function respondValidationErrors(ValidationException $exception)
     {
         return $this->apiResponse(
@@ -285,45 +271,86 @@ trait GeneralTrait
             422
         );
     }
-	    public function returnError($stateNum, $msg)
+    public function returnError($stateNum, $msg)
     {
         return response()->json([
             'status' => false,
             'stateNum' => $stateNum,
             'msg' => $msg
-        ])
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        ]);
+//            ->header('Access-Control-Allow-Origin', '*')
+//            ->header('Access-Control-Allow-Methods', '*');
     }
-
-
     public function returnSuccessMessage($msg, $stateNum )
     {
-        return response()->json( [
-            'status' => true,
+        return response()->json(
+            ['status' => true,
             'stateNum' => $stateNum,
             'msg' => $msg
-        ])
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        ]);
+//            ->header('Access-Control-Allow-Origin', '*')
+//            ->header('Access-Control-Allow-Methods', '*');
     }
-
     public function returnData( $key,$value, $msg )
     {
-        return response()->json([
-            'status' => true,
-            'stateNum' => '201',
-            'msg' => $msg,
-            $key => $value,
-
-        ])
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return response()->json(
+            [
+                $key=>$value
+                ,'status' => true,
+                'stateNum' => '201',
+                'msg' => $msg
+            ]
+        );
+//            ->header('Access-Control-Allow-Origin', '*')
+//            ->header('Access-Control-Allow-Methods', '*');
         }
+
+    public function insert1($model1, $Arr1 )
+    {
+        $this->model1 = $model1;
+        $int = $this->model1::insertGetId($Arr1);
+        return $int;
+    }
+    public function insert2($model1,$model2, $Arr1 ,$values,$values2)
+    {
+        $this->model2=$model2;
+        $id=$this->insert1($model1 , $Arr1 );
+        foreach ($values as $value)
+            {
+                foreach ($values2 as $value2) {
+                    $Arr2[] = [
+                        $value => $value2
+                    ];
+                }
+            }
+        $trans=$this->model2::insert($Arr2 );
+
+
+//        for ( $i =1 ; $i<count($col);$i++){
+//            for($j=0; $j<count($Arr2);$j++){
+//
+//                $i=$j;
+//            }
+
+        //check the category and request
+//        if(isset($Arr2) && count($Arr2))
+//        {
+//            //insert other traslations for products
+//            foreach ($Arr2 as $Arr)
+//            {
+//                $Arr2[]=[
+//                    'local'=>$Arr['local'],
+//                    'title' =>$Arr['title'],
+//                    'store_id'=>$int
+//                ];
+//            }
+//            $this->model2->insert($Arr2);
+//        }
+        return $this->returnData('Store', $Arr1,'done');
+    }
 }
 
     // protected $statusCode = 200;
-
 	// 	/**
 	// 	 * Gets the value of statusCode.
 	// 	 *
@@ -333,7 +360,6 @@ trait GeneralTrait
 	// 	{
 	// 		return $this->statusCode;
 	// 	}
-
 	// 	/**
 	// 	 * Sets the value of statusCode.
 	// 	 *
@@ -344,10 +370,8 @@ trait GeneralTrait
 	// 	protected function setStatusCode($statusCode)
 	// 	{
 	// 		$this->statusCode = $statusCode;
-
 	// 		return $this;
 	// 	}
-
 	// 	/**
 	// 	 * Returns a JSON response
 	// 	 *
@@ -360,7 +384,6 @@ trait GeneralTrait
 	// 	{
 	// 		return new JsonResponse($data, $this->getStatusCode(), $headers);
 	// 	}
-
 	// 	/**
 	// 	 * Sets an error message and returns a JSON response
 	// 	 *
@@ -374,11 +397,8 @@ trait GeneralTrait
 	// 			'status' => $this->getStatusCode(),
 	// 			'errors' => $errors,
 	// 		];
-
 	// 		return new JsonResponse($data, $this->getStatusCode(), $headers);
 	// 	}
-
-
 	// 	/**
 	// 	 * Sets an error message and returns a JSON response
 	// 	 *
@@ -392,11 +412,8 @@ trait GeneralTrait
 	// 			'status' => $this->getStatusCode(),
 	// 			'success' => $success,
 	// 		];
-
 	// 		return new JsonResponse($data, $this->getStatusCode(), $headers);
 	// 	}
-
-
 	// 	/**
 	// 	 * Returns a 401 Unauthorized http response
 	// 	 *
@@ -408,7 +425,6 @@ trait GeneralTrait
 	// 	{
 	// 		return $this->setStatusCode(401)->respondWithErrors($message);
 	// 	}
-
 	// 	/**
 	// 	 * Returns a 422 Unprocessable Entity
 	// 	 *
@@ -420,7 +436,6 @@ trait GeneralTrait
 	// 	{
 	// 		return $this->setStatusCode(422)->respondWithErrors($message);
 	// 	}
-
 	// 	/**
 	// 	 * Returns a 404 Not Found
 	// 	 *
@@ -432,7 +447,6 @@ trait GeneralTrait
 	// 	{
 	// 		return $this->setStatusCode(404)->respondWithErrors($message);
 	// 	}
-
 	// 	/**
 	// 	 * Returns a 201 Created
 	// 	 *
@@ -444,24 +458,14 @@ trait GeneralTrait
 	// 	{
 	// 		return $this->setStatusCode(201)->response($data);
 	// 	}
-
 	// 	// this method allows us to accept JSON payloads in POST requests
 	// 	// since Symfony 4 doesn’t handle that automatically:
-
 	// 	protected function transformJsonBody(\Symfony\Component\HttpFoundation\Request $request)
 	// 	{
 	// 		$data = json_decode($request->getContent(), true);
-
 	// 		if ($data === null) {
 	// 			return $request;
 	// 		}
-
 	// 		$request->request->replace($data);
-
 	// 		return $request;
 	// 	}
-
-
-
-
-
