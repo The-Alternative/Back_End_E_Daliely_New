@@ -120,8 +120,8 @@ class CategoryService
     /*___________________________________________________________________________*/
     public function create(CategoryRequest $request)
         {
-            try
-            {
+//            try
+//            {
                 $validated = $request->validated();
                 $request->is_active?$is_active=true:$is_active=false;
                 $request->is_appear?$is_appear=true:$is_appear=false;
@@ -133,7 +133,7 @@ class CategoryService
                 //     {
                 //         $fileBath=uploadImage('images/products',$request->image);
                 //     }
-                DB::beginTransaction();
+//                DB::beginTransaction();
                 // //create the default language's product
                 $unTransCategory_id=$this->categoryModel->insertGetId([
                     'image' =>$request['image'],
@@ -158,14 +158,14 @@ class CategoryService
                     }
                     $this->categoryTranslation->insert($transCategory_arr);
                 }
-                DB::commit();
+//                DB::commit();
                 return $this->returnData('category', [$unTransCategory_id,$transCategory_arr],'done');
-            }
-            catch(\Exception $ex)
-            {
-                DB::rollback();
-                return $this->returnError('category','faild');
-            }
+//            }
+//            catch(\Exception $ex)
+//            {
+//                DB::rollback();
+//                return $this->returnError('category','faild');
+//            }
         }
     /*___________________________________________________________________________*/
     /****  Update category   ***

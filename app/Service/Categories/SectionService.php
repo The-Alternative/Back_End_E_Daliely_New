@@ -55,18 +55,21 @@ class SectionService
     /*___________________________________________________________________________*/
     public function getById($id )
     {
-        try{
-        $section = $this->SectionModel
-            ->with(['Category','Product'])
+//        try{
+         $section = $this->SectionModel
+            ->with(['Category','Product'=>function($q){
+                return $q->with('Category')->get();
+            }])
             ->find($id);
+//       return $products=$section->products;
             if (is_null($section) ){
                 return $response= $this->returnSuccessMessage('This Section not found','done');
             }else{
                 return $response= $this->returnData('Section',$section,'done');
             }
-        }catch(\Exception $ex){
-            return $this->returnError('400','faild');
-        }
+//        }catch(\Exception $ex){
+//            return $this->returnError('400','faild');
+//        }
     }
     /*___________________________________________________________________________*/
     public function getCategoryBySection()
@@ -154,7 +157,7 @@ class SectionService
                     'slug' => $request['slug'],
                     'image' => $request['image'],
                     'is_active' => $request['is_active'],
-                    'categories_id' => $request['categories_id']
+//                    'categories_id' => $request['categories_id']
                 ]);
                 //check the category and request
                 if(isset($allsections) && count($allsections))

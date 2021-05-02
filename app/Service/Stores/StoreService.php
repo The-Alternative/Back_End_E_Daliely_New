@@ -52,8 +52,14 @@ class StoreService
     public function getById($store_id)
     {
 //        try {
-            $store = $this->storeModel->with(['Product','Section'])->find($store_id);
-//        $store = Store::with('Product');
+//            $store = $this->storeModel->with(['Product','Section'])->find($store_id)
+//;
+        $store = Store::with(['Product'=>function($q){
+            return $q->with('Category')->get();
+        },'Section'=>function($q){
+            return $q->with('Category')->get();
+        }])->find($store_id);
+//        $Product = Store::find($store_id)->Product;
 
 //        foreach ($products as $product) {
 //           $price = $product['price'];
@@ -64,7 +70,7 @@ class StoreService
                 return $response= $this->returnSuccessMessage('Store','This stores not found');
             }else{
 //                return $response= array('Store'=>$store);
-                return $this->returnData('Store',$store,'done');
+                return $this->returnData('Store',[$store],'done');
 
             }
 //        }catch(\Exception $ex){

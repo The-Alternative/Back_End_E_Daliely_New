@@ -4,6 +4,7 @@ namespace App\Models\Products;
 
 use App\Models\Brands\Brands;
 use App\Models\Categories\Category;
+use App\Models\Categories\ProductCategory;
 use App\Models\Categories\Section;
 use App\Models\Custom_Fieldes\Custom_Field;
 use App\Models\Images\ProductImage;
@@ -131,6 +132,11 @@ class Product extends Model
      {
         return $this->belongsTo(Brands::class);
      }
+
+    public function ProductCategory()
+    {
+        return $this->hasMany(ProductCategory::class);
+    }
 
 
 //public function language()

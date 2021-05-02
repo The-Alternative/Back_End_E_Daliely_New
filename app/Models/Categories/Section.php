@@ -4,6 +4,7 @@ namespace App\Models\Categories;
 
 use App\Models\Products\Product;
 use App\Models\Stores\Store;
+use App\Models\Stores\StoreProduct;
 use App\Scopes\SectionScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -85,6 +86,15 @@ class Section extends Model
             'products_sections',
             'section_id',
             'product_id');
+    }
+    public function products(){
+        return $this->hasManyThrough(
+            Product::class,
+            ProductCategory::class,
+        'product_id',
+        'id',
+        'id',
+        'id');
     }
 
 }

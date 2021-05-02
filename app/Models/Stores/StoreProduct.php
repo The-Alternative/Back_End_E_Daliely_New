@@ -22,12 +22,21 @@ class StoreProduct extends Pivot
     ];
     protected $fillable =
         [
-        'price','quantity'
+        'price','quantity','is_active','is_approve','store_id','product_id'
         ];
     public function Store(){
         return $this->belongsTo(Store::class);
-    }
+}
     public function Product(){
         return $this->belongsTo(Product::class);
+    }
+    public function products(){
+        return $this->hasManyThrough(
+            Product::class,
+            StoreProduct::class,
+        'store_id',
+        'id',
+        'id',
+        'id');
     }
 }
