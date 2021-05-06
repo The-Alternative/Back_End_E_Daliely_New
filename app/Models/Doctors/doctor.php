@@ -33,9 +33,9 @@ class doctor extends Model
 
     public function ScopeWithTrans($query)
     {
-        return $query=doctor::join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
-            ->where('doctor_translation.locale','=',get_current_local())
-            ->select('doctors.*','doctor_translation.*')->get();
+//        return $query=doctor::join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+//            ->where('doctor_translation.locale','=',get_current_local())
+//            ->select('doctors.*','doctor_translation.*')->get();
     }
 
     public function doctorTranslation()
