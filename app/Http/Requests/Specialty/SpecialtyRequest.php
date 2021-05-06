@@ -4,6 +4,7 @@ namespace App\Http\Requests\Specialty;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+
 class SpecialtyRequest extends FormRequest
 {
     /**
@@ -24,18 +25,25 @@ class SpecialtyRequest extends FormRequest
     public function rules()
     {
         return [
-//            'name'=> 'required|min:3|max:255|regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)+$/|unique:specialties,name'
+            'is_active'=>'required|in:1,0',
+            'graduation_year'=>'required',
 
+            'specialty'=>'required|array|min:1',
+            'specialty.*.name'=> 'required|string|min:3|max:255|unique:specialty_translation',
+            'specialty.*.locale'=> 'required',
+            'specialty.*.specialty_id'=> 'required'
         ];
+
     }
     public function messages()
     {
         return [
-//            'name.required' => 'Please Enter Your specialty\'s Name',
-//            'name.min' => 'Your specialty\'s Name Is Too Short',
-//            'name.max' => 'Your specialty\'s Name Is Too Long',
-//            'name.regex' => 'Your specialty\'s Name Have Number',
-//            'name.unique' => 'This Name\'s Is Used By Another specialty',
+            'required'=>'this field is required',
+            'in'=>'this field must be 0 (is not active) or 1 (is active)',
+
+            'specialty.*.name.min' => 'Your specialty\'s Name Is Too Short',
+            'specialty.*.name.max' => 'Your specialty\'s Name Is Too Long',
+            'specialty.*.name.unique' => 'This Name\'s Is Used By Another specialty',
             ];
     }
 }

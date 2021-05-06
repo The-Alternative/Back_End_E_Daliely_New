@@ -24,6 +24,10 @@ class SocialMediaRequest extends FormRequest
     public function rules()
     {
         return [
+            'instagram_account'=>'required|string',
+            'email'=>'required',
+            'doctor_id'=>'required',
+            'is_active'=>'required|in:1,0',
             'phone_number'      =>'required|regex:/[0-9]{10}/',
             'whatsapp_number'   =>'required|regex:/[0-9]{10}/',
             'telegram_number'   =>'required|regex:/[0-9]{10}/',
@@ -32,6 +36,9 @@ class SocialMediaRequest extends FormRequest
     public function messages()
     {
         return [
+            'required'=>'this field is required',
+            'in'=>'this field must be 0 (is not active) or 1 (is active)',
+
             'phone_number.required'=>'Please Enter Your  Phone Number',
             'whatsapp_number.required'=>'Please Enter Your  whatsapp Number',
             'telegram_number.required'=>'Please Enter Your  telegram Number',

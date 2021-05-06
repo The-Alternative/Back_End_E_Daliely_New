@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Appointment;
+namespace App\Http\Requests\ActiveTime;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AppointmentRequest extends FormRequest
+class ActiveTimeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +24,10 @@ class AppointmentRequest extends FormRequest
     public function rules()
     {
         return [
-                   'doctors_id'  =>'required',
-                   'customers_id'=>'required',
-                   'begin_date'  =>'required',
-                   'end_date'    =>'required',
-                   'begin_time'  =>'required',
-                   'end_time'    =>'required',
-                   'is_approved' =>'required|in:1,0',
-                   'is_active'   =>'required|in:1,0',
+            'start_time' =>'required',
+            'end_time'   =>'required',
+            'is_active'  =>'required|in:0,1',
+            'is_approved'=>'required|in:0,1',
         ];
     }
     public function messages()
@@ -41,4 +37,5 @@ class AppointmentRequest extends FormRequest
             'in'=>'this field must be 0 (is not active) or 1 (is active)',
         ];
     }
+
 }

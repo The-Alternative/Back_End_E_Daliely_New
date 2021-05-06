@@ -24,7 +24,15 @@ class DoctorRateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'doctor_id'=>'required',
+            'rate'=>'required'
+        ];
+    }
+    public function messages()
+    {
+        return[
+            'required'=>'this field is required',
+
         ];
     }
 }

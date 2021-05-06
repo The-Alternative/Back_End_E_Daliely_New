@@ -133,7 +133,7 @@ class DoctorService
 //___________________________________________________________//
     public function search($name)
     {
-        $doctor = DB::table('doctors')
+        $doctor = DB::table('doctor_translation')
             ->where("first_name","like","%".$name."%")
             ->get();
         if (!$doctor)
