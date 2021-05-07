@@ -20,11 +20,20 @@ class CreateAppointmentsTable extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->time('start_time');
-            $table->date('end_time');
+            $table->time('end_time');
             $table->boolean('is_active');
             $table->boolean('is_approved');
             $table->timestamps();
         });
+        DB::table('appointments')->insert([
+            ['customer_id'=>6, 'start_date'=>'2021-05-19' ,'end_date'=>'2021-05-19' ,'start_time'=>'18:56:17' ,'end_time'=>'19:56:17' , 'is_approved'=>1, 'doctor_id'=>1, 'is_active'=>1],
+            ['customer_id'=>5, 'start_date'=>'2021-05-19' ,'end_date'=>'2021-05-19' ,'start_time'=>'18:56:17' ,'end_time'=>'19:56:17' , 'is_approved'=>1, 'doctor_id'=>2, 'is_active'=>1],
+            ['customer_id'=>7, 'start_date'=>'2021-05-19' ,'end_date'=>'2021-05-19' ,'start_time'=>'18:56:17' ,'end_time'=>'19:56:17' , 'is_approved'=>1, 'doctor_id'=>3, 'is_active'=>1],
+            ['customer_id'=>3, 'start_date'=>'2021-05-19' ,'end_date'=>'2021-05-19' ,'start_time'=>'18:56:17' ,'end_time'=>'19:56:17' , 'is_approved'=>1, 'doctor_id'=>4, 'is_active'=>1],
+            ['customer_id'=>2, 'start_date'=>'2021-05-19' ,'end_date'=>'2021-05-19' ,'start_time'=>'18:56:17' ,'end_time'=>'19:56:17' , 'is_approved'=>1, 'doctor_id'=>5, 'is_active'=>1],
+            ['customer_id'=>1, 'start_date'=>'2021-05-19' ,'end_date'=>'2021-05-19' ,'start_time'=>'18:56:17' ,'end_time'=>'19:56:17' , 'is_approved'=>1, 'doctor_id'=>6, 'is_active'=>1],
+
+        ]);
     }
 
     /**

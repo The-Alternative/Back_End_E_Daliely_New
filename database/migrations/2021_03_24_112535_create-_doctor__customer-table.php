@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateDoctorCustomerTable extends Migration
@@ -27,6 +28,15 @@ class CreateDoctorCustomerTable extends Migration
             $table->boolean('is_approved');
             $table->timestamps();
         });
+        DB::table('Doctor_Customer')->insert([
+            ['doctor_id'=>1, 'customer_id'=>1, 'medical_file_id'=>1, 'age'=>45, 'gender'=>'male', 'social_status'=>'married', 'blood_type'=>'A-', 'note'=>'dead', 'is_active'=>1, 'is_approved'=>1 ],
+            ['doctor_id'=>2, 'customer_id'=>1, 'medical_file_id'=>1, 'age'=>45, 'gender'=>'male', 'social_status'=>'married', 'blood_type'=>'A-', 'note'=>'dead', 'is_active'=>1, 'is_approved'=>1 ],
+            ['doctor_id'=>3, 'customer_id'=>1, 'medical_file_id'=>1, 'age'=>45, 'gender'=>'male', 'social_status'=>'married', 'blood_type'=>'A-', 'note'=>'dead', 'is_active'=>1, 'is_approved'=>1 ],
+            ['doctor_id'=>4, 'customer_id'=>1, 'medical_file_id'=>1, 'age'=>45, 'gender'=>'male', 'social_status'=>'married', 'blood_type'=>'A-', 'note'=>'dead', 'is_active'=>1, 'is_approved'=>1 ],
+            ['doctor_id'=>5, 'customer_id'=>1, 'medical_file_id'=>1, 'age'=>45, 'gender'=>'male', 'social_status'=>'married', 'blood_type'=>'A-', 'note'=>'dead', 'is_active'=>1, 'is_approved'=>1 ],
+            ['doctor_id'=>6, 'customer_id'=>1, 'medical_file_id'=>1, 'age'=>45, 'gender'=>'male', 'social_status'=>'married', 'blood_type'=>'A-', 'note'=>'dead', 'is_active'=>1, 'is_approved'=>1 ]
+
+        ]);
     }
 
     /**

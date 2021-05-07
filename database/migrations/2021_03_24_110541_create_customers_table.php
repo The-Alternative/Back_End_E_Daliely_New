@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateCustomersTable extends Migration
@@ -20,6 +21,14 @@ class CreateCustomersTable extends Migration
             $table->boolean('is_approved');
             $table->timestamps();
         });
+        DB::table('customers')->insert([
+            [ 'is_approved' => 1, 'is_active' => 1, 'social_media_id' => 1],
+            [ 'is_approved' => 1, 'is_active' => 1, 'social_media_id' => 2],
+            [ 'is_approved' => 1, 'is_active' => 1, 'social_media_id' => 3],
+            [ 'is_approved' => 1, 'is_active' => 1, 'social_media_id' => 4],
+            [ 'is_approved' => 1, 'is_active' => 1, 'social_media_id' => 5],
+            [ 'is_approved' => 1, 'is_active' => 1, 'social_media_id' => 6]
+        ]);
     }
 
     /**
