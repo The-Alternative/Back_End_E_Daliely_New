@@ -141,10 +141,11 @@ class HospitalService
     }
 
     //get all the doctors who work in the hospital according to her name
+
     public function hospitalsDoctor($hospital_name)
     {
       return  Hospital::with('doctor')
-                       ->where("name","like","%".$hospital_name."%")
+                       ->where('name','like','%'.$hospital_name.'%')
                        ->get();
     }
 

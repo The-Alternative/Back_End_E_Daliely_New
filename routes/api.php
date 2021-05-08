@@ -171,18 +171,16 @@ Route::group(['prefix'=>'doctor','namespace'=>'Doctors'],function () {
     Route::delete('/delete/{id}', 'DoctorController@delete');
     Route::PUT('/restoreTrashed/{id}', 'DoctorController@restoreTrashed');
 
-    route::get('/get-doctor-hospital/{hospital-name}','DoctorController@getdoctorbyhospital');
 
 
-
-//    Route::GET('/Doctor-social-media/{doctor_name}', 'DoctorController@SocialMedia');
+    Route::GET('/Doctor-social-media/{doctor_name}', 'DoctorController@SocialMedia');
 //    Route::GET('/doctor-work-place/{doctor_name}', 'DoctorController@workplace');
-//    Route::GET('/doctor-medical-device/{doctor_name}', 'DoctorController@doctormedicaldevice');
-//    Route::GET('/doctor-details/{doctor_name}', 'DoctorController@getalldetails');
-//    Route::GET('/hospital-doctor/{doctor_name}', 'DoctorController@hospital');
+    Route::GET('/doctor-medical-device/{doctor_name}', 'DoctorController@doctormedicaldevice');
+    Route::GET('/doctor-details/{doctor_name}', 'DoctorController@getalldetails');
+    Route::GET('/hospital-doctor/{doctor_name}', 'DoctorController@hospital');
 //
-//    Route::GET('/appointment-doctor/{doctor_name}', 'DoctorController@appointment');
-//    Route::GET('/activetime-doctor/{doctor_name}', 'DoctorController@appointment');
+    Route::GET('/appointment-doctor/{doctor_name}', 'DoctorController@appointment');
+    Route::GET('/clinic-doctor/{doctor_name}', 'DoctorController@clinic');
 
 
 
@@ -227,7 +225,7 @@ Route::group(['prefix'=>'Hospital','namespace'=>'Hospital'],function () {
     Route::PUT('/restoreTrashed/{id}', 'HospitalController@restoreTrashed');
 
 
-    Route::GET('/doctor-work-in-this-hospital/{hospital_name}', 'HospitalController@doctors');
+    Route::GET('/doctor-work-in-this-hospital/{hospital_name}', 'HospitalController@hospitalsDoctor');
 });
 
 ///*---------------Clinic Route-------------*/

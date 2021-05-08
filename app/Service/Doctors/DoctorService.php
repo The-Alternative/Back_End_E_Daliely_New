@@ -170,12 +170,13 @@ class DoctorService
         return $this->returnData('doctor', $doctor, 'This doctor is deleted Now');
     }
 
-    //get all doctor's social media by doctor's name
+//    get all doctor's social media by doctor's name
+
     public function SocialMedia($doctor_name)
     {
-        return doctor::with('socialMedia')
-                     ->where("name","like","%".$doctor_name."%")
-                     ->get();
+        return doctor::with('socialMedia')->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+            ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
+            ->select('doctors.*','doctor_translation.*')->get();
     }
 
     //get  doctor's work place by doctor's name
@@ -187,33 +188,47 @@ class DoctorService
 //    }
 
     //get  doctor's medical devices by doctor's name
+
     public function doctormedicaldevice($doctor_name)
     {
-        return doctor::with('medicalDevice')
-                     ->where("name","like","%".$doctor_name."%")
-                     ->get();
+        return doctor::with('medicalDevice')->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+            ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
+            ->select('doctors.*','doctor_translation.*')->get();
+
     }
     public function hospital($doctor_name)
     {
-        return doctor::with('hospital')
-            ->where("name","like","%".$doctor_name."%")
-            ->get();
+//
+         return doctor::with('hospital')->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+            ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
+            ->select('doctors.*','doctor_translation.*')->get();
+
     }
 
     //get doctor's appopintment
 
-
+//
     public function appointment($doctor_name)
     {
-        return doctor::with('appointment')
-            ->where("name","like","%".$doctor_name."%")
-            ->get();
+        return doctor::with('appointment')->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+            ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
+            ->select('doctors.*','doctor_translation.*')->get();
     }
+    public function clinic($doctor_name)
+    {
+        return doctor::with('clinic')->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+            ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
+            ->select('doctors.*','doctor_translation.*')->get();
+    }
+
+
     //get all doctor's details by doctor's name
+
     public function getalldetails($doctor_name)
     {
-        return  doctor::with('medicalDevice','socialMedia','workPlace','hospital')
-                      ->where("name","like","%".$doctor_name."%")
-                      ->get();
+        return  doctor::with('medicalDevice','socialMedia','clinic','hospital')
+            ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+            ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
+            ->select('doctors.*','doctor_translation.*')->get();
     }
 }

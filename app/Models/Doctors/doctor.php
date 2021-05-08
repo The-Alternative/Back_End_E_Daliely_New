@@ -21,7 +21,7 @@ class doctor extends Model
     use HasFactory;
     protected $table='Doctors';
     protected $fillable =['Id','image','specialty_id','hospital_id','clinic_id','social_media_id','is_active','is_approved'];
-//    protected $hidden   =['id','social_media_id','specialty_id','hospital_id','work_places_id','created_at','updated_at'];
+    protected $hidden   =['id','social_media_id','specialty_id','hospital_id','work_places_id','created_at','updated_at'];
      public $timestamps=false;
 
      //scope
@@ -85,5 +85,6 @@ class doctor extends Model
     {
         return $this->hasMany(Appointment::class);
     }
+
 
 }

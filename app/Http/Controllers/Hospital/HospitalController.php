@@ -85,7 +85,7 @@ class HospitalController extends Controller
 
     //get all the doctors who work in the hospital according to her name
 
-    public function doctors($hospital_name)
+    public function hospitalsDoctor($hospital_name)
     {
         $response=$this->HospitalService->hospitalsDoctor($hospital_name);
         return  response($response,200)
