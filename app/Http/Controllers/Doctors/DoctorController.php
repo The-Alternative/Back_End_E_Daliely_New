@@ -139,4 +139,21 @@ class DoctorController extends Controller
             ->header('Access-control-Allow-Origin','*')
             ->header('Access-control-Allow-Methods','*');
     }
+
+    public function customer($doctor_name)
+    {
+        $response=$this->DoctorService->customer($doctor_name);
+        return  response($response,200)
+            ->header('Access-control-Allow-Origin','*')
+            ->header('Access-control-Allow-Methods','*');
+
+    }
+    public function createcustomer(Request $request)
+    {
+        $response=$this->DoctorService->createcustomer($request);
+        return  response($response,200)
+            ->header('Access-control-Allow-Origin','*')
+            ->header('Access-control-Allow-Methods','*');
+
+    }
 }

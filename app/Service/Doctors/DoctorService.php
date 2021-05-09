@@ -3,23 +3,28 @@
 
 namespace App\Service\Doctors;
 
+use App\Models\Customer\Customer;
 use App\Models\Doctors\doctor;
+use App\Models\Doctors\DoctorCustomer;
 use App\Models\Doctors\DoctorTranslation;
 use App\Service\Brands\BrandsService;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\Doctors\DoctorRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class DoctorService
 {
     private $doctorModel;
+    private $customerModel;
     use GeneralTrait;
 
 
-    public function __construct(doctor $doctor)
+    public function __construct(doctor $doctor,customer $customer)
     {
         $this->doctorModel=$doctor;
+        $this->customerModel=$customer;
     }
     public function get()
     {
@@ -156,7 +161,7 @@ class DoctorService
 
     public function restoreTrashed( $id)
     {
-        $doctor=doctor::find($id);
+        $doctor=$this->doctorModel::find($id);
         $doctor->is_active=true;
         $doctor->save();
         return $this->returnData('doctor', $doctor,'This doctor is trashed Now');
@@ -164,7 +169,7 @@ class DoctorService
 
     public function delete($id)
     {
-        $doctor = doctor::find($id);
+        $doctor = $this->doctorModel::find($id);
         $doctor->is_active = false;
         $doctor->save();
         return $this->returnData('doctor', $doctor, 'This doctor is deleted Now');
@@ -230,5 +235,66 @@ class DoctorService
             ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
             ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
             ->select('doctors.*','doctor_translation.*')->get();
+    }
+
+
+    public function customer($doctor_name)
+    {
+        return  doctor::with('customer')->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+             ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
+             ->select('doctors.*','doctor_translation.*')->get();
+
+    }
+
+    public function createcustomer(Request $request)
+    {
+       return  $doctor= doctor::find(1)->customer()->attach();
+
+//        try{
+//              $doctor=collect($request->doctor)->all();
+//
+//              $customer = $this->customerModel->find($request->customer_id);
+//
+//              $doctorcustomer=new DoctorCustomer();
+//
+//              $doctorcustomer->doctor_id           =$request->doctor_id;
+//              $doctorcustomer->customer_id         =$request->customer_id;
+//              $doctorcustomer->medical_file_id     =$request->medical_file_id;
+//              $doctorcustomer->gender              =$request->gender;
+//              $doctorcustomer->note                =$request->note;
+//              $doctorcustomer->age                 =$request->age;
+//              $doctorcustomer->social_status       =$request->social_status;
+//              $doctorcustomer->blood_type          =$request->blood_type;
+//              $doctorcustomer->is_active           =$request->is_active;
+//              $doctorcustomer->is_approved         =$request->is_approved;
+//
+//              $doctorcustomer->save();
+//
+//              return $response= $this->returnData('insert customer by doctor',[$doctor,$doctorcustomer],'done');
+//
+//         }
+//         catch(\Exception $ex)
+//         {
+//             return $this->returnError('400','faild');
+//         }
+//         $doctor = doctor::find($request->doctor_id);
+//        if (!$doctor)
+//            return abort('404');
+//        $customer->customer()->syncWithoutDetaching($request->customerId);
+//
+//        $doctorcustomer=new DoctorCustomer();
+//              $doctorcustomer->doctor_id           =$request->doctor_id;
+//              $doctorcustomer->customer_id         =$request->customer_id;
+//              $doctorcustomer->medical_file_id     =$request->medical_file_id;
+//              $doctorcustomer->gender              =$request->gender;
+//              $doctorcustomer->note                =$request->note;
+//              $doctorcustomer->age                 =$request->age;
+//              $doctorcustomer->social_status       =$request->social_status;
+//              $doctorcustomer->blood_type          =$request->blood_type;
+//              $doctorcustomer->is_active           =$request->is_active;
+//              $doctorcustomer->is_approved         =$request->is_approved;
+//
+//              $doctorcustomer->save();
+//        return $response= $this->returnData('insert customer by doctor',[$doctor,$doctorcustomer],'done');
     }
 }

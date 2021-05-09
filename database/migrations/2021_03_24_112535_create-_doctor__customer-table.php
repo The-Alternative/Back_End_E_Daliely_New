@@ -14,21 +14,21 @@ class CreateDoctorCustomerTable extends Migration
      */
     public function up()
     {
-        Schema::create('Doctor_Customer', function (Blueprint $table) {
+        Schema::create('customer_doctor', function (Blueprint $table) {
             $table->id();
             $table->integer('doctor_id');
             $table->integer('customer_id');
             $table->integer('medical_file_id');
             $table->integer('age');
-            $table->string('gender');
-            $table->string('social_status');
-            $table->string('blood_type');
-            $table->string('note');
+            $table->string( 'gender');
+            $table->string( 'social_status');
+            $table->string( 'blood_type');
+            $table->string( 'note');
             $table->boolean('is_active');
             $table->boolean('is_approved');
             $table->timestamps();
         });
-        DB::table('Doctor_Customer')->insert([
+        DB::table('customer_doctor')->insert([
             ['doctor_id'=>1, 'customer_id'=>1, 'medical_file_id'=>1, 'age'=>45, 'gender'=>'male', 'social_status'=>'married', 'blood_type'=>'A-', 'note'=>'dead', 'is_active'=>1, 'is_approved'=>1 ],
             ['doctor_id'=>2, 'customer_id'=>1, 'medical_file_id'=>1, 'age'=>45, 'gender'=>'male', 'social_status'=>'married', 'blood_type'=>'A-', 'note'=>'dead', 'is_active'=>1, 'is_approved'=>1 ],
             ['doctor_id'=>3, 'customer_id'=>1, 'medical_file_id'=>1, 'age'=>45, 'gender'=>'male', 'social_status'=>'married', 'blood_type'=>'A-', 'note'=>'dead', 'is_active'=>1, 'is_approved'=>1 ],

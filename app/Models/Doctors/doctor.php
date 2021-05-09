@@ -78,7 +78,7 @@ class doctor extends Model
 
     public function customer()
     {
-        return $this->hasMany(Customer::class);
+        return $this->belongsToMany(Customer::class,'customer_doctor','doctor_id','customer_id');
     }
 
     public function appointment()

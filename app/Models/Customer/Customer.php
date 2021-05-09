@@ -21,9 +21,9 @@ class Customer extends Model
 
     public function ScopeWithTrans($query)
     {
-        return $query=Customer::join('customer_translations','customer_translations.customer_id','=','customer_id')
-            ->where('customer_translations.locale','=',get_current_local())
-            ->select('customers.*','customer_translations.*')->get();
+//        return $query=Customer::join('customer_translations','customer_translations.customer_id','=','customer_id')
+//            ->where('customer_translations.locale','=',get_current_local())
+//            ->select('customers.*','customer_translations.*')->get();
     }
 
     public function customerTranslation()
