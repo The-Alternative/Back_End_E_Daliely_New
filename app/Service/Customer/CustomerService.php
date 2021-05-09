@@ -3,6 +3,7 @@
 
 namespace App\Service\Customer;
 
+use App\Models\Doctors\DoctorCustomer;
 use Illuminate\Http\Request;
 use App\Http\Requests\Customer\CustomerRequest;
 use App\Models\Customer\CustomerTranslation;
@@ -60,9 +61,13 @@ class CustomerService
                         'locale' => $allcustomers['locale'],
                         'customer_id' => $unTranscustomer_id,
                     ];
-                }
+
                CustomerTranslation::insert($transcustomer);
+
+                }
+
             }
+
             DB::commit();
             return $this->returnData('Customer', [$unTranscustomer_id, $transcustomer], 'done');
         }
@@ -162,5 +167,10 @@ class CustomerService
        $customer->save();
         return $this->returnData('customer', $customer, 'This customer is deleted Now');
     }
+//
+//    public function createpivot(Request $request)
+//    {
+//
+//    }
 
 }

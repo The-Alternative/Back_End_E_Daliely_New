@@ -33,6 +33,6 @@ class Customer extends Model
 
     public function doctor()
     {
-        return $this->belongsToMany(doctor::class);
+        return $this->belongsToMany(doctor::class,'customer_doctor','doctor_id','customer_id');
     }
 }

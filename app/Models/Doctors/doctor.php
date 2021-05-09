@@ -78,7 +78,9 @@ class doctor extends Model
 
     public function customer()
     {
-        return $this->belongsToMany(Customer::class,'customer_doctor','doctor_id','customer_id');
+        return $this->belongsToMany(Customer::class)->using(DoctorCustomer::class)
+                    ->withPivot(['id','doctor_id','customer_id','medical_file_id','age','gender','social_status'
+                                 ,'blood_type','note','is_active','is_approved']);
     }
 
     public function appointment()
