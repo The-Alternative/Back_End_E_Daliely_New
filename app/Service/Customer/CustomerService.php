@@ -167,10 +167,6 @@ class CustomerService
        $customer->save();
         return $this->returnData('customer', $customer, 'This customer is deleted Now');
     }
-//
-//    public function createpivot(Request $request)
-//    {
-//
-//    }
+
 
 }

@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDoctorCustomerTable extends Migration
+class CreateCustomerDoctorTable extends Migration
 {
     /**
      * Run the migrations.
@@ -46,6 +46,6 @@ class CreateDoctorCustomerTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Doctor_Customer');
+        Schema::dropIfExists('customer_doctor');
     }
 }

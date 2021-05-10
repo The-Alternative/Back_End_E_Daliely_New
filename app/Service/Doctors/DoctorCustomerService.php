@@ -27,8 +27,24 @@ class DoctorCustomerService
         $this->customerModel=$customer;
     }
 
-        public function create(Request $request )
+        public function create(Request $request)
     {
+        $doctor = doctor::find($request->doctor_id);
+        if (!$doctor)
+            return 'eerror';
+        $doctor->customer()->syncWithoutDetaching($request->customerIds);
+        return response()->json($doctor);
+//        $doctor =array(
+//           'gender'        => $request['gender'],
+//           'note'          => $request['note'],
+//           'age'           => $request['age'],
+//           'social_status' => $request['social_status'],
+//           'blood_type'    => $request['blood_type']);
+//
+//
+//        $doctor->customer()->sync( $doctor);
+//        return "ok";
+
 //        try {
 //            $allcustomer = collect($request->customer)->all();
 //            DB::beginTransaction();

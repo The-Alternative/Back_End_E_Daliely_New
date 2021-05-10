@@ -154,7 +154,7 @@ class DoctorController extends Controller
 
     public function createcustomer(Request $request)
     {
-        $response=$this->DoctorCustomerService->create($request);
+        $response=$this->DoctorCustomerService->create( $request );
         return  response($response,200)
             ->header('Access-control-Allow-Origin','*')
             ->header('Access-control-Allow-Methods','*');
