@@ -247,55 +247,5 @@ class DoctorService
 
     }
 
-    public function createcustomer(Request $request)
-    {
-      customer::create(array(
-          'created_at'=>Carbon::now(),
-          'social_media_id'=>$request['social_media_id'],
-          'is_active'=>$request['is_active'],
-          'is_approved'=>$request['is_approved']
-      ));
-//      $customer=customer::all()->last();
-      $countcustomer=customer::count();
-      $doctors=doctor::all();
-      foreach($doctors as $doctor)
-      {
-          $doctor_id[]=$doctor->id;
-      }
-      for($i=0;$i<$countcustomer;$i++)
-      {
-          $insertcustomer[$i]=$doctor->customer()->syncwithoutdetaching([
-              $doctor_id[$i]=>[
-                 ' first_name'         =>$request['first_name'],
-                  'last_name'          =>$request['last_name'],
-                  'gender'              =>$request['gender'],
-                  'note'                =>$request['note'],
-                  'age'                 =>$request['age'],
-                  'social_status'       =>$request['social_status'],
-                  'blood_type'          =>$request['blood_type'],
 
-              ]
-          ]);
-          DoctorCustomer::insert($insertcustomer[$i]);
-      }
-//         $doctor = doctor::find($request->doctor_id);
-//        if (!$doctor)
-//            return abort('404');
-//        $customer->customer()->syncWithoutDetaching($request->customerId);
-//
-//        $doctorcustomer=new DoctorCustomer();
-//              $doctorcustomer->doctor_id           =$request->doctor_id;
-//              $doctorcustomer->customer_id         =$request->customer_id;
-//              $doctorcustomer->medical_file_id     =$request->medical_file_id;
-//              $doctorcustomer->gender              =$request->gender;
-//              $doctorcustomer->note                =$request->note;
-//              $doctorcustomer->age                 =$request->age;
-//              $doctorcustomer->social_status       =$request->social_status;
-//              $doctorcustomer->blood_type          =$request->blood_type;
-//              $doctorcustomer->is_active           =$request->is_active;
-//              $doctorcustomer->is_approved         =$request->is_approved;
-//
-//              $doctorcustomer->save();
-//        return $response= $this->returnData('insert customer by doctor',[$doctor,$doctorcustomer],'done');
-    }
 }

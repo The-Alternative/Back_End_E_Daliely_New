@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Doctors;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Doctors\DoctorRequest;
+use App\Service\Doctors\DoctorCustomerService;
 use App\Service\Doctors\DoctorService;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
@@ -14,9 +15,11 @@ class DoctorController extends Controller
     use GeneralTrait;
     private $DoctorService;
     private $response;
+    private $doctorCustomerService;
 
-    public function __construct(DoctorService $DoctorService,Response $response )
+    public function __construct(DoctorService $DoctorService,DoctorCustomerService $doctorCustomerService,Response $response )
     {
+        $this->DoctorCustomerService=$doctorCustomerService;
         $this->DoctorService=$DoctorService;
         $this->response=$response;
     }
@@ -148,9 +151,10 @@ class DoctorController extends Controller
             ->header('Access-control-Allow-Methods','*');
 
     }
+
     public function createcustomer(Request $request)
     {
-        $response=$this->DoctorService->createcustomer($request);
+        $response=$this->DoctorCustomerService->create($request);
         return  response($response,200)
             ->header('Access-control-Allow-Origin','*')
             ->header('Access-control-Allow-Methods','*');

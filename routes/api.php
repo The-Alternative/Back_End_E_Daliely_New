@@ -159,6 +159,7 @@ Route::group(
 //
 //
 
+Route::post('/create-customer-by-doctor','App\Http\Controllers\Doctors\DoctorCustomerControllerr@createcustomer');
 /*-------------Doctor Route------------------*/
 Route::group(['prefix'=>'doctor','namespace'=>'Doctors'],function () {
     Route::get('/get', 'DoctorController@get');
@@ -182,6 +183,7 @@ Route::group(['prefix'=>'doctor','namespace'=>'Doctors'],function () {
 
 
     Route::post('/create-customer-by-doctor','DoctorController@createcustomer');
+
 
 
 });

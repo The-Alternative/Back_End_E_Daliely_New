@@ -4,6 +4,7 @@ namespace App\Models\Customer;
 
 use App\Models\Doctors\doctor;
 use App\Models\Customer\CustomerTranslation;
+use App\Models\Doctors\DoctorCustomer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,6 +34,9 @@ class Customer extends Model
 
     public function doctor()
     {
-        return $this->belongsToMany(doctor::class,'customer_doctor','doctor_id','customer_id');
+        return $this->belongsToMany(doctor::class,'customer_doctor')
+                    ->using(DoctorCustomer::class)
+                    ->withPivot(['medical_file_id','age','gender','social_status'
+                                    ,'blood_type','note','is_active','is_approved']);
     }
 }
