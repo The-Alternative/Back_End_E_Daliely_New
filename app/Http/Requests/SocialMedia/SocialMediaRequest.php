@@ -28,9 +28,9 @@ class SocialMediaRequest extends FormRequest
             'email'=>'required',
             'doctor_id'=>'required',
             'is_active'=>'required|in:1,0',
-            'phone_number'      =>'required|regex:/[0-9]{10}/',
-            'whatsapp_number'   =>'required|regex:/[0-9]{10}/',
-            'telegram_number'   =>'required|regex:/[0-9]{10}/',
+            'phone_number'      =>'required|regex:/[0-9]/',
+            'whatsapp_number'   =>'required|regex:/[0-9]/',
+            'telegram_number'   =>'required|regex:/[0-9]/',
         ];
     }
     public function messages()

@@ -22,18 +22,14 @@ class SocialMediaService
     }
     public function get()
     {
-
         $SocialMedia=$this->SocialMediaModel::all();
         return $this->returnData('SocialMedia',$SocialMedia,'done');
-
     }
 
     public function getById($id)
     {
-
         $SocialMedia= $this->SocialMediaModel::find($id);
         return $this->returnData('SocialMedia',$SocialMedia,'done');
-
     }
 
     public function getTrashed()

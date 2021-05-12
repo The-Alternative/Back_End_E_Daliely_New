@@ -15,6 +15,7 @@ use App\Models\medicalDevice\medicalDevice;
 use App\Models\Appointment\Appointment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 
 class doctor extends Model
 {
@@ -30,12 +31,17 @@ class doctor extends Model
         return $query->where('is_active',1);
 
     }
+    public function scopeNotActive($query)
+    {
+        return $query->where('is_active',0);
+
+    }
 
     public function ScopeWithTrans($query)
     {
-//        return $query=doctor::join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
-//            ->where('doctor_translation.locale','=',get_current_local())
-//            ->select('doctors.*','doctor_translation.*')->get();
+        return $query=doctor::join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+            ->where('doctor_translation.locale','=', Config::get('app.locale'))
+            ->select('doctors.*','doctor_translation.*')->get();
     }
 
     public function doctorTranslation()

@@ -26,7 +26,7 @@ class HospitalRequest extends FormRequest
     {
         return [
              'is_active'       =>'required|in:0,1',
-             'is_approved,'    =>'required|in:0,1',
+             'is_approved'    =>'required|in:0,1',
              'medical_center'  =>'required',
              'general_hospital'=>'required',
              'private_hospital'=>'required',
@@ -34,7 +34,7 @@ class HospitalRequest extends FormRequest
              'doctor_id'       =>'required',
 
 
-            'name'=> 'required|min:5|max:255|regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)+$/|unique:hospitals,name'
+            'name'=> 'required|min:5|max:255|unique:hospitals,name'
         ];
 
     }
@@ -47,7 +47,7 @@ class HospitalRequest extends FormRequest
 
             'name.min' => 'Your Hospital\'s Name Is Too Short',
             'name.max' => 'Your Hospital\'s Name Is Too Long',
-            'name.regex' => 'Your Hospital\'s Name Have Number',
+//            'name.regex' => 'Your Hospital\'s Name Have Number',
             'name.unique' => 'This Name\'s Is Used By Another Hospital',
 
         ];

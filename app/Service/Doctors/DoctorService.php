@@ -12,6 +12,7 @@ use App\Traits\GeneralTrait;
 use App\Http\Requests\Doctors\DoctorRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -41,7 +42,7 @@ class DoctorService
 
     public function getTrashed()
     {
-        $doctor= $this->doctorModel::all()->where('is_active',0);
+        $doctor= $this->doctorModel::NotActive()->WithTrans()->all();
         return $this -> returnData('doctor',$doctor,'done');
     }
 //__________________________________________________________________________//
@@ -235,7 +236,9 @@ class DoctorService
         return  doctor::with('medicalDevice','socialMedia','clinic','hospital')
             ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
             ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
-            ->select('doctors.*','doctor_translation.*')->get();
+//            ->where ( 'doctor_translation.locale','=', Config::get('app.locale'))
+            ->select('doctors.*','doctor_translation.*')
+            ->get();
     }
 
 

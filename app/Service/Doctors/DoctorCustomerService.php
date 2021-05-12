@@ -28,32 +28,43 @@ class DoctorCustomerService
     }
 
         public function create(Request $request)
-    {
-        $doctor = doctor::find($request->doctor_id);
-        if (!$doctor)
-            return 'eerror';
-        $doctor->customer()->syncWithoutDetaching($request->customerIds);
-        return response()->json($doctor);
-//        $doctor =array(
-//           'gender'        => $request['gender'],
-//           'note'          => $request['note'],
-//           'age'           => $request['age'],
-//           'social_status' => $request['social_status'],
-//           'blood_type'    => $request['blood_type']);
-//
-//
-//        $doctor->customer()->sync( $doctor);
-//        return "ok";
+        {
+            $doctor=[];
+//            try {
+            $allcustomer = collect($request->customer)->all();
+            DB::beginTransaction();
+            $unTranscustomer_id = Customer::insertGetId([
+                'social_media_id' => $request['social_media_id'],
+                'is_approved' => $request['is_approved'],
+                'is_active' => $request['is_active'],
+            ]);
+            if (isset($allcustomer)) {
+                foreach ($allcustomer as $allcustomers) {
+                    $transcustomer[] = [
+                        'first_name' => $allcustomers ['first_name'],
+                        'last_name' => $allcustomers ['last_name'],
+                        'address' => $allcustomers ['address'],
+                        'locale' => $allcustomers['locale'],
+                        'customer_id' => $unTranscustomer_id,
+                    ];
+                    CustomerTranslation::insert($transcustomer);
+                }
+                $doctor->customer()->syncWithoutDetaching([
+                    'gender' => $request['gender'],
+                    'note' => $request['note'],
+                    'age' => $request['age'],
+                    'social_status' => $request['social_status'],
+                    'blood_type' => $request['blood_type'],
+                    'customer_id' => $unTranscustomer_id,
+                ]);
+            }
+                DoctorCustomer::insert($doctor);
 
-//        try {
-//            $allcustomer = collect($request->customer)->all();
-//            DB::beginTransaction();
-//            $unTranscustomer_id = Customer::insertGetId([
-//                'social_media_id' => $request['social_media_id'],
-//                'is_approved' => $request['is_approved'],
-//                'is_active' => $request['is_active'],
-//            ]);
-//            if (isset($allcustomer)) {
+                return $response = $this->returnData('insert customer by doctor', [$doctor], 'done');
+
+            }
+        }
+//        if (isset($allcustomer)) {
 //                foreach ($allcustomer as $allcustomers) {
 //                    $transcustomer[] = [
 //                        'first_name' => $allcustomers ['first_name'],
@@ -84,7 +95,7 @@ class DoctorCustomerService
 //            DB::rollback();
 //            return $this->returnError('Customer', 'faild');
 //        }
-    }
+//    }
 //        $doctor=doctor::find($request->doctor_id);
 //        if(!$doctor)
 //            return "error";
@@ -134,20 +145,3 @@ class DoctorCustomerService
 //        if (!$doctor)
 //            return abort('404');
 //        $customer->customer()->syncWithoutDetaching($request->customerId);
-//
-//        $doctorcustomer=new DoctorCustomer();
-//              $doctorcustomer->doctor_id           =$request->doctor_id;
-//              $doctorcustomer->customer_id         =$request->customer_id;
-//              $doctorcustomer->medical_file_id     =$request->medical_file_id;
-//              $doctorcustomer->gender              =$request->gender;
-//              $doctorcustomer->note                =$request->note;
-//              $doctorcustomer->age                 =$request->age;
-//              $doctorcustomer->social_status       =$request->social_status;
-//              $doctorcustomer->blood_type          =$request->blood_type;
-//              $doctorcustomer->is_active           =$request->is_active;
-//              $doctorcustomer->is_approved         =$request->is_approved;
-//
-//              $doctorcustomer->save();
-//        return $response= $this->returnData('insert customer by doctor',[$doctor,$doctorcustomer],'done');
-//    }
-}

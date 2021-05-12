@@ -178,7 +178,7 @@ Route::group(['prefix'=>'doctor','namespace'=>'Doctors'],function () {
     Route::GET('/hospital-doctor/{doctor_name}', 'DoctorController@hospital');
     Route::GET('/appointment-doctor/{doctor_name}', 'DoctorController@appointment');
     Route::GET('/clinic-doctor/{doctor_name}', 'DoctorController@clinic');
-    Route::get('/view-customer/{doctor_name}','DoctorController@createcustomer');
+    Route::get('/view-customer/{doctor_name}','DoctorController@customer');
     Route::GET('/doctor-details/{doctor_name}', 'DoctorController@getalldetails');
 
 

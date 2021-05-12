@@ -15,7 +15,7 @@ class DoctorController extends Controller
     use GeneralTrait;
     private $DoctorService;
     private $response;
-    private $doctorCustomerService;
+    private $DoctorCustomerService;
 
     public function __construct(DoctorService $DoctorService,DoctorCustomerService $doctorCustomerService,Response $response )
     {
