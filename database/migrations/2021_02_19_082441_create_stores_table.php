@@ -16,7 +16,6 @@ class CreateStoresTable extends Migration
     {
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
-//            $table->unsignedInteger('section_id')->index();
             $table->unsignedInteger('loc_id')->index();
             $table->unsignedInteger('country_id')->index();
             $table->unsignedInteger('gov_id')->index();

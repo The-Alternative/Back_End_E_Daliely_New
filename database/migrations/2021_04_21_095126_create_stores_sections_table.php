@@ -20,18 +20,16 @@ class CreateStoresSectionsTable extends Migration
             $table->unsignedInteger('store_id');
             $table->timestamps();
         });
-        DB::table('stores_sections')->insert([
-            ['section_id'=>1,'store_id'=>1],
-            ['section_id'=>2,'store_id'=>1],
-            ['section_id'=>4,'store_id'=>1],
-            ['section_id'=>5,'store_id'=>1],
-            ['section_id'=>6,'store_id'=>1],
-            ['section_id'=>7,'store_id'=>1],
-            ['section_id'=>8,'store_id'=>1],
-            ['section_id'=>9,'store_id'=>1],
-            ['section_id'=>10,'store_id'=>1],
-            ['section_id'=>11,'store_id'=>1],
-        ]);
+        for($section_id=1;$section_id<12;$section_id++){
+            for($store_id=1;$store_id<12;$store_id++) {
+                DB::table('stores_sections')->insert(
+                    $arr = [
+                        'section_id'=>$section_id,
+                        'store_id'=>$store_id
+                    ]
+                );
+            }
+        }
     }
 
     /**

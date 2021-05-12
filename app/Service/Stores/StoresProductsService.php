@@ -85,7 +85,7 @@ class StoresProductsService
             $storeProduct->is_active =$request->is_active;
             $storeProduct->is_appear =$request->is_appear;
             $storeProduct->save();
-        return $response= $this->returnData('Product in Store',[$store,$storeProduct],'done');
+        return $response= $this->returnData('Product in Store',$storeProduct,'done');
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
@@ -102,7 +102,7 @@ class StoresProductsService
     public function updateProductInStore(Request $request,$id)
     {
         $Products=collect($request->Product)->all();
-        $storeProduct=$this->storeProductModelwhere('Product_id',$id)->update([
+        $storeProduct=$this->storeProductModel->where('Product_id',$id)->update([
             'store_id'=>$request->Product_id,
             'Product_id' =>$request->Product_id,
             'price'=>$request->price,

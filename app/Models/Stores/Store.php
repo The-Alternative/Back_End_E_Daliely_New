@@ -2,7 +2,7 @@
 
 namespace App\Models\Stores;
 
-
+use App\Models\Brands\Brand;
 use App\Models\Categories\Section;
 use App\Models\Products\Product;
 use App\Scopes\StoreScope;
@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 class Store extends Model
 {
     use HasFactory;
-
     protected $primaryKey = 'id';
     protected $hidden = [
         'created_at', 'updated_at','Pivot'
@@ -36,7 +35,6 @@ class Store extends Model
     {
         return $value == 1 ? 'Approved' : 'Not Approved';
     }
-
     protected static function booted()
     {
         parent::booted();
@@ -49,7 +47,6 @@ class Store extends Model
 //            ->where('store_translations.local','=',get_current_local())
 //            ->select(['stores.*','store_translations.*']);
 //    }
-
     public function StoreTranslation()
     {
         return $this->hasMany(
@@ -65,7 +62,6 @@ class Store extends Model
             'product_id',
             'id',
             'id')
-            ->withPivot(['price','quantity'])
             ->withTimestamps();
     }
     public function Section()
@@ -80,7 +76,10 @@ class Store extends Model
     {
         return $this->hasMany(StoreProduct::class);
     }
-
+    public function Brand()
+    {
+        return $this->belongsToMany(Brand::class,'store_brand','store_id','brand_id','id','id');
+    }
 //    public function StoreProduct(){
 //        return $this->belongsTo(StoreProduct::class,'store_id');
 //    }

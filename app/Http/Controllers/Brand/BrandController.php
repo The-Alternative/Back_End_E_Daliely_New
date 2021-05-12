@@ -1,13 +1,11 @@
 <?php
 namespace App\Http\Controllers\Brand;
 
-use App\Models\Brands\brands;
+use App\Http\Requests\Brands\BrandRequest;
 use App\Http\controllers\controller;
 use App\Service\Brands\BrandsService;
-use Illuminate\Http\Request;
 use App\Traits\GeneralTrait;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Request;
 
 class BrandController extends Controller
 {
@@ -15,32 +13,51 @@ class BrandController extends Controller
     private $BrandsService;
     public function __construct(BrandsService $BrandsService)
     {
-
         $this->BrandsService=$BrandsService;
     }
-    public function getAllBrands()
+    public function getAll()
     {
-        $response=$this->BrandsService->getAllBrands();
-        return  response($response,200);
+        $response= $this->BrandsService->getAll();
+        return $response;
     }
-    public function  getBrandsById($id)
+    public function getById($id)
     {
-        $response=$this->BrandsService->getBrandsById($id);
-        return  response($response,200);
+        $response= $this->BrandsService->getById($id);
+        return $response;
     }
-    public function createNewBrands(Request $request)
+    public function getTrashed()
     {
-        $response=$this->BrandsService->createNewBrands($request);
-        return  response($response,200);
+        $response= $this->BrandsService->getTrashed();
+        return $response;
     }
-    public function updateBrand(Request $request,$id)
+    public function create(Request $request)
     {
-        $response=$this->BrandsService->updateBrand($request,$id);
-        return  response($response,200);
+        $response= $this->BrandsService->create($request);
+        return $response;
     }
-    public function deleteBrand(Request $request ,$id)
+    public function update(Request $request,$pro_id)
     {
-        $response=$this->BrandsService->deleteBrand($request,$id);
-        return  response($response,200);
+        $response= $this->BrandsService->update($request,$pro_id);
+        return $response;
+    }
+    public function search($title)
+    {
+        $response= $this->BrandsService->search($title);
+        return $response;
+    }
+    public function trash($id)
+    {
+        $response= $this->BrandsService->trash($id);
+        return $response;
+    }
+    public function restoreTrashed($id)
+    {
+        $response= $this->BrandsService->restoreTrashed($id);
+        return $response;
+    }
+    public function delete($id)
+    {
+        $response= $this->BrandsService->delete($id);
+        return $response;
     }
 }

@@ -12,7 +12,6 @@ use App\Models\Products\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
-
 class ProductService
 {
     use GeneralTrait;
@@ -23,13 +22,6 @@ class ProductService
     private $storeModel;
     private $storeProductModel;
 
-    /**
-     * ProductService constructor.
-     * @param Product $product
-     * @param ProductTranslation $productTranslation
-     * @param Category $category
-     * @param Section $sectionModel
-     */
     public function __construct(
         Product $product ,ProductTranslation $productTranslation ,
         Category $category,Section $sectionModel,Store $storeModel ,
@@ -49,7 +41,7 @@ class ProductService
     {
         try{
         $products = $this->productModel
-            ->with(['Category','Section'])
+            ->with(['Store','storeProducts'])
             ->get();
 
             if (count($products) > 0)
@@ -77,37 +69,33 @@ class ProductService
         }
     }
     /*__________________________________________________________________*/
-    /****Get Active Product By ID  ***
-     * @param $id
-     * @return JsonResponse
-     */
+    /****Get Active Product By ID  ***/
     public function getById( $id)
     {
-        try{
-        $product = $this->productModel->with(['Store','Category','ProductImage'])
+//        try{
+        $product = $this->productModel->with(['Store','Category','ProductImage','Brand','StoreProduct'])
             ->find($id);
-//            $prices = $this->storeProductModel->where('product_id','=',$id)->get();
-////            if(isset($prices) && count($prices)){
-//            foreach($product->prices as $price)
-//            {
-//                $collection1[]=[
-//                $price['price']
-//            ];
-//            }
-//        $max = collect($collection1)->max();
-//        $min = collect($collection1)->min();
-        return $response=$this->returnData('Product',$product,'done');
-//            }
-
-//            if (!isset($product) ){
-////                return $response= $this->returnSuccessMessage('This Product not found','done');
-//                return $response=$this->returnData('Product',[$product,],'done');
-//            }
-//            return $response=$this->returnData('Product',$product,$max,$min,'done');
-
-        }catch(\Exception $ex){
-            return $this->returnError('400','faild');
-        }
+//        $product = $this->productModel->find($id);
+//        return $stores=count($product->Store);
+            $prices = $this->storeProductModel->where('product_id','=',$id)->get();
+            if(isset($prices) && count($prices)){
+            foreach($prices as $price)
+            {
+                $collection1[]=[
+                $price['price']
+            ];
+            }
+        $max = collect($collection1)->max();
+        $min = collect($collection1)->min();
+        $rangeOfPrice=[$max,$min];
+            }
+            if (!isset($product) ){
+                return $response= $this->returnSuccessMessage('This Product not found','done');
+            }
+            return $response=$this->returnData('product',[$product,$rangeOfPrice],'done');
+//        }catch(\Exception $ex){
+//            return $this->returnError('400','faild');
+//        }
     }
     /*__________________________________________________________________*/
     /****ــــــThis Functions For Trashed Productsــــــ  ****/
@@ -120,17 +108,14 @@ class ProductService
             if (count($product) > 0){
                 return $response= $this->returnData('Store',$product,'done');
             }else{
-                return $response= $this->returnSuccessMessage('Product','Products trashed doesnt exist yet');
+                return $response= $this->returnSuccessMessage('product','Products trashed doesnt exist yet');
             }
         }catch(\Exception $ex){
             return $this->returnError('400','faild');
         }
     }
     /*__________________________________________________________________*/
-    /****Restore Products Fore Active status  ***
-     * @param $id
-     * @return JsonResponse
-     */
+    /****Restore Products Fore Active status  ***/
     public function restoreTrashed( $id)
     {
         try{
@@ -147,10 +132,7 @@ class ProductService
         }
     }
     /*__________________________________________________________________*/
-    /****   Product's Soft Delete   ***
-     * @param $id
-     * @return JsonResponse
-     */
+    /****   Product's Soft Delete   ***/
     public function trash( $id)
     {
         try {
@@ -168,10 +150,7 @@ class ProductService
         }
     }
     /*__________________________________________________________________*/
-    /****  Create Products   ***
-     * @param ProductRequest $requests
-     * @return JsonResponse
-     */
+    /****  Create Products   ***/
     public function create(ProductRequest $request)
     {
         try{
@@ -219,14 +198,10 @@ class ProductService
         }
     }
     /*__________________________________________________________________*/
-    /****  Update Product   ***
-     * @param ProductRequest $request
-     * @param $id
-     * @return JsonResponse
-     */
+    /****  Update Product   ***/
     public function update(ProductRequest $request,$id)
     {
-//        $validated = $request->validated();
+        $validated = $request->validated();
 //        try{
             $product= $this->productModel->find($id);
             if(!$product)
@@ -309,10 +284,7 @@ class ProductService
         }
     }
     /*__________________________________________________________________*/
-    /****  Delete Product   ***
-     * @param $id
-     * @return JsonResponse
-     */
+    /****  Delete Product   ****/
     public function delete( $id)
     {
         try{

@@ -4,16 +4,10 @@ namespace App\Service\Categories;
 use App\Models\Categories\Category;
 use App\Models\Categories\Section;
 use App\Models\Categories\SectionTranslation;
-use App\Models\Custom_Fildes\Custom_Field;
-use App\Scopes\SectionScope;
 use App\Traits\GeneralTrait;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use phpDocumentor\Reflection\Types\This;
-use App\Exceptions\GeneralHandler;
-use Exception;
+
 use LaravelLocalization;
 
 class SectionService
@@ -36,40 +30,39 @@ class SectionService
     /****Get All Active category Or By ID  ****/
     public function getAll()
     {
-//        try{
+        try{
         $section = $this->SectionModel
             ->with(['Category','Product'])
             ->get();
-//        $section = $this->SectionModel->with(['Category'=>function(Builder $query){
-//             $query->table('categories')->select(['id'])->get();
-//        },'Product'])->get();
+
             if (count($section) > 0) {
                 return $response = $this->returnData('Section', $section, 'done');
             } else {
                 return $response = $this->returnSuccessMessage('Section', 'Section doesnt exist yet');
             }
-//        }catch(\Exception $ex){
-//            return $this->returnError('400','faild');
-//        }
+        }catch(\Exception $ex){
+            return $this->returnError('400','faild');
+        }
         }
     /*___________________________________________________________________________*/
     public function getById($id )
     {
-//        try{
+        try{
          $section = $this->SectionModel
-            ->with(['Category','Product'=>function($q){
-                return $q->with('Category')->get();
+            ->with(['Category'=>function($q){
+                return $q->with(['Product'=>function($q){
+                    return $q->with(['StoreProduct'])->get();
+                }])->get();
             }])
             ->find($id);
-//       return $products=$section->products;
             if (is_null($section) ){
                 return $response= $this->returnSuccessMessage('This Section not found','done');
             }else{
                 return $response= $this->returnData('Section',$section,'done');
             }
-//        }catch(\Exception $ex){
-//            return $this->returnError('400','faild');
-//        }
+        }catch(\Exception $ex){
+            return $this->returnError('400','faild');
+        }
     }
     /*___________________________________________________________________________*/
     public function getCategoryBySection()

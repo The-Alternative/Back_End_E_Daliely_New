@@ -2,17 +2,11 @@
 
 namespace App\Service\Stores;
 
-use App\Models\Products\Product;
-use App\Models\Products\ProductTranslation;
+use App\Http\Requests\Store\StoreRequest;
 use App\Models\Stores\Store;
-use App\Models\Stores\StoreProduct;
 use App\Models\Stores\StoreTranslation;
 use App\Traits\GeneralTrait;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Exception;
 use LaravelLocalization;
 
 class StoreService
@@ -23,11 +17,6 @@ class StoreService
     private $storeTranslation;
     private $Store;
 
-    /**
-     * Category Service constructor.
-     * @param Store $store
-     * @param StoreTranslation $storeTranslation
-     */
     public function __construct(Store $store ,StoreTranslation $storeTranslation)
     {
         $this->storeModel=$store;
@@ -37,14 +26,14 @@ class StoreService
     public function getAll()
     {
         try {
-            $store =collect($this->storeModel->with(['Section','Product'])->get());
+            $store =collect($this->storeModel->with(['Section','Product','Brand'])->get());
             if (count($store) > 0){
                 return $this->returnData('Stores',$store,'done');
-//                return $response= array('Store'=>$store);
             }else{
                 return $response= $this->returnSuccessMessage('Store','stores doesnt exist yet');
             }
         } catch(\Exception $ex){
+
             return $this->returnError('400','faild');
         }
     }
@@ -52,34 +41,27 @@ class StoreService
     public function getById($store_id)
     {
 //        try {
-//            $store = $this->storeModel->with(['Product','Section'])->find($store_id)
-//;
-        $store = Store::with(['Product'=>function($q){
-            return $q->with('Category')->get();
+        $store =  $this->storeModel->with(['Product'=>function($q) use ($store_id) {
+            return $q->with(['Category'=>function($q){
+                return $q->with('Section')->get();
+            },'StoreProduct'=>function($q) use ($store_id) {
+                return $q->where('store_id',$store_id)->get();
+            }])->get();
         },'Section'=>function($q){
             return $q->with('Category')->get();
-        }])->find($store_id);
-//        $Product = Store::find($store_id)->Product;
-
-//        foreach ($products as $product) {
-//           $price = $product['price'];
-//            $store->with($price)->get();
-//        }
-
+        },'Brand'])->find($store_id);
             if (is_null($store) ){
                 return $response= $this->returnSuccessMessage('Store','This stores not found');
             }else{
-//                return $response= array('Store'=>$store);
-                return $this->returnData('Store',[$store],'done');
-
+                return $this->returnData('Store',$store,'done');
             }
 //        }catch(\Exception $ex){
 //            return $this->returnError('400','faild');
 //        }
     }
     /*___________________________________________________________________________*/
-    /****ــــــThis Functions For Trashed category  ****/
-    /****Get All Trashed Products Or By ID  ****/
+    /****  This Functions For Trashed category  ****/
+    /****  Get All Trashed Products Or By ID  ****/
     public function getTrashed()
     {
         try {
@@ -128,12 +110,9 @@ class StoreService
         }
     }
     /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
-    /****  Create category   ***
-     * @param Request $request
-     * @return JsonResponse
-     */
+    /****  Create category   ****/
     /*___________________________________________________________________________*/
-    public function create(Request $request)
+    public function create(StoreRequest $request)
     {
 //       return Product::get();
 //       $stores = collect($request->store)->all();
@@ -250,12 +229,8 @@ class StoreService
             }
     }
     /*___________________________________________________________________________*/
-    /****__________________  Update category   ___________________***
-     * @param Request $request
-     * @param $id
-     * @return Exception|JsonResponse
-     */
-    public function update(Request $request,$id)
+    /****__________________  Update category   ___________________****/
+    public function update(StoreRequest $request,$id)
     {
         try{
             //$validated = $request->validated();
@@ -315,10 +290,7 @@ class StoreService
         }
     }
     /*___________________________________________________________________________*/
-    /****________________  ٍsearch for Product _________________***
-     * @param $title
-     * @return JsonResponse
-     */
+    /****________________  ٍsearch for Product _________________****/
     public function search($title)
     {
         try{
@@ -338,10 +310,7 @@ class StoreService
         }
     }
     /*___________________________________________________________________________*/
-    /****_______________  Delete Product   ________________***
-     * @param $id
-     * @return JsonResponse
-     */
+    /****_______________  Delete Product   ________________****/
     public function delete($id)
     {
         try

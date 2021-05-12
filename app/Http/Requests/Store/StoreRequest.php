@@ -25,12 +25,25 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'          =>'required|min:5|max:255|regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)+$/|unique:stores,title',
-            'phone_number'   =>'required|regex:/[0-9]{10}/',
-           // 'business_email' =>'required|business_email|unique:stores',
-            //'logo'           =>'required|logo:stores',
-            //'address'        =>'required|address:stores',
-           // 'location'       =>'required|location:stores',
+            'street_id'     =>'required',
+            'loc_id'        =>'required',
+            'country_id'    =>'required',
+            'gov_id'        =>'required',
+            'city_id'       =>'required',
+            'offer_id'      =>'required',
+            'socialMedia_id'=>'required',
+            'followers_id'  =>'required',
+            'is_active'     =>'required',
+            'is_approved'   =>'required',
+            'delivery'      =>'required',
+            'edalilyPoint'  =>'required',
+            'rating'        =>'required',
+            'workingHours'  =>'required',
+            'logo'          =>'required',
+
+
+            'store.*.title'          =>'required|min:5|max:255|string',
+
         ];
     }
 
@@ -38,17 +51,11 @@ class StoreRequest extends FormRequest
     {
         return [
 
-            'title.required'=>'Please Enter Your Store\'s Name',
-            'title.min'=>'Your store\'s Name Is Too Short',
-            'title.max'=>'Your store\'s Name Is Too Long',
-            //'title.regex'=>'Your Store\'s Name Have Number',
-            'title.unique'=>'This Name\'s Is Used By Another Store',
-            'phone_number.required'=>'Please Enter Your Store\'s Phone Number',
+            'required'=>'this field is required',
 
-            //'business_email.required'=>'Please Enter Your Store\'s Business Email',
-           // 'logo.required'=>'Please Enter Your Store\'s Logo',
-            //'location.required'=>'Please Enter Your Store\'s Location',
-            //'address.required'=>'Please Enter Your Store\'s address'
+            'store.title.min'=>'Your store\'s Name Is Too Short',
+            'store.title.max'=>'Your store\'s Name Is Too Long',
+
 
         ];
     }

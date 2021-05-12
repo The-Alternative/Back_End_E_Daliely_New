@@ -16,34 +16,26 @@ class StoresProductsTable extends Migration
     {
         Schema::create('stores_products', function (Blueprint $table) {
             $table->id();
-
-
-           // $table->unsignedInteger('store_id');
-          //  $table->unsignedInteger('product_id');
-//            $table->unsignedInteger('price');
-//            $table->unsignedInteger('quantity');
-
             $table->unsignedInteger('store_id')->index();
             $table->unsignedInteger('product_id')->index();
             $table->unsignedInteger('price');
-            $table->unsignedInteger('quantity');
-            $table->boolean('is_active');
-            $table->boolean('is_appear');
+            $table->unsignedInteger('quantity')->default(300);
+            $table->boolean('is_active')->default(1);
+            $table->boolean('is_appear')->default(1);
             $table->timestamps();
         });
-        DB::table('stores_products')->insert([
-            ['product_id'=>1,'store_id'=>1,'is_active'=>1,'is_appear'=>1,'price'=>250,'quantity'=>300],
-            ['product_id'=>2,'store_id'=>1,'is_active'=>1,'is_appear'=>1,'price'=>300,'quantity'=>300],
-            ['product_id'=>4,'store_id'=>1,'is_active'=>1,'is_appear'=>1,'price'=>350,'quantity'=>300],
-            ['product_id'=>5,'store_id'=>1,'is_active'=>1,'is_appear'=>1,'price'=>400,'quantity'=>300],
-            ['product_id'=>6,'store_id'=>1,'is_active'=>1,'is_appear'=>1,'price'=>450,'quantity'=>300],
-            ['product_id'=>7,'store_id'=>1,'is_active'=>1,'is_appear'=>1,'price'=>500,'quantity'=>300],
-            ['product_id'=>8,'store_id'=>1,'is_active'=>1,'is_appear'=>1,'price'=>550,'quantity'=>300],
-            ['product_id'=>9,'store_id'=>1,'is_active'=>1,'is_appear'=>1,'price'=>600,'quantity'=>300],
-            ['product_id'=>10,'store_id'=>1,'is_active'=>1,'is_appear'=>1,'price'=>650,'quantity'=>300],
-            ['product_id'=>11,'store_id'=>1,'is_active'=>1,'is_appear'=>1,'price'=>700,'quantity'=>300]
-        ]);
-    }
+        for($store_id=1;$store_id<12;$store_id++){
+            for($product_id=1;$product_id<12;$product_id++) {
+                DB::table('stores_products')->insert(
+                    $arr = [
+                    'product_id'=>$product_id,
+                    'store_id'=>$store_id,
+                    'price'=>rand(100,1000)
+                ]
+            );
+            }
+        }
+  }
 
     /**
      * Reverse the migrations.
