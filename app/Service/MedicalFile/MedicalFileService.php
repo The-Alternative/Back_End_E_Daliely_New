@@ -39,10 +39,10 @@ class MedicalFileService
 
     public function getTrashed()
     {
-        $medicalFile= $this->MedicalFileModel::IsActive();
+        $medicalFile= $this->MedicalFileModel::IsActive()->get();
         return $this -> returnData('medicalFile',$medicalFile,'done');
     }
-
+//-----------------------------------------------------------------------------------------------//
     public function create( MedicalFileRequest $request )
     {
         $medicalFile=new MedicalFile();

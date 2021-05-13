@@ -24,7 +24,7 @@ class CustomerService
     }
     public function get()
     {
-        $customer= $this->CustomerModel::Active()->WithTrans()->get();
+        $customer= $this->CustomerModel::IsActive()->WithTrans()->get();
         return $this->returnData('customer',$customer,'done');
     }
 
@@ -36,7 +36,7 @@ class CustomerService
 
     public function getTrashed()
     {
-        $customer= $this->CustomerModel::all()->where('is_active',0);
+        $customer= $this->CustomerModel::NotActive()->get();
         return $this -> returnData('customer',$customer,'done');
     }
 //__________________________________________________________________________//

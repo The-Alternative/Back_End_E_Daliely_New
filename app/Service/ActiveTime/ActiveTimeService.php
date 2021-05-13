@@ -18,19 +18,19 @@ class ActiveTimeService
     }
     public function get()
     {
-        $ActiveTime= $this->ActiveTimeModel::IsActive();
+        $ActiveTime= $this->ActiveTimeModel::IsActive()->get();
         return $this->returnData('ActiveTime',$ActiveTime,'done');
     }
 
     public function getById($id)
     {
-        $ActiveTime= $this->ActiveTimeModel::find($id);
+        $ActiveTime= $this->ActiveTimeModel::find($id)->get();
         return $this->returnData('ActiveTime',$ActiveTime,'done');
     }
 
     public function getTrashed()
     {
-        $ActiveTime= $this->ActiveTimeModel::IsActive();
+        $ActiveTime= $this->ActiveTimeModel::NotActive()->get();
         return $this -> returnData('ActiveTime',$ActiveTime,'done');
     }
 
