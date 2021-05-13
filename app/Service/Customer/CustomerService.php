@@ -24,7 +24,7 @@ class CustomerService
     }
     public function get()
     {
-        $customer= $this->CustomerModel::Active()->WithTrans();
+        $customer= $this->CustomerModel::Active()->WithTrans()->get();
         return $this->returnData('customer',$customer,'done');
     }
 
@@ -163,7 +163,7 @@ class CustomerService
     public function delete($id)
     {
        $customer = Customer::find($id);
-       $customer->is_active = false;
+       $customer->is_active =0;
        $customer->save();
         return $this->returnData('customer', $customer, 'This customer is deleted Now');
     }
