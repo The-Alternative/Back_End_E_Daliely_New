@@ -28,7 +28,7 @@ class ClinicRequest extends FormRequest
             'is_approved'=>'required|in:1,0',
             'doctor_id'=>'required',
             'phone_number'=>'required',
-            'active_times_id'=>'required',
+            'active_time_id'=>'required',
 
             'clinic'=>'required|array|min:1',
             'clinic.*.name'=>'required',

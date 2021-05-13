@@ -48,6 +48,7 @@ class ClinicService
                 'doctor_id' => $request['doctor_id'],
                 'phone_number' => $request['phone_number'],
                 'is_approved' => $request['is_approved'],
+                'active_time_id'=>$request['active_time_id'],
                 'is_active' => $request['is_active'],
             ]);
             if (isset($allclinic)) {
@@ -87,6 +88,7 @@ class ClinicService
                     'location_id' => $request['location_id'],
                     'doctor_id' => $request['doctor_id'],
                     'phone_number' => $request['phone_number'],
+                    'active_time_id'=>$request['active_time_id'],
                     'is_approved' => $request['is_approved'],
                     'is_active' => $request['is_active'],
                 ]);

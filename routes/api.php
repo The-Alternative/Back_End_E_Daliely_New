@@ -261,7 +261,6 @@ Route::group(['prefix'=>'MedicalDevice','namespace'=>'MedicalDevice'],function (
     Route::get('/get', 'MedicalDeviceController@get');
     Route::get('/getById/{id}', 'MedicalDeviceController@getById');
     Route::get('/getTrashed', 'MedicalDeviceController@getTrashed');
-    //Route::post('/create', 'MedicalDeviceController@create');
     Route::post('/create', 'MedicalDeviceController@create');
 
     Route::put('/update/{id}', 'MedicalDeviceController@update');

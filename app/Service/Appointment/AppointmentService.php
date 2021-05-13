@@ -21,7 +21,7 @@ class AppointmentService
     }
     public function get()
     {
-        $appointment= $this->AppointmentModel::IsActive();
+        $appointment= $this->AppointmentModel::IsActive()->get();
         return $this->returnData('Appointment',$appointment,'done');
     }
 
@@ -33,7 +33,7 @@ class AppointmentService
 
     public function getTrashed()
     {
-        $appointment= $this->AppointmentModel::IsActive();
+        $appointment= $this->AppointmentModel::IsActive()->get();
         return $this -> returnData('Appointment',$appointment,'done');
     }
 
@@ -41,11 +41,11 @@ class AppointmentService
     {
         $appointment=new Appointment();
 
-        $appointment->doctors_id                =$request->doctors_id;
-        $appointment->customers_id              =$request->customers_id ;
-        $appointment->begin_date                =$request->begin_date;
+        $appointment->doctor_id                =$request->doctor_id;
+        $appointment->customer_id              =$request->customer_id ;
+        $appointment->start_date                =$request->start_date;
         $appointment->end_date                  =$request->end_date;
-        $appointment->begin_time                =$request->begin_time;
+        $appointment->start_time                =$request->start_time;
         $appointment->end_time                  =$request->end_time ;
         $appointment->is_approved               =$request->is_approved;
         $appointment->is_active                 =$request->is_active;
@@ -66,11 +66,11 @@ class AppointmentService
     {
         $appointment= $this->AppointmentModel::find($id);
 
-        $appointment->doctors_id                =$request->doctors_id;
-        $appointment->customers_id              =$request->customers_id ;
-        $appointment->begin_date                =$request->begin_date;
+        $appointment->doctor_id                 =$request->doctor_id;
+        $appointment->customer_id              =$request->customer_id ;
+        $appointment->start_date                =$request->start_date;
         $appointment->end_date                  =$request->end_date;
-        $appointment->begin_time                =$request->begin_time;
+        $appointment->start_time                =$request->start_time;
         $appointment->end_time                  =$request->end_time ;
         $appointment->is_approved               =$request->is_approved;
         $appointment->is_active                 =$request->is_active;

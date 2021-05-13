@@ -11,7 +11,7 @@ class Appointment extends Model
     use HasFactory;
 
     protected $table='Appointments';
-    protected $fillable=['id','doctors_id','customers_id','begin_date','end_date','begin_time','end_time','is_active','is_approved'];
+    protected $fillable=['id','doctor_id','customer_id','begin_date','end_date','begin_time','end_time','is_active','is_approved'];
 
 
     //Scope

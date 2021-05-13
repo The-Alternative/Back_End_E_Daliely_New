@@ -6,13 +6,14 @@ use App\Models\Doctors\DoctorTranslation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Doctors\doctor;
+use Illuminate\Support\Facades\Config;
 
 class medicalDevice extends Model
 {
     use HasFactory;
 
     protected $table='medical_devices';
-    protected $fillable=['id','name','hospital_id','doctor_id','is_active','is_approved'];
+    protected $fillable=['id','hospital_id','doctor_id','is_active','is_approved'];
 //    protected $hidden=['id','pivot','created_at','updated_at','hospital_id','doctor_id'];
 
 
@@ -26,7 +27,7 @@ class medicalDevice extends Model
     public function ScopeWithTrans($query)
     {
         return $query=medicalDevice::join('medical_device_translation','medical_device_translation.medical_device_id','=','medical_device_id')
-            ->where('medical_device_translation.locale','=',get_current_local())
+            ->where('medical_device_translation.locale','=',config::get('app.locale'))
             ->select('medical_devices.*','medical_device_translation.*');
     }
 

@@ -158,7 +158,7 @@ class SpecialtyService
     public function delete($id)
     {
         $Specialty = Specialty::find($id);
-        $Specialty->is_active = false;
+        $Specialty->is_active =0;
         $Specialty->save();
         return $this->returnData('Specialty',  $Specialty, 'This Specialty is deleted Now');
 

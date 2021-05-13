@@ -30,10 +30,10 @@ class MedicalDeviceRequest extends FormRequest
             'hospital_id'=>'required',
 
 
-            'MedicalDevice'=>'required|array|min:1',
-            'MedicalDevice.*.name'=> 'required|min:5|max:255|unique',
-            'MedicalDevice.*.locale'=> 'required',
-            'MedicalDevice.*.medical_device_id'=> 'required',
+            'medicaldevice'=>'required|array|min:1',
+            'medicaldevice.*.name'=> 'required|min:5|max:255',
+            'medicaldevice.*.locale'=> 'required',
+            'medicaldevice.*.medical_device_id'=> 'required',
         ];
     }
     public function messages()
@@ -43,9 +43,9 @@ class MedicalDeviceRequest extends FormRequest
             'required'=>'this field is required',
             'in'=>'this field must be 0 (is not active) or 1 (is active)',
 
-            'MedicalDevice.*.name.min' => 'Your medical Device\'s Name Is Too Short',
-            'MedicalDevice.*.name.max' => 'Your medical Device\'s Name Is Too Long',
-            'MedicalDevice.*.name.unique' => 'This Name\'s Is Used By Another medical Device',
+            'medicaldevice.*.name.min' => 'Your medical Device\'s Name Is Too Short',
+            'medicaldevice.*.name.max' => 'Your medical Device\'s Name Is Too Long',
+            'medicaldevice.*.name.unique' => 'This Name\'s Is Used By Another medical Device',
 
         ];
     }

@@ -24,11 +24,11 @@ class AppointmentRequest extends FormRequest
     public function rules()
     {
         return [
-                   'doctors_id'  =>'required',
-                   'customers_id'=>'required',
-                   'begin_date'  =>'required',
+                   'doctor_id'  =>'required',
+                   'customer_id'=>'required',
+                   'start_date'  =>'required',
                    'end_date'    =>'required',
-                   'begin_time'  =>'required',
+                   'start_time'  =>'required',
                    'end_time'    =>'required',
                    'is_approved' =>'required|in:1,0',
                    'is_active'   =>'required|in:1,0',

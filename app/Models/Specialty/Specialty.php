@@ -7,6 +7,7 @@ use App\Models\medicalDevice\medicalDevice;
 use App\Models\medicalDevice\MedicalDeviceTranslation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 
 class Specialty extends Model
 {
@@ -26,7 +27,7 @@ class Specialty extends Model
     public function ScopeWithTrans($query)
     {
         return $query=Specialty::join('specialty_translation','specialty_translation.specialty_id','=','specialty_id')
-            ->where('specialty_translation.locale','=',get_current_local())
+            ->where('specialty_translation.locale','=',config::get('app.locale'))
             ->select('specialties.*','specialty_translation.*');
     }
 
