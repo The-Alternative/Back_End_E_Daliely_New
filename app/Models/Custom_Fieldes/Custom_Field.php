@@ -34,4 +34,9 @@ class Custom_Field extends Model
             'customfield_id',
             'product_id');
     }
+
+    public function Custom_field ()
+    {
+        return $this->hasMany(Property::class,'custom_field_id');
+    }
 }

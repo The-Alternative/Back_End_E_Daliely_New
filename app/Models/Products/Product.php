@@ -82,10 +82,13 @@ class Product extends Model
             'product_id',
             'store_id',
             'id',
-            'id');
+            'id')
+            ->withPivot(['price','quantity'])
+            ->withTimestamps();
     }
     public function Category(){
-        return $this->belongsToMany(Category::class,
+        return $this->belongsToMany(
+            Category::class,
             'products_categories',
             'product_id',
             'category_id');

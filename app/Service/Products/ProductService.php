@@ -41,9 +41,8 @@ class ProductService
     {
         try{
         $products = $this->productModel
-            ->with(['Store','storeProducts'])
+            ->with('Store')
             ->get();
-
             if (count($products) > 0)
             {
                 return $response=$this->returnData('Products',$products,'done');
@@ -52,7 +51,7 @@ class ProductService
                 return $response=$this->returnSuccessMessage('Product','Products doesnt exist yet');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400','Failed');
         }
     }
     public function getProductByCategory($id)
@@ -65,14 +64,14 @@ class ProductService
                 return $response= $this->returnData($products,'$products','done');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400','Failed');
         }
     }
     /*__________________________________________________________________*/
     /****Get Active Product By ID  ***/
     public function getById( $id)
     {
-//        try{
+        try{
         $product = $this->productModel->with(['Store','Category','ProductImage','Brand','StoreProduct'])
             ->find($id);
 //        $product = $this->productModel->find($id);
@@ -93,9 +92,9 @@ class ProductService
                 return $response= $this->returnSuccessMessage('This Product not found','done');
             }
             return $response=$this->returnData('product',[$product,$rangeOfPrice],'done');
-//        }catch(\Exception $ex){
-//            return $this->returnError('400','faild');
-//        }
+        }catch(\Exception $ex){
+            return $this->returnError('400','Failed');
+        }
     }
     /*__________________________________________________________________*/
     /****ــــــThis Functions For Trashed Productsــــــ  ****/
@@ -111,7 +110,7 @@ class ProductService
                 return $response= $this->returnSuccessMessage('product','Products trashed doesnt exist yet');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400','Failed');
         }
     }
     /*__________________________________________________________________*/
@@ -128,7 +127,7 @@ class ProductService
                 return $this->returnData('Product', $product, 'This Product Is trashed Now');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400','Failed');
         }
     }
     /*__________________________________________________________________*/
@@ -146,14 +145,14 @@ class ProductService
             }
 
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400','Failed');
         }
     }
     /*__________________________________________________________________*/
     /****  Create Products   ***/
     public function create(ProductRequest $request)
     {
-        try{
+//        try{
 //                validated = $request->validated();
                 $request->is_active?$is_active=true:$is_active=false;
                 $request->is_appear?$is_appear=true:$is_appear=false;
@@ -188,21 +187,45 @@ class ProductService
                     }
                     $this->productTranslation->insert($transProduct_arr);
                 }
+                if ($request->has('category')){
+                    $product=$this->productModel->find($unTransProduct_id);
+                    $product->Category()->sync($request->get('category'));
+                }
+            if ($request->has('customFeild')){
+                $product=$this->productModel->find($unTransProduct_id);
+                $product->Custom_Field()->sync($request->get('customFeild'));
+            }
+            $images=$request->images;
+        foreach ($images as $image)
+        {
+            if ($request->has('images')) {
+
+                $product = $this->productModel->find($unTransProduct_id);
+                $product->ProductImage()->insert([
+                    'product_id' => $unTransProduct_id,
+                    'image' => $image['image'],
+                    'is_cover' => $image['is_cover'],
+                ]);
+            }
+
+//                        $request->get('images')->with('product_id',$unTransProduct_id)
+//                );
+            }
                 DB::commit();
                 return $this->returnData('Product', [$unTransProduct_id,$transProduct_arr],'done');
             }
-        catch(\Exception $ex)
-        {
-            DB::rollback();
-            return $this->returnError('Product','faild');
-        }
-    }
+//        catch(\Exception $ex)
+//        {
+//            DB::rollback();
+//            return $this->returnError('400','Failed');
+//        }
+//    }
     /*__________________________________________________________________*/
     /****  Update Product   ***/
     public function update(ProductRequest $request,$id)
     {
         $validated = $request->validated();
-//        try{
+        try{
             $product= $this->productModel->find($id);
             if(!$product)
                 return $this->returnError('400', 'not found this Category');
@@ -219,6 +242,7 @@ class ProductService
             //             'image' => $filePath,
             //         ]);
             // }
+            DB::beginTransaction();
             $unTransProduct=$this->productModel->where('products.id',$id)
                 ->update([
                     'slug' =>$request['slug'],
@@ -258,13 +282,13 @@ class ProductService
                         ]);
                 }
             }
-//            DB::commit();
+            DB::commit();
             return $this->returnData('Category', $dbdproducts,'done');
-//        }
-//        catch(\Exception $ex){
-//            DB::rollback();
-//            return $this->returnError('400', 'saving failed');
-//        }
+        }
+        catch(\Exception $ex){
+            DB::rollback();
+            return $this->returnError('400', 'saving Failed');
+        }
     }
     /*__________________________________________________________________*/
     public function search($title)
@@ -280,7 +304,7 @@ class ProductService
                 return $this->returnData('products', $product,'done');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400','Failed');
         }
     }
     /*__________________________________________________________________*/
@@ -295,7 +319,7 @@ class ProductService
                  return $this->returnData('Product', $product,'This Product Is deleted Now');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400','Failed');
         }
     }
 }
