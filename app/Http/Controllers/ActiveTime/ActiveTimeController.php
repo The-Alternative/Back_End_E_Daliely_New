@@ -53,13 +53,6 @@ class ActiveTimeController extends Controller
             ->header('Access-control-Allow-Methods','*');
 
     }
-    public function search($name)
-    {
-        $response= $this->ActiveTimeService->search($name);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
-    }
 
     public function trash($id)
     {
@@ -76,7 +69,7 @@ class ActiveTimeController extends Controller
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', '*');
     }
-//
+
     public function delete($id)
     {
         $response = $this->ActiveTimeService->delete($id);

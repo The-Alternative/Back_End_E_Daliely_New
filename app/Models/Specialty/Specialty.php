@@ -18,10 +18,13 @@ class Specialty extends Model
 
 
     //scope
-    public function scopeActive($query)
+    public function scopeIsActive($query)
     {
         return $query->where('is_active',1);
-
+    }
+    public function scopeNotActive($query)
+    {
+        return $query->where('is_active',0);
     }
 
     public function ScopeWithTrans($query)

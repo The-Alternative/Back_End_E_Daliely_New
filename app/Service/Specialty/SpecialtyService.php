@@ -21,28 +21,21 @@ class SpecialtyService
 
     public function __construct(Specialty $Specialty)
     {
-
         $this->SpecialtyModel=$Specialty;
     }
     public function get()
     {
-
-        $Specialty=$this->SpecialtyModel::Active()->WithTrans()->get();
+        $Specialty=$this->SpecialtyModel::IsActive()->WithTrans()->get();
         return $this->returnData(' Specialty', $Specialty,'done');
-
     }
-
     public function getById($id)
     {
-
         $Specialty= $this->SpecialtyModel::WithTrans()->find($id);
         return $this->returnData(' Specialty', $Specialty,'done');
-
     }
-
     public function getTrashed()
     {
-        $Specialty= $this->SpecialtyModel::all();
+        $Specialty= $this->SpecialtyModel::NotActive()->all();
         return $this -> returnData('Specialty', $Specialty,'done');
     }
 //_____________________________________________________________________//
@@ -135,7 +128,6 @@ class SpecialtyService
 
         }
     }
-
     public function trash( $id)
     {
         $Specialty= $this->SpecialtyModel::find($id);
@@ -144,8 +136,6 @@ class SpecialtyService
 
         return $this->returnData('Specialty',  $Specialty,'This Specialty is trashed Now');
     }
-
-
     public function restoreTrashed( $id)
     {
         $Specialty=Specialty::find($id);
@@ -154,13 +144,11 @@ class SpecialtyService
 
         return $this->returnData('Specialty',  $Specialty,'This Specialty is trashed Now');
     }
-
     public function delete($id)
     {
         $Specialty = Specialty::find($id);
         $Specialty->is_active =0;
         $Specialty->save();
         return $this->returnData('Specialty',  $Specialty, 'This Specialty is deleted Now');
-
     }
 }

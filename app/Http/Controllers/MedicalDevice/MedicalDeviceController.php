@@ -25,17 +25,14 @@ class MedicalDeviceController extends Controller
     {
         return$this->MedicalDeviceService->get();
     }
-
     public function  getById($id)
     {
         return $this->MedicalDeviceService->getById($id);
     }
-
     public function getTrashed()
     {
         return$this->MedicalDeviceService->getTrashed();
     }
-
     public function create(MedicalDeviceRequest $request)
     {
         $response=$this->MedicalDeviceService->create($request);
@@ -43,7 +40,6 @@ class MedicalDeviceController extends Controller
             ->header('Access-control-Allow-Origin','*')
             ->header('Access-control-Allow-Methods','*');
     }
-
     public function update(MedicalDeviceRequest $request,$id)
     {
         $response=$this->MedicalDeviceService->update($request,$id);
@@ -59,7 +55,6 @@ class MedicalDeviceController extends Controller
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', '*');
     }
-
     public function trash($id)
     {
         $response= $this->MedicalDeviceService->trash($id);
@@ -67,7 +62,6 @@ class MedicalDeviceController extends Controller
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', '*');
     }
-
     public function restoreTrashed($id)
     {
         $response= $this->MedicalDeviceService->restoreTrashed($id);
@@ -75,7 +69,6 @@ class MedicalDeviceController extends Controller
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', '*');
     }
-//
     public function delete($id)
     {
         $response=$this->MedicalDeviceService->delete($id);

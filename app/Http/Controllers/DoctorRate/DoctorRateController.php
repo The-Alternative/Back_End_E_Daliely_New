@@ -21,15 +21,6 @@ class DoctorRateController extends Controller
         $this->response=$response;
     }
 
-    public function getDoctorRate()
-    {
-        $response=$this->DoctorRateService->getDoctorRate();
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
-
-    }
-
     public function get()
     {
 
@@ -68,7 +59,6 @@ class DoctorRateController extends Controller
 
     }
 
-
 //    public function trash($id)
 //    {
 //        $response= $this->DoctorRateService->trash($id);
@@ -92,6 +82,4 @@ class DoctorRateController extends Controller
 //            ->header('Access-control-Allow-Origin','*')
 //            ->header('Access-control-Allow-Methods','*');
 //    }
-
-
 }

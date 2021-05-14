@@ -4,6 +4,7 @@
 namespace App\Service\Doctors;
 
 use App\Models\Customer\Customer;
+use App\Models\DoctorRate\DoctorRate;
 use App\Models\Doctors\doctor;
 use App\Models\Doctors\DoctorCustomer;
 use App\Models\Doctors\DoctorTranslation;
@@ -178,7 +179,6 @@ class DoctorService
     }
 
 //    get all doctor's social media by doctor's name
-
     public function SocialMedia($doctor_name)
     {
         return doctor::with('socialMedia')->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
@@ -195,7 +195,6 @@ class DoctorService
 //    }
 
     //get  doctor's medical devices by doctor's name
-
     public function doctormedicaldevice($doctor_name)
     {
         return doctor::with('medicalDevice')->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
@@ -203,6 +202,8 @@ class DoctorService
             ->select('doctors.*','doctor_translation.*')->get();
 
     }
+
+    //get hospital by doctor's name
     public function hospital($doctor_name)
     {
 //
@@ -213,14 +214,14 @@ class DoctorService
     }
 
     //get doctor's appopintment
-
-//
     public function appointment($doctor_name)
     {
         return doctor::with('appointment')->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
             ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
             ->select('doctors.*','doctor_translation.*')->get();
     }
+
+    //get clinic by doctor's name
     public function clinic($doctor_name)
     {
         return doctor::with('clinic')->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
@@ -228,9 +229,7 @@ class DoctorService
             ->select('doctors.*','doctor_translation.*')->get();
     }
 
-
     //get all doctor's details by doctor's name
-
     public function getalldetails($doctor_name)
     {
         return  doctor::with('medicalDevice','socialMedia','clinic','hospital')
@@ -241,12 +240,22 @@ class DoctorService
             ->get();
     }
 
-
+    //get paitent by doctor's name
     public function customer($doctor_name)
     {
-        return  doctor::with('customer')->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+        return  doctor::with('customer')
+             ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
              ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
              ->select('doctors.*','doctor_translation.*')->get();
+    }
+
+    //get doctor rate by doctor's name
+    public function DoctorRate($doctor_name)
+    {
+      return doctor::with('DoctorRate')
+          ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+          ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
+          ->select('doctors.*','doctor_translation.*')->get();
 
     }
 

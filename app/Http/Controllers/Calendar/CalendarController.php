@@ -31,12 +31,7 @@ class CalendarController extends Controller
         return $this->CalendarService->getById($id);
     }
 
-    public function getTrashed()
-    {
-        return  $this->CalendarService->getTrashed();
-    }
-
-    public function create(CalendarRequest $request)
+     public function create(CalendarRequest $request)
     {
         $response=$this->CalendarService->create($request);
         return  response($response,200)
@@ -52,13 +47,6 @@ class CalendarController extends Controller
             ->header('Access-control-Allow-Methods','*');
 
     }
-//    public function search($name)
-//    {
-//        $response= $this->CalendarService->search($name);
-//        return response($response, 200)
-//            ->header('Access-Control-Allow-Origin', '*')
-//            ->header('Access-Control-Allow-Methods', '*');
-//    }
 
     public function trash($id)
     {
@@ -75,7 +63,7 @@ class CalendarController extends Controller
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', '*');
     }
-//
+
     public function delete($id)
     {
         $response = $this->CalendarService->delete($id);

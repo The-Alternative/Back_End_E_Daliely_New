@@ -17,5 +17,10 @@ class MedicalFile extends Model
     {
         return $query->where('is_active',1);
     }
+    public function ScopeNotActive($query)
+    {
+        return $query->where('is_active',0);
+    }
+
 
 }

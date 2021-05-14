@@ -29,12 +29,10 @@ class doctor extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active',1);
-
     }
     public function scopeNotActive($query)
     {
         return $query->where('is_active',0);
-
     }
 
     public function ScopeWithTrans($query)

@@ -21,18 +21,10 @@ class DoctorRateService
         $this->DoctorRateModel=$doctorRate;
     }
 
-    public function getDoctorRate()
-    {
-        $doctorRate =DoctorRate::find(1);
-        $doctorRate->doctor;
-        return response()->json($doctorRate);
-    }
     public function get()
     {
-
         $doctorRate=$this->DoctorRateModel::all();
         return $this->returnData('DoctorRate',$doctorRate,'done');
-
     }
 
     public function getById($id)

@@ -17,32 +17,23 @@ class HospitalService
 
     public function __construct(Hospital $Hospital)
     {
-
         $this->HospitalModel=$Hospital;
     }
-
     public function get()
     {
-
         $Hospital=$this->HospitalModel::IsActive()->all();
         return $this->returnData('Hospital',$Hospital,'done');
-
     }
-
     public function getById($id)
     {
-
         $Hospital= $this->HospitalModel::find($id);
         return $this->returnData('Hospital',$Hospital,'done');
-
     }
-
     public function getTrashed()
     {
-        $Hospital= $this->HospitalModel::all()->where('is_active',0);
+        $Hospital= $this->HospitalModel::NotActive()->all();
         return $this -> returnData('Hospital',$Hospital,'done');
     }
-
     public function create( HospitalRequest $request )
     {
         $Hospital=new Hospital();
@@ -56,7 +47,6 @@ class HospitalService
         $Hospital->is_active                 =$request->is_active;
         $Hospital->is_approved               =$request->is_approved;
 
-
         $result=$Hospital->save();
         if ($result)
         {
@@ -68,10 +58,8 @@ class HospitalService
         }
 
     }
-
     public function update(HospitalRequest $request,$id)
     {
-
         $Hospital= $this->HospitalModel::find($id);
 
         $Hospital->name                      =$request->name;
@@ -82,7 +70,6 @@ class HospitalService
         $Hospital->doctor_id                 =$request->doctor_id;
         $Hospital->is_active                 =$request->is_active;
         $Hospital->is_approved               =$request->is_approved;
-
 
         $result=$Hospital->save();
         if ($result)
@@ -95,7 +82,6 @@ class HospitalService
         }
 
     }
-
     public function search($name)
     {
         $Hospital = DB::table('hospitals')
@@ -108,10 +94,8 @@ class HospitalService
         else
         {
             return $this->returnData('Hospital', $Hospital,'done');
-
         }
     }
-
     public function trash( $id)
     {
         $Hospital= $this->HospitalModel::find($id);
@@ -120,8 +104,6 @@ class HospitalService
 
         return $this->returnData('Hospital', $Hospital,'This Hospital is trashed Now');
     }
-
-
     public function restoreTrashed( $id)
     {
         $Hospital=Hospital::find($id);
@@ -130,7 +112,6 @@ class HospitalService
 
         return $this->returnData('Hospital', $Hospital,'This Hospital is trashed Now');
     }
-
     public function delete($id)
     {
         $Hospital = Hospital::find($id);
@@ -139,14 +120,11 @@ class HospitalService
         return $this->returnData('Hospital', $Hospital, 'This Hospital is deleted Now');
 
     }
-
     //get all the doctors who work in the hospital according to her name
-
     public function hospitalsDoctor($hospital_name)
     {
       return  Hospital::with('doctor')
                        ->where('name','like','%'.$hospital_name.'%')
                        ->get();
     }
-
 }

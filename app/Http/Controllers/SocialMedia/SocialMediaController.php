@@ -24,17 +24,14 @@ class SocialMediaController extends Controller
     {
         return$this->SocialMediaService->get();
     }
-
     public function  getById($id)
     {
         return $this->SocialMediaService->getById($id);
     }
-
     public function getTrashed()
     {
         return $this->SocialMediaService->getTrashed();
     }
-
     public function create(SocialMediaRequest $request)
     {
         $response=$this->SocialMediaService->create($request);
@@ -42,7 +39,6 @@ class SocialMediaController extends Controller
             ->header('Access-control-Allow-Origin','*')
             ->header('Access-control-Allow-Methods','*');
     }
-
     public function update(SocialMediaRequest $request,$id)
     {
         $response=$this->SocialMediaService->update($request,$id);
@@ -58,7 +54,6 @@ class SocialMediaController extends Controller
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', '*');
     }
-
     public function restoreTrashed($id)
     {
         $response= $this->SocialMediaService->restoreTrashed($id);
@@ -66,7 +61,6 @@ class SocialMediaController extends Controller
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', '*');
     }
-//
     public function delete($id)
     {
         $response=$this->SocialMediaService->delete($id);
@@ -74,6 +68,4 @@ class SocialMediaController extends Controller
             ->header('Access-control-Allow-Origin','*')
             ->header('Access-control-Allow-Methods','*');
     }
-
-
 }

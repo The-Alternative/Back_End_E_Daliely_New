@@ -13,7 +13,6 @@ class CalendarService
     private $CalendarModel;
     use GeneralTrait;
 
-
     public function __construct(Calendar $Calendar)
     {
         $this->CalendarModel=$Calendar;
@@ -29,12 +28,6 @@ class CalendarService
         $Calendar= $this->CalendarModel::find($id);
         return $this->returnData('Calendar',$Calendar,'done');
     }
-
-//    public function getTrashed()
-//    {
-//        $Calendar= $this->CalendarModel::IsActive();
-//        return $this -> returnData('Calendar',$Calendar,'done');
-//    }
 
     public function create( CalendarRequest $request )
     {

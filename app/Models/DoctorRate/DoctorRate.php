@@ -18,10 +18,7 @@ class DoctorRate extends Model
     public function scopeIsActive($query)
     {
         return $query->where('is_active',1)->get();
-
     }
-
-
     public function doctor()
     {
         return $this->belongsTo(doctor::class);

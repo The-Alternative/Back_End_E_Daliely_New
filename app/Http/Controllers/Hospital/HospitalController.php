@@ -24,17 +24,14 @@ class HospitalController extends Controller
     {
         return $this->HospitalService->get();
     }
-
     public function  getById($id)
     {
         return $this->HospitalService->getById($id);
     }
-
     public function getTrashed()
     {
         return$this->HospitalService->getTrashed();
     }
-
     public function create(HospitalRequest $request)
     {
         $response=$this->HospitalService->create($request);
@@ -42,7 +39,6 @@ class HospitalController extends Controller
             ->header('Access-control-Allow-Origin','*')
             ->header('Access-control-Allow-Methods','*');
     }
-
     public function update(HospitalRequest $request,$id)
     {
         $response=$this->HospitalService->update($request,$id);
@@ -58,7 +54,6 @@ class HospitalController extends Controller
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', '*');
     }
-
     public function trash($id)
     {
         $response= $this->HospitalService->trash($id);
@@ -66,7 +61,6 @@ class HospitalController extends Controller
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', '*');
     }
-
     public function restoreTrashed($id)
     {
         $response= $this->HospitalService->restoreTrashed($id);
@@ -74,7 +68,6 @@ class HospitalController extends Controller
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', '*');
     }
-//
     public function delete($id)
     {
         $response=$this->HospitalService->delete($id);
@@ -82,17 +75,13 @@ class HospitalController extends Controller
             ->header('Access-control-Allow-Origin','*')
             ->header('Access-control-Allow-Methods','*');
     }
-
     //get all the doctors who work in the hospital according to her name
-
     public function hospitalsDoctor($hospital_name)
     {
         $response=$this->HospitalService->hospitalsDoctor($hospital_name);
         return  response($response,200)
             ->header('Access-control-Allow-Origin','*')
             ->header('Access-control-Allow-Methods','*');
-
-
     }
 
 }

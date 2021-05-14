@@ -13,7 +13,7 @@ class ActiveTime extends Model
     protected $table='active_times';
     protected $fillable=['id','start_time','end_time','is_active','is_approved'];
 
-    //scope
+    //local scope
     public function scopeIsActive($query)
     {
         return $query->where('is_active',1);

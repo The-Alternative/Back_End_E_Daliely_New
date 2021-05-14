@@ -15,34 +15,25 @@ class MedicalFileService
     private $MedicalFileModel;
     use GeneralTrait;
 
-
     public function __construct(MedicalFile $medicalFile)
     {
-
         $this->MedicalFileModel=$medicalFile;
     }
     public function get()
     {
-
-        $medicalFile=$this->MedicalFileModel::all();
+        $medicalFile=$this->MedicalFileModel::IsActive()->all();
         return $this->returnData('medicalFile',$medicalFile,'done');
-
     }
-
     public function getById($id)
     {
-
         $medicalFile= $this->MedicalFileModel::find($id);
         return $this->returnData('medicalFile',$medicalFile,'done');
-
     }
-
     public function getTrashed()
     {
-        $medicalFile= $this->MedicalFileModel::IsActive()->get();
+        $medicalFile= $this->MedicalFileModel::NotActive()->get();
         return $this -> returnData('medicalFile',$medicalFile,'done');
     }
-//-----------------------------------------------------------------------------------------------//
     public function create( MedicalFileRequest $request )
     {
         $medicalFile=new MedicalFile();
@@ -56,7 +47,6 @@ class MedicalFileService
         $medicalFile->is_active                    =$request->is_active;
         $medicalFile->is_approved                  =$request->is_approved;
 
-
         $result=$medicalFile->save();
         if ($result)
         {
@@ -66,12 +56,9 @@ class MedicalFileService
         {
             return $this->returnError('400', 'saving failed');
         }
-
     }
-
     public function update(MedicalFileRequest $request,$id)
     {
-
         $medicalFile= $this->MedicalFileModel::find($id);
 
         $medicalFile->customer_id                  =$request->customer_id ;
@@ -83,8 +70,6 @@ class MedicalFileService
         $medicalFile->is_active                    =$request->is_active;
         $medicalFile->is_approved                  =$request->is_approved;
 
-
-
         $result=$medicalFile->save();
         if ($result)
         {
@@ -94,11 +79,7 @@ class MedicalFileService
         {
             return $this->returnError('400', 'updating failed');
         }
-
     }
-
-
-
     public function trash( $id)
     {
         $medicalFile= $this->MedicalFileModel::find($id);
@@ -107,8 +88,6 @@ class MedicalFileService
 
         return $this->returnData('medicalFile', $medicalFile,'This medical File is trashed Now');
     }
-
-
     public function restoreTrashed( $id)
     {
         $medicalFile=MedicalFile::find($id);
@@ -117,7 +96,6 @@ class MedicalFileService
 
         return $this->returnData('medicalFile', $medicalFile,'This medicalFile is trashed Now');
     }
-
     public function delete($id)
     {
         $medicalFile = MedicalFile::find($id);

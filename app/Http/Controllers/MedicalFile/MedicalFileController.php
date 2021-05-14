@@ -24,17 +24,14 @@ class MedicalFileController extends Controller
     {
         return $this->MedicalFileService->get();
     }
-
     public function  getById($id)
     {
         return $this->MedicalFileService->getById($id);
     }
-
     public function getTrashed()
     {
         return  $this->MedicalFileService->getTrashed();
     }
-
     public function create(MedicalFileRequest $request)
     {
         $response=$this->MedicalFileService->create($request);
@@ -42,16 +39,13 @@ class MedicalFileController extends Controller
             ->header('Access-control-Allow-Origin','*')
             ->header('Access-control-Allow-Methods','*');
     }
-
     public function update(MedicalFileRequest $request,$id)
     {
         $response=$this->MedicalFileService->update($request,$id);
         return  response($response,200)
             ->header('Access-control-Allow-Origin','*')
             ->header('Access-control-Allow-Methods','*');
-
     }
-
     public function trash($id)
     {
         $response= $this->MedicalFileService->trash($id);
@@ -59,7 +53,6 @@ class MedicalFileController extends Controller
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', '*');
     }
-
     public function restoreTrashed($id)
     {
         $response= $this->MedicalFileService->restoreTrashed($id);
@@ -67,7 +60,6 @@ class MedicalFileController extends Controller
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', '*');
     }
-
     public function delete($id)
     {
         $response=$this->MedicalFileService->delete($id);

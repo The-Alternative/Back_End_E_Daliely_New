@@ -24,17 +24,14 @@ class SpecialtyController extends Controller
     {
         return$this->SpecialtyService->get();
     }
-
     public function  getById($id)
     {
         return $this->SpecialtyService->getById($id);
     }
-
     public function getTrashed()
     {
         return $this->SpecialtyService->getTrashed();
     }
-
     public function create(SpecialtyRequest $request)
     {
         $response=$this->SpecialtyService->create($request);
@@ -42,14 +39,12 @@ class SpecialtyController extends Controller
             ->header('Access-control-Allow-Origin','*')
             ->header('Access-control-Allow-Methods','*');
     }
-
     public function update(SpecialtyRequest $request,$id)
     {
         $response=$this->SpecialtyService->update($request,$id);
         return  response($response,200)
             ->header('Access-control-Allow-Origin','*')
             ->header('Access-control-Allow-Methods','*');
-
     }
     public function search($name)
     {
@@ -58,7 +53,6 @@ class SpecialtyController extends Controller
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', '*');
     }
-
     public function trash($id)
     {
         $response= $this->SpecialtyService->trash($id);
@@ -66,7 +60,6 @@ class SpecialtyController extends Controller
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', '*');
     }
-
     public function restoreTrashed($id)
     {
         $response= $this->SpecialtyService->restoreTrashed($id);
@@ -74,7 +67,6 @@ class SpecialtyController extends Controller
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', '*');
     }
-//
     public function delete($id)
     {
         $response=$this->SpecialtyService->delete($id);

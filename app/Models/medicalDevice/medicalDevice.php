@@ -21,16 +21,17 @@ class medicalDevice extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active',1);
-
     }
-
+    public function scopeNotActive($query)
+    {
+        return $query->where('is_active',0);
+    }
     public function ScopeWithTrans($query)
     {
         return $query=medicalDevice::join('medical_device_translation','medical_device_translation.medical_device_id','=','medical_device_id')
             ->where('medical_device_translation.locale','=',config::get('app.locale'))
             ->select('medical_devices.*','medical_device_translation.*');
     }
-
     public function medicaldeviceTranslation()
     {
         return $this->hasMany(medicaldeviceTranslation::class,'medical_device_id');

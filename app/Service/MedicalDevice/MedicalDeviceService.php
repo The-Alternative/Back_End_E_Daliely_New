@@ -14,35 +14,26 @@ use Illuminate\Support\Facades\DB;
 
 class MedicalDeviceService
 {
-
     private $MedicalDeviceModel;
     use GeneralTrait;
 
-
     public function __construct(medicalDevice $MedicalDevice)
     {
-
         $this->MedicalDeviceModel=$MedicalDevice;
     }
     public function get()
     {
-
         $MedicalDevice=$this->MedicalDeviceModel::Active()->WithTrans()->get();
         return $this->returnData(' MedicalDevice', $MedicalDevice,'done');
-
     }
-
     public function getById($id)
     {
-
         $MedicalDevice= $this->MedicalDeviceModel::WithTrans()->find($id);
         return $this->returnData(' MedicalDevice', $MedicalDevice,'done');
-
     }
-
     public function getTrashed()
     {
-        $MedicalDevice= $this->MedicalDeviceModel::all()->where('is_active',0);
+        $MedicalDevice= $this->MedicalDeviceModel::NotActive()->all();
         return $this -> returnData(' MedicalDevice', $MedicalDevice,'done');
     }
 //________________________________________________________//
@@ -138,10 +129,8 @@ class MedicalDeviceService
         else
         {
             return $this->returnData(' MedicalDevice',  $MedicalDevice,'done');
-
         }
     }
-
     public function trash( $id)
     {
         $MedicalDevice= $this->MedicalDeviceModel::find($id);
@@ -150,8 +139,6 @@ class MedicalDeviceService
 
         return $this->returnData(' MedicalDevice',  $MedicalDevice,'This MedicalDevice is trashed Now');
     }
-
-
     public function restoreTrashed( $id)
     {
         $MedicalDevice=medicalDevice::find($id);
@@ -160,7 +147,6 @@ class MedicalDeviceService
 
         return $this->returnData('MedicalDevice',  $MedicalDevice,'This MedicalDevice is trashed Now');
     }
-
     public function delete($id)
     {
         $MedicalDevice = medicalDevice::find($id);

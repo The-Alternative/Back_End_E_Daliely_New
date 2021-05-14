@@ -15,26 +15,25 @@ class ClinicService
     private $ClinicModel;
     use GeneralTrait;
 
-
     public function __construct(Clinic $clinic)
     {
         $this->ClinicModel=$clinic;
     }
     public function get()
     {
-        $clinic= $this->ClinicModel::Active()->WithTrans()->get();
+        $clinic= $this->ClinicModel->get();
         return $this->returnData('clinic',$clinic,'done');
     }
 
     public function getById($id)
     {
-        $clinic= $this->ClinicModel::WithTrans()->find($id);
+        $clinic= $this->ClinicModel->find($id);
         return $this->returnData('clinic',$clinic,'done');
     }
 
     public function getTrashed()
     {
-        $clinic= $this->ClinicModel::all()->where('is_active',0);
+        $clinic= $this->ClinicModel->NotActive()->get();
         return $this -> returnData('clinic',$clinic,'done');
     }
 //___________________________________________________________________//
@@ -73,8 +72,8 @@ class ClinicService
 //______________________________________________________________//
     public function update(ClinicRequest $request,$id)
     {
-//        try{
-            $clinic= Clinic::find($id);
+        try{
+            $clinic=Clinic::find($id);
             if(!$clinic)
                 return $this->returnError('400', 'not found this Clinic');
             $allclinic= collect($request->Clinic)->all();
@@ -114,13 +113,12 @@ class ClinicService
                         ]);
                 }
             }
-//            DB::commit();
+            DB::commit();
             return $this->returnData('Clinic', $dbclinic,'done');
-
-//        }
-//        catch(\Exception $ex){
-//            return $this->returnError('400', 'saving failed');
-//        }
+        }
+        catch(\Exception $ex){
+            return $this->returnError('400', 'saving failed');
+        }
     }
 //_________________________________________________________________//
     public function search($name)

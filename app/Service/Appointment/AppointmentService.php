@@ -27,13 +27,13 @@ class AppointmentService
 
     public function getById($id)
     {
-        $appointment= $this->AppointmentModel::find($id);
+        $appointment= $this->AppointmentModel::find($id)->get();
         return $this->returnData('Appointment',$appointment,'done');
     }
 
     public function getTrashed()
     {
-        $appointment= $this->AppointmentModel::IsActive()->get();
+        $appointment= $this->AppointmentModel::NotActive()->get();
         return $this -> returnData('Appointment',$appointment,'done');
     }
 

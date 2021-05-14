@@ -14,30 +14,25 @@ class SocialMediaService
     private $SocialMediaModel;
     use GeneralTrait;
 
-
     public function __construct(SocialMedia $SocialMedia)
     {
-
         $this->SocialMediaModel=$SocialMedia;
     }
     public function get()
     {
-        $SocialMedia=$this->SocialMediaModel::all();
+        $SocialMedia=$this->SocialMediaModel::IsActive()->all();
         return $this->returnData('SocialMedia',$SocialMedia,'done');
     }
-
     public function getById($id)
     {
         $SocialMedia= $this->SocialMediaModel::find($id);
         return $this->returnData('SocialMedia',$SocialMedia,'done');
     }
-
     public function getTrashed()
     {
-        $SocialMedia= $this->SocialMediaModel::IsActive();
+        $SocialMedia= $this->SocialMediaModel::NotActive();
         return $this -> returnData('SocialMedia',$SocialMedia,'done');
     }
-
     public function create( SocialMediaRequest $request )
     {
         $SocialMedia=new SocialMedia();
@@ -51,7 +46,6 @@ class SocialMediaService
         $SocialMedia->doctor_id                          =$request->doctor_id   ;
         $SocialMedia->is_active                          =$request->is_active   ;
 
-
         $result=$SocialMedia->save();
         if ($result)
         {
@@ -63,10 +57,8 @@ class SocialMediaService
         }
 
     }
-
     public function update(SocialMediaRequest $request,$id)
     {
-
         $SocialMedia= $this->SocialMediaModel::find($id);
 
         $SocialMedia->phone_number                       =$request->phone_number ;
@@ -77,8 +69,6 @@ class SocialMediaService
         $SocialMedia->email                              =$request->email  ;
         $SocialMedia->doctor_id                          =$request->doctor_id   ;
         $SocialMedia->is_active                          =$request->is_active   ;
-
-
 
         $result=$SocialMedia->save();
         if ($result)
@@ -91,9 +81,6 @@ class SocialMediaService
         }
 
     }
-
-
-
     public function trash( $id)
     {
         $SocialMedia= $this->SocialMediaModel::find($id);
@@ -102,8 +89,6 @@ class SocialMediaService
 
         return $this->returnData('SocialMedia', $SocialMedia,'This SocialMedia is trashed Now');
     }
-
-
     public function restoreTrashed( $id)
     {
         $SocialMedia=SocialMedia::find($id);
@@ -112,14 +97,12 @@ class SocialMediaService
 
         return $this->returnData('SocialMedia', $SocialMedia,'This SocialMedia is trashed Now');
     }
-
     public function delete($id)
     {
         $SocialMedia = SocialMedia::find($id);
         $SocialMedia->is_active = false;
         $SocialMedia->save();
         return $this->returnData('SocialMedia', $SocialMedia, 'This SocialMedia is deleted Now');
-
     }
 
 }

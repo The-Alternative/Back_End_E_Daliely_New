@@ -159,7 +159,6 @@ Route::group(
 //
 //
 
-Route::post('/create-customer-by-doctor','App\Http\Controllers\Doctors\DoctorCustomerControllerr@createcustomer');
 /*-------------Doctor Route------------------*/
 Route::group(['prefix'=>'doctor','namespace'=>'Doctors'],function () {
     Route::get('/get', 'DoctorController@get');
@@ -180,11 +179,9 @@ Route::group(['prefix'=>'doctor','namespace'=>'Doctors'],function () {
     Route::GET('/clinic-doctor/{doctor_name}', 'DoctorController@clinic');
     Route::get('/view-customer/{doctor_name}','DoctorController@customer');
     Route::GET('/doctor-details/{doctor_name}', 'DoctorController@getalldetails');
-
+    Route::get('/doctor-rate/{doctor_name}','DoctorController@DoctorRate');
 
     Route::post('/create-customer-by-doctor','DoctorController@createcustomer');
-
-
 
 });
 /*---------------Doctor Rate Route--------*/
@@ -197,11 +194,7 @@ Route::group(['prefix'=>'DoctorRate','namespace'=>'DoctorRate'],function () {
     // Route::PUT('/trash/{id}', 'DoctorRateController@trash');
 //    Route::delete('/delete/{id}', 'DoctorRateController@delete');
 //    Route::PUT('/restoreTrashed/{id}', 'DoctorRateController@restoreTrashed');
-
-
-    Route::get('/get-doctor-rate','DoctorRateController@getDoctorRate');
 });
-
 /*--------------Social Media Route-------*/
 Route::group(['prefix'=>'SocialMedia','namespace'=>'SocialMedia'],function () {
     Route::get('/get', 'SocialMediaController@get');
@@ -254,8 +247,6 @@ Route::group(['prefix'=>'clinic','namespace'=>'Clinic'],function () {
 //    Route::PUT('/restoreTrashed/{id}', 'WorkPlaceController@restoreTrashed');
 //    });
 
-
-
 ///*---------------Medical Device Route-------------*/
 Route::group(['prefix'=>'MedicalDevice','namespace'=>'MedicalDevice'],function () {
     Route::get('/get', 'MedicalDeviceController@get');
@@ -281,26 +272,11 @@ Route::group(['prefix'=>'Specialty','namespace'=>'Specialty'],function () {
     Route::delete('/delete/{id}', 'SpecialtyController@delete');
     Route::PUT('/restoreTrashed/{id}', 'SpecialtyController@restoreTrashed');
 });
-///*--------------- Doctor Appointment Route-------------*///
-
-//Route::group(['prefix'=>'DoctorAppointment','namespace'=>'DoctorAppointment'],function () {
-//    Route::get('/get',   'DoctorAppointmentController@get');
-//    Route::get('/getById/{id}', 'DoctorAppointmentController@getById');
-//    Route::get('/getTrashed',   'DoctorAppointmentController@getTrashed');
-//    Route::post('/create',      'DoctorAppointmentController@create');
-//    Route::put('/update/{id}',  'DoctorAppointmentController@update');
-//    Route::PUT('/trash/{id}',   'DoctorAppointmentController@trash');
-//    Route::delete('/delete/{id}','DoctorAppointmentController@delete');
-//    Route::PUT('/restoreTrashed/{id}', 'DoctorAppointmentController@restoreTrashed');
-//
-//
-//});
 
 ///*--------------- Calendar Route-------------*/
 Route::group(['prefix'=>'Calendar','namespace'=>'Calendar'],function () {
     Route::get('/get',          'CalendarController@get');
     Route::get('/getById/{id}', 'CalendarController@getById');
-    Route::get('/getTrashed',   'CalendarController@getTrashed');
     Route::post('/create',      'CalendarController@create');
     Route::put('/update/{id}',  'CalendarController@update');
     Route::PUT('/trash/{id}',   'CalendarController@trash');

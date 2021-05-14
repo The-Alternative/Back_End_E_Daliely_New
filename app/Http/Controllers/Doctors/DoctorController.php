@@ -125,8 +125,6 @@ class DoctorController extends Controller
             ->header('Access-control-Allow-Methods','*');
     }
 
-
-
     public function appointment($doctor_name)
     {
         $response=$this->DoctorService->appointment($doctor_name);
@@ -159,5 +157,12 @@ class DoctorController extends Controller
             ->header('Access-control-Allow-Origin','*')
             ->header('Access-control-Allow-Methods','*');
 
+    }
+    public function DoctorRate($doctor_name)
+    {
+        $response=$this->DoctorService->DoctorRate($doctor_name);
+        return  response($response,200)
+            ->header('Access-control-Allow-Origin','*')
+            ->header('Access-control-Allow-Methods','*');
     }
 }
