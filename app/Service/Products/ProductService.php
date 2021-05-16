@@ -152,7 +152,7 @@ class ProductService
     /****  Create Products   ***/
     public function create(ProductRequest $request)
     {
-//        try{
+        try{
 //                validated = $request->validated();
                 $request->is_active?$is_active=true:$is_active=false;
                 $request->is_appear?$is_appear=true:$is_appear=false;
@@ -207,19 +207,16 @@ class ProductService
                     'is_cover' => $image['is_cover'],
                 ]);
             }
-
-//                        $request->get('images')->with('product_id',$unTransProduct_id)
-//                );
             }
                 DB::commit();
                 return $this->returnData('Product', [$unTransProduct_id,$transProduct_arr],'done');
             }
-//        catch(\Exception $ex)
-//        {
-//            DB::rollback();
-//            return $this->returnError('400','Failed');
-//        }
-//    }
+        catch(\Exception $ex)
+        {
+            DB::rollback();
+            return $this->returnError('400','Failed');
+        }
+    }
     /*__________________________________________________________________*/
     /****  Update Product   ***/
     public function update(ProductRequest $request,$id)
