@@ -29,7 +29,7 @@ class DoctorCustomerService
 
         public function create(Request $request)
         {
-            $doctor=[];
+
 //            try {
             $allcustomer = collect($request->customer)->all();
             DB::beginTransaction();
@@ -47,9 +47,11 @@ class DoctorCustomerService
                         'locale' => $allcustomers['locale'],
                         'customer_id' => $unTranscustomer_id,
                     ];
-                    CustomerTranslation::insert($transcustomer);
+                    CustomerTranslation::insert($unTranscustomer_id);
                 }
-                $doctor->customer()->syncWithoutDetaching([
+                $doctor=Customer::find($unTranscustomer_id);
+                $customer=$doctor->customer()->syncWithoutDetaching([
+
                     'gender' => $request['gender'],
                     'note' => $request['note'],
                     'age' => $request['age'],
