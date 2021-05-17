@@ -50,7 +50,7 @@ class DoctorService
 
     public function create( DoctorRequest $request )
     {
-        try {
+//        try {
             $alldoctor = collect($request->doctor)->all();
             DB::beginTransaction();
             $unTransdoctor_id =doctor::insertGetId([
@@ -74,14 +74,23 @@ class DoctorService
                 }
                 DoctorTranslation::insert( $transdoctor);
             }
-            DB::commit();
+
+            if ($request->has('customer')) {
+              $doctor[] = $this->doctorModel->find($unTransdoctor_id);
+
+                $doctor->Customer()->sync($request->get('customer'));
+            }
+//        DoctorCustomer::insert($doctor[]);
+//        return     $doctor ;
+
+//            DB::commit();
             return $this->returnData('doctor', [$unTransdoctor_id,  $transdoctor], 'done');
-        }
-        catch(\Exception $ex)
-        {
-            DB::rollback();
-            return $this->returnError('doctor', 'faild');
-        }
+//        }
+//        catch(\Exception $ex)
+//        {
+//            DB::rollback();
+//            return $this->returnError('doctor', 'faild');
+//        }
     }
 //_________________________________________________________//
     public function update(DoctorRequest $request,$id)

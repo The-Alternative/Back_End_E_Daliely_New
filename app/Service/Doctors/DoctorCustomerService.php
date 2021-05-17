@@ -38,8 +38,10 @@ class DoctorCustomerService
                 'is_approved' => $request['is_approved'],
                 'is_active' => $request['is_active'],
             ]);
-            if (isset($allcustomer)) {
-                foreach ($allcustomer as $allcustomers) {
+            if (isset($allcustomer))
+            {
+                foreach ($allcustomer as $allcustomers)
+                {
                     $transcustomer[] = [
                         'first_name' => $allcustomers ['first_name'],
                         'last_name' => $allcustomers ['last_name'],
@@ -47,11 +49,20 @@ class DoctorCustomerService
                         'locale' => $allcustomers['locale'],
                         'customer_id' => $unTranscustomer_id,
                     ];
-                    CustomerTranslation::insert($unTranscustomer_id);
                 }
+                CustomerTranslation::insert($unTranscustomer_id);
+            }
+
+            if ($request->has('customer')) {
+                $doctor = $this->customerModel->find($unTranscustomer_id);
+                $doctor->Customer()->sync($request->get('customer'));
+            }
+            return $response = $this->returnData('insert customer by doctor', [$doctor], 'done');
+
+//        }
                 $doctor=Customer::find($unTranscustomer_id);
                 $customer=$doctor->customer()->syncWithoutDetaching([
-
+//
                     'gender' => $request['gender'],
                     'note' => $request['note'],
                     'age' => $request['age'],
@@ -60,12 +71,11 @@ class DoctorCustomerService
                     'customer_id' => $unTranscustomer_id,
                 ]);
             }
-                DoctorCustomer::insert($doctor);
+//                DoctorCustomer::insert($doctor);
 
-                return $response = $this->returnData('insert customer by doctor', [$doctor], 'done');
 
-            }
-        }
+
+
 //        if (isset($allcustomer)) {
 //                foreach ($allcustomer as $allcustomers) {
 //                    $transcustomer[] = [
