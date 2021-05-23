@@ -34,37 +34,22 @@ class MedicalFileController extends Controller
     }
     public function create(MedicalFileRequest $request)
     {
-        $response=$this->MedicalFileService->create($request);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->MedicalFileService->create($request);
     }
     public function update(MedicalFileRequest $request,$id)
     {
-        $response=$this->MedicalFileService->update($request,$id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->MedicalFileService->update($request,$id);
     }
     public function trash($id)
     {
-        $response= $this->MedicalFileService->trash($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return $this->MedicalFileService->trash($id);
     }
     public function restoreTrashed($id)
     {
-        $response= $this->MedicalFileService->restoreTrashed($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return $this->MedicalFileService->restoreTrashed($id);
     }
     public function delete($id)
     {
-        $response=$this->MedicalFileService->delete($id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->MedicalFileService->delete($id);
     }
 }

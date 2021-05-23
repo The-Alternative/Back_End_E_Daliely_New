@@ -14,9 +14,6 @@ class ActiveTimeController extends Controller
     use GeneralTrait;
     private $ActiveTimeService;
 
-
-    private $response;
-
     public function __construct(ActiveTimeService $ActiveTimeService,Response $response )
     {
         $this->ActiveTimeService=$ActiveTimeService;
@@ -32,50 +29,33 @@ class ActiveTimeController extends Controller
         return $this->ActiveTimeService->getById($id);
     }
 
+    public function create(ActiveTimeRequest $request)
+    {
+        return   $this->ActiveTimeService->create($request);
+    }
+
+    public function update(ActiveTimeRequest $request,$id)
+    {
+        return  $response=$this->ActiveTimeService->update($request,$id);
+    }
+
+    public function trash($id)
+    {
+        return   $response= $this->ActiveTimeService->trash($id);
+    }
     public function getTrashed()
     {
         return  $this->ActiveTimeService->getTrashed();
     }
 
-    public function create(ActiveTimeRequest $request)
-    {
-        $response=$this->ActiveTimeService->create($request);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
-    }
-
-    public function update(ActiveTimeRequest $request,$id)
-    {
-        $response=$this->ActiveTimeService->update($request,$id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
-
-    }
-
-    public function trash($id)
-    {
-        $response= $this->ActiveTimeService->trash($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
-    }
-
     public function restoreTrashed($id)
     {
-        $response= $this->ActiveTimeService->restoreTrashed($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return  $response= $this->ActiveTimeService->restoreTrashed($id);
     }
 
     public function delete($id)
     {
-        $response = $this->ActiveTimeService->delete($id);
-        return response($response, 200)
-            ->header('Access-control-Allow-Origin', '*')
-            ->header('Access-control-Allow-Methods', '*');
+        return   $response = $this->ActiveTimeService->delete($id);
     }
 
 }

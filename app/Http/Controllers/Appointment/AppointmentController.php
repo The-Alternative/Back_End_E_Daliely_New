@@ -13,7 +13,6 @@ class AppointmentController extends Controller
 {
     use GeneralTrait;
     private $AppointmentService;
-    private $response;
 
     public function __construct(AppointmentService $AppointmentService,Response $response )
     {
@@ -30,49 +29,32 @@ class AppointmentController extends Controller
         return $this->AppointmentService->getById($id);
     }
 
+    public function create(AppointmentRequest $request)
+    {
+        return  $response=$this->AppointmentService->create($request);
+    }
+
+    public function update(AppointmentRequest $request,$id)
+    {
+        return $response=$this->AppointmentService->update($request,$id);
+    }
+
+    public function trash($id)
+    {
+        return   $response= $this->AppointmentService->trash($id);
+    }
     public function getTrashed()
     {
         return  $this->AppointmentService->getTrashed();
     }
 
-    public function create(AppointmentRequest $request)
-    {
-        $response=$this->AppointmentService->create($request);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
-    }
-
-    public function update(AppointmentRequest $request,$id)
-    {
-        $response=$this->AppointmentService->update($request,$id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
-
-    }
-
-    public function trash($id)
-    {
-        $response= $this->AppointmentService->trash($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
-    }
-
     public function restoreTrashed($id)
     {
-        $response= $this->AppointmentService->restoreTrashed($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return   $response= $this->AppointmentService->restoreTrashed($id);
     }
 
     public function delete($id)
     {
-        $response=$this->AppointmentService->delete($id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return  $response=$this->AppointmentService->delete($id);
     }
 }

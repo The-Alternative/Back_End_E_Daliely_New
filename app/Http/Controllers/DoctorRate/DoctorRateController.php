@@ -13,7 +13,6 @@ class DoctorRateController extends Controller
 {
     use GeneralTrait;
     private $DoctorRateService;
-    private $response;
 
     public function __construct(DoctorRateService $DoctorRateService,Response $response )
     {
@@ -23,63 +22,41 @@ class DoctorRateController extends Controller
 
     public function get()
     {
-
-        $response=$this->DoctorRateService->get();
-        return $response;
+        return $this->DoctorRateService->get();
     }
 
     public function  getById($id)
     {
-
-        $response=$this->DoctorRateService->getById($id);
-        return $response;
+        return  $this->DoctorRateService->getById($id);
     }
 
-//    public function getTrashed()
-//    {
-//        $response= $this->DoctorRateService->getTrashed();
-//        return $response;
-//
-//    }
+    public function getTrashed()
+    {
+        return  $this->DoctorRateService->getTrashed();
+    }
 
     public function create(DoctorRateRequest $request)
     {
-        $response=$this->DoctorRateService->create($request);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return  $this->DoctorRateService->create($request);
     }
 
     public function update(DoctorRateRequest $request,$id)
     {
-        $response=$this->DoctorRateService->update($request,$id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
-
+        return $this->DoctorRateService->update($request,$id);
     }
 
-//    public function trash($id)
-//    {
-//        $response= $this->DoctorRateService->trash($id);
-//        return response($response, 200)
-//            ->header('Access-Control-Allow-Origin', '*')
-//            ->header('Access-Control-Allow-Methods', '*');
-//    }
+    public function trash($id)
+    {
+        return $this->DoctorRateService->trash($id);
+    }
 
-//    public function restoreTrashed($id)
-//    {
-//        $response= $this->DoctorRateService->restoreTrashed($id);
-//        return response($response, 200)
-//            ->header('Access-Control-Allow-Origin', '*')
-//            ->header('Access-Control-Allow-Methods', '*');
-//    }
-////
-//    public function delete($id)
-//    {
-//        $response=$this->DoctorRateService->delete($id);
-//        return  response($response,200)
-//            ->header('Access-control-Allow-Origin','*')
-//            ->header('Access-control-Allow-Methods','*');
-//    }
+    public function restoreTrashed($id)
+    {
+        return $this->DoctorRateService->restoreTrashed($id);
+    }
+
+    public function delete($id)
+    {
+        return $this->DoctorRateService->delete($id);
+    }
 }

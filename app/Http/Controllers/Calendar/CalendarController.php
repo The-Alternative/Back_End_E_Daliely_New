@@ -14,8 +14,6 @@ class CalendarController extends Controller
     use GeneralTrait;
     private $CalendarService;
 
-    private $response;
-
     public function __construct(CalendarService $CalendarService,Response $response )
     {
         $this->CalendarService=$CalendarService;
@@ -33,42 +31,26 @@ class CalendarController extends Controller
 
      public function create(CalendarRequest $request)
     {
-        $response=$this->CalendarService->create($request);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return   $response=$this->CalendarService->create($request);
     }
 
     public function update(CalendarRequest $request,$id)
     {
-        $response=$this->CalendarService->update($request,$id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
-
+        return $response=$this->CalendarService->update($request,$id);
     }
 
     public function trash($id)
     {
-        $response= $this->CalendarService->trash($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return   $response= $this->CalendarService->trash($id);
     }
 
     public function restoreTrashed($id)
     {
-        $response= $this->CalendarService->restoreTrashed($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return  $response= $this->CalendarService->restoreTrashed($id);
     }
 
     public function delete($id)
     {
-        $response = $this->CalendarService->delete($id);
-        return response($response, 200)
-            ->header('Access-control-Allow-Origin', '*')
-            ->header('Access-control-Allow-Methods', '*');
+        return   $response = $this->CalendarService->delete($id);
     }
 }

@@ -14,7 +14,6 @@ class DoctorController extends Controller
 {
     use GeneralTrait;
     private $DoctorService;
-    private $response;
     private $DoctorCustomerService;
 
     public function __construct(DoctorService $DoctorService,DoctorCustomerService $doctorCustomerService,Response $response )
@@ -41,58 +40,36 @@ class DoctorController extends Controller
 
     public function create(DoctorRequest $request)
     {
-        $response=$this->DoctorService->create($request);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->DoctorService->create($request);
     }
 
     public function update(DoctorRequest $request,$id)
     {
-        $response=$this->DoctorService->update($request,$id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
-
+        return $this->DoctorService->update($request,$id);
     }
     public function search($name)
     {
-        $response= $this->DoctorService->search($name);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return  $this->DoctorService->search($name);
     }
 
     public function trash($id)
     {
-        $response= $this->DoctorService->trash($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return $this->DoctorService->trash($id);
     }
 
     public function restoreTrashed($id)
     {
-        $response= $this->DoctorService->restoreTrashed($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return $this->DoctorService->restoreTrashed($id);
     }
 
     public function delete($id)
     {
-        $response=$this->DoctorService->delete($id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->DoctorService->delete($id);
     }
 
     public function SocialMedia($doctor_name)
     {
-        $response=$this->DoctorService->SocialMedia($doctor_name);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->DoctorService->SocialMedia($doctor_name);
     }
 
 //    public function workplace($doctor_name)
@@ -104,65 +81,39 @@ class DoctorController extends Controller
 //    }
     public function doctormedicaldevice($doctor_name)
     {
-        $response=$this->DoctorService->doctormedicaldevice($doctor_name);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->DoctorService->doctormedicaldevice($doctor_name);
     }
     public function getalldetails($doctor_name)
     {
-        $response=$this->DoctorService->getalldetails($doctor_name);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->DoctorService->getalldetails($doctor_name);
     }
 
     public function hospital($doctor_name)
     {
-        $response=$this->DoctorService->hospital($doctor_name);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->DoctorService->hospital($doctor_name);
     }
 
     public function appointment($doctor_name)
     {
-        $response=$this->DoctorService->appointment($doctor_name);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->DoctorService->appointment($doctor_name);
     }
 
     public function clinic($doctor_name)
     {
-        $response=$this->DoctorService->clinic($doctor_name);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->DoctorService->clinic($doctor_name);
     }
 
     public function customer($doctor_name)
     {
-        $response=$this->DoctorService->customer($doctor_name);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
-
+        return $this->DoctorService->customer($doctor_name);
     }
 
     public function createcustomer(Request $request)
     {
-        $response=$this->DoctorCustomerService->create( $request );
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
-
+        return $this->DoctorCustomerService->create( $request );
     }
     public function DoctorRate($doctor_name)
     {
-        $response=$this->DoctorService->DoctorRate($doctor_name);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->DoctorService->DoctorRate($doctor_name);
     }
 }

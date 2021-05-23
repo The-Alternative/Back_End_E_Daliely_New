@@ -35,11 +35,7 @@ class DoctorRateService
 
     }
 
-//    public function getTrashed()
-//    {
-//        $doctorRate= $this->DoctorRateModel::all()->where('is_active',0);
-//        return $this -> returnData('brand',$doctorRate,'done');
-//    }
+
 
     public function create( DoctorRateRequest $request )
     {
@@ -83,32 +79,37 @@ class DoctorRateService
     }
 
 
-//    public function trash( $id)
-//    {
-//        $doctorRate= $this->DoctorRateModel::find($id);
-//        $doctorRate->is_active=false;
-//        $doctorRate->save();
-//
-//        return $this->returnData('DoctorRate', $doctorRate,'This DoctorRate is trashed Now');
-//    }
+    public function trash( $id)
+    {
+        $doctorRate= $this->DoctorRateModel::find($id);
+        $doctorRate->is_active=false;
+        $doctorRate->save();
+
+        return $this->returnData('DoctorRate', $doctorRate,'This DoctorRate is trashed Now');
+    }
+    public function getTrashed()
+    {
+        $doctorRate= $this->DoctorRateModel::all()->where('is_active',0);
+        return $this -> returnData('brand',$doctorRate,'done');
+    }
 
 //
-//    public function restoreTrashed( $id)
-//    {
-//        $doctorRate=DoctorRate::find($id);
-//        $doctorRate->is_active=true;
-//        $doctorRate->save();
-//
-//        return $this->returnData('DoctorRate', $doctorRate,'This DoctorRate is trashed Now');
-//    }
+    public function restoreTrashed( $id)
+    {
+        $doctorRate=DoctorRate::find($id);
+        $doctorRate->is_active=true;
+        $doctorRate->save();
 
-//    public function delete($id)
-//    {
-//       $doctorRate = DoctorRate::find($id);
-//       $doctorRate->is_active = false;
-//       $doctorRate->save();
-//        return $this->returnData('DoctorRate', $doctorRate, 'This DoctorRate is deleted Now');
-//
-//    }
+        return $this->returnData('DoctorRate', $doctorRate,'This DoctorRate is trashed Now');
+    }
+
+    public function delete($id)
+    {
+       $doctorRate = DoctorRate::find($id);
+       $doctorRate->is_active = false;
+       $doctorRate->save();
+        return $this->returnData('DoctorRate', $doctorRate, 'This DoctorRate is deleted Now');
+
+    }
 
 }

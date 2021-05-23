@@ -13,7 +13,6 @@ class CustomerController extends Controller
 {
     use GeneralTrait;
     private $CustomerService;
-    private $response;
 
     public function __construct(CustomerService $CustomerService,Response $response )
     {
@@ -30,56 +29,36 @@ class CustomerController extends Controller
         return $this->CustomerService->getById($id);
     }
 
+    public function create(CustomerRequest $request)
+    {
+        return $this->CustomerService->create($request);
+    }
+
+    public function update(CustomerRequest $request,$id)
+    {
+        return $this->CustomerService->update($request,$id);
+    }
+    public function search($name)
+    {
+        return $this->CustomerService->search($name);
+    }
+
+    public function trash($id)
+    {
+        return $this->CustomerService->trash($id);
+    }
     public function getTrashed()
     {
         return  $this->CustomerService->getTrashed();
     }
 
-    public function create(CustomerRequest $request)
-    {
-        $response=$this->CustomerService->create($request);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
-    }
-
-    public function update(CustomerRequest $request,$id)
-    {
-        $response=$this->CustomerService->update($request,$id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
-
-    }
-    public function search($name)
-    {
-        $response= $this->CustomerService->search($name);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
-    }
-
-    public function trash($id)
-    {
-        $response= $this->CustomerService->trash($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
-    }
-
     public function restoreTrashed($id)
     {
-        $response= $this->CustomerService->restoreTrashed($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return $this->CustomerService->restoreTrashed($id);
     }
 
     public function delete($id)
     {
-        $response=$this->CustomerService->delete($id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->CustomerService->delete($id);
     }
 }

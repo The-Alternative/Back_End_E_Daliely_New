@@ -5,6 +5,7 @@ namespace App\Service\ActiveTime;
 use App\Http\Requests\ActiveTime\ActiveTimeRequest;
 use App\Models\ActiveTime\ActiveTime;
 use App\Traits\GeneralTrait;
+use Illuminate\Support\Facades\DB;
 
 class ActiveTimeService
 {
@@ -18,38 +19,57 @@ class ActiveTimeService
     }
     public function get()
     {
-        $ActiveTime= $this->ActiveTimeModel::IsActive()->get();
-        return $this->returnData('ActiveTime',$ActiveTime,'done');
+        try
+        {
+            $ActiveTime= $this->ActiveTimeModel::IsActive()->get();
+            return $this->returnData('ActiveTime',$ActiveTime,'done');
+        }
+       catch(\Exception $ex)
+       {
+           return $this->returnError('400','faild');
+       }
     }
 
     public function getById($id)
     {
-        $ActiveTime= $this->ActiveTimeModel::find($id)->get();
-        return $this->returnData('ActiveTime',$ActiveTime,'done');
+        try
+        {
+            $ActiveTime= $this->ActiveTimeModel::find($id);
+            if (is_null($ActiveTime) ){
+                return $this->returnSuccessMessage('This Active time not found','done');}
+        else{
+            return  $this->returnData('ActiveTime',$ActiveTime,'done');
+        }
+        }
+        catch(\Exception $ex)
+        {
+            return $this->returnError('400','faild');
+        }
     }
 
-    public function getTrashed()
-    {
-        $ActiveTime= $this->ActiveTimeModel::NotActive()->get();
-        return $this -> returnData('ActiveTime',$ActiveTime,'done');
-    }
 
     public function create( ActiveTimeRequest $request )
     {
-        $ActiveTime=new ActiveTime();
+        try {
+            $ActiveTime = new ActiveTime();
 
-        $ActiveTime->start_time                =$request->start_time;
-        $ActiveTime->end_time                  =$request->end_time ;
-        $ActiveTime->is_approved               =$request->is_approved;
-        $ActiveTime->is_active                 =$request->is_active;
+            $ActiveTime->start_time   = $request->start_time;
+            $ActiveTime->end_time     = $request->end_time;
+            $ActiveTime->is_approved  = $request->is_approved;
+            $ActiveTime->is_active    = $request->is_active;
 
+            $result = $ActiveTime->save();
 
-        $result=$ActiveTime->save();
-        if ($result)
-        {
-            return $this->returnData('ActiveTime', $ActiveTime,'done');
+            if ($result)
+            {
+                return $this->returnData('ActiveTime', $ActiveTime, 'done');
+            }
+            else
+            {
+                return $this->returnError('400', 'saving failed');
+            }
         }
-        else
+        catch(\Exception $ex)
         {
             return $this->returnError('400', 'saving failed');
         }
@@ -57,6 +77,7 @@ class ActiveTimeService
 
     public function update(ActiveTimeRequest $request,$id)
     {
+        try {
         $ActiveTime= $this->ActiveTimeModel::find($id);
 
         $ActiveTime->start_time                =$request->start_time;
@@ -73,29 +94,71 @@ class ActiveTimeService
         {
             return $this->returnError('400', 'updating failed');
         }
+        }
+        catch(\Exception $ex)
+        {
+            return $this->returnError('400', 'updating failed');
+        }
     }
 
     public function trash( $id)
     {
-        $ActiveTime= $this->ActiveTimeModel::find($id);
-        $ActiveTime->is_active=false;
-        $ActiveTime->save();
-        return $this->returnData('ActiveTime', $ActiveTime,'This ActiveTime is trashed Now');
+        try {
+            $ActiveTime = $this->ActiveTimeModel::find($id);
+            if (is_null($ActiveTime)) {
+                return $this->returnSuccessMessage('This Active Time not found', 'done');
+            } else {
+                $ActiveTime->is_active = false;
+                $ActiveTime->save();
+                return $this->returnData('ActiveTime', $ActiveTime, 'This Active Time is trashed Now');
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return $this->returnError('400', 'faild');
+        }
+    }
+    public function getTrashed()
+    {
+        try {
+        $ActiveTime= $this->ActiveTimeModel::NotActive()->get();
+        return $this -> returnData('ActiveTime',$ActiveTime,'done');
+        }
+       catch (\Exception $ex)
+        {
+            return $this->returnError('400', 'faild');
+        }
     }
 
     public function restoreTrashed( $id)
     {
-        $ActiveTime=ActiveTime::find($id);
-        $ActiveTime->is_active=true;
-        $ActiveTime->save();
-        return $this->returnData('ActiveTime', $ActiveTime,'This ActiveTime is trashed Now');
+        try {
+            $ActiveTime =$this->ActiveTimeModel->find($id);
+            if (is_null($ActiveTime)) {
+                return $this->returnSuccessMessage('This Active Time not found', 'done');
+            } else {
+                $ActiveTime->is_active = true;
+                $ActiveTime->save();
+                return $this->returnData('ActiveTime', $ActiveTime, 'This Active Time is trashed Now');
+            }
+        }
+            catch (\Exception $ex)
+        {
+            return $this->returnError('400', 'faild');
+        }
     }
 
     public function delete($id)
     {
-        $ActiveTime=ActiveTime::find($id);
-        $ActiveTime->is_active = false;
-        $ActiveTime->save();
-        return $this->returnData('ActiveTime', $ActiveTime, 'This ActiveTime is deleted Now');
+        try {
+            $ActiveTime = $this->ActiveTimeModel->find($id);
+            if ($ActiveTime->is_active == 0) {
+                $ActiveTime = $this->ActiveTimeModel->destroy($id);
+            }
+            return $this->returnData('Active Time', $ActiveTime, 'This Active Time Is deleted Now');
+
+        } catch (\Exception $ex) {
+            return $this->returnError('400', 'faild');
+        }
     }
 }

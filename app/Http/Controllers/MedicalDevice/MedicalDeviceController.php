@@ -35,45 +35,26 @@ class MedicalDeviceController extends Controller
     }
     public function create(MedicalDeviceRequest $request)
     {
-        $response=$this->MedicalDeviceService->create($request);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return$this->MedicalDeviceService->create($request);
     }
     public function update(MedicalDeviceRequest $request,$id)
     {
-        $response=$this->MedicalDeviceService->update($request,$id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
-
+        return $this->MedicalDeviceService->update($request,$id);
     }
     public function search($name)
     {
-        $response= $this->MedicalDeviceService->search($name);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return $this->MedicalDeviceService->search($name);
     }
     public function trash($id)
     {
-        $response= $this->MedicalDeviceService->trash($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return $this->MedicalDeviceService->trash($id);
     }
     public function restoreTrashed($id)
     {
-        $response= $this->MedicalDeviceService->restoreTrashed($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return $this->MedicalDeviceService->restoreTrashed($id);
     }
     public function delete($id)
     {
-        $response=$this->MedicalDeviceService->delete($id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return  $this->MedicalDeviceService->delete($id);
     }
 }

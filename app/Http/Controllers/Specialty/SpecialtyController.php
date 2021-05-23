@@ -34,44 +34,26 @@ class SpecialtyController extends Controller
     }
     public function create(SpecialtyRequest $request)
     {
-        $response=$this->SpecialtyService->create($request);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->SpecialtyService->create($request);
     }
     public function update(SpecialtyRequest $request,$id)
     {
-        $response=$this->SpecialtyService->update($request,$id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->SpecialtyService->update($request,$id);
     }
     public function search($name)
     {
-        $response= $this->SpecialtyService->search($name);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return $this->SpecialtyService->search($name);
     }
     public function trash($id)
     {
-        $response= $this->SpecialtyService->trash($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return $this->SpecialtyService->trash($id);
     }
     public function restoreTrashed($id)
     {
-        $response= $this->SpecialtyService->restoreTrashed($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return $this->SpecialtyService->restoreTrashed($id);
     }
     public function delete($id)
     {
-        $response=$this->SpecialtyService->delete($id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return  $this->SpecialtyService->delete($id);
     }
 }

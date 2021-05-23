@@ -188,12 +188,12 @@ Route::group(['prefix'=>'doctor','namespace'=>'Doctors'],function () {
 Route::group(['prefix'=>'DoctorRate','namespace'=>'DoctorRate'],function () {
     Route::get('/get', 'DoctorRateController@get');
     Route::get('/getById/{id}', 'DoctorRateController@getById');
-//    Route::get('/getTrashed', 'DoctorRateController@getTrashed');
+    Route::get('/getTrashed', 'DoctorRateController@getTrashed');
     Route::post('/create', 'DoctorRateController@create');
     Route::put('/update/{id}', 'DoctorRateController@update');
-    // Route::PUT('/trash/{id}', 'DoctorRateController@trash');
-//    Route::delete('/delete/{id}', 'DoctorRateController@delete');
-//    Route::PUT('/restoreTrashed/{id}', 'DoctorRateController@restoreTrashed');
+    Route::PUT('/trash/{id}', 'DoctorRateController@trash');
+    Route::delete('/delete/{id}', 'DoctorRateController@delete');
+    Route::PUT('/restoreTrashed/{id}', 'DoctorRateController@restoreTrashed');
 });
 /*--------------Social Media Route-------*/
 Route::group(['prefix'=>'SocialMedia','namespace'=>'SocialMedia'],function () {
