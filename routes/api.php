@@ -172,7 +172,6 @@ Route::group(['prefix'=>'doctor','namespace'=>'Doctors'],function () {
     Route::PUT('/restoreTrashed/{id}', 'DoctorController@restoreTrashed');
 
     Route::GET('/Doctor-social-media/{doctor_name}', 'DoctorController@SocialMedia');
-//    Route::GET('/doctor-work-place/{doctor_name}', 'DoctorController@workplace');
     Route::GET('/doctor-medical-device/{doctor_name}', 'DoctorController@doctormedicaldevice');
     Route::GET('/hospital-doctor/{doctor_name}', 'DoctorController@hospital');
     Route::GET('/appointment-doctor/{doctor_name}', 'DoctorController@appointment');

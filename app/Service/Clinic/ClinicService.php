@@ -21,21 +21,37 @@ class ClinicService
     }
     public function get()
     {
+        try
+        {
         $clinic= $this->ClinicModel->get();
         return $this->returnData('clinic',$clinic,'done');
+        }
+        catch(\Exception $ex)
+        {
+            return $this->returnError('400','failed');
+        }
     }
 
     public function getById($id)
     {
+        try
+        {
         $clinic= $this->ClinicModel->find($id);
-        return $this->returnData('clinic',$clinic,'done');
+        if (is_null($clinic)){
+        return $this->returnSuccessMessage('this clinic not found','done');
+        }
+        else{
+            return  $this->returnData('clinic',$clinic,'done');
+        }
+        }
+        catch(\Exception $ex)
+        {
+            return $this->returnError('400','failed');
+        }
+
     }
 
-    public function getTrashed()
-    {
-        $clinic= $this->ClinicModel->NotActive()->get();
-        return $this -> returnData('clinic',$clinic,'done');
-    }
+
 //___________________________________________________________________//
     public function create( ClinicRequest $request )
     {
@@ -66,7 +82,7 @@ class ClinicService
         catch(\Exception $ex)
         {
             DB::rollback();
-            return $this->returnError('Clinic', 'faild');
+            return $this->returnError('Clinic', 'failed');
         }
     }
 //______________________________________________________________//
@@ -123,41 +139,83 @@ class ClinicService
 //_________________________________________________________________//
     public function search($name)
     {
-        $clinic = DB::table('clinics')
-            ->where("name","like","%".$name."%")
-            ->get();
-        if (!$clinic)
-        {
-            return $this->returnError('400', 'not found this doctor');
+        try {
+            $clinic = DB::table('clinics')
+                ->where("name", "like", "%" . $name . "%")
+                ->get();
+            if (!$clinic) {
+                return $this->returnError('400', 'not found this doctor');
+            } else {
+                return $this->returnData('clinic', $clinic, 'done');
+            }
         }
-        else
-        {
-            return $this->returnData('clinic', $clinic,'done');
+        catch(\Exception $ex){
+            return $this->returnError('400','failed');
         }
     }
-
     public function trash( $id)
     {
+        try {
         $clinic= $this->ClinicModel::find($id);
-        $clinic->is_active=false;
-        $clinic->save();
-        return $this->returnData('clinic', $clinic,'This clinic is trashed Now');
+            if (is_null($clinic)) {
+                return $this->returnSuccessMessage('This Appointment not found', 'done');
+            }
+           else
+            {
+                $clinic->is_active=false;
+                $clinic->save();
+                return $this->returnData('clinic', $clinic,'This clinic is trashed Now');
+            }
+         }
+       catch (\Exception $ex)
+       {
+         return $this->returnError('400', 'failed');
+        }
     }
-
+    public function getTrashed()
+    {
+        try {
+              $clinic= $this->ClinicModel->NotActive()->get();
+              return $this -> returnData('clinic',$clinic,'done');
+        }
+        catch (\Exception $ex)
+        {
+            return $this->returnError('400', 'failed');
+        }
+    }
     public function restoreTrashed( $id)
     {
-       $clinic=Clinic::find($id);
-       $clinic->is_active=true;
-       $clinic->save();
-        return $this->returnData('clinic', $clinic,'This clinic is trashed Now');
+        try {
+             $clinic=Clinic::find($id);
+            if (is_null($clinic)) {
+                return $this->returnSuccessMessage('This clinic not found', 'done');
+            }
+        else
+        {
+             $clinic->is_active=true;
+             $clinic->save();
+              return $this->returnData('clinic', $clinic,'This clinic is trashed Now');
+         }
+        }
+        catch (\Exception $ex)
+      {
+        return $this->returnError('400', 'failed');
+      }
     }
 
     public function delete($id)
     {
-        $clinic = Clinic::find($id);
-        $clinic->is_active = false;
-        $clinic->save();
-        return $this->returnData('clinic', $clinic, 'This clinic is deleted Now');
+        try {
+            $clinic = Clinic::find($id);
+            if ($clinic->is_active == 0) {
+                $clinic = $this->ClinicModel->destroy($id);
+            }
+            return $this->returnData('clinic', $clinic, 'This clinic Is deleted Now');
+
+        }
+        catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
+        }
     }
 
 }

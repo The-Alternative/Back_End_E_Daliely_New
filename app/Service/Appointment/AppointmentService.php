@@ -21,34 +21,49 @@ class AppointmentService
     }
     public function get()
     {
+        try
+        {
         $appointment= $this->AppointmentModel::IsActive()->get();
         return $this->returnData('Appointment',$appointment,'done');
+        }
+        catch(\Exception $ex)
+        {
+            return $this->returnError('400','faild');
+        }
     }
 
     public function getById($id)
     {
-        $appointment= $this->AppointmentModel::find($id)->get();
-        return $this->returnData('Appointment',$appointment,'done');
+        try
+        {
+        $appointment= $this->AppointmentModel::find($id);
+            if (is_null($appointment) ){
+        return $this->returnSuccessMessage('THis Appointment not found','done');
+              }
+            else{
+            return  $this->returnData('appointment',$appointment,'done');
+        }
+        }
+        catch(\Exception $ex)
+        {
+            return $this->returnError('400','faild');
+        }
     }
 
-    public function getTrashed()
-    {
-        $appointment= $this->AppointmentModel::NotActive()->get();
-        return $this -> returnData('Appointment',$appointment,'done');
-    }
 
     public function create( AppointmentRequest $request )
     {
-        $appointment=new Appointment();
+        try {
+                 $appointment=new Appointment();
 
-        $appointment->doctor_id                =$request->doctor_id;
-        $appointment->customer_id              =$request->customer_id ;
-        $appointment->start_date                =$request->start_date;
-        $appointment->end_date                  =$request->end_date;
-        $appointment->start_time                =$request->start_time;
-        $appointment->end_time                  =$request->end_time ;
-        $appointment->is_approved               =$request->is_approved;
-        $appointment->is_active                 =$request->is_active;
+                 $appointment->doctor_id                =$request->doctor_id;
+                 $appointment->customer_id              =$request->customer_id ;
+                 $appointment->start_date                =$request->start_date;
+                 $appointment->end_date                  =$request->end_date;
+                 $appointment->start_time                =$request->start_time;
+                 $appointment->end_time                  =$request->end_time ;
+                 $appointment->is_approved               =$request->is_approved;
+                 $appointment->is_active                 =$request->is_active;
 
 
         $result=$appointment->save();
@@ -60,20 +75,26 @@ class AppointmentService
         {
             return $this->returnError('400', 'saving failed');
         }
+        }
+        catch(\Exception $ex)
+        {
+            return $this->returnError('400', 'saving failed');
+        }
     }
 
     public function update(AppointmentRequest $request,$id)
     {
-        $appointment= $this->AppointmentModel::find($id);
+        try {
+                 $appointment= $this->AppointmentModel::find($id);
 
-        $appointment->doctor_id                 =$request->doctor_id;
-        $appointment->customer_id              =$request->customer_id ;
-        $appointment->start_date                =$request->start_date;
-        $appointment->end_date                  =$request->end_date;
-        $appointment->start_time                =$request->start_time;
-        $appointment->end_time                  =$request->end_time ;
-        $appointment->is_approved               =$request->is_approved;
-        $appointment->is_active                 =$request->is_active;
+                 $appointment->doctor_id                 =$request->doctor_id;
+                 $appointment->customer_id              =$request->customer_id ;
+                 $appointment->start_date                =$request->start_date;
+                 $appointment->end_date                  =$request->end_date;
+                 $appointment->start_time                =$request->start_time;
+                 $appointment->end_time                  =$request->end_time ;
+                 $appointment->is_approved               =$request->is_approved;
+                 $appointment->is_active                 =$request->is_active;
 
         $result=$appointment->save();
         if ($result)
@@ -84,29 +105,74 @@ class AppointmentService
         {
             return $this->returnError('400', 'updating failed');
         }
+        }
+        catch(\Exception $ex)
+        {
+            return $this->returnError('400', 'saving failed');
+        }
     }
 
     public function trash( $id)
     {
-        $appointment= $this->AppointmentModel::find($id);
-        $appointment->is_active=false;
-        $appointment->save();
-        return $this->returnData('Appointment', $appointment,'This Appointment is trashed Now');
+        try {
+            $appointment = $this->AppointmentModel::find($id);
+            if (is_null($appointment)) {
+                return $this->returnSuccessMessage('This Appointment not found', 'done');
+            } else {
+                $appointment->is_active = false;
+                $appointment->save();
+                return $this->returnData('Appointment', $appointment, 'This Appointment is trashed Now');
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return $this->returnError('400', 'faild');
+        }
     }
+    public function getTrashed()
+    {
+        try {
+            $appointment= $this->AppointmentModel::NotActive()->get();
+            return $this -> returnData('Appointment',$appointment,'done');
+        }
+        catch (\Exception $ex)
+        {
+            return $this->returnError('400', 'faild');
+        }
+    }
+
 
     public function restoreTrashed( $id)
     {
+        try {
         $appointment=Appointment::find($id);
-        $appointment->is_active=true;
-        $appointment->save();
-        return $this->returnData('Appointment', $appointment,'This Appointment is trashed Now');
+            if (is_null($appointment)) {
+                return $this->returnSuccessMessage('This Appointment not found', 'done');
+            } else {
+              $appointment->is_active=true;
+              $appointment->save();
+              return $this->returnData('Appointment', $appointment,'This Appointment is trashed Now');
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return $this->returnError('400', 'faild');
+        }
     }
 
     public function delete($id)
     {
-        $patient =Appointment::find($id);
-        $patient->is_active = false;
-        $patient->save();
-        return $this->returnData('patient', $patient, 'This patient is deleted Now');
+        try {
+        $appointment =Appointment::find($id);
+
+            if ($appointment->is_active == 0) {
+                $appointment = $this->AppointmentModel->destroy($id);
+            }
+            return $this->returnData('appointment', $appointment, 'This appointment Is deleted Now');
+
+        } catch (\Exception $ex) {
+            return $this->returnError('400', 'faild');
+        }
+
     }
 }

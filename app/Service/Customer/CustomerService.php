@@ -24,21 +24,35 @@ class CustomerService
     }
     public function get()
     {
+        try
+        {
         $customer= $this->CustomerModel::IsActive()->WithTrans()->get();
         return $this->returnData('customer',$customer,'done');
+        }
+        catch(\Exception $ex)
+        {
+            return $this->returnError('400','failed');
+        }
     }
 
     public function getById($id)
     {
-        $customer= $this->CustomerModel::WithTrans()->find($id);
-        return $this->returnData('customer',$customer,'done');
+        try{
+            $customer= $this->CustomerModel::WithTrans()->find($id);
+        if (is_null($customer)){
+            return $this->returnSuccessMessage('this customer not found','done');
+        }
+        else{
+            return  $this->returnData('customer',$customer,'done');
+        }
+        }
+        catch(\Exception $ex)
+        {
+            return $this->returnError('400','failed');
+        }
     }
 
-    public function getTrashed()
-    {
-        $customer= $this->CustomerModel::NotActive()->get();
-        return $this -> returnData('customer',$customer,'done');
-    }
+
 //__________________________________________________________________________//
 
     public function create( CustomerRequest $request )
@@ -74,7 +88,7 @@ class CustomerService
         catch(\Exception $ex)
         {
             DB::rollback();
-            return $this->returnError('Customer', 'faild');
+            return $this->returnError('Customer', 'failed');
         }
     }
 //__________________________________________________________//
@@ -131,6 +145,7 @@ class CustomerService
 //___________________________________________________________//
     public function search($name)
     {
+        try{
         $customer = DB::table('customers')
             ->where("first_name","like","%".$name."%")
             ->get();
@@ -142,30 +157,77 @@ class CustomerService
         {
             return $this->returnData('customer', $customer,'done');
         }
+        }
+        catch(\Exception $ex){
+            return $this->returnError('400','failed');
+        }
     }
 
     public function trash( $id)
     {
+        try {
         $customer= $this->CustomerModel::find($id);
-        $customer->is_active=false;
-        $customer->save();
-        return $this->returnData('customer', $customer,'This customer is trashed Now');
+            if (is_null($customer)) {
+                return $this->returnSuccessMessage('This Customer not found', 'done');
+            }
+            else
+            {
+               $customer->is_active=false;
+               $customer->save();
+               return $this->returnData('customer', $customer,'This customer is trashed Now');
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return $this->returnError('400', 'failed');
+        }
+    }
+    public function getTrashed()
+    {
+        try {
+        $customer= $this->CustomerModel::NotActive()->get();
+        return $this -> returnData('customer',$customer,'done');
+        }
+        catch (\Exception $ex)
+        {
+            return $this->returnError('400', 'failed');
+        }
     }
 
     public function restoreTrashed( $id)
     {
-        $customer=Customer::find($id);
-        $customer->is_active=true;
-        $customer->save();
-        return $this->returnData('customer', $customer,'This customer is trashed Now');
+        try {
+            $customer=Customer::find($id);
+
+            if (is_null($customer)) {
+                return $this->returnSuccessMessage('This customer not found', 'done');
+            }
+            else
+            {
+                $customer->is_active=true;
+                $customer->save();
+                return $this->returnData('customer', $customer,'This customer is trashed Now');
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return $this->returnError('400', 'failed');
+        }
+
     }
 
     public function delete($id)
     {
+        try {
        $customer = Customer::find($id);
-       $customer->is_active =0;
-       $customer->save();
-        return $this->returnData('customer', $customer, 'This customer is deleted Now');
+            if ($customer->is_active == 0) {
+                $customer = $this->CustomerModel->destroy($id);
+            }
+            return $this->returnData('customer', $customer, 'This customer is deleted Now');
+        } catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
+        }
+
     }
 
 

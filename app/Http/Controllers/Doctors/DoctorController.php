@@ -72,13 +72,6 @@ class DoctorController extends Controller
         return $this->DoctorService->SocialMedia($doctor_name);
     }
 
-//    public function workplace($doctor_name)
-//    {
-//        $response=$this->DoctorService->workplace($doctor_name);
-//        return  response($response,200)
-//            ->header('Access-control-Allow-Origin','*')
-//            ->header('Access-control-Allow-Methods','*');
-//    }
     public function doctormedicaldevice($doctor_name)
     {
         return $this->DoctorService->doctormedicaldevice($doctor_name);

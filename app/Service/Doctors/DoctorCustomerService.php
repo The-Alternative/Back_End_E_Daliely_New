@@ -71,6 +71,7 @@ class DoctorCustomerService
                     'customer_id' => $unTranscustomer_id,
                 ]);
             }
+}
 //                DoctorCustomer::insert($doctor);
 
 

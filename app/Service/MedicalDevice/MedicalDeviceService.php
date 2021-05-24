@@ -23,18 +23,29 @@ class MedicalDeviceService
     }
     public function get()
     {
-        $MedicalDevice=$this->MedicalDeviceModel::Active()->WithTrans()->get();
-        return $this->returnData(' MedicalDevice', $MedicalDevice,'done');
+        try {
+            $MedicalDevice = $this->MedicalDeviceModel::Active()->WithTrans()->get();
+            return $this->returnData(' MedicalDevice', $MedicalDevice, 'done');
+        }
+        catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
+        }
+
     }
     public function getById($id)
     {
+        try{
         $MedicalDevice= $this->MedicalDeviceModel::WithTrans()->find($id);
-        return $this->returnData(' MedicalDevice', $MedicalDevice,'done');
-    }
-    public function getTrashed()
-    {
-        $MedicalDevice= $this->MedicalDeviceModel::NotActive()->all();
-        return $this -> returnData(' MedicalDevice', $MedicalDevice,'done');
+            if (is_null($MedicalDevice)){
+                return $this->returnSuccessMessage('this MedicalDevice not found','done');
+            }
+            else{
+                return $this->returnData(' MedicalDevice', $MedicalDevice,'done');
+            }
+        }
+        catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
+        }
     }
 //________________________________________________________//
     public function create( MedicalDeviceRequest $request )
@@ -119,40 +130,81 @@ class MedicalDeviceService
 //______________________________________________________//
     public function search($name)
     {
-        $MedicalDevice = DB::table('medical_devices')
-            ->where("name","like","%".$name."%")
-            ->get();
-        if (! $MedicalDevice)
-        {
-            return $this->returnError('400', 'not found this medicalDevice');
+        try{
+             $MedicalDevice = DB::table('medical_devices')
+                 ->where("name","like","%".$name."%")
+                 ->get();
+             if (! $MedicalDevice)
+             {
+                 return $this->returnError('400', 'not found this medicalDevice');
+             }
+             else
+             {
+                 return $this->returnData(' MedicalDevice',  $MedicalDevice,'done');
+             }
         }
-        else
-        {
-            return $this->returnData(' MedicalDevice',  $MedicalDevice,'done');
+        catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
         }
     }
     public function trash( $id)
     {
+        try{
         $MedicalDevice= $this->MedicalDeviceModel::find($id);
-        $MedicalDevice->is_active=false;
-        $MedicalDevice->save();
+            if (is_null($MedicalDevice)) {
+                return $this->returnSuccessMessage('This MedicalDevice not found', 'done');
+            }
+            else
+            {
+                $MedicalDevice->is_active=false;
+                $MedicalDevice->save();
+                return $this->returnData(' MedicalDevice',  $MedicalDevice,'This MedicalDevice is trashed Now');
+            }
+        }
+        catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
+        }
+    }
+    public function getTrashed()
+    {
+        try{
+        $MedicalDevice= $this->MedicalDeviceModel::NotActive()->all();
+        return $this -> returnData(' MedicalDevice', $MedicalDevice,'done');
+        }
+        catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
+        }
 
-        return $this->returnData(' MedicalDevice',  $MedicalDevice,'This MedicalDevice is trashed Now');
     }
     public function restoreTrashed( $id)
     {
-        $MedicalDevice=medicalDevice::find($id);
-        $MedicalDevice->is_active=true;
-        $MedicalDevice->save();
-
-        return $this->returnData('MedicalDevice',  $MedicalDevice,'This MedicalDevice is trashed Now');
+        try{
+              $MedicalDevice=medicalDevice::find($id);
+              if (is_null($MedicalDevice)) {
+                  return $this->returnSuccessMessage('This MedicalDevice not found', 'done');
+              }
+              else
+              {
+                  $MedicalDevice->is_active=true;
+                  $MedicalDevice->save();
+                  return $this->returnData('MedicalDevice',  $MedicalDevice,'This MedicalDevice is trashed Now');
+              }
+          }
+        catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
+        }
     }
     public function delete($id)
     {
+        try{
         $MedicalDevice = medicalDevice::find($id);
-        $MedicalDevice->is_active = false;
-        $MedicalDevice->save();
-        return $this->returnData('MedicalDevice',  $MedicalDevice, 'This MedicalDevice is deleted Now');
-
+            if ($MedicalDevice->is_active == 0) {
+                $MedicalDevice = $this->MedicalDeviceModel->destroy($id);
+            }
+            return $this->returnData('MedicalDevice',  $MedicalDevice, 'This MedicalDevice is deleted Now');
+        }
+        catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
+        }
     }
 }
