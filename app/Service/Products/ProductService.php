@@ -9,7 +9,6 @@ use App\Models\Stores\StoreProduct;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\ProductRequest;
 use App\Models\Products\Product;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class ProductService
@@ -41,8 +40,7 @@ class ProductService
     {
         try{
         $products = $this->productModel
-            ->with('Store')
-            ->get();
+            ->with('Store')->get();
             if (count($products) > 0)
             {
                 return $response=$this->returnData('Products',$products,'done');
@@ -50,9 +48,13 @@ class ProductService
             {
                 return $response=$this->returnSuccessMessage('Product','Products doesnt exist yet');
             }
-        }catch(\Exception $ex){
-            return $this->returnError('400','Failed');
+        }catch(\Exception $e){
+//            report($e);
+//            return false;
+//            return $this->errorResponse('Try later', Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->returnError('400',$e->getMessage());
         }
+//        return $this->errorResponse('failed','400');
     }
     public function getProductByCategory($id)
     {
@@ -63,8 +65,8 @@ class ProductService
             }else{
                 return $response= $this->returnData($products,'$products','done');
             }
-        }catch(\Exception $ex){
-            return $this->returnError('400','Failed');
+        }catch(\Exception $e){
+            return $this->returnError('400',$e->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -74,8 +76,6 @@ class ProductService
         try{
         $product = $this->productModel->with(['Store','Category','ProductImage','Brand','StoreProduct'])
             ->find($id);
-//        $product = $this->productModel->find($id);
-//        return $stores=count($product->Store);
             $prices = $this->storeProductModel->where('product_id','=',$id)->get();
             if(isset($prices) && count($prices)){
             foreach($prices as $price)
@@ -93,7 +93,7 @@ class ProductService
             }
             return $response=$this->returnData('product',[$product,$rangeOfPrice],'done');
         }catch(\Exception $ex){
-            return $this->returnError('400','Failed');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -110,7 +110,7 @@ class ProductService
                 return $response= $this->returnSuccessMessage('product','Products trashed doesnt exist yet');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','Failed');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -127,12 +127,13 @@ class ProductService
                 return $this->returnData('Product', $product, 'This Product Is trashed Now');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','Failed');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
     /****   Product's Soft Delete   ***/
     public function trash( $id)
+
     {
         try {
         $product= $this->productModel->find($id);
@@ -145,7 +146,7 @@ class ProductService
             }
 
         }catch(\Exception $ex){
-            return $this->returnError('400','Failed');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -214,7 +215,7 @@ class ProductService
         catch(\Exception $ex)
         {
             DB::rollback();
-            return $this->returnError('400','Failed');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -284,7 +285,7 @@ class ProductService
         }
         catch(\Exception $ex){
             DB::rollback();
-            return $this->returnError('400', 'saving Failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -301,7 +302,7 @@ class ProductService
                 return $this->returnData('products', $product,'done');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','Failed');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -316,7 +317,7 @@ class ProductService
                  return $this->returnData('Product', $product,'This Product Is deleted Now');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','Failed');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
 }

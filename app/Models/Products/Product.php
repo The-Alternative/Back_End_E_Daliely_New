@@ -27,7 +27,7 @@ class Product extends Model
       'offer_id', 'is_appear','is_active'
 ];
     protected $hidden = [
-        'created_at', 'updated_at','Pivot'
+        'created_at', 'updated_at'
     ];
     protected $casts = [
         'is_active' => 'boolean',
@@ -69,6 +69,7 @@ class Product extends Model
                 'stores_products.price',
                 'stores_products.quantity'])->get();
     }
+
     //______________________________ scopes end _____________________________//
     public function ProductTranslation()
     {
@@ -83,7 +84,7 @@ class Product extends Model
             'store_id',
             'id',
             'id')
-            ->withPivot(['price','quantity'])
+            ->WithPivot(['price','quantity'])
             ->withTimestamps();
     }
     public function Category(){
@@ -129,26 +130,4 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class);
     }
-//public function language()
-//{
-//    return $this->belongsToMany(language::class);
-//}
-//    public function categories(){
-//        return $this->belongsToMany(category::class)
-//        ->withTimestamps()
-//        ->withPivot(['description']);
-//    }
-//    public function stores(){
-//        return $this->belongsToMany(store::class)
-//        ->withTimestamps()
-//        ->withPivot(['is_active','is_approve','price','qty']);
-//    }
-//
-//    public function product_store_ratings(){
-//        return $this->hasMany(Product_Store_Rating::class);
-//    }
-//
-//    public function order_details(){
-//        return $this->hasMany(Order_Details::class);
-//    }
 }

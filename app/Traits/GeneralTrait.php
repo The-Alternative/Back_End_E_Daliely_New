@@ -8,6 +8,7 @@ use http\Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -347,6 +348,37 @@ trait GeneralTrait
 //            $this->model2->insert($Arr2);
 //        }
         return $this->returnData('Store', $Arr1,'done');
+    }
+
+
+
+    //trait for handler Exception......//
+    public function dataResponse($data): JsonResponse
+    {
+        return response()->json(['content' => $data], Response::HTTP_OK);
+    }
+
+    /**
+     * Success Response
+     * @param string $message
+     * @param int $code
+     * @return JsonResponse
+     */
+    public function successResponse(string $message, $code = Response::HTTP_OK): JsonResponse
+    {
+        return response()->json(['success' => $message, 'code' => $code], $code);
+    }
+
+    /**
+     * Error Response
+     * @param $message
+     * @param int $code
+     * @return JsonResponse
+     *
+     */
+    public function errorResponse($message, $code = Response::HTTP_BAD_REQUEST): JsonResponse
+    {
+        return response()->json(['error' => $message, 'code' => $code], $code);
     }
 }
 

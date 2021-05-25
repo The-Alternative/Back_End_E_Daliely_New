@@ -25,7 +25,7 @@ class StoresProductsTable extends Migration
             $table->timestamps();
         });
         for($store_id=1;$store_id<12;$store_id++){
-            for($product_id=1;$product_id<22;$product_id++) {
+            for($product_id=1;$product_id<100;$product_id++) {
                 DB::table('stores_products')->insert(
                     $arr = [
                     'product_id'=>$product_id,
