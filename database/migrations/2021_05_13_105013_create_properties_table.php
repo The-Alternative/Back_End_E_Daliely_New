@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDoctorMedicalDeviceTable extends Migration
+class CreatePropertiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateDoctorMedicalDeviceTable extends Migration
      */
     public function up()
     {
-        Schema::create('doctor_Medical_Device', function (Blueprint $table) {
+        Schema::create('properties', function (Blueprint $table) {
             $table->id();
-            $table->integer('doctor_id')->unsigned();
-            $table->integer('medical_device_id')->unsigned();
+            $table->unsignedInteger('custom_field_id');
+            $table->string('value');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateDoctorMedicalDeviceTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('doctorMedicalDevice');
+        Schema::dropIfExists('properties');
     }
 }

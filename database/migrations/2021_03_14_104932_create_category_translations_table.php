@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateCategoryTranslationsTable extends Migration
@@ -21,17 +22,32 @@ class CreateCategoryTranslationsTable extends Migration
 //            $table->unsignedInteger('language_id')->index();
 
             // Foreign key to the main model
-            $table->foreignId('category_id');
+//            $table->integer('category_id');
 //            $table->unique(['category_id', 'locale']);
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreignId('language_id');
+            $table->integer('category_id')->references('id')->on('categories')->onDelete('cascade');
+//            $table->integer('language_id');
 //            $table->unique(['language_id', 'lang_id']);
-            $table->foreign('language_id')->references('id')->on('languages')->onDelete('cascade');
+            $table->integer('language_id')->references('id')->on('languages')->onDelete('cascade');
 
             // Actual fields you want to translate
 //            $table->string('title');
 //            $table->longText('full_text');
         });
+        DB::table('category_translations')->insert([
+            ['name' => 'Developer',   'local' => 'en', 'category_id' => 1,'language_id' => 1],
+            ['name' => 'عربي', 'local' => 'ar', 'category_id' => 1, 'language_id' => 1],
+            ['name' => 'Journalist2', 'local' => 'en', 'category_id' => 2, 'language_id' => 2],
+            ['name' => 'عربي', 'local' => 'ar', 'category_id' => 2, 'language_id' => 2],
+            ['name' => 'Journalist4', 'local' => 'en', 'category_id' => 3, 'language_id' => 3],
+            ['name' => 'عربي', 'local' => 'ar', 'category_id' => 3, 'language_id' => 3],
+            ['name' => 'Journalist6', 'local' => 'en', 'category_id' => 4, 'language_id' => 4],
+            ['name' => 'عربي', 'local' => 'ar', 'category_id' => 4, 'language_id' => 4],
+            ['name' => 'Journalist8', 'local' => 'en', 'category_id' => 5, 'language_id' => 5],
+            ['name' => 'عربي', 'local' => 'ar', 'category_id' => 5, 'language_id' => 5],
+            ['name' => 'Journalist10', 'local' => 'en', 'category_id' => 6, 'language_id' =>6],
+            ['name' => 'عربي', 'local' => 'ar', 'category_id' => 6, 'language_id' =>6],
+
+        ]);
     }
 
     /**

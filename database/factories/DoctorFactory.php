@@ -27,7 +27,7 @@ class DoctorFactory extends Factory
             $s = DB::table('doctors')->insertGetId([
                 'image' => $this->faker->sentence(5),
                 'is_active' => 1,
-                'is_approved' => 1,
+                'is_approved' =>1,
                 'social_media_id' => 1,
                 'hospital_id' => 1,
                 'clinic_id' => 1,

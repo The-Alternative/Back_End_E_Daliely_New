@@ -20,18 +20,9 @@ class CreateActiveTimesTable extends Migration
             $table->boolean('is_active');
             $table->boolean('is_approved');
 
+
             $table->timestamps();
         });
-
-        DB::table('active_times')->insert([
-            ['start_time'=>'18:56:17' ,'end_time'=>'18:56:17' , 'is_approved'=>1,'is_active'=>1],
-            ['start_time'=>'18:56:17' ,'end_time'=>'18:56:17' , 'is_approved'=>1,'is_active'=>1],
-            ['start_time'=>'18:56:17' ,'end_time'=>'18:56:17' , 'is_approved'=>1,'is_active'=>1],
-            ['start_time'=>'18:56:17' ,'end_time'=>'18:56:17' , 'is_approved'=>1,'is_active'=>1],
-            ['start_time'=>'18:56:17' ,'end_time'=>'18:56:17' , 'is_approved'=>1,'is_active'=>1],
-            ['start_time'=>'18:56:17' ,'end_time'=>'18:56:17' , 'is_approved'=>1,'is_active'=>1],
-
-        ]);
     }
 
     /**

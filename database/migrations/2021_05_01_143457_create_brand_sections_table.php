@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStoresSectionsTable extends Migration
+class CreateBrandSectionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,22 +14,23 @@ class CreateStoresSectionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('stores_sections', function (Blueprint $table) {
+        Schema::create('brand_sections', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('section_id');
-            $table->unsignedInteger('store_id');
+            $table->integer('brands_id')->unsigned();
+            $table->integer('sections_id')->unsigned();
             $table->timestamps();
         });
-        for($section_id=1;$section_id<12;$section_id++){
-            for($store_id=1;$store_id<12;$store_id++) {
-                DB::table('stores_sections')->insert(
+        for($sections_id=1;$sections_id<12;$sections_id++){
+            for($brands_id=1;$brands_id<12;$brands_id++) {
+                DB::table('brand_sections')->insert(
                     $arr = [
-                        'section_id'=>$section_id,
-                        'store_id'=>$store_id
+                        'brands_id'=>$brands_id,
+                        'sections_id'=>$sections_id
                     ]
                 );
             }
         }
+
     }
 
     /**
@@ -39,6 +40,6 @@ class CreateStoresSectionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stores_sections');
+        Schema::dropIfExists('brand_sections');
     }
 }

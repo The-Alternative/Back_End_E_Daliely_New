@@ -21,16 +21,6 @@ class CreateCalendarsTable extends Migration
             $table->string('holiday_note');
             $table->timestamps();
         });
-        DB::table('calendars')->insert([
-
-            ['day_name'=>'saturday' ,'timestamps'=>'2021-05-18 19:30:27' ,'holiday_name'=>'friday' ,'holiday_note'=>'Hello World'],
-            ['day_name'=>'saturday' ,'timestamps'=>'2021-05-18 19:30:27' ,'holiday_name'=>'friday' ,'holiday_note'=>'Hello World'],
-            ['day_name'=>'saturday' ,'timestamps'=>'2021-05-18 19:30:27' ,'holiday_name'=>'friday' ,'holiday_note'=>'Hello World'],
-            ['day_name'=>'saturday' ,'timestamps'=>'2021-05-18 19:30:27' ,'holiday_name'=>'friday' ,'holiday_note'=>'Hello World'],
-            ['day_name'=>'saturday' ,'timestamps'=>'2021-05-18 19:30:27' ,'holiday_name'=>'friday' ,'holiday_note'=>'Hello World'],
-            ['day_name'=>'saturday' ,'timestamps'=>'2021-05-18 19:30:27' ,'holiday_name'=>'friday' ,'holiday_note'=>'Hello World'],
-
-        ]);
     }
 
     /**
