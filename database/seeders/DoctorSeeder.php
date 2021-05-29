@@ -3,14 +3,16 @@
 namespace Database\Seeders;
 
 use App\Models\Doctors\doctor;
-use Database\Factories\DoctorFactory;
+//use Database\Factories\DoctorFactory;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Faker\Factory as Faker;
 
 class DoctorSeeder extends Seeder
 {
-//    private $faker;
+
 
     /**
      * Run the database seeds.
@@ -19,31 +21,34 @@ class DoctorSeeder extends Seeder
      */
     public function run()
     {
-//        for ($i = 1; $i <= 100; $i++) {
-//            $s = DB::table('doctors')->insertGetId([
-//                'image' => $this->faker->sentence(5),
-//                'is_active' => 1,
-//                'is_approved' =>1,
-//                'social_media_id' => 1,
-//                'hospital_id' => 1,
-//                'clinic_id' => 1,
-//                'specialty_id' => 1
-//            ]);
-//            DB::table('doctor_translations')->insert([[
-//                'first_name' => $this->faker->sentence(2),
-//                'last_name' => $this->faker->sentence(2),
-//                'local' => 'en',
-//                'description' => $this->faker->sentence(10),
-//                'doctor_id' => $s
-//            ],
-//                [
-//                    'first_name' => $this->faker->sentence(2),
-//                    'last_name' => $this->faker->sentence(2),
-//                    'local' => 'ar',
-//                    'description' => $this->faker->sentence(10),
-//                    'doctor_id' => $s
-//                ]]);
-//
-//        }
+        $faker=Faker::create();
+        for ($i = 0; $i <= 200; $i++) {
+            $s = DB::table('doctors')->insertGetId([
+                'image' => $faker->sentence(5),
+                'is_active' => 1,
+                'is_approved' =>1,
+                'social_media_id' => 1,
+                'hospital_id' => 1,
+                'clinic_id' => 1,
+                'appointments_id' => 1,
+
+                'specialty_id' => 1
+            ]);
+            DB::table('doctor_translation')->insert([[
+                'description' =>$faker->sentence(10),
+                'doctor_id' => $s,
+                'first_name' => $faker->sentence(2),
+                'last_name'  => $faker->sentence(2),
+                'locale' => 'en',
+            ],
+                [
+                    'description' =>$faker->sentence(10),
+                    'doctor_id' => $s,
+                    'first_name' => $faker->sentence(2),
+                    'last_name'  => $faker->sentence(2),
+                    'locale' => 'ar',
+                ]]);
+
+        }
     }
 }

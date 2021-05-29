@@ -13,7 +13,6 @@ use App\Models\Customer\Customer;
 use App\Models\DoctorRate\DoctorRate;
 use App\Models\medicalDevice\medicalDevice;
 use App\Models\Appointment\Appointment;
-use Database\Factories\DoctorFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
@@ -27,10 +26,7 @@ class doctor extends Model
     protected $hidden   =['id','social_media_id','specialty_id','hospital_id','work_places_id','created_at','updated_at'];
      public $timestamps=false;
 
-    protected static function newFactory()
-    {
-        return DoctorFactory::new();
-    }
+
      //scope
     public function scopeActive($query)
     {
