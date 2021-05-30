@@ -128,10 +128,10 @@ class CustomFieldService
     {
 //        try
 //        {
-            $validated = $request->validated();
+//            $validated = $request->validated();
             $request->is_active?$is_active=true:$is_active=false;
             //transformation to collection
-            $allcustom_field = collect($request->custom_field)->all();
+            $allcustom_fields = collect($request->custom_field)->all();
             ///select folder to save the image
             // $fileBath = "" ;
             //     if($request->has('image'))
@@ -145,20 +145,19 @@ class CustomFieldService
                 'is_active' =>$request['is_active'],
             ]);
             //check the category and request
-            if(isset($allCustomFieldes) && count($allCustomFieldes))
+            if(isset($allcustom_fields) && count($allcustom_fields))
             {
                 //insert other traslations for custom field
-                foreach ($allCustomFieldes as $allCustomField)
+                foreach ($allcustom_fields as $allCustomField)
                 {
                     $transCustom_field_arr[]=[
                         'name' => $allCustomField ['name'],
                         'local' => $allCustomField['local'],
                         'description' => $allCustomField['description'],
                         'custom_field_id' => $unTransCustomField_id
-
                     ];
                 }
-                $this->Custom_Field_Translation->insert($transCustom_field_arr);
+                 $this->Custom_Field_Translation->insert($transCustom_field_arr);
             }
             DB::commit();
             return $this->returnData('customField', [$unTransCustomField_id,$transCustom_field_arr],'done');

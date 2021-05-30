@@ -7,6 +7,7 @@ use App\Models\Categories\Category;
 use App\Models\Categories\ProductCategory;
 use App\Models\Categories\Section;
 use App\Models\Custom_Fieldes\Custom_Field;
+use App\Models\Custom_Fieldes\Custom_Field_Value;
 use App\Models\Images\ProductImage;
 use App\Models\Stores\Store;
 use App\Models\Stores\StoreProduct;
@@ -69,7 +70,6 @@ class Product extends Model
                 'stores_products.price',
                 'stores_products.quantity'])->get();
     }
-
     //______________________________ scopes end _____________________________//
     public function ProductTranslation()
     {
@@ -129,5 +129,12 @@ class Product extends Model
     public function Brand()
     {
         return $this->belongsTo(Brand::class);
+    }
+    public function Custom_Field_Value(){
+        return $this->belongsToMany(Custom_Field_Value::class,
+            'products_custom_field_value',
+            'product_id',
+            'custom_field_value_id'
+        );
     }
 }

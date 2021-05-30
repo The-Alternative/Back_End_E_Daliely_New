@@ -3,6 +3,8 @@ namespace App\Service\Products;
 
 use App\Models\Categories\Category;
 use App\Models\Categories\Section;
+use App\Models\Custom_Fieldes\Custom_Field;
+use App\Models\Custom_Fieldes\Custom_Field_Value;
 use App\Models\Products\ProductTranslation;
 use App\Models\Stores\Store;
 use App\Models\Stores\StoreProduct;
@@ -14,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 class ProductService
 {
     use GeneralTrait;
+    private $customFieldModel;
     private $productModel;
     private $productTranslation;
     private $categoryModel;
@@ -24,7 +27,7 @@ class ProductService
     public function __construct(
         Product $product ,ProductTranslation $productTranslation ,
         Category $category,Section $sectionModel,Store $storeModel ,
-        StoreProduct $storeProduct
+        StoreProduct $storeProduct,Custom_Field $CustomField
     )
     {
         $this->productModel=$product;
@@ -33,6 +36,7 @@ class ProductService
         $this->SectionModel=$sectionModel;
         $this->storeModel=$storeModel;
         $this->storeProductModel=$storeProduct;
+        $this->customFieldModel=$CustomField;
     }
     /*__________________________________________________________________*/
     /****Get All Active Products  ****/
@@ -49,9 +53,6 @@ class ProductService
                 return $response=$this->returnSuccessMessage('Product','Products doesnt exist yet');
             }
         }catch(\Exception $e){
-//            report($e);
-//            return false;
-//            return $this->errorResponse('Try later', Response::HTTP_INTERNAL_SERVER_ERROR);
             return $this->returnError('400',$e->getMessage());
         }
 //        return $this->errorResponse('failed','400');
@@ -190,11 +191,17 @@ class ProductService
                 }
                 if ($request->has('category')){
                     $product=$this->productModel->find($unTransProduct_id);
-                    $product->Category()->sync($request->get('category'));
+                    $product->Category()->syncWithoutDetaching($request->get('category'));
                 }
-            if ($request->has('customFeild')){
+            if ($request->has('CustomFieldValue')){
                 $product=$this->productModel->find($unTransProduct_id);
-                $product->Custom_Field()->sync($request->get('customFeild'));
+                $product->Custom_Field_Value()->syncWithoutDetaching($request->get('CustomFieldValue'));
+//                  $Arr=collect($request->CustomFieldValue);
+//                $customFeilds=$Arr->pluck('custom_field_value_id');;
+//                foreach ($customFeilds as $customFeild){
+//
+//                   $s[]= Custom_Field_Value::find($customFeild);
+//                }
             }
             $images=$request->images;
         foreach ($images as $image)

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Custom_Field_Translation extends Model
 {
     use HasFactory;
+    protected $table='custom__fields__translations';
     protected $primaryKey = 'id';
     protected $hidden = [
         'created_at', 'updated_at'

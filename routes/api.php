@@ -62,7 +62,7 @@ Route::group(
         /*_____________Category routes_____________*/
         Route::group(['prefix'=>'customfields','namespace'=>'Custom_fields'],function()
         {
-            Route::GET('/getAll','CustomFieldsController@getAll')->name('customfields/');
+            Route::GET('/getAll','CustomFieldsController@getAll');
             Route::GET('/getById/{id}','CustomFieldsController@getById');
             Route::GET('/getCategoryBySelf/{id}','CustomFieldsController@getCategoryBySelf');
             Route::POST('/create','CustomFieldsController@create');
