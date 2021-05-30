@@ -164,7 +164,6 @@ class ProductService
                 // //create the default language's product
                 $unTransProduct_id=$this->productModel->insertGetId([
                     'slug' =>$request['slug'],
-                    'image' =>$request['image'],
                     'barcode' =>$request['barcode'],
                     'is_active' =>$request['is_active'],
                     'is_appear' =>$request['is_appear'],
