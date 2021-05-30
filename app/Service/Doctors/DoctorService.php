@@ -86,15 +86,6 @@ class DoctorService
                 }
                 DoctorTranslation::insert( $transdoctor);
             }
-
-            if ($request->has('customer')) {
-              $doctor[] = $this->doctorModel->find($unTransdoctor_id);
-
-                $doctor->Customer()->sync($request->get('customer'));
-            }
-        DoctorCustomer::insert($doctor[]);
-        return     $doctor ;
-
             DB::commit();
             return $this->returnData('doctor', [$unTransdoctor_id,  $transdoctor], 'done');
         }
