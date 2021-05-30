@@ -26,7 +26,6 @@ class ProductRequest extends FormRequest
     {
         return [
             'is_active'=>'required|in:1,0',
-            'image'=>'required',
             'slug'=>'required',
             'barcode'=>'required',
 

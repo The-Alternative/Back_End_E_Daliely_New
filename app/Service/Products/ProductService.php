@@ -250,7 +250,6 @@ class ProductService
             $unTransProduct=$this->productModel->where('products.id',$id)
                 ->update([
                     'slug' =>$request['slug'],
-                    'image' =>$request['image'],
                     'barcode' =>$request['barcode'],
                     'is_active' =>$request['is_active'],
                     'is_appear' =>$request['is_appear'],

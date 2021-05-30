@@ -42,7 +42,7 @@ class Product extends Model
     public function scopeSelectActiveValue($query)
     {
         return $query->select(
-            'title', 'slug','brand_id','barcode','image',
+            'title', 'slug','brand_id','barcode',
             'meta','is_active', 'is_appear','short_des','description')
         ->where('is_active',1)
         ->get();
