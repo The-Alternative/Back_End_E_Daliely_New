@@ -2,6 +2,8 @@
 
 namespace App\Models\MedicalFile;
 
+use App\Models\Doctors\doctor;
+use App\Models\Doctors\DoctorCustomer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,6 +23,4 @@ class MedicalFile extends Model
     {
         return $query->where('is_active',0);
     }
-
-
 }

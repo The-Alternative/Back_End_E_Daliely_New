@@ -180,7 +180,7 @@ Route::group(['prefix'=>'doctor','namespace'=>'Doctors'],function () {
     Route::GET('/doctor-details/{doctor_name}', 'DoctorController@getalldetails');
     Route::get('/doctor-rate/{doctor_name}','DoctorController@DoctorRate');
 
-    Route::post('/create-customer-by-doctor','DoctorController@createcustomer');
+    Route::post('/create-customer-by-doctor/{doctor_id}/{medical_file_id}','DoctorController@createcustomer');
 
 });
 /*---------------Doctor Rate Route--------*/

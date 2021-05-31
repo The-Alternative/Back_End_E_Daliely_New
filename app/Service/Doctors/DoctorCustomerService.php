@@ -9,6 +9,7 @@ use App\Models\Customer\Customer;
 use App\Models\Customer\CustomerTranslation;
 use App\Models\Doctors\doctor;
 use App\Models\Doctors\DoctorCustomer;
+use App\Models\MedicalFile\MedicalFile;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -21,15 +22,18 @@ class DoctorCustomerService
     use GeneralTrait;
 
 
-    public function __construct(DoctorCustomer $doctorcustomer,customer $customer,doctor $doctor)
+    public function __construct(DoctorCustomer $doctorcustomer,customer $customer,doctor $doctor,MedicalFile $medicalfile)
     {
         $this->doctorCustomerModel=$doctorcustomer;
         $this->customerModel=$customer;
         $this->doctorModel=$doctor;
+        $this->MedicalFile=$medicalfile;
     }
 
-        public function create(Request $request)
+        public function create(Request $request,$doctorid,$fileId)
         {
+            $doctor= $this->doctorModel->find($doctorid);
+            $medicalfile=$this->MedicalFile->find($fileId);
 
             try {
             $allcustomer = collect($request->customer)->all();
@@ -51,10 +55,9 @@ class DoctorCustomerService
                 }
                 CustomerTranslation::insert($transcustomer);
             }
-
             if ($request->has('cus')) {
                 $doctor = $this->customerModel->find($unTranscustomer_id);
-                $doctor->doctor()->sync($request->get('cus'));
+                $doctor->doctor()->sync($medicalfile,$doctor,$request->get('cus'));
 
             }
             DB::commit();

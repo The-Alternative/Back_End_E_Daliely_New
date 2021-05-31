@@ -101,9 +101,9 @@ class DoctorController extends Controller
         return $this->DoctorService->customer($doctor_name);
     }
 
-    public function createcustomer(Request $request)
+    public function createcustomer(Request $request,$doctorid,$fileId)
     {
-        return $this->DoctorCustomerService->create( $request );
+        return $this->DoctorCustomerService->create( $request,$doctorid,$fileId );
     }
     public function DoctorRate($doctor_name)
     {
