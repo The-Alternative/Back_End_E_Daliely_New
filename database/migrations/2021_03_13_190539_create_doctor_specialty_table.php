@@ -17,19 +17,10 @@ class CreateDoctorSpecialtyTable extends Migration
         Schema::create('doctor_Specialty', function (Blueprint $table) {
             $table->id();
             $table->integer('doctor_id')->unsigned();
-            $table->integer('specialties_id')->unsigned();
+            $table->integer('specialty_id')->unsigned();
             $table->timestamps();
         });
-        for($doctor_id=1;$doctor_id<12;$doctor_id++) {
-            for ($specialties_id = 1; $specialties_id < 12; $specialties_id++) {
-                DB::table('doctor_Specialty')->insert(
-                     [
-                        'doctor_id' => $doctor_id,
-                        'specialties_id' => $specialties_id
-                    ]
-                );
-            }
-        }
+
 
     }
 

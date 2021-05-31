@@ -40,4 +40,9 @@ class medicalDevice extends Model
     {
         return $this->belongsToMany(medicalDevice::class);
     }
+    public function doctor()
+
+    {
+        return $this->belongsToMany(doctor::class);
+    }
 }

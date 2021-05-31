@@ -47,4 +47,5 @@ class Specialty extends Model
     {
         return $this->belongsToMany(doctor::class);
     }
+
 }

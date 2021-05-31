@@ -56,4 +56,11 @@ class SpecialtyController extends Controller
     {
         return  $this->SpecialtyService->delete($id);
     }
+
+   // get doctor by specialty
+    public function DoctorSpecialty($specialty_name)
+    {
+        return  $this->SpecialtyService->DoctorSpecialty($specialty_name);
+    }
+
 }

@@ -272,6 +272,8 @@ Route::group(['prefix'=>'Specialty','namespace'=>'Specialty'],function () {
     Route::PUT('/trash/{id}', 'SpecialtyController@trash');
     Route::delete('/delete/{id}', 'SpecialtyController@delete');
     Route::PUT('/restoreTrashed/{id}', 'SpecialtyController@restoreTrashed');
+
+    Route::get('/specialty-doctor/{specialty_name}', 'SpecialtyController@DoctorSpecialty');
 });
 
 ///*--------------- Calendar Route-------------*/
