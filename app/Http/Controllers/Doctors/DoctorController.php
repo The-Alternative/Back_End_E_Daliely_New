@@ -109,4 +109,8 @@ class DoctorController extends Controller
     {
         return $this->DoctorService->DoctorRate($doctor_name);
     }
+    public function DoctorSpecialty($doctor_name)
+    {
+        return $this->DoctorService->DoctorSpecialty($doctor_name);
+    }
 }

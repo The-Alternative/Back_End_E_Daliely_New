@@ -303,7 +303,7 @@ class DoctorService
     public function getalldetails($doctor_name)
     {
         try{
-        return  doctor::with('medicalDevice','socialMedia','clinic','hospital')
+        return  doctor::with('medicalDevice','socialMedia','clinic','hospital','Specialty')
             ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
             ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
 //            ->where ( 'doctor_translation.locale','=', Config::get('app.locale'))
@@ -342,6 +342,20 @@ class DoctorService
             return $this->returnError('400', 'failed');
         }
     }
+    //get specialtyby doctor name
+    public function DoctorSpecialty($doctor_name)
+    {
+        try {
+            return doctor::with('Specialty')
+                ->join('doctor_translation', 'doctor_translation.doctor_id', '=', 'doctor_id')
+                ->where('doctor_translation.first_name', 'like', '%' . $doctor_name . '%')
+                ->select('doctors.*', 'doctor_translation.*')->get();
+        } catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
+        }
+    }
+
+
 
 
 }

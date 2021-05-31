@@ -179,6 +179,8 @@ Route::group(['prefix'=>'doctor','namespace'=>'Doctors'],function () {
     Route::get('/view-customer/{doctor_name}','DoctorController@customer');
     Route::GET('/doctor-details/{doctor_name}', 'DoctorController@getalldetails');
     Route::get('/doctor-rate/{doctor_name}','DoctorController@DoctorRate');
+    Route::get('/doctor-specialty/{doctor_name}','DoctorController@DoctorSpecialty');
+
 
     Route::post('/create-customer-by-doctor/{doctor_id}/{medical_file_id}','DoctorController@createcustomer');
 
