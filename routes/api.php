@@ -254,12 +254,13 @@ Route::group(['prefix'=>'MedicalDevice','namespace'=>'MedicalDevice'],function (
     Route::get('/getById/{id}', 'MedicalDeviceController@getById');
     Route::get('/getTrashed', 'MedicalDeviceController@getTrashed');
     Route::post('/create', 'MedicalDeviceController@create');
-
     Route::put('/update/{id}', 'MedicalDeviceController@update');
     Route::GET('/search/{name}', 'MedicalDeviceController@search');
     Route::PUT('/trash/{id}', 'MedicalDeviceController@trash');
     Route::delete('/delete/{id}', 'MedicalDeviceController@delete');
     Route::PUT('/restoreTrashed/{id}', 'MedicalDeviceController@restoreTrashed');
+
+    Route::GET('/get-doctor-by-medical-device/{medical_device_name}','MedicalDeviceController@getdoctor');
 });
 /*---------------Specialty Route-------------*/
 Route::group(['prefix'=>'Specialty','namespace'=>'Specialty'],function () {

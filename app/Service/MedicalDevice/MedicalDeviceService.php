@@ -207,4 +207,16 @@ class MedicalDeviceService
             return $this->returnError('400', 'failed');
         }
     }
+
+    public function doctormedicaldevice($medical_device_name)
+    {
+        try {
+            return MedicalDevice::with('doctor')
+                ->join('medical_device_translation','medical_device_translation.medical_device_id','=','medical_device_id')
+                ->where('medical_device_translation.name','like','%'.$medical_device_name.'%')
+                ->select('medical_devices.*','medical_device_translation.name')->get();
+        } catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
+        }
+    }
 }

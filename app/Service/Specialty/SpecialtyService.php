@@ -208,13 +208,13 @@ class SpecialtyService
 
     public function DoctorSpecialty($specialty_name)
     {
-//        try {
+        try {
             return Specialty::with('doctor')
-                ->join(' specialty_translation',' specialty_translation.specialty_id','=','specialty_id')
-                ->where(' specialty_translation.name','like','%'.$specialty_name.'%')
-                ->select('specialties.*',' specialty_translation.name')->get();
-//        } catch (\Exception $ex) {
-//            return $this->returnError('400', 'failed');
-//        }
+                ->join('specialty_translation','specialty_translation.specialty_id','=','specialty_id')
+                ->where('specialty_translation.name','like','%'.$specialty_name.'%')
+                ->select('specialties.*','specialty_translation.name')->get();
+        } catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
+        }
     }
 }
