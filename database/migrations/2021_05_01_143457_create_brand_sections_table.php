@@ -20,16 +20,7 @@ class CreateBrandSectionsTable extends Migration
             $table->integer('sections_id')->unsigned();
             $table->timestamps();
         });
-        for($sections_id=1;$sections_id<12;$sections_id++){
-            for($brands_id=1;$brands_id<12;$brands_id++) {
-                DB::table('brand_sections')->insert(
-                    $arr = [
-                        'brands_id'=>$brands_id,
-                        'sections_id'=>$sections_id
-                    ]
-                );
-            }
-        }
+
 
     }
 

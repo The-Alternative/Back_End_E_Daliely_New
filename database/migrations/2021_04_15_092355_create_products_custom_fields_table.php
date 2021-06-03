@@ -20,18 +20,7 @@ class CreateProductsCustomFieldsTable extends Migration
             $table->unsignedInteger('customfield_id');
             $table->timestamps();
         });
-        DB::table('products_custom_fields')->insert([
-            ['customfield_id'=>1,'product_id'=>1],
-            ['customfield_id'=>2,'product_id'=>1],
-            ['customfield_id'=>4,'product_id'=>1],
-            ['customfield_id'=>5,'product_id'=>1],
-            ['customfield_id'=>6,'product_id'=>1],
-            ['customfield_id'=>7,'product_id'=>1],
-            ['customfield_id'=>8,'product_id'=>1],
-            ['customfield_id'=>9,'product_id'=>1],
-            ['customfield_id'=>10,'product_id'=>1],
-            ['customfield_id'=>11,'product_id'=>1],
-                ]);
+
     }
 
     /**

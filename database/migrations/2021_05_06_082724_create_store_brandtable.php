@@ -21,19 +21,7 @@ class CreateStoreBrandtable extends Migration
             $table->unsignedInteger('brand_id');
             $table->timestamps();
         });
-        DB::table('store_brand')->insert([
 
-            ['brand_id'=>1,'store_id'=>1],
-            ['brand_id'=>2,'store_id'=>1],
-            ['brand_id'=>3,'store_id'=>1],
-            ['brand_id'=>4,'store_id'=>1],
-            ['brand_id'=>5,'store_id'=>1],
-            ['brand_id'=>1,'store_id'=>2],
-            ['brand_id'=>2,'store_id'=>2],
-            ['brand_id'=>3,'store_id'=>2],
-            ['brand_id'=>4,'store_id'=>2],
-            ['brand_id'=>5,'store_id'=>2],
-        ]);
     }
 
         /**

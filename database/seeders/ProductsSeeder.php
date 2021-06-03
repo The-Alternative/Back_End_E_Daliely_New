@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-
+use Faker\Factory as Faker;
 class ProductsSeeder extends Seeder
 {
     /**
@@ -15,11 +15,12 @@ class ProductsSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 1; $i <= 100; $i++) {
+        $faker=Faker::create();
+        for ($i = 1; $i <= 200; $i++) {
             $s = DB::table('products')->insertGetId([
-                'slug' => Str::random(10),
-                'image' => Str::random(10),
-                'barcode' => Str::random(10),
+                'slug' => $faker->sentence(1),
+                'image' => $faker->sentence(10),
+                'barcode' =>$faker->sentence(1),
                 'is_active' => 1,
                 'is_appear' => 1,
                 'rating_id' => 1,
@@ -27,19 +28,19 @@ class ProductsSeeder extends Seeder
                 'offer_id' => 1
             ]);
             DB::table('product_translations')->insert([[
-                'name' => Str::random(10),
-                'short_des' => Str::random(20),
-                'local' => 'ar',
-                'long_des' => Str::random(40),
-                'meta' => Str::random(10),
+                'name' => $faker->sentence(5),
+                'short_des' => $faker->sentence(10),
+                'local' => 'en',
+                'long_des' => $faker->sentence(10),
+                'meta' => $faker->sentence(5),
                 'product_id' => $s
             ],
                 [
-                    'name' => Str::random(10),
-                    'short_des' => Str::random(20),
-                    'local' => 'en',
-                    'long_des' => Str::random(40),
-                    'meta' => Str::random(10),
+                    'name' => $faker->sentence(5),
+                    'short_des' => $faker->sentence(10),
+                    'local' => 'ar',
+                    'long_des' => $faker->sentence(10),
+                    'meta' => $faker->sentence(5),
                     'product_id' => $s
                 ]]);
 
