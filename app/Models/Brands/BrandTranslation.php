@@ -15,6 +15,6 @@ class BrandTranslation extends Model
 
     public function brand()
     {
-        return $this->belongsTo(Brands::class);
+        return $this->belongsTo(Brand::class);
     }
 }

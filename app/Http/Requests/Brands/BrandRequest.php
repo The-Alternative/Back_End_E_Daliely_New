@@ -13,7 +13,7 @@ class BrandRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,12 +24,30 @@ class BrandRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=> 'require|min:5|max:255|unique:brands,name',
-            'slug'=>'required',
-            'description'=>'required|min:20|max:255',
-            'image'=>'required',
-            'is_active'=>'required',
 
-        ];
+            'is_active'=>'required',
+            'image'=>'required',
+            'slug'=>'required',
+
+            'brand'=>'required|array|min:1',
+            'brand.*.name'=>'required|min:3|string|unique',
+            'brand.*.description'=>'required|min:10|max:255',
+            'brand.*.locale'=>'required',
+ ];
+    }
+
+    public function messages()
+    {
+        return [
+            'required'=>'this field is required',
+            'in'=>'this field must be 0 (is not active) or 1 (is active)',
+
+            'brand.*.name.min' => 'Your brand\'s Name Is Too Short',
+            'brand.*.name.max' => 'Your brand\'s Name Is Too Long',
+            'brand.*.name.unique' => 'Your brand\'s Name Is Used By Another Brand',
+
+            'brand.*.description.min' => 'Your brand Description\'s Is Too Short',
+            'brand.*.description.max' => 'Your brand Description\'s Is Too Long',
+ ];
     }
 }

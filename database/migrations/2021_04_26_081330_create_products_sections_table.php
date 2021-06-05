@@ -20,6 +20,16 @@ class CreateProductsSectionsTable extends Migration
             $table->unsignedInteger('product_id');
             $table->timestamps();
         });
+        for($section_id=1;$section_id<12;$section_id++){
+            for($product_id=1;$product_id<12;$product_id++) {
+                DB::table('products_sections')->insert(
+                    $arr = [
+                        'section_id'=>$section_id,
+                        'product_id'=>$product_id
+                    ]
+                );
+            }
+        }
         DB::table('products_sections')->insert([
             ['product_id'=>1,'section_id'=>1],
             ['product_id'=>2,'section_id'=>1],

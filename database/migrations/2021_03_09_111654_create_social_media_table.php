@@ -18,9 +18,9 @@ class CreateSocialMediaTable extends Migration
             $table->integer('phone_number');
             $table->integer('whatsapp_number');
             $table->string('facebook_account');
-            $table->string('instagram_account');
+            $table->string( 'instagram_account');
             $table->integer('telegram_number');
-            $table->string('email');
+            $table->string( 'email');
             $table->integer('doctor_id')->unsigned();
             $table->boolean('is_active');
 

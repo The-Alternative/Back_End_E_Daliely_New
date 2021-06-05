@@ -3,19 +3,20 @@ namespace App\Service\Products;
 
 use App\Models\Categories\Category;
 use App\Models\Categories\Section;
+use App\Models\Custom_Fieldes\Custom_Field;
+use App\Models\Custom_Fieldes\Custom_Field_Value;
 use App\Models\Products\ProductTranslation;
 use App\Models\Stores\Store;
 use App\Models\Stores\StoreProduct;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\ProductRequest;
 use App\Models\Products\Product;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-
 
 class ProductService
 {
     use GeneralTrait;
+    private $customFieldModel;
     private $productModel;
     private $productTranslation;
     private $categoryModel;
@@ -23,17 +24,10 @@ class ProductService
     private $storeModel;
     private $storeProductModel;
 
-    /**
-     * ProductService constructor.
-     * @param Product $product
-     * @param ProductTranslation $productTranslation
-     * @param Category $category
-     * @param Section $sectionModel
-     */
     public function __construct(
         Product $product ,ProductTranslation $productTranslation ,
         Category $category,Section $sectionModel,Store $storeModel ,
-        StoreProduct $storeProduct
+        StoreProduct $storeProduct,Custom_Field $CustomField
     )
     {
         $this->productModel=$product;
@@ -42,6 +36,7 @@ class ProductService
         $this->SectionModel=$sectionModel;
         $this->storeModel=$storeModel;
         $this->storeProductModel=$storeProduct;
+        $this->customFieldModel=$CustomField;
     }
     /*__________________________________________________________________*/
     /****Get All Active Products  ****/
@@ -49,9 +44,7 @@ class ProductService
     {
         try{
         $products = $this->productModel
-            ->with(['Category','Section'])
-            ->get();
-
+            ->with('Store')->get();
             if (count($products) > 0)
             {
                 return $response=$this->returnData('Products',$products,'done');
@@ -59,9 +52,10 @@ class ProductService
             {
                 return $response=$this->returnSuccessMessage('Product','Products doesnt exist yet');
             }
-        }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+        }catch(\Exception $e){
+            return $this->returnError('400',$e->getMessage());
         }
+//        return $this->errorResponse('failed','400');
     }
     public function getProductByCategory($id)
     {
@@ -72,41 +66,35 @@ class ProductService
             }else{
                 return $response= $this->returnData($products,'$products','done');
             }
-        }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+        }catch(\Exception $e){
+            return $this->returnError('400',$e->getMessage());
         }
     }
     /*__________________________________________________________________*/
-    /****Get Active Product By ID  ***
-     * @param $id
-     * @return JsonResponse
-     */
+    /****Get Active Product By ID  ***/
     public function getById( $id)
     {
         try{
-        $product = $this->productModel->with(['Store','Category','ProductImage'])
+        $product = $this->productModel->with(['Store','Category','ProductImage','Brand','StoreProduct'])
             ->find($id);
-//            $prices = $this->storeProductModel->where('product_id','=',$id)->get();
-////            if(isset($prices) && count($prices)){
-//            foreach($product->prices as $price)
-//            {
-//                $collection1[]=[
-//                $price['price']
-//            ];
-//            }
-//        $max = collect($collection1)->max();
-//        $min = collect($collection1)->min();
-        return $response=$this->returnData('Product',$product,'done');
-//            }
-
-//            if (!isset($product) ){
-////                return $response= $this->returnSuccessMessage('This Product not found','done');
-//                return $response=$this->returnData('Product',[$product,],'done');
-//            }
-//            return $response=$this->returnData('Product',$product,$max,$min,'done');
-
+            $prices = $this->storeProductModel->where('product_id','=',$id)->get();
+            if(isset($prices) && count($prices)){
+            foreach($prices as $price)
+            {
+                $collection1[]=[
+                $price['price']
+            ];
+            }
+        $max = collect($collection1)->max();
+        $min = collect($collection1)->min();
+        $rangeOfPrice=[$max,$min];
+            }
+            if (!isset($product) ){
+                return $response= $this->returnSuccessMessage('This Product not found','done');
+            }
+            return $response=$this->returnData('product',[$product,$rangeOfPrice],'done');
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -120,17 +108,14 @@ class ProductService
             if (count($product) > 0){
                 return $response= $this->returnData('Store',$product,'done');
             }else{
-                return $response= $this->returnSuccessMessage('Product','Products trashed doesnt exist yet');
+                return $response= $this->returnSuccessMessage('product','Products trashed doesnt exist yet');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
-    /****Restore Products Fore Active status  ***
-     * @param $id
-     * @return JsonResponse
-     */
+    /****Restore Products Fore Active status  ***/
     public function restoreTrashed( $id)
     {
         try{
@@ -143,15 +128,13 @@ class ProductService
                 return $this->returnData('Product', $product, 'This Product Is trashed Now');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
-    /****   Product's Soft Delete   ***
-     * @param $id
-     * @return JsonResponse
-     */
+    /****   Product's Soft Delete   ***/
     public function trash( $id)
+
     {
         try {
         $product= $this->productModel->find($id);
@@ -164,14 +147,11 @@ class ProductService
             }
 
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
-    /****  Create Products   ***
-     * @param ProductRequest $requests
-     * @return JsonResponse
-     */
+    /****  Create Products   ***/
     public function create(ProductRequest $request)
     {
         try{
@@ -184,7 +164,6 @@ class ProductService
                 // //create the default language's product
                 $unTransProduct_id=$this->productModel->insertGetId([
                     'slug' =>$request['slug'],
-                    'image' =>$request['image'],
                     'barcode' =>$request['barcode'],
                     'is_active' =>$request['is_active'],
                     'is_appear' =>$request['is_appear'],
@@ -209,25 +188,48 @@ class ProductService
                     }
                     $this->productTranslation->insert($transProduct_arr);
                 }
+                if ($request->has('category')){
+                    $product=$this->productModel->find($unTransProduct_id);
+                    $product->Category()->syncWithoutDetaching($request->get('category'));
+                }
+            if ($request->has('CustomFieldValue')){
+                $product=$this->productModel->find($unTransProduct_id);
+                $product->Custom_Field_Value()->syncWithoutDetaching($request->get('CustomFieldValue'));
+//                  $Arr=collect($request->CustomFieldValue);
+//                $customFeilds=$Arr->pluck('custom_field_value_id');;
+//                foreach ($customFeilds as $customFeild){
+//
+//                   $s[]= Custom_Field_Value::find($customFeild);
+//                }
+            }
+            $images=$request->images;
+        foreach ($images as $image)
+        {
+            if ($request->has('images')) {
+
+                $product = $this->productModel->find($unTransProduct_id);
+                $product->ProductImage()->insert([
+                    'product_id' => $unTransProduct_id,
+                    'image' => $image['image'],
+                    'is_cover' => $image['is_cover'],
+                ]);
+            }
+            }
                 DB::commit();
                 return $this->returnData('Product', [$unTransProduct_id,$transProduct_arr],'done');
             }
         catch(\Exception $ex)
         {
             DB::rollback();
-            return $this->returnError('Product','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
-    /****  Update Product   ***
-     * @param ProductRequest $request
-     * @param $id
-     * @return JsonResponse
-     */
+    /****  Update Product   ***/
     public function update(ProductRequest $request,$id)
     {
-//        $validated = $request->validated();
-//        try{
+        $validated = $request->validated();
+        try{
             $product= $this->productModel->find($id);
             if(!$product)
                 return $this->returnError('400', 'not found this Category');
@@ -244,10 +246,10 @@ class ProductService
             //             'image' => $filePath,
             //         ]);
             // }
+            DB::beginTransaction();
             $unTransProduct=$this->productModel->where('products.id',$id)
                 ->update([
                     'slug' =>$request['slug'],
-                    'image' =>$request['image'],
                     'barcode' =>$request['barcode'],
                     'is_active' =>$request['is_active'],
                     'is_appear' =>$request['is_appear'],
@@ -283,13 +285,13 @@ class ProductService
                         ]);
                 }
             }
-//            DB::commit();
+            DB::commit();
             return $this->returnData('Category', $dbdproducts,'done');
-//        }
-//        catch(\Exception $ex){
-//            DB::rollback();
-//            return $this->returnError('400', 'saving failed');
-//        }
+        }
+        catch(\Exception $ex){
+            DB::rollback();
+            return $this->returnError('400', $ex->getMessage());
+        }
     }
     /*__________________________________________________________________*/
     public function search($title)
@@ -305,14 +307,11 @@ class ProductService
                 return $this->returnData('products', $product,'done');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
-    /****  Delete Product   ***
-     * @param $id
-     * @return JsonResponse
-     */
+    /****  Delete Product   ****/
     public function delete( $id)
     {
         try{
@@ -323,7 +322,7 @@ class ProductService
                  return $this->returnData('Product', $product,'This Product Is deleted Now');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
 }

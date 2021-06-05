@@ -25,24 +25,29 @@ class CategoryRequest extends FormRequest
     public function rules()
     {
         return [
-//
-//            'name' => 'required|min:3|max:50|unique:categories',
-//            'slug' => 'required|min:3|max:50:categories',
-//            'parent_id' => 'required:categories',
-//            'image' => 'required:categories'
+            'is_active'=>'required|in:0,1',
+            'image'=>'required',
+            'slug'=>'required',
+
+            'category'=>'required|array|min:1',
+            'category.*.name'=>'required|min:3|string',
         ];
     }
+
     public function messages()
     {
         return [
-//            'name.required'=>'Please Enter Your Category\'s name',
-//            'name.min'=>'Your Category\'s name Is Too Short',
-//            'name.max'=>'Your Category\'s name Is Too Long',
+            'required'=>'this field is required',
+            'in'=>'this field must be 0 (is not active) or 1 (is active)',
+
+
+            'name.min'=>'Your Category\'s name Is Too Short',
+            'name.max'=>'Your Category\'s name Is Too Long',
 //            'name.unique'=>'This name\'s Is Used By Another Category',
-//            'slug.required'=>'Please Enter Your Product\'s Slug',
-//            'slug.min'=>'Your Category\'s Slug Is Too Short ',
-//            'slug.max'=>'Your Category\'s Slug Is Too Long',
-//            'parent.required'=>'Please Specify The parent'
+
+            'slug.min'=>'Your Category\'s Slug Is Too Short ',
+            'slug.max'=>'Your Category\'s Slug Is Too Long',
+
         ];
     }
 }

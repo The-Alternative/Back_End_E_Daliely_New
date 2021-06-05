@@ -8,6 +8,7 @@ use App\Service\CustomFields\CustomFieldService;
 
 use App\Traits\GeneralTrait;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class CustomFieldsController extends Controller
@@ -46,7 +47,7 @@ class CustomFieldsController extends Controller
         $response= $this->customfieldService->getTrashed();
         return response($response, 200);
     }
-    public function create(ProductRequest $request)
+    public function create(Request $request)
     {
         $response= $this->customfieldService->create($request);
         return response($response, 200);
