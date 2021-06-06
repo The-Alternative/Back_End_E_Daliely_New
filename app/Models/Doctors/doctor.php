@@ -41,8 +41,10 @@ class doctor extends Model
     }
     public function scopeNotActive($query)
     {
+
         return $query->where('is_active',0);
-    }
+
+          }
 
 
     public function doctorTranslation()
