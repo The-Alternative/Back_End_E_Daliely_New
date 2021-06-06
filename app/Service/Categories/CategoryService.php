@@ -36,7 +36,7 @@ class CategoryService
                 return $response= $this->returnSuccessMessage('Category','Category doesnt exist yet');
             }
     }catch(\Exception $ex){
-        return $this->returnError('400','faild');
+        return $this->returnError('400', $ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
@@ -50,7 +50,7 @@ class CategoryService
                 return $response= $this->returnData('Category',$category,'done');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
@@ -68,7 +68,7 @@ class CategoryService
         $category = $this->categoryModel->where('is_active',0)->get();
           return $this -> returnData('Category',$category,'done');
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
@@ -88,7 +88,7 @@ class CategoryService
                 return $this->returnData('Category', $category,'This Category Is trashed Now');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
@@ -109,7 +109,7 @@ class CategoryService
                 return $this->returnData('Category', $category,'This Category Is trashed Now');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
@@ -120,8 +120,8 @@ class CategoryService
     /*___________________________________________________________________________*/
     public function create(CategoryRequest $request)
         {
-//            try
-//            {
+            try
+            {
                 $validated = $request->validated();
                 $request->is_active?$is_active=true:$is_active=false;
                 $request->is_appear?$is_appear=true:$is_appear=false;
@@ -133,7 +133,7 @@ class CategoryService
                 //     {
                 //         $fileBath=uploadImage('images/products',$request->image);
                 //     }
-//                DB::beginTransaction();
+                DB::beginTransaction();
                 // //create the default language's product
                 $unTransCategory_id=$this->categoryModel->insertGetId([
                     'image' =>$request['image'],
@@ -158,14 +158,14 @@ class CategoryService
                     }
                     $this->categoryTranslation->insert($transCategory_arr);
                 }
-//                DB::commit();
+                DB::commit();
                 return $this->returnData('category', [$unTransCategory_id,$transCategory_arr],'done');
-//            }
-//            catch(\Exception $ex)
-//            {
-//                DB::rollback();
-//                return $this->returnError('category','faild');
-//            }
+            }
+            catch(\Exception $ex)
+            {
+                DB::rollback();
+                return $this->returnError('category', $ex->getMessage());
+            }
         }
     /*___________________________________________________________________________*/
     /****  Update category   ***
@@ -194,30 +194,31 @@ class CategoryService
             //         ]);
             // }
 
-           $ncategory=$this->categoryModel->where('id',$id)
+           $ncategory=$this->categoryModel->where('categories.id',$id)
                ->update([
                    'image'     =>$request['image'],
                    'slug'      =>$request['slug'],
                    'lang_id'   =>$request['lang_id'],
                    'is_active' =>$request['is_active'],
+                   'section_id' =>$request['section_id'],
                    'parent_id' =>$request['parent_id']
             ]);
-            $ss=$this->categoryTranslation->where('category_id',$id);
+            $ss=$this->categoryTranslation->where('category_translations.category_id',$id);
             $collection1 = collect($allcategories);
             $allcategorieslength=$collection1->count();
             $collection2 = collect($ss);
 
               $db_category= array_values(
                   $this->categoryTranslation
-                  ->where('category_id',$id)
+                  ->where('category_translations.category_id',$id)
                   ->get()
                   ->all());
               $dbdcategory = array_values($db_category);
               $request_category = array_values($request->category);
                 foreach($dbdcategory as $dbdcategor){
                     foreach($request_category as $request_categor){
-                        $values= $this->categoryTranslation->where('category_id',$id)
-                            ->where('locale',$request_categor['local'])
+                        $values= $this->categoryTranslation->where('category_translations.category_id',$id)
+                            ->where('local',$request_categor['local'])
                             ->update([
                             'name'=>$request_categor['name'],
                             'local'=>$request_categor['local'],
@@ -225,13 +226,13 @@ class CategoryService
                             'category_id'=>$id
                         ]);
                     }
+                    return $this->returnData('Category', $dbdcategory,'done');
+
                 }
-            return $this->returnData('Category', $dbdcategory,'done');
             DB::commit();
         }
         catch(\Exception $ex){
-            return $ex;
-            return $this->returnError('400', 'saving failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
@@ -254,7 +255,7 @@ class CategoryService
                 return $this->returnData('Category', $category,'done');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
@@ -272,7 +273,7 @@ class CategoryService
                  return $this->returnData('Category', $category,'This Category Is deleted Now');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 }

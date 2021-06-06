@@ -380,6 +380,14 @@ trait GeneralTrait
     {
         return response()->json(['error' => $message, 'code' => $code], $code);
     }
+
+    public function uploadImage($folder, $image)
+{
+    $image->store('/', $folder);
+    $filename = $image->hashName();
+    $path = 'images/' . $folder . '/' . $filename;
+    return $path;
+}
 }
 
     // protected $statusCode = 200;

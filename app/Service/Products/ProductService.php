@@ -77,22 +77,10 @@ class ProductService
         try{
         $product = $this->productModel->with(['Store','Category','ProductImage','Brand','StoreProduct'])
             ->find($id);
-            $prices = $this->storeProductModel->where('product_id','=',$id)->get();
-            if(isset($prices) && count($prices)){
-            foreach($prices as $price)
-            {
-                $collection1[]=[
-                $price['price']
-            ];
-            }
-        $max = collect($collection1)->max();
-        $min = collect($collection1)->min();
-        $rangeOfPrice=[$max,$min];
-            }
             if (!isset($product) ){
                 return $response= $this->returnSuccessMessage('This Product not found','done');
             }
-            return $response=$this->returnData('product',[$product,$rangeOfPrice],'done');
+            return $response=$this->returnData('product',$product,'done');
         }catch(\Exception $ex){
             return $this->returnError('400',$ex->getMessage());
         }
@@ -154,46 +142,44 @@ class ProductService
     /****  Create Products   ***/
     public function create(ProductRequest $request)
     {
-        try{
+        try {
 //                validated = $request->validated();
-                $request->is_active?$is_active=true:$is_active=false;
-                $request->is_appear?$is_appear=true:$is_appear=false;
-                /////////////transformation to collection/////////////////////////
-                $allproducts = collect($request->product)->all();
-                DB::beginTransaction();
-                // //create the default language's product
-                $unTransProduct_id=$this->productModel->insertGetId([
-                    'slug' =>$request['slug'],
-                    'barcode' =>$request['barcode'],
-                    'is_active' =>$request['is_active'],
-                    'is_appear' =>$request['is_appear'],
-                    'rating_id' =>$request['rating_id'],
-                    'brand_id' =>$request['brand_id'],
-                    'offer_id' =>$request['offer_id'],
-                ]);
-                //check the category and request
-                if(isset($allproducts) && count($allproducts))
-                {
-                    //insert other traslations for products
-                    foreach ($allproducts as $allproduct)
-                    {
-                        $transProduct_arr[]=[
-                            'name' => $allproduct ['name'],
-                            'short_des' => $allproduct['short_des'],
-                            'local' => $allproduct['local'],
-                            'long_des' => $allproduct['long_des'],
-                            'meta' => $allproduct['meta'],
-                            'product_id' => $unTransProduct_id
-                        ];
-                    }
-                    $this->productTranslation->insert($transProduct_arr);
+            $request->is_active ? $is_active = true : $is_active = false;
+            $request->is_appear ? $is_appear = true : $is_appear = false;
+            /////////////transformation to collection/////////////////////////
+            $allproducts = collect($request->product)->all();
+            DB::beginTransaction();
+            // //create the default language's product
+            $unTransProduct_id = $this->productModel->insertGetId([
+                'slug' => $request['slug'],
+                'barcode' => $request['barcode'],
+                'is_active' => $request['is_active'],
+                'is_appear' => $request['is_appear'],
+                'rating_id' => $request['rating_id'],
+                'brand_id' => $request['brand_id'],
+                'offer_id' => $request['offer_id'],
+            ]);
+            //check the category and request
+            if (isset($allproducts) && count($allproducts)) {
+                //insert other traslations for products
+                foreach ($allproducts as $allproduct) {
+                    $transProduct_arr[] = [
+                        'name' => $allproduct ['name'],
+                        'short_des' => $allproduct['short_des'],
+                        'local' => $allproduct['local'],
+                        'long_des' => $allproduct['long_des'],
+                        'meta' => $allproduct['meta'],
+                        'product_id' => $unTransProduct_id
+                    ];
                 }
-                if ($request->has('category')){
-                    $product=$this->productModel->find($unTransProduct_id);
-                    $product->Category()->syncWithoutDetaching($request->get('category'));
-                }
-            if ($request->has('CustomFieldValue')){
-                $product=$this->productModel->find($unTransProduct_id);
+                $this->productTranslation->insert($transProduct_arr);
+            }
+            if ($request->has('category')) {
+                $product = $this->productModel->find($unTransProduct_id);
+                $product->Category()->syncWithoutDetaching($request->get('category'));
+            }
+            if ($request->has('CustomFieldValue')) {
+                $product = $this->productModel->find($unTransProduct_id);
                 $product->Custom_Field_Value()->syncWithoutDetaching($request->get('CustomFieldValue'));
 //                  $Arr=collect($request->CustomFieldValue);
 //                $customFeilds=$Arr->pluck('custom_field_value_id');;
@@ -202,18 +188,33 @@ class ProductService
 //                   $s[]= Custom_Field_Value::find($customFeild);
 //                }
             }
-            $images=$request->images;
-        foreach ($images as $image)
-        {
+            $images = $request->images;
+//            if ($request->hasFile($requestimage['image'])) {
+                foreach ($images as $image) {
+                    if (isset($image['image'])) {
+                        $file_exctension = $image['image']->getClientOriginalExtension();
+                        $file_name = time() . '.' . $file_exctension;
+                        $path = 'images/products';
+                        $imageq = $images['image']->move($path, $file_name);
+                    }
+                }
+
+
+
+
+
+
+//            $image=GeneralTrait::class->uploadImage($fileBath,$request->images['image']);
+
+
             if ($request->has('images')) {
 
                 $product = $this->productModel->find($unTransProduct_id);
                 $product->ProductImage()->insert([
                     'product_id' => $unTransProduct_id,
-                    'image' => $image['image'],
-                    'is_cover' => $image['is_cover'],
+                    'image' => $images['image'],
+                    'is_cover' => $images['is_cover'],
                 ]);
-            }
             }
                 DB::commit();
                 return $this->returnData('Product', [$unTransProduct_id,$transProduct_arr],'done');
