@@ -21,6 +21,12 @@ class Hospital extends Model
         return $query->where('is_active',1)->get();
 
     }
+    public function scopeNotActive($query)
+    {
+        return $query->where('is_active',0)->get();
+
+    }
+
     public function doctor()
     {
         return $this->hasMany(doctor::class);

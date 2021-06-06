@@ -15,28 +15,37 @@ use App\Models\medicalDevice\medicalDevice;
 use App\Models\Appointment\Appointment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 
 class doctor extends Model
 {
     use HasFactory;
-    protected $table='Doctors';
+
+    protected $table='doctors';
     protected $fillable =['Id','image','specialty_id','hospital_id','clinic_id','social_media_id','is_active','is_approved'];
-//    protected $hidden   =['id','social_media_id','specialty_id','hospital_id','work_places_id','created_at','updated_at'];
+    protected $hidden   =['id','social_media_id','specialty_id','hospital_id','work_places_id','created_at','updated_at'];
      public $timestamps=false;
 
+
      //scope
+    public static function ScopeWithTrans($q)
+    {
+        return $q=doctor::join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+            ->where('doctor_translation.locale','=', Config::get('app.locale'))
+            ->select('doctors.*','doctor_translation.*')->get();
+    }
+
     public function scopeActive($query)
     {
         return $query->where('is_active',1);
-
     }
-
-    public function ScopeWithTrans($query)
+    public function scopeNotActive($query)
     {
-//        return $query=doctor::join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
-//            ->where('doctor_translation.locale','=',get_current_local())
-//            ->select('doctors.*','doctor_translation.*')->get();
-    }
+
+        return $query->where('is_active',0);
+
+          }
+
 
     public function doctorTranslation()
     {
@@ -78,12 +87,15 @@ class doctor extends Model
 
     public function customer()
     {
-        return $this->hasMany(Customer::class);
+        return $this->belongsToMany(Customer::class)->using(DoctorCustomer::class)
+                    ->withPivot(['medical_file_id','age','gender','social_status'
+                                 ,'blood_type','note','is_active','is_approved']);
     }
 
     public function appointment()
     {
         return $this->hasMany(Appointment::class);
     }
+
 
 }

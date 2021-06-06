@@ -24,18 +24,28 @@ class MedicalDeviceRequest extends FormRequest
     public function rules()
     {
         return [
-//            'name'=> 'required|min:5|max:255|regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)+$/|unique:medical_devices,name'
+            'is_active'  =>'required|in:1,0',
+            'is_approved'=>'required|in:1,0',
+            'doctor_id'=>'required',
+            'hospital_id'=>'required',
 
+
+            'medicaldevice'=>'required|array|min:1',
+            'medicaldevice.*.name'=> 'required|min:5|max:255',
+            'medicaldevice.*.locale'=> 'required',
+            'medicaldevice.*.medical_device_id'=> 'required',
         ];
     }
     public function messages()
     {
         return [
-//            'name.required' => 'Please Enter Your medical Device\'s Name',
-//            'name.min' => 'Your medical Device\'s Name Is Too Short',
-//            'name.max' => 'Your medical Device\'s Name Is Too Long',
-//            'name.regex' => 'Your medical Device\'s Name Have Number',
-//            'name.unique' => 'This Name\'s Is Used By Another medical Device',
+
+            'required'=>'this field is required',
+            'in'=>'this field must be 0 (is not active) or 1 (is active)',
+
+            'medicaldevice.*.name.min' => 'Your medical Device\'s Name Is Too Short',
+            'medicaldevice.*.name.max' => 'Your medical Device\'s Name Is Too Long',
+            'medicaldevice.*.name.unique' => 'This Name\'s Is Used By Another medical Device',
 
         ];
     }

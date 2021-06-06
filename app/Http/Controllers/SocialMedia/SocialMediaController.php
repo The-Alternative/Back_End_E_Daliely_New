@@ -24,56 +24,32 @@ class SocialMediaController extends Controller
     {
         return$this->SocialMediaService->get();
     }
-
     public function  getById($id)
     {
         return $this->SocialMediaService->getById($id);
     }
-
     public function getTrashed()
     {
         return $this->SocialMediaService->getTrashed();
     }
-
     public function create(SocialMediaRequest $request)
     {
-        $response=$this->SocialMediaService->create($request);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->SocialMediaService->create($request);
     }
-
     public function update(SocialMediaRequest $request,$id)
     {
-        $response=$this->SocialMediaService->update($request,$id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
-
+        return $this->SocialMediaService->update($request,$id);
     }
     public function trash($id)
     {
-        $response= $this->SocialMediaService->trash($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return $this->SocialMediaService->trash($id);
     }
-
     public function restoreTrashed($id)
     {
-        $response= $this->SocialMediaService->restoreTrashed($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return $this->SocialMediaService->restoreTrashed($id);
     }
-//
     public function delete($id)
     {
-        $response=$this->SocialMediaService->delete($id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->SocialMediaService->delete($id);
     }
-
-
 }

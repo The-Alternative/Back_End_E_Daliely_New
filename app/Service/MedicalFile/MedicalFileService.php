@@ -15,115 +15,150 @@ class MedicalFileService
     private $MedicalFileModel;
     use GeneralTrait;
 
-
     public function __construct(MedicalFile $medicalFile)
     {
-
         $this->MedicalFileModel=$medicalFile;
     }
     public function get()
     {
-
-        $medicalFile=$this->MedicalFileModel::all();
-        return $this->returnData('medicalFile',$medicalFile,'done');
-
+        try {
+            $medicalFile = $this->MedicalFileModel::IsActive()->all();
+            return $this->returnData('medicalFile', $medicalFile, 'done');
+        }
+        catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
+        }
     }
-
     public function getById($id)
     {
-
+        try {
         $medicalFile= $this->MedicalFileModel::find($id);
-        return $this->returnData('medicalFile',$medicalFile,'done');
-
-    }
-
-    public function getTrashed()
-    {
-        $medicalFile= $this->MedicalFileModel::IsActive();
-        return $this -> returnData('medicalFile',$medicalFile,'done');
+            if (is_null($medicalFile)){
+                return $this->returnSuccessMessage('this Medical file not found','done');
+            }
+            else{
+                return $this->returnData('medicalFile',$medicalFile,'done');
+            }
+        }
+        catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
+        }
     }
 
     public function create( MedicalFileRequest $request )
     {
-        $medicalFile=new MedicalFile();
+        try{
+                $medicalFile=new MedicalFile();
 
-        $medicalFile->customer_id                  =$request->customer_id ;
-        $medicalFile->file_number                  =$request->file_number;
-        $medicalFile->file_date                    =$request->file_date;
-        $medicalFile->review_date                  =$request->review_date;
-        $medicalFile->PDF                          =$request->PDF;
-        $medicalFile->doctor_id                    =$request->doctor_id;
-        $medicalFile->is_active                    =$request->is_active;
-        $medicalFile->is_approved                  =$request->is_approved;
+                $medicalFile->customer_id                  =$request->customer_id ;
+                $medicalFile->file_number                  =$request->file_number;
+                $medicalFile->file_date                    =$request->file_date;
+                $medicalFile->review_date                  =$request->review_date;
+                $medicalFile->PDF                          =$request->PDF;
+                $medicalFile->doctor_id                    =$request->doctor_id;
+                $medicalFile->is_active                    =$request->is_active;
+                $medicalFile->is_approved                  =$request->is_approved;
 
-
-        $result=$medicalFile->save();
-        if ($result)
-        {
-            return $this->returnData('medicalFile', $medicalFile,'done');
+                $result=$medicalFile->save();
+                if ($result)
+                {
+                    return $this->returnData('medicalFile', $medicalFile,'done');
+                }
+                else
+                {
+                    return $this->returnError('400', 'saving failed');
+                }
         }
-        else
-        {
-            return $this->returnError('400', 'saving failed');
+        catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
         }
-
     }
-
     public function update(MedicalFileRequest $request,$id)
     {
+        try{
+              $medicalFile= $this->MedicalFileModel::find($id);
 
-        $medicalFile= $this->MedicalFileModel::find($id);
+              $medicalFile->customer_id                  =$request->customer_id ;
+              $medicalFile->file_number                  =$request->file_number;
+              $medicalFile->file_date                    =$request->file_date;
+              $medicalFile->review_date                  =$request->review_date;
+              $medicalFile->PDF                          =$request->PDF;
+              $medicalFile->doctor_id                    =$request->doctor_id;
+              $medicalFile->is_active                    =$request->is_active;
+              $medicalFile->is_approved                  =$request->is_approved;
 
-        $medicalFile->customer_id                  =$request->customer_id ;
-        $medicalFile->file_number                  =$request->file_number;
-        $medicalFile->file_date                    =$request->file_date;
-        $medicalFile->review_date                  =$request->review_date;
-        $medicalFile->PDF                          =$request->PDF;
-        $medicalFile->doctor_id                    =$request->doctor_id;
-        $medicalFile->is_active                    =$request->is_active;
-        $medicalFile->is_approved                  =$request->is_approved;
-
-
-
-        $result=$medicalFile->save();
-        if ($result)
-        {
-            return $this->returnData('medicalFile', $medicalFile,'done');
+              $result=$medicalFile->save();
+              if ($result)
+              {
+                  return $this->returnData('medicalFile', $medicalFile,'done');
+              }
+              else
+              {
+                  return $this->returnError('400', 'updating failed');
+              }
         }
-        else
-        {
-            return $this->returnError('400', 'updating failed');
+        catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
         }
-
     }
-
-
-
     public function trash( $id)
     {
+        try{
         $medicalFile= $this->MedicalFileModel::find($id);
-        $medicalFile->is_active=false;
-        $medicalFile->save();
-
-        return $this->returnData('medicalFile', $medicalFile,'This medical File is trashed Now');
+            if (is_null($medicalFile)) {
+                return $this->returnSuccessMessage('This Medical file not found', 'done');
+            }
+            else
+            {
+                $medicalFile->is_active=false;
+                $medicalFile->save();
+                return $this->returnData('medicalFile', $medicalFile,'This medical File is trashed Now');
+            }
+        }
+        catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
+        }
     }
-
-
+    public function getTrashed()
+    {
+        try{
+              $medicalFile= $this->MedicalFileModel::NotActive()->get();
+            return $this -> returnData('medicalFile',$medicalFile,'done');
+        }
+        catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
+        }
+    }
     public function restoreTrashed( $id)
     {
+        try{
         $medicalFile=MedicalFile::find($id);
-        $medicalFile->is_active=true;
-        $medicalFile->save();
+            if (is_null($medicalFile)) {
+                return $this->returnSuccessMessage('This Medical file not found', 'done');
+            }
+            else
+            {
+                $medicalFile->is_active=true;
+                $medicalFile->save();
+                return $this->returnData('medicalFile', $medicalFile,'This medical File is trashed Now');
+            }
+        }
+        catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
+        }
 
-        return $this->returnData('medicalFile', $medicalFile,'This medicalFile is trashed Now');
     }
-
     public function delete($id)
     {
+        try{
         $medicalFile = MedicalFile::find($id);
-        $medicalFile->is_active = false;
-        $medicalFile->save();
-        return $this->returnData('medicalFile', $medicalFile, 'This medicalFile is deleted Now');
-
+            if ($medicalFile->is_active == 0) {
+                $medicalFile = $this->MedicalFileModel->destroy($id);
+            }
+            return $this->returnData('medicalFile', $medicalFile, 'This medicalFile is deleted Now');
+        }
+        catch (\Exception $ex) {
+            return $this->returnError('400', 'failed');
+        }
     }
 }

@@ -25,21 +25,6 @@ class CreateCategoriesTable extends Migration
            $table->timestamps();
 
         });
-        DB::table('categories')->insert([
-            ['slug' => 'Developer', 'image' => 'https://img.lovepik.com/photo/50015/8348.jpg_wh860.jpg', 'lang_id' => 1,'parent_id' => 1, 'section_id' => 1, 'is_active' => 1],
-            ['slug' => 'Journalist1', 'image' => 'https://i.suar.me/LW5aE/l', 'lang_id' => 1, 'parent_id' => 1, 'section_id' => 1, 'is_active' => 1],
-            ['slug' => 'Journalist2', 'image' => 'https://suar.me/Nwv3V', 'lang_id' => 1, 'parent_id' => 1, 'section_id' => 1, 'is_active' => 1],
-            ['slug' => 'Journalist3', 'image' => 'https://i.suar.me/52029/l', 'lang_id' => 1, 'parent_id' => 1, 'section_id' => 1, 'is_active' => 1],
-            ['slug' => 'Journalist4', 'image' => 'https://i.suar.me/rN0NE/l', 'lang_id' => 1, 'parent_id' => 1, 'section_id' => 1, 'is_active' => 1],
-            ['slug' => 'Journalist5', 'image' => 'https://i.suar.me/moJ8j/l', 'lang_id' => 1, 'parent_id' => 1, 'section_id' => 1, 'is_active' => 1],
-            ['slug' => 'Journalist6', 'image' => 'https://i.suar.me/1p9Xo/l', 'lang_id' => 1, 'parent_id' => 1, 'section_id' => 1, 'is_active' => 1],
-            ['slug' => 'Journalist7', 'image' => 'https://i.suar.me/rN0NE/l', 'lang_id' => 1, 'parent_id' => 1, 'section_id' => 1, 'is_active' => 1],
-            ['slug' => 'Journalist8', 'image' => 'https://i.suar.me/KP5ry/l', 'lang_id' => 1, 'parent_id' => 1, 'section_id' => 1, 'is_active' => 1],
-            ['slug' => 'Journalist9', 'image' => 'https://i.suar.me/1qmZo/l', 'lang_id' => 1, 'parent_id' => 1, 'section_id' => 1, 'is_active' => 1],
-            ['slug' => 'Journalist10', 'image' => 'https://i.suar.me/qJEKA/l', 'lang_id' => 1, 'parent_id' => 1, 'section_id' => 1, 'is_active' => 1],
-            ['slug' => 'Journalist11', 'image' => 'https://i.suar.me/lyEKM/l', 'lang_id' => 1, 'parent_id' => 1, 'section_id' => 1, 'is_active' => 1],
-            ['slug' => 'Journalist12', 'image' => 'https://i.suar.me/eJpqQ/l', 'lang_id' => 1, 'parent_id' => 1, 'section_id' => 1, 'is_active' => 1],
-        ]);
     }
 
     /**
