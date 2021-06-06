@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Store;
 
+use App\Http\Requests\Store\StoreRequest;
 use App\Traits\GeneralTrait;
 use App\Http\controllers\controller;
 use Illuminate\Http\Request;
@@ -41,7 +42,7 @@ class StoreController extends Controller
         $response= $this->StoreService->getTrashed();
         return $response;
     }
-    public function create(Request $request)
+    public function create(StoreRequest $request)
     {
         $response= $this->StoreService->create($request);
         return $response;
