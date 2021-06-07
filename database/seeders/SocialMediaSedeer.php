@@ -18,14 +18,14 @@ class SocialMediaSedeer extends Seeder
         $faker = Faker::create();
         for ($i = 0; $i <= 200; $i++) {
             DB::table('social_media')->insert([
-                'is_active' => 1,
+                'is_active' =>1,
                 'phone_number' => $faker->phoneNumber,
                 'whatsapp_number' => $faker->phoneNumber,
                 'facebook_account' => $faker->url,
                 'instagram_account' => $faker->url,
                 'telegram_number' => $faker->phoneNumber,
                 'email' => $faker->email,
-                'doctor_id' => 1
+                'doctor_id' => $faker->numberBetween(1,200)
 
             ]);
         }
