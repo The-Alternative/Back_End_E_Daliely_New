@@ -3,9 +3,11 @@
 namespace App\Service\Stores;
 
 use App\Http\Requests\Store\StoreRequest;
+use App\Http\Requests\StoreProduct\StoreProductRequest;
 use App\Models\Stores\Store;
 use App\Models\Stores\StoreTranslation;
 use App\Traits\GeneralTrait;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use LaravelLocalization;
 
@@ -49,7 +51,7 @@ class StoreService
             }])->get();
         },'Section'=>function($q){
             return $q->with('Category')->get();
-        },'Brand'])->find($store_id);
+        },'Brand','StoreImage'])->find($store_id);
             if (is_null($store) ){
                 return $response= $this->returnSuccessMessage('Store','This stores not found');
             }else{
@@ -112,68 +114,9 @@ class StoreService
     /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
     /****  Create category   ****/
     /*___________________________________________________________________________*/
-    public function create(StoreRequest $request)
+    public function create(Request $request)
     {
-//       return Product::get();
-//       $stores = collect($request->store)->all();
-//         $sto = collect($request)->all();
-//
-//        $arr1 =[
-//            'loc_id',
-//            'country_id',
-//            'gov_id',
-//            'city_id',
-//            'street_id',
-//            'offer_id',
-//            'socialMedia_id',
-//            'followers_id',
-//            'is_active',
-//            'is_approved',
-//            'delivery',
-//            'edalilyPoint',
-//            'rating',
-//            'workingHours',
-//            'logo',
-
-//
-//            'loc_id' =>$request['loc_id'],
-//            'country_id' =>$request['country_id'],
-//            'gov_id' =>$request['gov_id'],
-//            'city_id'=>$request['city_id'],
-//            'street_id'=>$request['street_id'],
-//            'offer_id'=>$request['offer_id'],
-//            'socialMedia_id'=>$request['socialMedia_id'],
-//            'followers_id'=>$request['followers_id'],
-//            'is_active'=>$request['is_active'],
-//            'is_approved'=>$request['is_approved'],
-//            'delivery'=>$request['delivery'],
-//            'edalilyPoint'=>$request['edalilyPoint'],
-//            'rating'=>$request['rating'],
-//            'workingHours'=>$request['workingHours'],
-//            'logo'=>$request['logo']
-//        ];
-//        for ( $i =1 ; $i<count($sto);$i++){
-//            for($j=0; $j<count($arr1);$j++){
-//                $i=$j;
-//            }
-//        }
-
-//        $arr2 =[
-//             'local',
-//             'title',
-////             'store_id'=>$int
-//        ];
-//        $arr3 =[
-//            $stores['local'],
-//            $stores['title'],
-////             'store_id'=>$int
-//        ];
-//        return $request;
-
-//         $product=$this->insert2(Store::class,StoreTranslation::class,$arr1,$arr2,$arr3);
-
-
-//        try {
+        try {
 //        validated = $request->validated();
         $request->is_active?$is_active=true:$is_active=false;
         $request->is_appear?$is_appear=true:$is_appear=false;
@@ -185,25 +128,25 @@ class StoreService
         //     {
         //         $fileBath=uploadImage('images/products',$request->image);
         //     }
-//        DB::beginTransaction();
+        DB::beginTransaction();
         // //create the default language's product
         $unTransStore_id=$this->storeModel->insertGetId([
             //                'section_id' =>$request['section_id'],
-            'loc_id'       =>$request['loc_id'],
-            'country_id'   =>$request['country_id'],
-            'gov_id'       =>$request['gov_id'],
-            'city_id'      =>$request['city_id'],
-            'street_id'    =>$request['street_id'],
-            'offer_id'      =>$request['offer_id'],
+            'loc_id' =>$request['loc_id'],
+            'country_id' =>$request['country_id'],
+            'gov_id' =>$request['gov_id'],
+            'city_id'=>$request['city_id'],
+            'street_id'=>$request['street_id'],
+            'offer_id'=>$request['offer_id'],
             'socialMedia_id'=>$request['socialMedia_id'],
-            'followers_id'   =>$request['followers_id'],
-            'is_active'     =>$request['is_active'],
-            'is_approved'    =>$request['is_approved'],
-            'delivery'     =>$request['delivery'],
-            'edalilyPoint'  =>$request['edalilyPoint'],
-            'rating'      =>$request['rating'],
-            'workingHours'    =>$request['workingHours'],
-            'logo'         =>$request['logo']
+            'followers_id'=>$request['followers_id'],
+            'is_active'=>$request['is_active'],
+            'is_approved'=>$request['is_approved'],
+            'delivery'=>$request['delivery'],
+            'edalilyPoint'=>$request['edalilyPoint'],
+            'rating'=>$request['rating'],
+            'workingHours'=>$request['workingHours'],
+            'logo'=>$request['logo']
         ]);
         //check the category and request
         if(isset($stores) && count($stores))
@@ -219,18 +162,18 @@ class StoreService
             }
             $this->storeTranslation->insert($transstore_arr);
         }
-//        DB::commit();
+        DB::commit();
         return $this->returnData('Store', [$unTransStore_id,$transstore_arr],'done');
-//        }
-//        catch(\Exception $ex)
-//            {
-//                DB::rollback();
-//                return $this->returnError('store','faild');
-//            }
+        }
+        catch(\Exception $ex)
+            {
+                DB::rollback();
+                return $this->returnError('store',$ex->getMessage());
+            }
     }
     /*___________________________________________________________________________*/
     /****__________________  Update category   ___________________****/
-    public function update(StoreRequest $request,$id)
+    public function update(Request $request,$id)
     {
         try{
             //$validated = $request->validated();
@@ -269,6 +212,7 @@ class StoreService
                     'logo'=>$request['logo'],
                 ]);
         $stores = collect($request->store)->all();
+        //Stores in database
             $dbdstores=$this->storeModel->where('Store_id',$id)->get();
             foreach($dbdstores as $dbdstore){
                 foreach($stores as $store){
