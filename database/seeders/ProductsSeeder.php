@@ -21,11 +21,11 @@ class ProductsSeeder extends Seeder
                 'slug' => $faker->sentence(1),
                 'image' => $faker->sentence(10),
                 'barcode' =>$faker->sentence(1),
-                'is_active' => 1,
-                'is_appear' => 1,
-                'rating_id' => 1,
-                'brand_id' => 1,
-                'offer_id' => 1
+                'is_active' => $faker->boolean,
+                'is_appear' =>  $faker->boolean,
+                'rating_id' => $faker->numberBetween(1,200),
+                'brand_id' => $faker->numberBetween(1,200),
+                'offer_id' =>$faker->numberBetween(1,200),
             ]);
             DB::table('product_translations')->insert([[
                 'name' => $faker->sentence(5),

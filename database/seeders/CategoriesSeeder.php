@@ -19,22 +19,22 @@ class CategoriesSeeder extends Seeder
         for ($i = 1; $i <= 200; $i++) {
             $s = DB::table('categories')->insertGetId([
                 'slug' => $faker->sentence(1),
-                'is_active' => 1,
-                'image' => $faker->sentence(10),
-                'parent_id' =>1,
-                'lang_id' => 1,
-                'section_id' => 1
+                'is_active' => $faker->boolean,
+                'image' => $faker->sentence(3),
+                'parent_id' => $faker->numberBetween(1,200),
+                'lang_id' =>  $faker->numberBetween(1,200),
+                'section_id' =>  $faker->numberBetween(1,200)
             ]);
             DB::table('category_translations')->insert([[
                 'name' => $faker->sentence(5),
                 'local' => 'en',
-                'language_id' =>1,
+                'language_id' => $faker->numberBetween(1,5),
                 'category_id' => $s
             ],
                 [
                     'name' => $faker->sentence(5),
                     'local' => 'ar',
-                    'language_id' =>1,
+                    'language_id' => $faker->numberBetween(1,5),
                     'category_id' => $s
                 ]]);
 

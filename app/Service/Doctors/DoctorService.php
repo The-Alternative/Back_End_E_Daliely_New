@@ -41,22 +41,26 @@ class DoctorService
         }
     }
 
+//$doctor= $this->doctorModel->with('medicalDevice','medicalDevice','clinic','hospital','Specialty')
+//->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+//->where('doctors.id','=',$id)
+//->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name','doctor_translation.description')
+//->get()
+//
+//->find($id);
     public function getById($id)
     {
 
         try{
-        $doctor= $this->doctorModel::WithTrans()->find($id);
+           $doctor= $this->doctorModel->withtrans()->find($id);
             if (is_null($doctor)){
                 return $this->returnSuccessMessage('this doctor not found','done');
             }
             else {
-                doctor::with('medicalDevice','socialMedia','clinic','hospital','Specialty')
-                    ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
-                    ->where('doctors.id','=',$id)
-                    ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name','doctor_translation.description')
-                    ->get();
+//
                 return $this->returnData('doctor', $doctor, 'done');
             }
+
         }
         catch(\Exception $ex)
         {
@@ -74,6 +78,7 @@ class DoctorService
             $unTransdoctor_id =doctor::insertGetId([
                 'image' => $request['image'],
                 'social_media_id' => $request['social_media_id'],
+                'appointments_id' => $request['appointments_id'],
                 'hospital_id' => $request['hospital_id'],
                 'clinic_id' => $request['clinic_id'],
                 'specialty_id' => $request['specialty_id'],
@@ -104,7 +109,7 @@ class DoctorService
 //_________________________________________________________//
     public function update(DoctorRequest $request,$id)
     {
-        try{
+//        try{
             $doctor= doctor::find($id);
             if(!$doctor)
                 return $this->returnError('400', 'not found this doctor');
@@ -118,6 +123,7 @@ class DoctorService
                 ->update([
                     'image' => $request['image'],
                     'social_media_id' => $request['social_media_id'],
+                    'appointments_id' => $request['appointments_id'],
                     'hospital_id' => $request['hospital_id'],
                     'clinic_id' => $request['clinic_id'],
                     'specialty_id' => $request['specialty_id'],
@@ -148,13 +154,13 @@ class DoctorService
                         ]);
                 }
             }
-            DB::commit();
+//            DB::commit();
             return $this->returnData('doctor', $dbdoctor,'done');
 
-        }
-        catch(\Exception $ex){
-                        return $this->returnError('400', 'saving failed');
-        }
+//        }
+//        catch(\Exception $ex){
+//                        return $this->returnError('400', 'saving failed');
+//        }
     }
 //___________________________________________________________//
     public function search($name)

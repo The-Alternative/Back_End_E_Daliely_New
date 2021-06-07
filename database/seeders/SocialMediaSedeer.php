@@ -18,7 +18,7 @@ class SocialMediaSedeer extends Seeder
         $faker = Faker::create();
         for ($i = 0; $i <= 200; $i++) {
             DB::table('social_media')->insert([
-                'is_active' =>1,
+                'is_active' => $faker->boolean,
                 'phone_number' => $faker->phoneNumber,
                 'whatsapp_number' => $faker->phoneNumber,
                 'facebook_account' => $faker->url,

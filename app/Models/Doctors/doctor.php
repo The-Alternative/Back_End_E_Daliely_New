@@ -24,7 +24,7 @@ class doctor extends Model
     use HasFactory;
 
     protected $table='doctors';
-    protected $fillable =['Id','image','specialty_id','hospital_id','clinic_id','social_media_id','is_active','is_approved'];
+    protected $fillable =['Id','image','appointments_id','specialty_id','hospital_id','clinic_id','social_media_id','is_active','is_approved'];
 //    protected $hidden   =['social_media_id','specialty_id','hospital_id','work_places_id','created_at','updated_at'];
      public $timestamps=false;
 

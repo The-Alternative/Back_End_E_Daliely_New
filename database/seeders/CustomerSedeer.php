@@ -18,9 +18,9 @@ class CustomerSedeer extends Seeder
         $faker=Faker::create();
         for ($i = 0; $i <= 200; $i++) {
             $s = DB::table('customers')->insertGetId([
-                'is_active' => 1,
-                'is_approved' =>1,
-                'social_media_id' => 1
+                'is_active' => $faker->boolean,
+                'is_approved' =>$faker->boolean,
+                'social_media_id' => $faker->numberBetween(1,200)
             ]);
             DB::table('customer_translations')->insert([[
                 'customer_id' => $s,
