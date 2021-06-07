@@ -6,6 +6,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 // use LaravelLocalization;
 
+
 Route::middleware('auth:api')->get('/user', function (Request $request)
     {
         return $request->user();
@@ -120,6 +121,7 @@ Route::group(
                 Route::GET('/rangeOfPrice/{id}','StoresProductsController@rangeOfPrice');
 
             });
+
 			/*-------------Doctor Route------------------*/
 Route::group(['prefix'=>'doctor','namespace'=>'Doctors'],function () {
     Route::get('/get', 'DoctorController@get');
@@ -296,4 +298,4 @@ Route::group(['prefix'=>'ActiveTime','namespace'=>'ActiveTime'],function () {
 });
  });
 
-   
+

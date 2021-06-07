@@ -16,6 +16,8 @@ use App\Models\Appointment\Appointment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Pagination\Paginator;
+
 
 class doctor extends Model
 {
@@ -23,7 +25,7 @@ class doctor extends Model
 
     protected $table='doctors';
     protected $fillable =['Id','image','specialty_id','hospital_id','clinic_id','social_media_id','is_active','is_approved'];
-    protected $hidden   =['id','social_media_id','specialty_id','hospital_id','work_places_id','created_at','updated_at'];
+//    protected $hidden   =['social_media_id','specialty_id','hospital_id','work_places_id','created_at','updated_at'];
      public $timestamps=false;
 
 

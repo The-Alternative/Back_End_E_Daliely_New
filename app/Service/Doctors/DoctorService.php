@@ -43,12 +43,18 @@ class DoctorService
 
     public function getById($id)
     {
+
         try{
         $doctor= $this->doctorModel::WithTrans()->find($id);
             if (is_null($doctor)){
                 return $this->returnSuccessMessage('this doctor not found','done');
             }
             else {
+                doctor::with('medicalDevice','socialMedia','clinic','hospital','Specialty')
+                    ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+                    ->where('doctors.id','=',$id)
+                    ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name','doctor_translation.description')
+                    ->get();
                 return $this->returnData('doctor', $doctor, 'done');
             }
         }
@@ -304,12 +310,13 @@ class DoctorService
     //get all doctor's details by doctor's name
     public function getalldetails($doctor_name)
     {
+
         try{
         return  doctor::with('medicalDevice','socialMedia','clinic','hospital','Specialty')
             ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
             ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
 //            ->where ( 'doctor_translation.locale','=', Config::get('app.locale'))
-            ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name')
+            ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name','doctor_translation.description')
             ->get();
         }
         catch (\Exception $ex) {
