@@ -157,7 +157,7 @@ class CustomFieldService
                     $CustomFields = $this->CustomFieldModel->find($unTransCustomField_id);
                     $customFieldValues = $request->CustomFieldValues;
                     foreach ($customFieldValues as $customFieldValue) {
-                        //Cistom Field Value
+                        //Custom Field Value
                         $cfv[] = [
                             'value' => $customFieldValue['value'],
                             'custom_field_id' => $unTransCustomField_id

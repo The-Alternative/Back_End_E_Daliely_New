@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Store;
 
+use App\Http\Requests\Store\StoreRequest;
+use App\Http\Requests\StoreProduct\StoreProductRequest;
 use App\Traits\GeneralTrait;
 use App\Http\controllers\controller;
 use Illuminate\Http\Request;

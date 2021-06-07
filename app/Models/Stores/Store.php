@@ -4,6 +4,7 @@ namespace App\Models\Stores;
 
 use App\Models\Brands\Brand;
 use App\Models\Categories\Section;
+use App\Models\Images\StoreImage;
 use App\Models\Products\Product;
 use App\Scopes\StoreScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -75,6 +76,10 @@ class Store extends Model
     public function Brand()
     {
         return $this->belongsToMany(Brand::class,'store_brand','store_id','brand_id','id','id');
+    }
+    public function StoreImage()
+    {
+        return $this->hasMany(StoreImage::class);
     }
 
 }

@@ -4,7 +4,6 @@ namespace App\Service\Products;
 use App\Models\Categories\Category;
 use App\Models\Categories\Section;
 use App\Models\Custom_Fieldes\Custom_Field;
-use App\Models\Custom_Fieldes\Custom_Field_Value;
 use App\Models\Products\ProductTranslation;
 use App\Models\Stores\Store;
 use App\Models\Stores\StoreProduct;
@@ -143,6 +142,7 @@ class ProductService
     public function create(ProductRequest $request)
     {
         try {
+//            dd($request->all());
 //                validated = $request->validated();
             $request->is_active ? $is_active = true : $is_active = false;
             $request->is_appear ? $is_appear = true : $is_appear = false;
@@ -187,33 +187,31 @@ class ProductService
 //
 //                   $s[]= Custom_Field_Value::find($customFeild);
 //                }
+//            }
+             $images = $request->images;
+            foreach ($images as $image){
+                $arr[]=$image['name'];
             }
-            $images = $request->images;
-//            if ($request->hasFile($requestimage['image'])) {
-                foreach ($images as $image) {
-                    if (isset($image['image'])) {
-                        $file_exctension = $image['image']->getClientOriginalExtension();
-                        $file_name = time() . '.' . $file_exctension;
-                        $path = 'images/products';
-                        $imageq = $images['image']->move($path, $file_name);
+//            return $arr;
+                foreach ($arr as $ar){
+                    if (isset($image)) {
+                        if ($request->hasFile($ar)) {
+
+                            $file_exctension = $ar->getclientoriginalextension();
+                            $file_name = time() . '.' . $file_exctension;
+                            $path = 'images/products';
+                            $imageq = $ar->move($path, $file_name);
+                        }
                     }
                 }
-
-
-
-
-
-
-//            $image=GeneralTrait::class->uploadImage($fileBath,$request->images['image']);
-
-
+            }
             if ($request->has('images')) {
 
                 $product = $this->productModel->find($unTransProduct_id);
                 $product->ProductImage()->insert([
                     'product_id' => $unTransProduct_id,
-                    'image' => $images['image'],
-                    'is_cover' => $images['is_cover'],
+                    'name' => $image['name'],
+                    'is_cover' => $image['is_cover'],
                 ]);
             }
                 DB::commit();
