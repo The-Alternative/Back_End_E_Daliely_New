@@ -30,51 +30,51 @@ class CustomFieldsController extends Controller
     public function getAll()
     {
         $response= $this->customfieldService->getAll();
-        return response($response, 200);
+        return $response;
     }
     public function getCustomFieldsByProduct($id)
     {
         $response= $this->customfieldService->getCustomFieldsByProduct($id);
-        return response($response, 200);
+        return $response;
     }
     public function getById($id)
     {
         $response= $this->customfieldService->getById($id);
-        return response($response, 200);
+        return $response;
     }
     public function getTrashed()
     {
         $response= $this->customfieldService->getTrashed();
-        return response($response, 200);
+        return $response;
     }
     public function create(Request $request)
     {
         $response= $this->customfieldService->create($request);
-        return response($response, 200);
+        return $response;
     }
-    public function update(ProductRequest $request,$pro_id)
+    public function update(Request $request,$pro_id)
     {
         $response= $this->customfieldService->update($request,$pro_id);
-        return response($response, 200);
+        return $response;
     }
     public function search($title)
     {
         $response= $this->customfieldService->search($title);
-        return response($response, 200);
+        return $response;
     }
     public function trash($id)
     {
         $response= $this->customfieldService->trash($id);
-        return response($response, 200);
+        return $response;
     }
     public function restoreTrashed($id)
     {
         $response= $this->customfieldService->restoreTrashed($id);
-        return response($response, 200);
+        return $response;
     }
     public function delete($id)
     {
         $response= $this->customfieldService->delete($id);
-        return response($response, 200);
+        return $response;
     }
 }
