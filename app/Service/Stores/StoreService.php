@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Service\Stores;
-
 use App\Http\Requests\Store\StoreRequest;
 use App\Http\Requests\StoreProduct\StoreProductRequest;
 use App\Models\Stores\Store;
@@ -10,8 +8,7 @@ use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use LaravelLocalization;
-
-class StoreService
+class  StoreService
 {
     use GeneralTrait;
     private $StoreService;

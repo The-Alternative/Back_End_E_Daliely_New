@@ -174,7 +174,7 @@ class CustomFieldService
      * @param $id
      * @return Exception|\Illuminate\Http\JsonResponse
      */
-    public function update(CategoryRequest $request,$id)
+    public function update(Request $request,$id)
     {
 //        try{
             $validated = $request->validated();

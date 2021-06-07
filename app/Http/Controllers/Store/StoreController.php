@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Store;
 
 use App\Http\Requests\Store\StoreRequest;
 use App\Traits\GeneralTrait;
-use App\Http\controllers\controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Service\Stores\StoreService;
 use Illuminate\Http\Response;
