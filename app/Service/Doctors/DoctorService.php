@@ -32,7 +32,7 @@ class DoctorService
     public function get()
     {
         try{
-        $doctor= $this->doctorModel::Active()->withTrans();
+        $doctor= $this->doctorModel::Active()->get();
         return $this->returnData('doctor',$doctor,'done');
         }
         catch(\Exception $ex)

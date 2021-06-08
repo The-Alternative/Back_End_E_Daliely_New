@@ -13,6 +13,7 @@ use App\Models\Customer\Customer;
 use App\Models\DoctorRate\DoctorRate;
 use App\Models\medicalDevice\medicalDevice;
 use App\Models\Appointment\Appointment;
+use App\Scopes\DoctorScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
@@ -30,12 +31,18 @@ class doctor extends Model
 
 
      //scope
-    public static function ScopeWithTrans($q)
+//    public static function ScopeWithTrans($q)
+//    {
+//        return $q=doctor::join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+//            ->where('doctor_translation.locale','=', 'ar')
+//            ->select('doctors.id','doctors.is_active','doctors.is_approved',
+//                'doctor_translation.first_name','doctor_translation.last_name','doctor_translation.description')->get();
+//    }
+
+    protected static function booted()
     {
-        return $q=doctor::join('doctor_translation','doctor_id','=','doctor_translation.doctor_id')
-            ->where('doctor_translation.locale','=', Config::get('app.locale'))
-            ->select('doctors.id','doctors.is_active','doctors.is_approved',
-                'doctor_translation.first_name','doctor_translation.last_name','doctor_translation.description')->get();
+        parent::booted();
+        static::addGlobalScope(new DoctorScope);
     }
 
     public function ScopegetbyId($q)
