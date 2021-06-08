@@ -32,7 +32,7 @@ class DoctorService
     public function get()
     {
         try{
-        $doctor= $this->doctorModel::Active()->WithTrans();
+        $doctor= $this->doctorModel::Active()->withTrans();
         return $this->returnData('doctor',$doctor,'done');
         }
         catch(\Exception $ex)
@@ -41,18 +41,11 @@ class DoctorService
         }
     }
 
-//$doctor= $this->doctorModel->with('medicalDevice','medicalDevice','clinic','hospital','Specialty')
-//->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
-//->where('doctors.id','=',$id)
-//->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name','doctor_translation.description')
-//->get()
-//
-//->find($id);
     public function getById($id)
     {
 
         try{
-           $doctor= $this->doctorModel->withtrans()->find($id);
+            $doctor= $this->doctorModel->find($id);
             if (is_null($doctor)){
                 return $this->returnSuccessMessage('this doctor not found','done');
             }
@@ -66,6 +59,28 @@ class DoctorService
         {
             return $this->returnError('400',$ex->getMessage());
         }
+
+//        try{
+//            $doctor= $this->doctorModel->with('medicalDevice','medicalDevice','clinic','hospital','Specialty')
+//            ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+//            ->where('doctors.id','=',$id)
+//                ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name','doctor_translation.description')
+//             ->get();
+//
+//
+////            if (is_null($doctor)){
+////                return $this->returnSuccessMessage('this doctor not found','done');
+////            }
+////            else {
+//////
+//                return $this->returnData('doctor', $doctor, 'done');
+////            }
+//
+//        }
+//        catch(\Exception $ex)
+//        {
+//            return $this->returnError('400',$ex->getMessage());
+//        }
     }
 
 //__________________________________________________________________________//
@@ -159,7 +174,7 @@ class DoctorService
 
         }
         catch(\Exception $ex){
-                        return $this->returnError('400', 'saving failed');
+                        return $this->returnError('400', $ex->getMessage());
         }
     }
 //___________________________________________________________//
@@ -177,7 +192,7 @@ class DoctorService
         }
         catch(\Exception $ex)
             {
-                return $this->returnError('400','failed');
+                return $this->returnError('400',$ex->getMessage());
             }
     }
 
@@ -195,7 +210,7 @@ class DoctorService
         }
         catch(\Exception $ex)
         {
-            return $this->returnError('400','failed');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
 
@@ -207,7 +222,7 @@ class DoctorService
         }
         catch(\Exception $ex)
         {
-            return $this->returnError('400','failed');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
 
@@ -225,7 +240,7 @@ class DoctorService
         }
         catch(\Exception $ex)
         {
-            return $this->returnError('400','failed');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
 
@@ -239,7 +254,7 @@ class DoctorService
             return $this->returnData('doctor', $doctor, 'This doctor is deleted Now');
 
         } catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
 
     }
@@ -253,7 +268,7 @@ class DoctorService
                 ->select('doctors.*', 'doctor_translation.first_name','doctor_translation.last_name')->get();
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
 
     }
@@ -269,7 +284,7 @@ class DoctorService
             ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name')->get();
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 
@@ -282,7 +297,7 @@ class DoctorService
             ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name')->get();
       }
       catch (\Exception $ex) {
-           return $this->returnError('400', 'failed');
+           return $this->returnError('400', $ex->getMessage());
        }
     }
 
@@ -296,7 +311,7 @@ class DoctorService
             ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name')->get();
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 
@@ -309,7 +324,7 @@ class DoctorService
             ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name')->get();
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 
@@ -326,7 +341,7 @@ class DoctorService
             ->get();
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 
@@ -340,7 +355,7 @@ class DoctorService
              ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name')->get();
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 
@@ -354,7 +369,7 @@ class DoctorService
           ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name')->get();
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     //get specialty by doctor name
@@ -366,7 +381,7 @@ class DoctorService
                 ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
                 ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name')->get();
         } catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 
