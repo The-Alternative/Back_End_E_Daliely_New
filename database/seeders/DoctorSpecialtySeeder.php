@@ -14,8 +14,8 @@ class DoctorSpecialtySeeder extends Seeder
      */
     public function run()
     {
-        for($doctor_id=1;$doctor_id<20;$doctor_id++) {
-            for ($specialty_id = 1; $specialty_id < 5; $specialty_id++) {
+        for($doctor_id=1;$doctor_id<5;$doctor_id++) {
+            for ($specialty_id = 1; $specialty_id < 3; $specialty_id++) {
                 DB::table('doctor_Specialty')->insert(
                     [
                         'doctor_id' => $doctor_id,
