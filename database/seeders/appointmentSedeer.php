@@ -16,14 +16,14 @@ class appointmentSedeer extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        for ($i = 0; $i <= 200; $i++) {
+        for ($i = 0; $i <= 20; $i++) {
             DB::table('appointments')->insert([
-                'is_active' => 1,
-                'is_approved' => 1,
+                'is_active' => $faker->boolean,
+                'is_approved' => $faker->boolean,
                 'description'=>$faker->sentence(10),
                 'short_description' => $faker->sentence(10),
-                'morning_evening' => 1,
-                'active_times_id' => 1,
+                'morning_evening' => $faker->boolean,
+                'active_times_id' => $faker->numberBetween(1,200),
 
             ]);
         }

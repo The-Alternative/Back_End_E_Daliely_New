@@ -16,10 +16,10 @@ class CustomFieldSeeder extends Seeder
     public function run()
     {
         $faker=Faker::create();
-        for ($i = 0; $i <= 200; $i++) {
+        for ($i = 0; $i <= 20; $i++) {
             $s = DB::table('custom_fields')->insertGetId([
                 'image' => $faker->sentence(5),
-                'is_active' => 1,
+                'is_active' => $faker->boolean,
 
             ]);
             DB::table('custom__fields__translations')->insert([[

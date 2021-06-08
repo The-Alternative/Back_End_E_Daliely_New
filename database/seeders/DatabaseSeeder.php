@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             StoreProductSeeder::class,
             StoreSectionSeeder::class,
             StoreSeeder::class,
-            //doctor
+           //doctor
             DoctorSpecialtySeeder::class,
             CustomerDoctorSeeder::class,
             DoctorHospitalSeeder::class,
@@ -46,7 +46,8 @@ class DatabaseSeeder extends Seeder
             MedicalFileSedeer::class,
             SocialMediaSedeer::class,
             SpecialtySedeer::class,
-
+//restaurant
+            RestaurantSeeder::class,
         ]);
 
     }

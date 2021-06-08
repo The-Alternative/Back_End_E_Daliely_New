@@ -17,7 +17,7 @@ class CreateClinicsTable extends Migration
             $table->id();
             $table->integer('location_id')->unsigned();
             $table->integer('active_times_id')->unsigned();
-            $table->integer('phone_number');
+            $table->string('phone_number');
             $table->integer('doctor_id')->unsigned();
             $table->boolean('is_active');
             $table->boolean('is_approved');
