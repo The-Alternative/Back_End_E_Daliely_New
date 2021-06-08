@@ -15,7 +15,7 @@ class CustomerDoctorSeeder extends Seeder
     public function run()
     {
        $faker =Faker::create();
-       for ($i=1;$i<=100;$i++){
+       for ($i=1;$i<=20;$i++){
            DB::table('customer_doctor')->insert([
                'is_active' => $faker->boolean,
                'is_approved' => $faker->boolean,

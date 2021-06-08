@@ -16,7 +16,7 @@ class ProductsSeeder extends Seeder
     public function run()
     {
         $faker=Faker::create();
-        for ($i = 1; $i <= 200; $i++) {
+        for ($i = 1; $i <= 20; $i++) {
             $s = DB::table('products')->insertGetId([
                 'slug' => $faker->sentence(1),
                 'image' => $faker->sentence(10),

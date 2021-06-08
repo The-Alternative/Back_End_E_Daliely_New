@@ -16,7 +16,7 @@ class MedicalDeviceSedeer extends Seeder
     public function run()
     {
         $faker=Faker::create();
-        for ($i = 0; $i <= 200; $i++) {
+        for ($i = 0; $i <= 20; $i++) {
             $s = DB::table('medical_devices')->insertGetId([
                 'is_active' => $faker->boolean,
                 'is_approved' =>$faker->boolean,

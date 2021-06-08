@@ -16,7 +16,7 @@ class HospitalSedeer extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        for ($i = 0; $i <= 200; $i++) {
+        for ($i = 0; $i <= 20; $i++) {
             DB::table('hospitals')->insert([
                 'is_active' =>  $faker->boolean,
                 'is_approved' =>$faker->boolean,

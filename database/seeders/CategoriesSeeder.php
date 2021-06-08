@@ -16,7 +16,7 @@ class CategoriesSeeder extends Seeder
     public function run()
     {
         $faker=Faker::create();
-        for ($i = 1; $i <= 200; $i++) {
+        for ($i = 1; $i <= 20; $i++) {
             $s = DB::table('categories')->insertGetId([
                 'slug' => $faker->sentence(1),
                 'is_active' => $faker->boolean,
