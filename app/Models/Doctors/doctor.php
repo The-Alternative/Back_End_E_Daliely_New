@@ -32,9 +32,9 @@ class doctor extends Model
      //scope
     public static function ScopeWithTrans($q)
     {
-        return $q=doctor::join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+        return $q=doctor::join('doctor_translation','doctor_id','=','doctor_translation.doctor_id')
             ->where('doctor_translation.locale','=', Config::get('app.locale'))
-            ->select('doctors.*','doctor_translation.*')->get();
+            ->select('doctors.id','doctors.is_active','doctors.is_approved','doctor_translation.first_name','doctor_translation.last_name')->get();
     }
 
     public function scopeActive($query)
