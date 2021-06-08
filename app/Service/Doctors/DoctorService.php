@@ -109,7 +109,7 @@ class DoctorService
 //_________________________________________________________//
     public function update(DoctorRequest $request,$id)
     {
-//        try{
+        try{
             $doctor= doctor::find($id);
             if(!$doctor)
                 return $this->returnError('400', 'not found this doctor');
@@ -154,13 +154,13 @@ class DoctorService
                         ]);
                 }
             }
-//            DB::commit();
+            DB::commit();
             return $this->returnData('doctor', $dbdoctor,'done');
 
-//        }
-//        catch(\Exception $ex){
-//                        return $this->returnError('400', 'saving failed');
-//        }
+        }
+        catch(\Exception $ex){
+                        return $this->returnError('400', 'saving failed');
+        }
     }
 //___________________________________________________________//
     public function search($name)
