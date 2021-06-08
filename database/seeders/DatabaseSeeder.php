@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
             SocialMediaSedeer::class,
             SpecialtySedeer::class,
 //restaurant
-            RestaurantSeeder::class,
+//            RestaurantSeeder::class,
         ]);
 
     }

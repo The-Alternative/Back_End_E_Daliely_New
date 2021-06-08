@@ -34,9 +34,19 @@ class doctor extends Model
     {
         return $q=doctor::join('doctor_translation','doctor_id','=','doctor_translation.doctor_id')
             ->where('doctor_translation.locale','=', Config::get('app.locale'))
-            ->select('doctors.id','doctors.is_active','doctors.is_approved','doctor_translation.first_name','doctor_translation.last_name')->get();
+            ->select('doctors.id','doctors.is_active','doctors.is_approved',
+                'doctor_translation.first_name','doctor_translation.last_name','doctor_translation.description')->get();
     }
 
+    public function ScopegetbyId($q)
+    {
+       return  $q= doctor::with('medicalDevice','medicalDevice','clinic','hospital','Specialty')
+            ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+            ->where('doctor_translation.locale','=', Config::get('app.locale'))
+            ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name','doctor_translation.description')
+            ->get();
+
+    }
     public function scopeActive($query)
     {
         return $query->where('is_active',1);

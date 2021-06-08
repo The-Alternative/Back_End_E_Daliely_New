@@ -37,50 +37,51 @@ class DoctorService
         }
         catch(\Exception $ex)
         {
-            return $this->returnError('400','failed');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
 
     public function getById($id)
     {
 
-        try{
-            $doctor= $this->doctorModel->find($id);
-            if (is_null($doctor)){
-                return $this->returnSuccessMessage('this doctor not found','done');
-            }
-            else {
-//
-                return $this->returnData('doctor', $doctor, 'done');
-            }
-
-        }
-        catch(\Exception $ex)
-        {
-            return $this->returnError('400',$ex->getMessage());
-        }
-
 //        try{
-//            $doctor= $this->doctorModel->with('medicalDevice','medicalDevice','clinic','hospital','Specialty')
-//            ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
-//            ->where('doctors.id','=',$id)
-//                ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name','doctor_translation.description')
-//             ->get();
-//
-//
-////            if (is_null($doctor)){
-////                return $this->returnSuccessMessage('this doctor not found','done');
-////            }
-////            else {
-//////
+//            $doctor= $this->doctorModel->find($id);
+//            if (is_null($doctor)){
+//                return $this->returnSuccessMessage('this doctor not found','done');
+//            }
+//            else {
+////
 //                return $this->returnData('doctor', $doctor, 'done');
-////            }
+//            }
 //
 //        }
 //        catch(\Exception $ex)
 //        {
 //            return $this->returnError('400',$ex->getMessage());
 //        }
+
+        try{
+            $doctor=$this->doctorModel->getbyId()->find($id);
+//            $doctor= $this->doctorModel->with('medicalDevice','medicalDevice','clinic','hospital','Specialty')
+//            ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+//            ->where('doctors.id','=',$id)
+//                ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name','doctor_translation.description')
+//             ->get();
+
+
+//            if (is_null($doctor)){
+//                return $this->returnSuccessMessage('this doctor not found','done');
+//            }
+//            else {
+////
+                return $this->returnData('doctor', $doctor, 'done');
+//            }
+
+        }
+        catch(\Exception $ex)
+        {
+            return $this->returnError('400',$ex->getMessage());
+        }
     }
 
 //__________________________________________________________________________//
@@ -201,7 +202,7 @@ class DoctorService
         try{
          $doctor= $this->doctorModel::find($id);
         if(is_null($doctor)){
-            return $this->returnSuccessMessage('This Appointment not found', 'done');}
+            return $this->returnSuccessMessage('This doctor not found', 'done');}
         else{
         $doctor->is_active = false;
         $doctor->save();

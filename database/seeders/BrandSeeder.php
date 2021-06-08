@@ -16,7 +16,7 @@ class BrandSeeder extends Seeder
     public function run()
     {
         $faker=Faker::create();
-        for ($i = 1; $i <= 20; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $s = DB::table('brands')->insertGetId([
                 'is_active'=>$faker->boolean,
                 'image'=>$faker->sentence(3),
