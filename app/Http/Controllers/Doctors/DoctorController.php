@@ -38,9 +38,10 @@ class DoctorController extends Controller
         return  $this->DoctorService->getTrashed();
     }
 
-    public function create(DoctorRequest $request)
+    public function create()
     {
-        return $this->DoctorService->create($request);
+        return "ok";
+//        return $this->DoctorService->create($request);
     }
 
     public function update(DoctorRequest $request,$id)
