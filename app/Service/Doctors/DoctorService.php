@@ -72,40 +72,39 @@ class DoctorService
 
     public function create( DoctorRequest $request )
     {
-        return "ok";
-//        try {
-//            $alldoctor = collect($request->doctor)->all();
-//            DB::beginTransaction();
-//            $unTransdoctor_id =doctor::insertGetId([
-//                'image' => $request['image'],
-//                'social_media_id' => $request['social_media_id'],
-//                'appointments_id' => $request['appointments_id'],
-//                'hospital_id' => $request['hospital_id'],
-//                'clinic_id' => $request['clinic_id'],
-//                'specialty_id' => $request['specialty_id'],
-//                'is_approved' => $request['is_approved'],
-//                'is_active' => $request['is_active'],
-//            ]);
-//            if (isset($alldoctor)) {
-//                foreach ($alldoctor as $alldoctors) {
-//                    $transdoctor[] = [
-//                        'first_name' => $alldoctors ['first_name'],
-//                        'last_name' => $alldoctors ['last_name'],
-//                        'description' => $alldoctors ['description'],
-//                        'locale' => $alldoctors['locale'],
-//                        'doctor_id' => $unTransdoctor_id,
-//                    ];
-//                }
-//                DoctorTranslation::insert( $transdoctor);
-//            }
-//            DB::commit();
-//            return $this->returnData('doctor', [$unTransdoctor_id,  $transdoctor], 'done');
-////        }
-//        catch(\Exception $ex)
-//        {
-//            DB::rollback();
-//            return $this->returnError('doctor', 'faild');
-//        }
+        try {
+            $alldoctor = collect($request->doctor)->all();
+            DB::beginTransaction();
+            $unTransdoctor_id =doctor::insertGetId([
+                'image' => $request['image'],
+                'social_media_id' => $request['social_media_id'],
+                'appointments_id' => $request['appointments_id'],
+                'hospital_id' => $request['hospital_id'],
+                'clinic_id' => $request['clinic_id'],
+                'specialty_id' => $request['specialty_id'],
+                'is_approved' => $request['is_approved'],
+                'is_active' => $request['is_active'],
+            ]);
+            if (isset($alldoctor)) {
+                foreach ($alldoctor as $alldoctors) {
+                    $transdoctor[] = [
+                        'first_name' => $alldoctors ['first_name'],
+                        'last_name' => $alldoctors ['last_name'],
+                        'description' => $alldoctors ['description'],
+                        'locale' => $alldoctors['locale'],
+                        'doctor_id' => $unTransdoctor_id,
+                    ];
+                }
+                DoctorTranslation::insert( $transdoctor);
+            }
+            DB::commit();
+            return $this->returnData('doctor', [$unTransdoctor_id,  $transdoctor], 'done');
+        }
+        catch(\Exception $ex)
+        {
+            DB::rollback();
+            return $this->returnError('doctor', $ex->getMessage());
+        }
     }
 //_________________________________________________________//
     public function update(DoctorRequest $request,$id)
