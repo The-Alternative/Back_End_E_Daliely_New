@@ -6,7 +6,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 // use LaravelLocalization;
 
-
+//define('paginat_count',10);
 Route::middleware('auth:api')->get('/user', function (Request $request)
     {
         return $request->user();

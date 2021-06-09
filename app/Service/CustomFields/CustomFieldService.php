@@ -36,7 +36,7 @@ class CustomFieldService
     public function getAll()
     {
         try{
-            $custom_field = $this->CustomFieldModel->get();
+            $custom_field = $this->CustomFieldModel->paginate(10);
             if (count($custom_field) > 0){
                 return $response= $this->returnData('Category',$custom_field,'done');
             }else{

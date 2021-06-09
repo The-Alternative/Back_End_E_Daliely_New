@@ -41,8 +41,6 @@ class Store extends Model
         parent::booted();
         static::addGlobalScope(new StoreScope);
     }
-
-
     public function StoreTranslation()
     {
         return $this->hasMany(
@@ -81,6 +79,4 @@ class Store extends Model
     {
         return $this->hasMany(StoreImage::class);
     }
-
 }
-

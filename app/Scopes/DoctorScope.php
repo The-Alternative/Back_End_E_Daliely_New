@@ -19,6 +19,6 @@ class DoctorScope implements \Illuminate\Database\Eloquent\Scope
     {
         $builder->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
             ->where('doctor_translation.locale','=',Config::get('app.locale'))
-            ->select('doctors.*','doctor_translation.*')->get();
+            ->select('doctors.id','doctors.specialty_id','doctor_translation.*')->get();
     }
 }

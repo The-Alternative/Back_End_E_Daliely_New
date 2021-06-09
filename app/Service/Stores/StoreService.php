@@ -1,7 +1,5 @@
 <?php
 namespace App\Service\Stores;
-use App\Http\Requests\Store\StoreRequest;
-use App\Http\Requests\StoreProduct\StoreProductRequest;
 use App\Models\Stores\Store;
 use App\Models\Stores\StoreTranslation;
 use App\Traits\GeneralTrait;
@@ -15,7 +13,6 @@ class  StoreService
     private $storeModel;
     private $storeTranslation;
     private $Store;
-
     public function __construct(Store $store ,StoreTranslation $storeTranslation)
     {
         $this->storeModel=$store;
@@ -25,7 +22,7 @@ class  StoreService
     public function getAll()
     {
         try {
-            $store =collect($this->storeModel->with(['Section','Product','Brand'])->get());
+            $store =$this->storeModel->with(['Section','Product','Brand'])->paginate(10);
             if (count($store) > 0){
                 return $this->returnData('Stores',$store,'done');
             }else{
