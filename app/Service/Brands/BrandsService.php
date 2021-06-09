@@ -25,7 +25,7 @@ class BrandsService
     public function getAll()
     {
         try {
-            $brands = $this->BrandModel->with('Product')->get();
+            $brands = $this->BrandModel->with('Product')->paginate(10);
             if (count($brands) > 0) {
                 return $response = $this->returnData('Brand', $brands, 'done');
             } else {

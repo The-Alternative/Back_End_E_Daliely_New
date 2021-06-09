@@ -12,7 +12,6 @@ use App\Models\Categories\SectionTranslation;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Config;
 
-
 class Section extends Model
 {
     use HasFactory;
@@ -21,13 +20,11 @@ class Section extends Model
     public $timestamps = true;
     protected $fillable = [
         'slug', 'image', 'is_active'];
-
     public function getIsActiveAttribute($value)
     {
         return $value==1 ? 'Active' : 'Not Active';
     }
 //________________ scopes begin _________________//
-
 //    public function scopeAllStores($value)
 //    {
 //        return $value->join('section_translations', 'sections.id', '=','section_translations.section_id' )
@@ -46,12 +43,10 @@ class Section extends Model
                 }]);
     }]);
     }
-
     protected static function booted()
     {
         parent::booted();
         static::addGlobalScope(new SectionScope);
-//        static::addGlobalScope(new SectionByIdScope);
     }
     public function scopeSelectById($query)
     {
@@ -60,9 +55,7 @@ class Section extends Model
             ->select(['sections.id', 'sections.is_active', 'sections.image', 'sections.created_at',
                 'section_translations.name', 'section_translations.description', 'section_translations.local']);
     }
-
     //________________ scopes end _________________//
-
     public function SectionTranslation()
     {
         return $this->hasMany(SectionTranslation::class,'section_id');
@@ -89,7 +82,7 @@ class Section extends Model
     }
     public function products(){
         return $this->hasManyThrough(
-            Product::class,
+            Category::class,
             ProductCategory::class,
         'product_id',
         'id',

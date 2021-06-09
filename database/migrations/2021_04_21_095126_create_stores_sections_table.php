@@ -20,6 +20,16 @@ class CreateStoresSectionsTable extends Migration
             $table->unsignedInteger('store_id');
             $table->timestamps();
         });
+        for($store_id=1;$store_id<12;$store_id++){
+            for($section_id=1;$section_id<12;$section_id++) {
+                DB::table('stores_sections')->insert(
+                    $arr = [
+                        'section_id'=>$section_id,
+                        'store_id'=>$store_id
+                    ]
+                );
+            }
+        }
 
     }
 
@@ -30,6 +40,6 @@ class CreateStoresSectionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stores_sections');
+//        Schema::dropIfExists('stores_sections');
     }
 }

@@ -44,7 +44,7 @@ class ProductService
     {
         try{
         $products = $this->productModel
-            ->with('Store')->get();
+            ->with('Store')->paginate(10);
             if (count($products) > 0)
             {
                 return $response=$this->returnData('Products',$products,'done');
