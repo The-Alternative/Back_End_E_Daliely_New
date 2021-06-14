@@ -9,6 +9,6 @@ class RestaurantTranslation extends Model
 {
     use HasFactory;
     protected $table='restaurant_translations';
-    protected $fillable =['Id','locale','title','description','restaurant_id'];
+    protected $fillable =['Id','locale','title','short_description','long_description','restaurant_id'];
     public $timestamps=false;
 }

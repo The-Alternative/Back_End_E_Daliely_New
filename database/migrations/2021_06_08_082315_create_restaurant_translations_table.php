@@ -17,7 +17,8 @@ class CreateRestaurantTranslationsTable extends Migration
             $table->id();
             $table->integer('restaurant_id');
             $table->string('title');
-            $table->string('description');
+            $table->string('short_description');
+            $table->string('long_description');
             $table->string('locale');
             $table->timestamps();
         });
