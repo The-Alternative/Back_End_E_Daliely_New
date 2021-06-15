@@ -309,14 +309,14 @@ Route::group(['prefix'=>'ActiveTime','namespace'=>'ActiveTime'],function () {
      });
      //________________________Type Of Restaurant Route__________________//
      Route::group(['prefix'=>'TypeOfRestaurant','namespace'=>'TypeOfRestaurant'],function () {
-         Route::get('/get', 'RestaurantController@get');
-         Route::get('/getById/{id}', 'RestaurantController@getById');
-         Route::get('/getTrashed', 'RestaurantController@getTrashed');
-         Route::post('/create', 'RestaurantController@create');
-         Route::put('/update/{id}', 'RestaurantController@update');
-         Route::PUT('/trash/{id}', 'RestaurantController@trash');
-         Route::delete('/delete/{id}', 'RestaurantController@delete');
-         Route::PUT('/restoreTrashed/{id}', 'RestaurantController@restoreTrashed');
+         Route::get('/get', 'TypeOfRestaurantController@get');
+         Route::get('/getById/{id}', 'TypeOfRestaurantController@getById');
+         Route::get('/getTrashed', 'TypeOfRestaurantController@getTrashed');
+         Route::post('/create', 'TypeOfRestaurantController@create');
+         Route::put('/update/{id}', 'TypeOfRestaurantController@update');
+         Route::PUT('/trash/{id}', 'TypeOfRestaurantController@trash');
+         Route::delete('/delete/{id}', 'TypeOfRestaurantController@delete');
+         Route::PUT('/restoreTrashed/{id}', 'TypeOfRestaurantController@restoreTrashed');
      });
 
 

@@ -40,9 +40,9 @@ class TypeOfRestaurantController extends Controller
     {
         return $this->TypeOfRestaurantService->update($request,$id);
     }
-    public function search($type_of_restaurant_name)
+    public function search($restaurant_type_title)
     {
-        return $this->TypeOfRestaurantService->search($type_of_restaurant_name);
+        return $this->TypeOfRestaurantService->search($restaurant_type_title);
     }
     public function trash($id)
     {

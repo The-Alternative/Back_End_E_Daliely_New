@@ -103,31 +103,31 @@ class TypeOfRestaurantService
                     'is_active' => $request['is_active'],
                 ]);
 
-            $ss=TypeOfRestaurantTranslation::where('restaurant_id',$id);
-            $collection1 = collect($allrestaurant);
-            $allrestaurantlength=$collection1->count();
+            $ss=TypeOfRestaurantTranslation::where('type_of_restaurant_id',$id);
+            $collection1 = collect($alltyperestaurant);
+            $allrestauranttypelength=$collection1->count();
             $collection2 = collect($ss);
 
-            $db_restarurant= array_values(RestaurantTranslation::where('restaurant_id',$id)
+            $db_restaruranttype= array_values(TypeOfRestaurantTranslation::where('type_of_restaurant_id',$id)
                 ->get()
                 ->all());
-            $dbrestarurant = array_values($db_restarurant);
-            $request_restarurant= array_values($request->restarurant);
-            foreach($dbrestarurant as $dbrestarurants){
-                foreach($request_restarurant as $request_restarurants){
-                    $values= RestaurantTranslation::where('restaurant_id',$id)
-                        ->where('locale',$request_restarurants['locale'])
+            $dbrestaruranttype = array_values($db_restaruranttype);
+            $request_restaruranttype= array_values($request->restaruranttype);
+            foreach($dbrestaruranttype as $dbrestaruranttypes){
+                foreach($request_restaruranttype as $request_restaruranttypes){
+                    $values= TypeOfRestaurantTranslation::where('restaurant_id',$id)
+                        ->where('locale',$request_restaruranttypes['locale'])
                         ->update([
-                            'title' => $dbrestarurants ['title'],
-                            'short_description' => $dbrestarurants ['short_description'],
-                            'long_description' => $dbrestarurants ['short_description'],
-                            'locale' => $dbrestarurants['locale'],
-                            'restaurant_id' => $id,
+                            'title' => $dbrestaruranttypes ['title'],
+                            'short_description' => $dbrestaruranttypes ['short_description'],
+                            'long_description' => $dbrestaruranttypes ['short_description'],
+                            'locale' => $dbrestaruranttypes['locale'],
+                            'type_of_restaurant_id' => $id,
                         ]);
                 }
             }
             DB::commit();
-            return $this->returnData('restaurant', $dbrestarurant,'done');
+            return $this->returnData('restaurant type', $dbrestaruranttype,'done');
 
         }
         catch(\Exception $ex){
@@ -135,16 +135,16 @@ class TypeOfRestaurantService
         }
     }
 //___________________________________________________________//
-    public function search($restaurant_name)
+    public function search($restaurant_type_title)
     {
         try {
-            $restaurant = DB::table('restaurant_translations')
-                ->where("title", "like", "%" . $restaurant_name . "%")
+            $restauranttype = DB::table('type_of_restaurant_translations')
+                ->where("title", "like", "%" . $restaurant_type_title . "%")
                 ->get();
-            if (!$restaurant) {
-                return $this->returnError('400', 'not found this restaurant');
+            if (!$restauranttype) {
+                return $this->returnError('400', 'not found this restaurant type');
             } else {
-                return $this->returnData('restaurant', $restaurant, 'done');
+                return $this->returnData('restaurant type', $restauranttype, 'done');
             }
         }
         catch(\Exception $ex)
@@ -156,13 +156,13 @@ class TypeOfRestaurantService
     public function trash( $id)
     {
         try{
-            $restaurant= $this->TypeOfRestaurantModel::find($id);
-            if(is_null($restaurant)){
-                return $this->returnSuccessMessage('This restaurant not found', 'done');}
+            $restauranttype= $this->TypeOfRestaurantModel::find($id);
+            if(is_null($restauranttype)){
+                return $this->returnSuccessMessage('This restaurant type not found', 'done');}
             else{
-                $restaurant->is_active = false;
-                $restaurant->save();
-                return $this->returnData('doctor', $restaurant, 'This restaurant is trashed Now');
+                $restauranttype->is_active =0;
+                $restauranttype->save();
+                return $this->returnData('doctor', $restauranttype, 'This restaurant type is trashed Now');
             }
         }
         catch(\Exception $ex)
@@ -174,8 +174,8 @@ class TypeOfRestaurantService
     public function getTrashed()
     {
         try {
-            $restaurant = $this->TypeOfRestaurantModel::NotActive()->WithTrans()->all();
-            return $this->returnData('restaurant', $restaurant, 'done');
+            $restauranttype = $this->TypeOfRestaurantModel::NotActive()->WithTrans()->all();
+            return $this->returnData('restaurant type', $restauranttype, 'done');
         }
         catch(\Exception $ex)
         {
@@ -186,13 +186,13 @@ class TypeOfRestaurantService
     public function restoreTrashed( $id)
     {
         try {
-            $restaurant = $this->TypeOfRestaurantModel::find($id);
-            if (is_null($restaurant)) {
-                return $this->returnSuccessMessage('This restaurant not found', 'done');
+            $restauranttype = $this->TypeOfRestaurantModel::find($id);
+            if (is_null($restauranttype)) {
+                return $this->returnSuccessMessage('This restaurant type not found', 'done');
             } else {
-                $restaurant->is_active = true;
-                $restaurant->save();
-                return $this->returnData('restaurant', $restaurant, 'This restaurant is trashed Now');
+                $restauranttype->is_active =1;
+                $restauranttype->save();
+                return $this->returnData('restaurant type', $restauranttype, 'This restaurant type is trashed Now');
             }
         }
         catch(\Exception $ex)
@@ -204,11 +204,11 @@ class TypeOfRestaurantService
     public function delete($id)
     {
         try{
-            $restaurant = $this->TypeOfRestaurantModel::find($id);
-            if ($restaurant->is_active == 0) {
-                $restaurant = $this->TypeOfRestaurantModel->destroy($id);
+            $restauranttype = $this->TypeOfRestaurantModel::find($id);
+            if ($restauranttype->is_active == 0) {
+                $restauranttype = $this->TypeOfRestaurantModel->destroy($id);
             }
-            return $this->returnData('restaurant', $restaurant, 'This restaurant is deleted Now');
+            return $this->returnData('restaurant type', $restauranttype, 'This restaurant type is deleted Now');
 
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
