@@ -307,6 +307,18 @@ Route::group(['prefix'=>'ActiveTime','namespace'=>'ActiveTime'],function () {
          Route::delete('/delete/{id}', 'RestaurantController@delete');
          Route::PUT('/restoreTrashed/{id}', 'RestaurantController@restoreTrashed');
      });
+     //________________________Type Of Restaurant Route__________________//
+     Route::group(['prefix'=>'TypeOfRestaurant','namespace'=>'TypeOfRestaurant'],function () {
+         Route::get('/get', 'RestaurantController@get');
+         Route::get('/getById/{id}', 'RestaurantController@getById');
+         Route::get('/getTrashed', 'RestaurantController@getTrashed');
+         Route::post('/create', 'RestaurantController@create');
+         Route::put('/update/{id}', 'RestaurantController@update');
+         Route::PUT('/trash/{id}', 'RestaurantController@trash');
+         Route::delete('/delete/{id}', 'RestaurantController@delete');
+         Route::PUT('/restoreTrashed/{id}', 'RestaurantController@restoreTrashed');
+     });
+
 
  });
 

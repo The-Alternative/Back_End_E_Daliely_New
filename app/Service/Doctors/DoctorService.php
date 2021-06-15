@@ -31,6 +31,8 @@ class DoctorService
     }
     public function get()
     {
+        DB::enableQueryLog();
+
         try{
         $doctor= $this->doctorModel::Active()->get();
         return $this->returnData('doctor',$doctor,'done');

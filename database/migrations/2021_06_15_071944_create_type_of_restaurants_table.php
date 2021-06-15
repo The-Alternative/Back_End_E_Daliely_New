@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRestaurantsTable extends Migration
+class CreateTypeOfRestaurantsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,9 @@ class CreateRestaurantsTable extends Migration
      */
     public function up()
     {
-        Schema::create('restaurants', function (Blueprint $table) {
+        Schema::create('type_of_restaurants', function (Blueprint $table) {
             $table->id();
             $table->string('image');
-            $table->integer('appointment_id');
-            $table->integer('social_media_id');
-            $table->integer('active_time_id');
-            $table->integer('location_id');
-            $table->integer('customer_id');
-            $table->integer('type_of_restaurant_id');
-            $table->integer('rate_id');
-            $table->integer('user_id');
             $table->boolean('is_active');
             $table->boolean('is_approved');
             $table->timestamps();
@@ -37,6 +29,6 @@ class CreateRestaurantsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('restaurants');
+        Schema::dropIfExists('type_of_restaurants');
     }
 }
