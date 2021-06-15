@@ -31,16 +31,15 @@ class DoctorService
     }
     public function get()
     {
-        DB::enableQueryLog();
-
-        try{
-        $doctor= $this->doctorModel::Active()->get();
-        return $this->returnData('doctor',$doctor,'done');
-        }
-        catch(\Exception $ex)
-        {
-            return $this->returnError('400',$ex->getMessage());
-        }
+        return $this->doctorModel->getall();
+//        try{
+//        $doctor= $this->doctorModel::getall()->get();
+//        return $this->returnData('doctor',$doctor,'done');
+//        }
+//        catch(\Exception $ex)
+//        {
+//            return $this->returnError('400',$ex->getMessage());
+//        }
     }
 
     public function getById($id)

@@ -29,6 +29,11 @@ class doctor extends Model
 //    protected $hidden   =['social_media_id','specialty_id','hospital_id','work_places_id','created_at','updated_at'];
      public $timestamps=false;
 
+     public function getall()
+     {
+         return doctor::select('doctors.id','doctors.is_active','doctors.is_approved')
+            -> where('is_active','=', 1)->get();
+     }
 
      //scope
 //    public static function ScopeWithTrans($q)
@@ -38,6 +43,7 @@ class doctor extends Model
 //            ->select('doctors.id','doctors.is_active','doctors.is_approved',
 //                'doctor_translation.first_name','doctor_translation.last_name','doctor_translation.description')->get();
 //    }
+
 
     protected static function booted()
     {
