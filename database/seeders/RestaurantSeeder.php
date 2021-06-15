@@ -22,6 +22,7 @@ class RestaurantSeeder extends Seeder
                 'is_active' => $faker->boolean,
                 'is_approved' =>$faker->boolean,
                 'social_media_id' => $faker->numberBetween(1,200),
+<<<<<<< HEAD
                 'appointment_id' =>  $faker->numberBetween(1,200),
                 'active_time_id' =>  $faker->numberBetween(1,200),
                 'user_id' =>  $faker->numberBetween(1,200),
@@ -42,6 +43,29 @@ class RestaurantSeeder extends Seeder
                     'restaurant_id' => $s,
                     'long_description' => $faker->sentence(2),
                     'title'  => $faker->sentence(2),
+=======
+                'location_id' =>  $faker->numberBetween(1,200),
+                'rate_id' =>  $faker->numberBetween(1,200),
+                'user_id' =>  $faker->numberBetween(1,200),
+                'appointments_id' =>  $faker->numberBetween(1,200),
+                'customer_id' =>  $faker->numberBetween(1,200),
+                'type_of_restaurant_id' =>  $faker->numberBetween(1,200),
+                'active_time_id' =>  $faker->numberBetween(1,200),
+
+            ]);
+            DB::table('restaurant_translations')->insert([[
+                'short_description' =>$faker->sentence(5),
+                'long_description' =>$faker->sentence(10),
+                'restaurant_id' => $s,
+                'title' => $faker->sentence(2),
+                'locale' => 'en',
+            ],
+                [
+                    'short_description' =>$faker->sentence(5),
+                    'long_description' =>$faker->sentence(10),
+                    'restaurant_id' => $s,
+                    'title' => $faker->sentence(2),
+>>>>>>> 321df2e770c526296aa3ca8f506261aa7ea983f7
                     'locale' => 'ar',
                 ]]);
 

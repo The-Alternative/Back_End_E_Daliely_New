@@ -22,8 +22,13 @@ class CreateRestaurantsTable extends Migration
             $table->integer('location_id');
             $table->integer('customer_id');
             $table->integer('type_of_restaurant_id');
+<<<<<<< HEAD
             $table->integer('rate_id');
             $table->integer('user_id');
+=======
+            $table->integer('user_id');
+            $table->integer('rate_id');
+>>>>>>> 321df2e770c526296aa3ca8f506261aa7ea983f7
             $table->boolean('is_active');
             $table->boolean('is_approved');
             $table->timestamps();

@@ -64,7 +64,8 @@ class RestaurantService
                 'active_time_id' => $request['active_time_id'],
                 'customer_id' => $request['customer_id'],
                 'location_id' => $request['location_id'],
-                'food_id' => $request['food_id'],
+                'user_id' => $request['user_id'],
+                'rate_id' => $request['rate_id'],
                 'type_of_restaurant_id' => $request['type_of_restaurant_id'],
                 'is_approved' => $request['is_approved'],
                 'is_active' => $request['is_active'],
@@ -73,7 +74,8 @@ class RestaurantService
                 foreach ($allrestaurant as $allrestaurants) {
                     $transrestaurant[] = [
                         'title' => $allrestaurants ['title'],
-                        'description' => $allrestaurants ['description'],
+                        'short_description' => $allrestaurants ['short_description'],
+                        'long_description' => $allrestaurants ['short_description'],
                         'locale' => $allrestaurants['locale'],
                         'restaurant_id' => $unTransrestaurant_id,
                     ];
@@ -110,7 +112,8 @@ class RestaurantService
                     'active_time_id' => $request['active_time_id'],
                     'customer_id' => $request['customer_id'],
                     'location_id' => $request['location_id'],
-                    'food_id' => $request['food_id'],
+                    'user_id' => $request['user_id'],
+                    'rate_id' => $request['rate_id'],
                     'type_of_restaurant_id' => $request['type_of_restaurant_id'],
                     'is_approved' => $request['is_approved'],
                     'is_active' => $request['is_active'],
@@ -132,7 +135,8 @@ class RestaurantService
                         ->where('locale',$request_restarurants['locale'])
                         ->update([
                             'title' => $dbrestarurants ['title'],
-                            'description' => $dbrestarurants ['description'],
+                            'short_description' => $dbrestarurants ['short_description'],
+                            'long_description' => $dbrestarurants ['short_description'],
                             'locale' => $dbrestarurants['locale'],
                             'restaurant_id' => $id,
                         ]);
