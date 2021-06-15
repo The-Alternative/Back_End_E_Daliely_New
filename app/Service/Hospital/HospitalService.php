@@ -25,7 +25,7 @@ class HospitalService
             return $this->returnData('Hospital', $Hospital, 'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function getById($id)
@@ -41,7 +41,7 @@ class HospitalService
     }
     catch(\Exception $ex)
       {
-         return $this->returnError('400','failed');
+         return $this->returnError('400',$ex->getMessage());
       }
     }
     public function create( HospitalRequest $request )
@@ -69,7 +69,7 @@ class HospitalService
               }
         }
           catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function update(HospitalRequest $request,$id)
@@ -97,7 +97,7 @@ class HospitalService
              }
         }
           catch (\Exception $ex) {
-              return $this->returnError('400', 'failed');
+              return $this->returnError('400', $ex->getMessage());
         }
 
     }
@@ -114,7 +114,7 @@ class HospitalService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function trash( $id)
@@ -126,13 +126,13 @@ class HospitalService
             }
             else
             {
-                $Hospital->is_active=false;
+                $Hospital->is_active=0;
                 $Hospital->save();
                 return $this->returnData('Hospital', $Hospital,'This Hospital is trashed Now');
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
 
     }
@@ -143,7 +143,7 @@ class HospitalService
             return $this -> returnData('Hospital',$Hospital,'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }    }
     public function restoreTrashed( $id)
     {
@@ -154,13 +154,13 @@ class HospitalService
             }
             else
             {
-                $Hospital->is_active=true;
+                $Hospital->is_active=1;
                 $Hospital->save();
                 return $this->returnData('Hospital', $Hospital,'This Hospital is trashed Now');
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
 
 
@@ -175,7 +175,7 @@ class HospitalService
             return $this->returnData('Hospital', $Hospital, 'This Hospital is deleted Now');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     //get all the doctors who work in the hospital according to her name
@@ -187,7 +187,7 @@ class HospitalService
                                ->get();
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 

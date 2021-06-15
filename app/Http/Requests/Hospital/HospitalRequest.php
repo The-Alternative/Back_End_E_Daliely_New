@@ -34,7 +34,7 @@ class HospitalRequest extends FormRequest
              'doctor_id'       =>'required',
 
 
-            'name'=> 'required|min:5|max:255|unique:hospitals,name'
+            'name'=> 'required_without:id|min:5|max:255|unique:hospitals,name'
         ];
 
     }
