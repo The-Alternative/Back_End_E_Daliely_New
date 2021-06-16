@@ -18,6 +18,7 @@ class CreateSpecialtyTranslationTable extends Migration
             $table->integer('specialty_id');
             $table->string('locale');
             $table->string('name');
+            $table->string('description');
 
 
             $table->timestamps();

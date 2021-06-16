@@ -14,7 +14,7 @@ class medicalDevice extends Model
 
     protected $table='medical_devices';
     protected $fillable=['id','hospital_id','doctor_id','is_active','is_approved'];
-//    protected $hidden=['id','pivot','created_at','updated_at','hospital_id','doctor_id'];
+//    protected $hidden=['pivot','created_at','updated_at','hospital_id','doctor_id'];
 
 
     //scope
@@ -28,9 +28,10 @@ class medicalDevice extends Model
     }
     public function ScopeWithTrans($query)
     {
-        return $query=medicalDevice::join('medical_device_translation','medical_device_translation.medical_device_id','=','medical_device_id')
+        return $query=medicalDevice::join('medical_device_translation','medical_device_translation.medical_device_id','=','medical_devices.id')
             ->where('medical_device_translation.locale','=',config::get('app.locale'))
-            ->select('medical_devices.*','medical_device_translation.*');
+            ->select('medical_devices.id','medical_devices.is_active','medical_devices.is_approved'
+                ,'medical_device_translation.name' ,'medical_device_translation.description');
     }
     public function medicaldeviceTranslation()
     {

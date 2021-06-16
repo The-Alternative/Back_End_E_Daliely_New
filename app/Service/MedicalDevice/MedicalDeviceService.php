@@ -28,7 +28,7 @@ class MedicalDeviceService
             return $this->returnData(' MedicalDevice', $MedicalDevice, 'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
 
     }
@@ -44,7 +44,7 @@ class MedicalDeviceService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 //________________________________________________________//
@@ -63,6 +63,7 @@ class MedicalDeviceService
                 foreach ($allmedicaldevice as $allmedicaldevices) {
                     $transmedicaldevice[] = [
                         'name' => $allmedicaldevices ['name'],
+                        'description' => $allmedicaldevices ['description'],
                         'locale' => $allmedicaldevices['locale'],
                         'medical_device_id' => $unTransmedicaldevice_id,
                     ];
@@ -75,7 +76,7 @@ class MedicalDeviceService
         catch(\Exception $ex)
         {
             DB::rollback();
-            return $this->returnError('MedicalDevice', 'faild');
+            return $this->returnError('MedicalDevice', $ex->getMessage());
         }
     }
 //__________________________________________________________________________//
@@ -115,6 +116,7 @@ class MedicalDeviceService
                         ->where('locale',$request_medicaldevices['locale'])
                         ->update([
                             'name' => $request_medicaldevices ['name'],
+                            'description' => $request_medicaldevices ['description'],
                             'locale' => $request_medicaldevices['locale'],
                             'medical_device_id' => $id,
                         ]);
@@ -124,14 +126,14 @@ class MedicalDeviceService
             return $this->returnData('Medical Device', $dbmedicaldevice,'done');
         }
         catch(\Exception $ex){
-            return $this->returnError('400', 'saving failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 //______________________________________________________//
     public function search($name)
     {
         try{
-             $MedicalDevice = DB::table('medical_devices')
+             $MedicalDevice = DB::table('medical_device_translation')
                  ->where("name","like","%".$name."%")
                  ->get();
              if (! $MedicalDevice)
@@ -144,7 +146,7 @@ class MedicalDeviceService
              }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function trash( $id)
@@ -156,23 +158,23 @@ class MedicalDeviceService
             }
             else
             {
-                $MedicalDevice->is_active=false;
+                $MedicalDevice->is_active=0;
                 $MedicalDevice->save();
                 return $this->returnData(' MedicalDevice',  $MedicalDevice,'This MedicalDevice is trashed Now');
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function getTrashed()
     {
         try{
-        $MedicalDevice= $this->MedicalDeviceModel::NotActive()->all();
+        $MedicalDevice= $this->MedicalDeviceModel::NotActive()->get();
         return $this -> returnData(' MedicalDevice', $MedicalDevice,'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
 
     }
@@ -185,13 +187,13 @@ class MedicalDeviceService
               }
               else
               {
-                  $MedicalDevice->is_active=true;
+                  $MedicalDevice->is_active=1;
                   $MedicalDevice->save();
-                  return $this->returnData('MedicalDevice',  $MedicalDevice,'This MedicalDevice is trashed Now');
+                  return $this->returnData('MedicalDevice',  $id,'This MedicalDevice is trashed Now');
               }
           }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function delete($id)
@@ -201,10 +203,10 @@ class MedicalDeviceService
             if ($MedicalDevice->is_active == 0) {
                 $MedicalDevice = $this->MedicalDeviceModel->destroy($id);
             }
-            return $this->returnData('MedicalDevice',  $MedicalDevice, 'This MedicalDevice is deleted Now');
+            return $this->returnData('MedicalDevice',  $id, 'This MedicalDevice is deleted Now');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 
@@ -216,7 +218,7 @@ class MedicalDeviceService
                 ->where('medical_device_translation.name','like','%'.$medical_device_name.'%')
                 ->select('medical_devices.*','medical_device_translation.name')->get();
         } catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 }

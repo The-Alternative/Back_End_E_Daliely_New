@@ -11,7 +11,7 @@ class SpecialtyTranslation extends Model
     use HasFactory;
 
     protected $table='specialty_translation';
-    protected $fillable=['id','specialty_id','name','locale'];
+    protected $fillable=['id','specialty_id','name','locale','description'];
 
     public function specialty()
     {

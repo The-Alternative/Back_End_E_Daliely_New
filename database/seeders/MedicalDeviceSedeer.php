@@ -27,11 +27,13 @@ class MedicalDeviceSedeer extends Seeder
             DB::table('medical_device_translation')->insert([[
                 'medical_device_id'   => $s,
                 'name'  => $faker->sentence(3),
+                'description'  => $faker->sentence(8),
                 'locale'      => 'en',
             ],
                 [
                     'medical_device_id'   => $s,
                     'name'  => $faker->sentence(3),
+                    'description'  => $faker->sentence(8),
                     'locale' => 'ar',
                 ]]);
 

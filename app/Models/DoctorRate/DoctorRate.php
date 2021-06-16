@@ -10,7 +10,7 @@ class DoctorRate extends Model
     use HasFactory;
     protected $table='doctor_rates';
     protected $fillable=['id','rate','doctor_id'];
-    protected $hidden=['id','created_at','updated_at','doctor_id'];
+    protected $hidden=['created_at','updated_at','doctor_id'];
 
     public $timestamps=false;
 

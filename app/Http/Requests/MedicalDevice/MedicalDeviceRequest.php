@@ -33,7 +33,7 @@ class MedicalDeviceRequest extends FormRequest
             'medicaldevice'=>'required|array|min:1',
             'medicaldevice.*.name'=> 'required|min:5|max:255',
             'medicaldevice.*.locale'=> 'required',
-            'medicaldevice.*.medical_device_id'=> 'required',
+            'medicaldevice.*.description'=> 'required|min:5|max:255',
         ];
     }
     public function messages()
@@ -43,9 +43,13 @@ class MedicalDeviceRequest extends FormRequest
             'required'=>'this field is required',
             'in'=>'this field must be 0 (is not active) or 1 (is active)',
 
-            'medicaldevice.*.name.min' => 'Your medical Device\'s Name Is Too Short',
-            'medicaldevice.*.name.max' => 'Your medical Device\'s Name Is Too Long',
+            'medicaldevice.*.name.min' => 'this medical Device\'s Name Is Too Short',
+            'medicaldevice.*.name.max' => 'this medical Device\'s Name Is Too Long',
             'medicaldevice.*.name.unique' => 'This Name\'s Is Used By Another medical Device',
+
+            'medicaldevice.*.description.min'=>'this medical Device\'s description Is Too Short',
+            'medicaldevice.*.description.max'=>'this medical Device\'s description Is Too long'
+
 
         ];
     }

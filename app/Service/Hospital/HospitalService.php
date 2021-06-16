@@ -128,7 +128,7 @@ class HospitalService
             {
                 $Hospital->is_active=0;
                 $Hospital->save();
-                return $this->returnData('Hospital', $Hospital,'This Hospital is trashed Now');
+                return $this->returnData('Hospital', $id,'This Hospital is trashed Now');
             }
         }
         catch (\Exception $ex) {
@@ -156,7 +156,7 @@ class HospitalService
             {
                 $Hospital->is_active=1;
                 $Hospital->save();
-                return $this->returnData('Hospital', $Hospital,'This Hospital is trashed Now');
+                return $this->returnData('Hospital', $id,'This Hospital is trashed Now');
             }
         }
         catch (\Exception $ex) {
@@ -172,7 +172,7 @@ class HospitalService
             if ($Hospital->is_active == 0) {
                 $clinic = $this->HospitalModel->destroy($id);
             }
-            return $this->returnData('Hospital', $Hospital, 'This Hospital is deleted Now');
+            return $this->returnData('Hospital', $id, 'This Hospital is deleted Now');
         }
         catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());

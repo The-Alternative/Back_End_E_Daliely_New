@@ -28,10 +28,11 @@ class SpecialtyRequest extends FormRequest
             'is_active'=>'required|in:1,0',
             'graduation_year'=>'required',
 
-            'specialty'=>'required|array|min:1',
-            'specialty.*.name'=> 'required|string|min:3|max:255|unique:specialty_translation',
+            'specialty'=>'required_without:id|array|min:1',
+            'specialty.*.name'=> 'required_without:id|string|min:3|max:255|unique:specialty_translation',
             'specialty.*.locale'=> 'required',
-            'specialty.*.specialty_id'=> 'required'
+            'specialty.*.description'=> 'required|string|min:3|max:255',
+
         ];
 
     }
@@ -44,6 +45,9 @@ class SpecialtyRequest extends FormRequest
             'specialty.*.name.min' => 'Your specialty\'s Name Is Too Short',
             'specialty.*.name.max' => 'Your specialty\'s Name Is Too Long',
             'specialty.*.name.unique' => 'This Name\'s Is Used By Another specialty',
+
+            'specialty.*.description.min' => 'Your specialty\'s description Is Short',
+            'specialty.*.description.max' => 'Your specialty\'s description Is Long',
             ];
     }
 }

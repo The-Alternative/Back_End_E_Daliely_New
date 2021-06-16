@@ -31,7 +31,7 @@ class SpecialtyService
             return $this->returnData(' Specialty', $Specialty, 'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
 
     }
@@ -47,7 +47,7 @@ class SpecialtyService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 
@@ -65,6 +65,7 @@ class SpecialtyService
                 foreach ($allspecialty as $allspecialties) {
                     $transspecialty[] = [
                         'name' => $allspecialties ['name'],
+                        'description' => $allspecialties ['description'],
                         'locale' => $allspecialties['locale'],
                         'specialty_id' => $unTransspecialty_id,
                     ];
@@ -77,7 +78,7 @@ class SpecialtyService
         catch(\Exception $ex)
         {
             DB::rollback();
-            return $this->returnError('Specialty', 'faild');
+            return $this->returnError('Specialty', $ex->getMessage());
         }
     }
 //_________________________________________________________//
@@ -113,6 +114,7 @@ class SpecialtyService
                         ->where('locale',$request_specialties['locale'])
                         ->update([
                             'name' => $request_specialties ['name'],
+                            'description' => $request_specialties ['description'],
                             'locale' => $request_specialties['locale'],
                             'specialty_id' => $id,
                         ]);

@@ -25,11 +25,14 @@ class SpecialtySedeer extends Seeder
             DB::table('specialty_translation')->insert([[
                 'specialty_id'   => $s,
                 'name'  => $faker->sentence(3),
+                'description'  => $faker->sentence(8),
                 'locale'      => 'en',
             ],
                 [
                     'specialty_id'   => $s,
                     'name'  => $faker->sentence(3),
+                    'description'  => $faker->sentence(8),
+
                     'locale' => 'ar',
                 ]]);
 

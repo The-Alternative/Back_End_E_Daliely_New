@@ -29,9 +29,10 @@ class Specialty extends Model
 
     public function ScopeWithTrans($query)
     {
-        return $query=Specialty::join('specialty_translation','specialty_translation.specialty_id','=','specialty_id')
+        return $query=Specialty::join('specialty_translation','specialty_translation.specialty_id','=','specialties.id')
             ->where('specialty_translation.locale','=',config::get('app.locale'))
-            ->select('specialties.*','specialty_translation.*');
+            ->select('specialties.id','specialties.id',
+                'specialty_translation.name','specialty_translation.description','specialty_translation.locale');
     }
 
     public function specialtyTranslation()
