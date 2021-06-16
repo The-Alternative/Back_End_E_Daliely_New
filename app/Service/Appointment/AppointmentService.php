@@ -23,12 +23,12 @@ class AppointmentService
     {
         try
         {
-        $appointment= $this->AppointmentModel::IsActive()->get();
+          $appointment= $this->AppointmentModel::WithTrans()->IsActive()->get();
         return $this->returnData('Appointment',$appointment,'done');
         }
         catch(\Exception $ex)
         {
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
 

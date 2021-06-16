@@ -145,7 +145,7 @@ class SpecialtyService
         }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function trash( $id)
@@ -157,23 +157,23 @@ class SpecialtyService
             }
             else
             {
-                $Specialty->is_active=false;
+                $Specialty->is_active=0;
                 $Specialty->save();
                 return $this->returnData('Specialty',  $Specialty,'This Specialty is trashed Now');
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function getTrashed()
     {
         try{
-        $Specialty= $this->SpecialtyModel::NotActive()->all();
+        $Specialty= $this->SpecialtyModel::NotActive()->get();
         return $this -> returnData('Specialty', $Specialty,'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function restoreTrashed( $id)
@@ -185,13 +185,13 @@ class SpecialtyService
             }
             else
             {
-                $Specialty->is_active=true;
+                $Specialty->is_active=1;
                 $Specialty->save();
                 return $this->returnData('Specialty',  $Specialty,'This Specialty is trashed Now');
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function delete($id)
@@ -201,10 +201,10 @@ class SpecialtyService
             if ($Specialty->is_active == 0) {
                 $Specialty = $this->SpecialtyModel->destroy($id);
             }
-        return $this->returnData('Specialty',  $Specialty, 'This Specialty is deleted Now');
+        return $this->returnData('Specialty',  $id, 'This Specialty is deleted Now');
     }
     catch (\Exception $ex) {
-     return $this->returnError('400', 'failed');
+     return $this->returnError('400', $ex->getMessage());
      }
     }
 
@@ -216,7 +216,7 @@ class SpecialtyService
                 ->where('specialty_translation.name','like','%'.$specialty_name.'%')
                 ->select('specialties.*','specialty_translation.name')->get();
         } catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 }

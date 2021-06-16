@@ -15,17 +15,28 @@ class appointmentSedeer extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create();
+        $faker=Faker::create();
         for ($i = 0; $i <= 5; $i++) {
-            DB::table('appointments')->insert([
+            $s = DB::table('appointments')->insertGetId([
                 'is_active' => $faker->boolean,
-                'is_approved' => $faker->boolean,
-                'description'=>$faker->sentence(10),
-                'short_description' => $faker->sentence(10),
-                'morning_evening' => $faker->boolean,
-                'active_times_id' => $faker->numberBetween(1,200),
-
+                'is_approved' =>$faker->boolean,
+                'morning_evening' =>$faker->boolean,
+                'active_times_id' =>$faker->numberBetween(1,100),
+                'doctor_id'=>$faker->numberBetween(1,100),
+                'customer_id'=>$faker->numberBetween(1,100),
             ]);
+            DB::table('appointment_translations')->insert([
+                [
+                'appointment_id'   => $s,
+                'description'  => $faker->sentence(8),
+                'locale'      => 'en',
+            ],
+                [
+                    'appointment_id'   => $s,
+                    'description'  => $faker->sentence(8),
+                    'locale'      => 'ar',
+                ]]);
+
         }
     }
 }
