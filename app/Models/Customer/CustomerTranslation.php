@@ -12,6 +12,7 @@ class CustomerTranslation extends Model
     protected $table='customer_translations';
     protected $fillable=['id','customer_id','first_name','last_name','address','locale'];
 
+    protected $hidden=[];
     public function customer()
     {
         return $this->belongsTo(Customer::class);

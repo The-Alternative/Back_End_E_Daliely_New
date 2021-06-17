@@ -101,7 +101,7 @@ class SpecialtyService
                 ]);
             $ss=SpecialtyTranslation::where('specialty_id',$id);
             $collection1 = collect($allspecialty);
-            $alldoctorlength=$collection1->count();
+            $allspecialtylength=$collection1->count();
             $collection2 = collect($ss);
             $db_specialty= array_values(SpecialtyTranslation::where('specialty_id',$id)
                 ->get()

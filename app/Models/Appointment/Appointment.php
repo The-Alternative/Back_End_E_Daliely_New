@@ -5,6 +5,7 @@ namespace App\Models\Appointment;
 use App\Models\Doctors\doctor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 
 class Appointment extends Model
 {
@@ -18,7 +19,7 @@ class Appointment extends Model
     public static function ScopeWithTrans()
     {
         return Appointment::join('appointment_translations','appointment_translations.appointment_id','=','appointments.id')
-            ->where('appointment_translations.locale','=', config('app.local'))
+            ->where('appointment_translations.locale','=', config::get('app.local'))
             ->select('appointments.id','appointments.is_active','appointments.is_approved',
                 'appointment_translations.description')->get();
     }

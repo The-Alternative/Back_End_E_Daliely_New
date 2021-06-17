@@ -26,12 +26,12 @@ class CustomerService
     {
         try
         {
-        $customer= $this->CustomerModel::IsActive()->WithTrans()->get();
+        $customer= $this->CustomerModel::IsActive()->WithTrans();
         return $this->returnData('customer',$customer,'done');
         }
         catch(\Exception $ex)
         {
-            return $this->returnError('400','failed');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
 
@@ -48,7 +48,7 @@ class CustomerService
         }
         catch(\Exception $ex)
         {
-            return $this->returnError('400','failed');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
 
@@ -88,7 +88,7 @@ class CustomerService
         catch(\Exception $ex)
         {
             DB::rollback();
-            return $this->returnError('Customer', 'failed');
+            return $this->returnError('Customer', $ex->getMessage());
         }
     }
 //__________________________________________________________//
@@ -139,7 +139,7 @@ class CustomerService
     }
             catch(\Exception $ex)
         {
-                  return $this->returnError('400', 'saving failed');
+                  return $this->returnError('400', $ex->getMessage());
         }
     }
 //___________________________________________________________//
@@ -159,7 +159,7 @@ class CustomerService
         }
         }
         catch(\Exception $ex){
-            return $this->returnError('400','failed');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
 
@@ -172,25 +172,25 @@ class CustomerService
             }
             else
             {
-               $customer->is_active=false;
+               $customer->is_active=0;
                $customer->save();
-               return $this->returnData('customer', $customer,'This customer is trashed Now');
+               return $this->returnData('customer',$customer,'This customer is trashed Now');
             }
         }
         catch (\Exception $ex)
         {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function getTrashed()
     {
         try {
-        $customer= $this->CustomerModel::NotActive()->get();
+        $customer= $this->CustomerModel::NotActive()->WithTrans();
         return $this -> returnData('customer',$customer,'done');
         }
         catch (\Exception $ex)
         {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 
@@ -204,14 +204,14 @@ class CustomerService
             }
             else
             {
-                $customer->is_active=true;
+                $customer->is_active=1;
                 $customer->save();
                 return $this->returnData('customer', $customer,'This customer is trashed Now');
             }
         }
         catch (\Exception $ex)
         {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
 
     }
@@ -222,10 +222,16 @@ class CustomerService
        $customer = Customer::find($id);
             if ($customer->is_active == 0) {
                 $customer = $this->CustomerModel->destroy($id);
+                return $this->returnData('customer', $id, 'This customer is deleted Now');
+
             }
-            return $this->returnData('customer', $customer, 'This customer is deleted Now');
-        } catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            else
+            {
+                return $this->returnData('customer',$id,'this customer can not deleted');
+            }
+        }
+        catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
         }
 
     }

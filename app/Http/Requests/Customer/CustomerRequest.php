@@ -36,7 +36,6 @@ class CustomerRequest extends FormRequest
             'customer.*.last_name'=>'required|min:3|max:100',
             'customer.*.address'=>'required|min:10|max:255',
             'customer.*.locale'=>'required',
-            'customer.*.customer_id'=>'required',
      ];
     }
 

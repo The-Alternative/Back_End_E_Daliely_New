@@ -13,7 +13,7 @@ class MedicalFile extends Model
 
     protected $table='medical_files';
     protected $fillable=['id','doctor_id','customer_id','file_number','file_date','review_date','PDF','is_active','is_approved'];
-
+    protected $hidden=['doctor_id','customer_id','created_at','updated_at'];
     //scope
     public function ScopeIsActive($query)
     {

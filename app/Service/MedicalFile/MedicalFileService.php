@@ -22,11 +22,11 @@ class MedicalFileService
     public function get()
     {
         try {
-            $medicalFile = $this->MedicalFileModel::IsActive()->all();
+            $medicalFile = $this->MedicalFileModel::IsActive()->get();
             return $this->returnData('medicalFile', $medicalFile, 'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function getById($id)
@@ -41,7 +41,7 @@ class MedicalFileService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 
@@ -70,7 +70,7 @@ class MedicalFileService
                 }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function update(MedicalFileRequest $request,$id)
@@ -98,7 +98,7 @@ class MedicalFileService
               }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function trash( $id)
@@ -110,13 +110,13 @@ class MedicalFileService
             }
             else
             {
-                $medicalFile->is_active=false;
+                $medicalFile->is_active=0;
                 $medicalFile->save();
                 return $this->returnData('medicalFile', $medicalFile,'This medical File is trashed Now');
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function getTrashed()
@@ -126,7 +126,7 @@ class MedicalFileService
             return $this -> returnData('medicalFile',$medicalFile,'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function restoreTrashed( $id)
@@ -138,13 +138,13 @@ class MedicalFileService
             }
             else
             {
-                $medicalFile->is_active=true;
+                $medicalFile->is_active=1;
                 $medicalFile->save();
                 return $this->returnData('medicalFile', $medicalFile,'This medical File is trashed Now');
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
 
     }
@@ -154,11 +154,16 @@ class MedicalFileService
         $medicalFile = MedicalFile::find($id);
             if ($medicalFile->is_active == 0) {
                 $medicalFile = $this->MedicalFileModel->destroy($id);
+
+            return $this->returnSuccessMessage('medical File', 'This medical File is deleted Now');
             }
-            return $this->returnData('medicalFile', $medicalFile, 'This medicalFile is deleted Now');
+            else{
+                return $this->returnData('medical File', $id, 'This medical File can not deleted');
+
+            }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 }

@@ -14,7 +14,7 @@ class Customer extends Model
     use HasFactory;
     protected $table='customers';
     protected $fillable=['id','social_media_id','is_active','is_approved'];
-
+    protected $hidden=['created_at','updated_at','social_media_id'];
     //scope
     public function ScopeIsActive($query)
     {
@@ -27,9 +27,11 @@ class Customer extends Model
 
     public function ScopeWithTrans($query)
     {
-        return $query=Customer::join('customer_translations','customer_translations.customer_id','=','customer_id')
+        return $query=Customer::join('customer_translations','customer_translations.customer_id','=','customers.id')
             ->where('customer_translations.locale','=',config::get('app.locale'))
-            ->select('customers.*','customer_translations.*')->get();
+            ->select('customers.id','customers.is_active','customers.is_approved',
+                'customer_translations.first_name', 'customer_translations.last_name',
+                'customer_translations.address' ,'customer_translations.locale')->get();
     }
 
     public function customerTranslation()
