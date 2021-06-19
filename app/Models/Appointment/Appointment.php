@@ -16,13 +16,13 @@ class Appointment extends Model
 
 
     //Scope
-    public static function ScopeWithTrans()
-    {
-        return Appointment::join('appointment_translations','appointment_translations.appointment_id','=','appointments.id')
-            ->where('appointment_translations.locale','=', config::get('app.local'))
-            ->select('appointments.id','appointments.is_active','appointments.is_approved',
-                'appointment_translations.description')->get();
-    }
+//    public static function ScopeWithTrans()
+//    {
+//        return Appointment::join('appointment_translations','appointment_translations.appointment_id','=','appointments.id')
+//            ->where('appointment_translations.locale','=', config::get('app.local'))
+//            ->select('appointments.id','appointments.is_active','appointments.is_approved',
+//                'appointment_translations.description')->get();
+//    }
 
     public function ScopeIsActive($query)
     {

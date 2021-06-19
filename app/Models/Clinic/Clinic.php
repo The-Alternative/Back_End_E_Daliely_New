@@ -15,7 +15,8 @@ class Clinic extends Model
 
     protected $table='clinics';
     protected $fillable=['id','doctor_id','location_id','phone_number','active_time_id','is_active','is_approved'];
-// local Scope
+    protected $hidden=['created_at','updated_at','doctor_id'];
+    // local Scope
 
     public function scopeIsActive($query)
     {
@@ -29,11 +30,11 @@ class Clinic extends Model
     }
     //-----------------------------------------------------------------------//
 //Global Scope
-    protected static function booted()
-    {
-        parent::booted();
-        static::addGlobalScope(new ClinicScope);
-    }
+//    protected static function booted()
+//    {
+//        parent::booted();
+//        static::addGlobalScope(new ClinicScope);
+//    }
 //----------------------------------------------------------------------//
     public function clinicTranslation()
     {

@@ -30,36 +30,36 @@ class ClinicController extends Controller
         return $this->ClinicService->getById($id);
     }
 
-    public function create(ClinicRequest $request)
-    {
-        return $response=$this->ClinicService->create($request);
-    }
-
-    public function update(ClinicRequest $request,$id)
-    {
-        return  $response=$this->ClinicService->update($request,$id);
-    }
-    public function search($name)
-    {
-        return $response= $this->ClinicService->search($name);
-    }
-
-    public function trash($id)
-    {
-        return  $response= $this->ClinicService->trash($id);
-    }
-    public function getTrashed()
-    {
-        return  $this->ClinicService->getTrashed();
-    }
-
-    public function restoreTrashed($id)
-    {
-        return $response= $this->ClinicService->restoreTrashed($id);
-    }
-
-    public function delete($id)
-    {
-        return $response=$this->ClinicService->delete($id);
-    }
+//    public function create(ClinicRequest $request)
+//    {
+//        return $response=$this->ClinicService->create($request);
+//    }
+//
+//    public function update(ClinicRequest $request,$id)
+//    {
+//        return  $response=$this->ClinicService->update($request,$id);
+//    }
+//    public function search($name)
+//    {
+//        return $response= $this->ClinicService->search($name);
+//    }
+//
+//    public function trash($id)
+//    {
+//        return  $response= $this->ClinicService->trash($id);
+//    }
+//    public function getTrashed()
+//    {
+//        return  $this->ClinicService->getTrashed();
+//    }
+//
+//    public function restoreTrashed($id)
+//    {
+//        return $response= $this->ClinicService->restoreTrashed($id);
+//    }
+//
+//    public function delete($id)
+//    {
+//        return $response=$this->ClinicService->delete($id);
+//    }
 }

@@ -29,32 +29,32 @@ class AppointmentController extends Controller
         return $this->AppointmentService->getById($id);
     }
 
-    public function create(AppointmentRequest $request)
-    {
-        return  $response=$this->AppointmentService->create($request);
-    }
-
-    public function update(AppointmentRequest $request,$id)
-    {
-        return $response=$this->AppointmentService->update($request,$id);
-    }
-
-    public function trash($id)
-    {
-        return   $response= $this->AppointmentService->trash($id);
-    }
-    public function getTrashed()
-    {
-        return  $this->AppointmentService->getTrashed();
-    }
-
-    public function restoreTrashed($id)
-    {
-        return   $response= $this->AppointmentService->restoreTrashed($id);
-    }
-
-    public function delete($id)
-    {
-        return  $response=$this->AppointmentService->delete($id);
-    }
+//    public function create(AppointmentRequest $request)
+//    {
+//        return  $response=$this->AppointmentService->create($request);
+//    }
+//
+//    public function update(AppointmentRequest $request,$id)
+//    {
+//        return $response=$this->AppointmentService->update($request,$id);
+//    }
+//
+//    public function trash($id)
+//    {
+//        return   $response= $this->AppointmentService->trash($id);
+//    }
+//    public function getTrashed()
+//    {
+//        return  $this->AppointmentService->getTrashed();
+//    }
+//
+//    public function restoreTrashed($id)
+//    {
+//        return   $response= $this->AppointmentService->restoreTrashed($id);
+//    }
+//
+//    public function delete($id)
+//    {
+//        return  $response=$this->AppointmentService->delete($id);
+//    }
 }
