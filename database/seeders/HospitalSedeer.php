@@ -24,8 +24,8 @@ class HospitalSedeer extends Seeder
                 'medical_center' => $faker->sentence(2),
                 'general_hospital' =>$faker->boolean,
                 'private_hospital' =>$faker->boolean,
-                'location_id' => $faker->numberBetween(1,200),
-                'doctor_id' =>  $faker->numberBetween(1,200),
+                'location_id' => $faker->numberBetween(1,10),
+                'doctor_id' =>  $faker->numberBetween(1,10),
 
             ]);
         }

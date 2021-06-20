@@ -21,9 +21,9 @@ class ClinicSedeer extends Seeder
                 'is_active' => $faker->boolean,
                 'is_approved' =>$faker->boolean,
                 'phone_number' => $faker->phoneNumber,
-                'doctor_id' =>$faker->numberBetween(1,200),
-                'active_times_id' => $faker->numberBetween(1,200),
-                'location_id'=>$faker->numberBetween(1,200),
+                'doctor_id' =>$faker->numberBetween(1,10),
+                'active_times_id' => $faker->numberBetween(1,10),
+                'location_id'=>$faker->numberBetween(1,10),
 
             ]);
             DB::table('clinic_translation')->insert([[

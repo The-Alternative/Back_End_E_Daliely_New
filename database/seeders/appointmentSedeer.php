@@ -21,9 +21,9 @@ class appointmentSedeer extends Seeder
                 'is_active' => $faker->boolean,
                 'is_approved' =>$faker->boolean,
                 'morning_evening' =>$faker->boolean,
-                'active_times_id' =>$faker->numberBetween(1,100),
-                'doctor_id'=>$faker->numberBetween(1,100),
-                'customer_id'=>$faker->numberBetween(1,100),
+                'active_times_id' =>$faker->numberBetween(1,10),
+                'doctor_id'=>$faker->numberBetween(1,10),
+                'customer_id'=>$faker->numberBetween(1,10),
             ]);
             DB::table('appointment_translations')->insert([
                 [

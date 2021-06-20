@@ -199,9 +199,14 @@ class SpecialtyService
         try{
         $Specialty = Specialty::find($id);
             if ($Specialty->is_active == 0) {
-                $Specialty = $this->SpecialtyModel->destroy($id);
+               $Specialty->delete();
+               $Specialty->SpecialtyTranslation()->delete();
+                return $this->returnData('Specialty',  $id, 'This Specialty is deleted Now');
+
             }
-        return $this->returnData('Specialty',  $id, 'This Specialty is deleted Now');
+            else{
+                return $this->returnData('Specialty',  $id, 'This Specialty can not deleted Now');
+            }
     }
     catch (\Exception $ex) {
      return $this->returnError('400', $ex->getMessage());

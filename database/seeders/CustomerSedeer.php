@@ -20,7 +20,7 @@ class CustomerSedeer extends Seeder
             $s = DB::table('customers')->insertGetId([
                 'is_active' => $faker->boolean,
                 'is_approved' =>$faker->boolean,
-                'social_media_id' => $faker->numberBetween(1,200)
+                'social_media_id' => $faker->numberBetween(1,10)
             ]);
             DB::table('customer_translations')->insert([[
                 'customer_id' => $s,

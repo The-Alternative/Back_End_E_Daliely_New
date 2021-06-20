@@ -25,7 +25,7 @@ class SocialMediaSedeer extends Seeder
                 'instagram_account' => $faker->url,
                 'telegram_number' => $faker->phoneNumber,
                 'email' => $faker->email,
-                'doctor_id' => $faker->numberBetween(1,200)
+                'doctor_id' => $faker->numberBetween(1,10)
 
             ]);
         }

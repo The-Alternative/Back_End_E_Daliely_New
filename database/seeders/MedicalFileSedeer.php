@@ -21,11 +21,11 @@ class MedicalFileSedeer extends Seeder
                 'is_active' => $faker->boolean,
                 'is_approved' => $faker->boolean,
                 'pdf'=>$faker->sentence(3),
-                'file_number' => $faker->numberBetween(1,200),
+                'file_number' => $faker->numberBetween(1,10),
                 'file_date' => $faker->date('2021-8-20'),
                 'review_date' =>$faker->date('2021-9-20'),
-                'doctor_id' => $faker->numberBetween(1, 200),
-                'customer_id' =>$faker->numberBetween(1, 200),
+                'doctor_id' => $faker->numberBetween(1, 10),
+                'customer_id' =>$faker->numberBetween(1, 10),
 
             ]);
         }

@@ -32,7 +32,7 @@ class BrandSeeder extends Seeder
             ],
                 ['brand_id' => $s,
                     'description' => $faker->sentence(10),
-                    'locale' => 'en',
+                    'locale' => 'ar',
                     'name' => $faker->sentence(5),
                 ]]);
 

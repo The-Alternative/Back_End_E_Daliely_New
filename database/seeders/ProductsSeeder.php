@@ -23,9 +23,9 @@ class ProductsSeeder extends Seeder
                 'barcode' =>$faker->sentence(1),
                 'is_active' => $faker->boolean,
                 'is_appear' =>  $faker->boolean,
-                'rating_id' => $faker->numberBetween(1,200),
-                'brand_id' => $faker->numberBetween(1,200),
-                'offer_id' =>$faker->numberBetween(1,200),
+                'rating_id' => $faker->numberBetween(1,10),
+                'brand_id' => $faker->numberBetween(1,10),
+                'offer_id' =>$faker->numberBetween(1,10),
             ]);
             DB::table('product_translations')->insert([[
                 'name' => $faker->sentence(5),
