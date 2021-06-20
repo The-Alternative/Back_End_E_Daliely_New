@@ -24,7 +24,7 @@ class MedicalDeviceService
     public function get()
     {
         try {
-            $MedicalDevice = $this->MedicalDeviceModel::Active()->WithTrans()->get();
+            $MedicalDevice = $this->MedicalDeviceModel->paginate(5);
             return $this->returnData(' MedicalDevice', $MedicalDevice, 'done');
         }
         catch (\Exception $ex) {
@@ -35,7 +35,7 @@ class MedicalDeviceService
     public function getById($id)
     {
         try{
-        $MedicalDevice= $this->MedicalDeviceModel::WithTrans()->find($id);
+        $MedicalDevice= $this->MedicalDeviceModel::find($id);
             if (is_null($MedicalDevice)){
                 return $this->returnSuccessMessage('this MedicalDevice not found','done');
             }
@@ -201,9 +201,13 @@ class MedicalDeviceService
         try{
         $MedicalDevice = medicalDevice::find($id);
             if ($MedicalDevice->is_active == 0) {
-                $MedicalDevice = $this->MedicalDeviceModel->destroy($id);
+                $MedicalDevice->delete();
+            $MedicalDevice->MedicalDeviceTranslation()->delete();
+                return $this->returnData('MedicalDevice', $id, 'This MedicalDevice is deleted Now');
             }
-            return $this->returnData('MedicalDevice',  $id, 'This MedicalDevice is deleted Now');
+            else{
+                return $this->returnData( 'MedicalDevice', $id,'this medical device can not delete');
+            }
         }
         catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());

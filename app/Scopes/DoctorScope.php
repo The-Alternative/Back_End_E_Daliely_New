@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Support\Facades\DB;
+
 class DoctorScope implements Scope
 {
 
@@ -16,9 +18,11 @@ class DoctorScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-//        $builder->join(DoctorTranslation::class,'doctors.id','=','doctor_translation.doctor_id')
-//            ->where('doctor_translation.locale','=',config::get('app.locale'))
-//            ->get(['doctors.id','doctors.is_active','doctors.is_approved']);
+        DB::table('doctor_translation')
+            ->select('doctors.id','doctors.is_active','doctors.is_approved',
+                'doctor_translation.locale', 'doctor_translation.first_name', 'doctor_translation.last_name','doctor_translation.description')
+            ->where('doctors.id','=','doctor_translation.doctor_id');
+//            ->where('doctor_translation.locale','=',config::get('app.locale'));
 
 //        $builder->where('is_active','=',1);
     }

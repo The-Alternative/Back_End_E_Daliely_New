@@ -32,7 +32,7 @@ class DoctorService
     public function get()
     {
 //        return "hello";
-        return $this->doctorModel::paginate(10);
+        return $this->doctorModel::paginate(5);
 //        try{
 //        $doctor= $this->doctorModel::getall()->get();
 //        return $this->returnData('doctor',$doctor,'done');

@@ -4,7 +4,7 @@ namespace App\Observers;
 
 use App\Models\Doctors\doctor;
 
-class DoctorObServe
+class DoctorObServer
 {
     /**
      * Handle the doctor "created" event.
@@ -58,6 +58,6 @@ class DoctorObServe
      */
     public function forceDeleted(doctor $doctor)
     {
-       $doctor->doctorTranslation->delete();
+        //
     }
 }

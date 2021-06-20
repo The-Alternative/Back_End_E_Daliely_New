@@ -27,7 +27,7 @@ class SpecialtyService
     public function get()
     {
         try {
-            $Specialty = $this->SpecialtyModel::IsActive()->WithTrans()->get();
+            $Specialty = $this->SpecialtyModel::paginate(5);
             return $this->returnData(' Specialty', $Specialty, 'done');
         }
         catch (\Exception $ex) {
