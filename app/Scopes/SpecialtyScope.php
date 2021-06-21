@@ -24,6 +24,6 @@ class SpecialtyScope implements \Illuminate\Database\Eloquent\Scope
              ->select('specialties.id','specialties.is_active',
             'specialty_translation.name','specialty_translation.description','specialty_translation.locale');
 
-        $builder->where('is_active',1);
+//        $builder->where('is_active',1);
     }
 }

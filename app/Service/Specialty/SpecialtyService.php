@@ -131,7 +131,7 @@ class SpecialtyService
     public function search($name)
     {
         try{
-        $Specialty = DB::table('specialties')
+        $Specialty = DB::table('specialty_translation')
             ->where("name","like","%".$name."%")
             ->get();
         if (! $Specialty)

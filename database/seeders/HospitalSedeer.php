@@ -17,17 +17,27 @@ class HospitalSedeer extends Seeder
     {
         $faker = Faker::create();
         for ($i = 0; $i <= 5; $i++) {
-            DB::table('hospitals')->insert([
+            $s =DB::table('hospitals')->insertGetId([
                 'is_active' =>  $faker->boolean,
                 'is_approved' =>$faker->boolean,
-                'name'=>$faker->sentence(3),
-                'medical_center' => $faker->sentence(2),
                 'general_hospital' =>$faker->boolean,
                 'private_hospital' =>$faker->boolean,
                 'location_id' => $faker->numberBetween(1,10),
                 'doctor_id' =>  $faker->numberBetween(1,10),
 
             ]);
+            DB::table('hospital_translations')->insert([[
+                'description' =>$faker->sentence(10),
+                'hospital_id' => $s,
+                'name' => $faker->sentence(4),
+                'locale' => 'en',
+            ],
+                [
+                    'description' =>$faker->sentence(10),
+                    'hospital_id' => $s,
+                    'name' => $faker->sentence(4),
+                    'locale' => 'ar',
+                ]]);
         }
     }
 }

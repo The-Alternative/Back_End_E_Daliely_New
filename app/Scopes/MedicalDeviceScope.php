@@ -22,7 +22,7 @@ class MedicalDeviceScope implements \Illuminate\Database\Eloquent\Scope
             ->select('medical_devices.id','medical_devices.is_active','medical_devices.is_approved'
                 ,'medical_device_translation.name' ,'medical_device_translation.description');
 
-     $builder->where('is_active',1);
+//     $builder->where('is_active',1);
 
     }
 }

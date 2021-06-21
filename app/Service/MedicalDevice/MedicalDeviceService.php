@@ -189,7 +189,7 @@ class MedicalDeviceService
               {
                   $MedicalDevice->is_active=1;
                   $MedicalDevice->save();
-                  return $this->returnData('MedicalDevice',  $id,'This MedicalDevice is trashed Now');
+                  return $this->returnData('MedicalDevice',  $MedicalDevice,'This MedicalDevice is trashed Now');
               }
           }
         catch (\Exception $ex) {
@@ -218,9 +218,9 @@ class MedicalDeviceService
     {
         try {
             return MedicalDevice::with('doctor')
-                ->join('medical_device_translation','medical_device_translation.medical_device_id','=','medical_device_id')
+                ->join('medical_device_translation','medical_device_translation.medical_device_id','=','medical_devices.id')
                 ->where('medical_device_translation.name','like','%'.$medical_device_name.'%')
-                ->select('medical_devices.*','medical_device_translation.name')->get();
+                ->select('medical_devices.id','medical_device_translation.name','doctors.id')->get();
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }

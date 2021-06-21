@@ -15,8 +15,6 @@ class CreateHospitalsTable extends Migration
     {
         Schema::create('hospitals', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('medical_center');
             $table->boolean('private_hospital');
             $table->boolean('general_hospital');
             $table->integer('location_id')->unsigned();
