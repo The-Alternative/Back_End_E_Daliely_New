@@ -92,7 +92,7 @@ class MedicalDeviceService
             else
                 $request->request->add(['is_active'=>1]);
 
-            $newmedicaldevice=medicalDevice::where('id',$id)
+            $newmedicaldevice=medicalDevice::where('medical_devices.id',$id)
                 ->update([
                     'doctor_id' => $request['doctor_id'],
                     'hospital_id' => $request['hospital_id'],
@@ -100,19 +100,19 @@ class MedicalDeviceService
                     'is_active' => $request['is_active'],
                 ]);
 
-            $ss=MedicalDeviceTranslation::where('medical_device_id',$id);
+            $ss=MedicalDeviceTranslation::where('medical_device_translation.medical_device_id',$id);
             $collection1 = collect($allmedicaldevice);
             $alldoctorlength=$collection1->count();
             $collection2 = collect($ss);
 
-            $db_medicaldevice= array_values(MedicalDeviceTranslation::where('medical_device_id',$id)
+            $db_medicaldevice= array_values(MedicalDeviceTranslation::where('medical_device_translation.medical_device_id',$id)
                 ->get()
                 ->all());
             $dbmedicaldevice = array_values($db_medicaldevice);
             $request_medicaldevice= array_values($request->medicaldevice);
             foreach($dbmedicaldevice as $dbmedicaldevices){
                 foreach($request_medicaldevice as $request_medicaldevices){
-                    $values=MedicalDeviceTranslation::where('medical_Device_id',$id)
+                    $values=MedicalDeviceTranslation::where('medical_device_translation.medical_Device_id',$id)
                         ->where('locale',$request_medicaldevices['locale'])
                         ->update([
                             'name' => $request_medicaldevices ['name'],
@@ -123,7 +123,7 @@ class MedicalDeviceService
                 }
             }
             DB::commit();
-            return $this->returnData('Medical Device', $dbmedicaldevice,'done');
+            return $this->returnData('Medical Device', [$dbmedicaldevice,$values],'done');
         }
         catch(\Exception $ex){
             return $this->returnError('400', $ex->getMessage());
@@ -170,7 +170,7 @@ class MedicalDeviceService
     public function getTrashed()
     {
         try{
-        $MedicalDevice= $this->MedicalDeviceModel::NotActive()->get();
+        $MedicalDevice= $this->MedicalDeviceModel::NotActive();
         return $this -> returnData(' MedicalDevice', $MedicalDevice,'done');
         }
         catch (\Exception $ex) {
@@ -200,7 +200,7 @@ class MedicalDeviceService
     {
         try{
         $MedicalDevice = medicalDevice::find($id);
-            if ($MedicalDevice->is_active == 0) {
+            if ($MedicalDevice->is_active ==0) {
                 $MedicalDevice->delete();
             $MedicalDevice->MedicalDeviceTranslation()->delete();
                 return $this->returnData('MedicalDevice', $id, 'This MedicalDevice is deleted Now');

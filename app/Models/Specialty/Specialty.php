@@ -29,17 +29,8 @@ class Specialty extends Model
 //    }
     public function scopeNotActive($query)
     {
-        return $query->where('is_active',0);
+        return $query->where('is_active',0)->get();
     }
-
-//    public function ScopeWithTrans($query)
-//    {
-//        return $query=Specialty::join('specialty_translation','specialty_translation.specialty_id','=','specialties.id')
-//            ->where('specialty_translation.locale','=',config::get('app.locale'))
-//            ->select('specialties.id','specialties.id',
-//                'specialty_translation.name','specialty_translation.description','specialty_translation.locale');
-//    }
-
     public function specialtyTranslation()
     {
         return $this->hasMany(SpecialtyTranslation::class,'specialty_id');

@@ -23,5 +23,6 @@ class MedicalDeviceScope implements \Illuminate\Database\Eloquent\Scope
                 ,'medical_device_translation.name' ,'medical_device_translation.description');
 
      $builder->where('is_active',1);
+
     }
 }

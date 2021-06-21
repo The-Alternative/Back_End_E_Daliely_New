@@ -38,7 +38,7 @@ class SpecialtyService
     public function getById($id)
     {
         try{
-        $Specialty= $this->SpecialtyModel::WithTrans()->find($id);
+        $Specialty= $this->SpecialtyModel::find($id);
             if (is_null($Specialty)){
                 return $this->returnSuccessMessage('this Social Media not found','done');
             }
@@ -94,23 +94,23 @@ class SpecialtyService
             else
                 $request->request->add(['is_active'=>1]);
 
-            $newspecialty=Specialty::where('id',$id)
+            $newspecialty=Specialty::where('specialties.id',$id)
                 ->update([
                     'graduation_year' => $request['graduation_year'],
                     'is_active' => $request['is_active'],
                 ]);
-            $ss=SpecialtyTranslation::where('specialty_id',$id);
+            $ss=SpecialtyTranslation::where('specialty_translation.specialty_id',$id);
             $collection1 = collect($allspecialty);
             $allspecialtylength=$collection1->count();
             $collection2 = collect($ss);
-            $db_specialty= array_values(SpecialtyTranslation::where('specialty_id',$id)
+            $db_specialty= array_values(SpecialtyTranslation::where('specialty_translation.specialty_id',$id)
                 ->get()
                 ->all());
             $dbspecialty = array_values($db_specialty);
             $request_specialty= array_values($request->specialty);
             foreach($dbspecialty as $dbspecialties){
                 foreach($request_specialty as $request_specialties){
-                    $values= SpecialtyTranslation::where('specialty_id',$id)
+                    $values= SpecialtyTranslation::where('specialty_translation.specialty_id',$id)
                         ->where('locale',$request_specialties['locale'])
                         ->update([
                             'name' => $request_specialties ['name'],
@@ -121,10 +121,10 @@ class SpecialtyService
                 }
             }
             DB::commit();
-            return $this->returnData('Specialty', $dbspecialty,'done');
+            return $this->returnData('Specialty', [$dbspecialty,$values],'done');
         }
         catch(\Exception $ex){
-            return $this->returnError('400', 'saving failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 //__________________________________________________________________________//
@@ -141,7 +141,6 @@ class SpecialtyService
         else
         {
             return $this->returnData('Specialty',  $Specialty,'done');
-
         }
         }
         catch (\Exception $ex) {
@@ -169,19 +168,20 @@ class SpecialtyService
     public function getTrashed()
     {
         try{
-        $Specialty= $this->SpecialtyModel::NotActive()->get();
+        $Specialty= $this->SpecialtyModel::NotActive();
         return $this -> returnData('Specialty', $Specialty,'done');
         }
         catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }
     }
+
     public function restoreTrashed( $id)
     {
         try{
         $Specialty=Specialty::find($id);
             if (is_null($Specialty)) {
-                return $this->returnSuccessMessage('This Social Media not found', 'done');
+                return $this->returnSuccessMessage('This Specialty not found', 'done');
             }
             else
             {

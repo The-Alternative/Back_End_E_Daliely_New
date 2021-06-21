@@ -24,22 +24,11 @@ class medicalDevice extends Model
         static::addGlobalScope(new MedicalDeviceScope);
     }
 
-    //scope
-//    public function scopeActive($query)
-//    {
-//        return $query->where('is_active',1);
-//    }
     public function scopeNotActive($query)
     {
-        return $query->where('is_active',0);
+        return $query->where('is_active',0)->get();
     }
-//    public function ScopeWithTrans($query)
-//    {
-//        return $query=medicalDevice::join('medical_device_translation','medical_device_translation.medical_device_id','=','medical_devices.id')
-//            ->where('medical_device_translation.locale','=',config::get('app.locale'))
-//            ->select('medical_devices.id','medical_devices.is_active','medical_devices.is_approved'
-//                ,'medical_device_translation.name' ,'medical_device_translation.description');
-//    }
+
     public function medicaldeviceTranslation()
     {
         return $this->hasMany(medicaldeviceTranslation::class,'medical_device_id');
