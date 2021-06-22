@@ -24,7 +24,7 @@ class AppointmentService
     {
         try
         {
-          $appointment= $this->AppointmentModel::WithTrans();
+          $appointment= $this->AppointmentModel::paginate(5);
         return $this->returnData('Appointment',$appointment,'done');
         }
         catch(\Exception $ex)

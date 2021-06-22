@@ -10,8 +10,9 @@ class AppointmentTranslation extends Model
     use HasFactory;
 
 
-    protected $table='appointment_translation';
+    protected $table='appointment_translations';
     protected $fillable=['id','appointment_id','locale','description'];
+//    protected $hidden=['id'];
 
     public function appointment()
     {

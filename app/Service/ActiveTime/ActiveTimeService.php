@@ -21,7 +21,7 @@ class ActiveTimeService
     {
         try
         {
-            $ActiveTime= $this->ActiveTimeModel::IsActive()->get();
+            $ActiveTime= $this->ActiveTimeModel::paginate(5);
             return $this->returnData('ActiveTime',$ActiveTime,'done');
         }
        catch(\Exception $ex)
@@ -155,10 +155,10 @@ class ActiveTimeService
             if ($ActiveTime->is_active == 0) {
                 $ActiveTime = $this->ActiveTimeModel->destroy($id);
 
-            return $this->returnData('Active Time', $id, 'This Active Time Is deleted Now');
+            return $this->returnData('Active Time', $ActiveTime, 'This Active Time Is deleted Now');
             }
             else {
-                return $this->returnData('Active Time', $id, 'This Active Time can not deleted Now');
+                return $this->returnData('Active Time', $ActiveTime, 'This Active Time can not deleted Now');
 
             }
         } catch (\Exception $ex) {

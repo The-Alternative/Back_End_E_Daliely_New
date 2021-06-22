@@ -21,7 +21,7 @@ class SocialMediaService
     public function get()
     {
         try{
-        $SocialMedia=$this->SocialMediaModel::IsActive()->all();
+        $SocialMedia=$this->SocialMediaModel::paginate(5);
         return $this->returnData('SocialMedia',$SocialMedia,'done');
         }
         catch (\Exception $ex) {
@@ -154,8 +154,12 @@ class SocialMediaService
         $SocialMedia = SocialMedia::find($id);
             if ($SocialMedia->is_active == 0) {
                 $SocialMedia = $this->SocialMediaModel->destroy($id);
+                return $this->returnData('Social Media', $SocialMedia, 'This Social Media is deleted Now');
             }
-        return $this->returnData('Social Media', $SocialMedia, 'This Social Media is deleted Now');
+            else{
+                return $this->returnData('Social Media', $SocialMedia, 'This Social Media can not deleted Now');
+
+            }
         }
         catch (\Exception $ex) {
             return $this->returnError('400',  $ex->getMessage());

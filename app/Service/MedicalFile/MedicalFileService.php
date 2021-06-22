@@ -22,7 +22,7 @@ class MedicalFileService
     public function get()
     {
         try {
-            $medicalFile = $this->MedicalFileModel::IsActive()->get();
+            $medicalFile = $this->MedicalFileModel::paginate(5);
             return $this->returnData('medicalFile', $medicalFile, 'done');
         }
         catch (\Exception $ex) {
@@ -153,12 +153,12 @@ class MedicalFileService
         try{
         $medicalFile = MedicalFile::find($id);
             if ($medicalFile->is_active == 0) {
-                $medicalFile = $this->MedicalFileModel->destroy($id);
+                $medicalFile->destroy($id);
 
             return $this->returnSuccessMessage('medical File', 'This medical File is deleted Now');
             }
             else{
-                return $this->returnData('medical File', $id, 'This medical File can not deleted');
+                return $this->returnData('medical File', $medicalFile, 'This medical File can not deleted');
 
             }
         }

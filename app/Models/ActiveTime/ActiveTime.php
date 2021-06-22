@@ -14,10 +14,10 @@ class ActiveTime extends Model
     protected $fillable=['id','start_time','end_time','is_active','is_approved'];
     protected $hidden=['created_at','updated_at'];
     //local scope
-    public function scopeIsActive($query)
-    {
-        return $query->where('is_active',1);
-    }
+//    public function scopeIsActive($query)
+//    {
+//        return $query->where('is_active',1);
+//    }
     public function scopeNotActive($query)
     {
         return $query->where('is_active',0);
