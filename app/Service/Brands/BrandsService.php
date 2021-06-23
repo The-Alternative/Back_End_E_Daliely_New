@@ -142,11 +142,36 @@ class BrandsService
                 }
                 $this->brandTranslation->insert($transBrand_arr);
             }
+            $images = $request->images;
+            foreach ($images as $image) {
+                $arr[] = $image['image'];
+            }
+            foreach ($arr as $ar) {
+                if (isset($image)) {
+                    if ($request->hasFile($ar)) {
+                        //save
+                        $file_extension = $ar->getClientOriginalExtension();
+                        $file_name = time() . $file_extension;
+                        $path = 'images/brands';
+                        $ar->move($path, $file_name);
+                    }
+                }
+            }
+            if ($request->has('images')) {
+                foreach ($images as $image) {
+                    $brandImages = $this->BrandModel->find($unTransBrand_id);
+                    $brandImages->BrandImages()->insert([
+                        'brand_id' => $unTransBrand_id,
+                        'image' => $image['image'],
+                        'is_cover' => $image['is_cover'],
+                    ]);
+                }
+            }
             DB::commit();
-            return $this->returnData('Product', [$unTransBrand_id, $transBrand_arr], 'done');
+            return $this->returnData('Brand', [$unTransBrand_id, $transBrand_arr], 'done');
         } catch (\Exception $ex) {
             DB::rollback();
-            return $this->returnError('Product', 'Faild');
+            return $this->returnError('Brand', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/

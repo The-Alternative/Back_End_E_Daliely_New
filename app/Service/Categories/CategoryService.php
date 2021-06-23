@@ -29,7 +29,7 @@ class CategoryService
     public function getAll()
     {
         try{
-        $category = $this->categoryModel->get();
+        $category = $this->categoryModel->with('CategoryImages')->get();
             if (count($category) > 0){
                 return $response= $this->returnData('Category',$category,'done');
             }else{
@@ -119,45 +119,67 @@ class CategoryService
      */
     /*___________________________________________________________________________*/
     public function create(CategoryRequest $request)
-        {
-            try
-            {
-                $validated = $request->validated();
-                $request->is_active?$is_active=true:$is_active=false;
-                $request->is_appear?$is_appear=true:$is_appear=false;
-                //transformation to collection
-                $allcategories = collect($request->category)->all();
-                ///select folder to save the image
-                // $fileBath = "" ;
-                //     if($request->has('image'))
-                //     {
-                //         $fileBath=uploadImage('images/products',$request->image);
-                //     }
-                DB::beginTransaction();
-                // //create the default language's product
-                $unTransCategory_id=$this->categoryModel->insertGetId([
-                    'image' =>$request['image'],
-                    'slug' => $request['slug'],
-                    'lang_id' =>$request['lang_id'],
-                    'is_active' =>$request['is_active'],
-                    'section_id' =>$request['section_id'],
-                    'parent_id'=>$request['parent_id']
-                ]);
-                //check the category and request
-                if(isset($allcategories) && count($allcategories))
-                {
-                    //insert other traslations for products
-                    foreach ($allcategories as $allcategory)
-                    {
-                        $transCategory_arr[]=[
-                            'name' => $allcategory ['name'],
-                            'local' => $allcategory['local'],
-                            'category_id' => $unTransCategory_id,
-                            'language_id' => $allcategory['language_id']
-                        ];
-                    }
-                    $this->categoryTranslation->insert($transCategory_arr);
+    {
+        try {
+            $validated = $request->validated();
+            $request->is_active ? $is_active = true : $is_active = false;
+            $request->is_appear ? $is_appear = true : $is_appear = false;
+            //transformation to collection
+            $allcategories = collect($request->category)->all();
+            ///select folder to save the image
+            // $fileBath = "" ;
+            //     if($request->has('image'))
+            //     {
+            //         $fileBath=uploadImage('images/products',$request->image);
+            //     }
+            DB::beginTransaction();
+            // //create the default language's product
+            $unTransCategory_id = $this->categoryModel->insertGetId([
+                'image' => $request['image'],
+                'slug' => $request['slug'],
+                'lang_id' => $request['lang_id'],
+                'is_active' => $request['is_active'],
+                'section_id' => $request['section_id'],
+                'parent_id' => $request['parent_id']
+            ]);
+            //check the category and request
+            if (isset($allcategories) && count($allcategories)) {
+                //insert other traslations for products
+                foreach ($allcategories as $allcategory) {
+                    $transCategory_arr[] = [
+                        'name' => $allcategory ['name'],
+                        'local' => $allcategory['local'],
+                        'category_id' => $unTransCategory_id,
+                        'language_id' => $allcategory['language_id']
+                    ];
                 }
+                $this->categoryTranslation->insert($transCategory_arr);
+            }
+            $images = $request->images;
+            foreach ($images as $image) {
+                $arr[] = $image['image'];
+            }
+            foreach ($arr as $ar) {
+                if (isset($image)) {
+                    if ($request->hasFile($ar)) {
+                        //save
+                        $file_extension = $ar->getClientOriginalExtension();
+                        $file_name = time() . $file_extension;
+                        $path = 'images/categories';
+                        $ar->move($path, $file_name);
+                    }
+                }
+            }
+            if ($request->has('images')) {
+                foreach ($images as $image) {
+                    $categoryImages = $this->categoryModel->find($unTransCategory_id);
+                    $categoryImages->CategoryImages()->insert([
+                        'category_id' => $unTransCategory_id,
+                        'image' => $image['image'],
+                        'is_cover' => $image['is_cover'],
+                    ]);
+                }
+            }
                 DB::commit();
                 return $this->returnData('category', [$unTransCategory_id,$transCategory_arr],'done');
             }

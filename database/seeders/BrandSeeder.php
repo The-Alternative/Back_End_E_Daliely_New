@@ -19,7 +19,6 @@ class BrandSeeder extends Seeder
         for ($i = 1; $i <= 200; $i++) {
             $s = DB::table('brands')->insertGetId([
                 'is_active'=>1,
-                'image'=>$faker->sentence(10),
                 'slug'=>$faker->sentence(10),
             ]);
             DB::table('brand_translation')->insert([[

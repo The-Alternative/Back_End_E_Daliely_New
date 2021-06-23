@@ -2,6 +2,7 @@
 
 namespace App\Models\Brands;
 
+use App\Models\Images\BrandImages;
 use App\Models\Language\Language;
 use App\Models\Products\Product;
 use App\Models\Stores\Store;
@@ -42,5 +43,9 @@ class Brand extends Model
             'store_id',
             'id',
             'id');
+    }
+    public function BrandImages()
+    {
+        return $this->hasMany(BrandImages::class);
     }
 }

@@ -19,7 +19,6 @@ class ProductsSeeder extends Seeder
         for ($i = 1; $i <= 200; $i++) {
             $s = DB::table('products')->insertGetId([
                 'slug' => $faker->sentence(1),
-                'image' => $faker->sentence(10),
                 'barcode' =>$faker->sentence(1),
                 'is_active' => 1,
                 'is_appear' => 1,

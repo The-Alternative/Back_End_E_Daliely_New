@@ -18,7 +18,6 @@ class CustomFieldSeeder extends Seeder
         $faker=Faker::create();
         for ($i = 0; $i <= 200; $i++) {
             $s = DB::table('custom_fields')->insertGetId([
-                'image' => $faker->sentence(5),
                 'is_active' => 1,
 
             ]);
@@ -27,8 +26,6 @@ class CustomFieldSeeder extends Seeder
                 'description' =>$faker->sentence(10),
                 'local' => 'en',
                 'name' => $faker->sentence(2),
-
-
             ],
                 [
                     'custom_field_id' => $s,

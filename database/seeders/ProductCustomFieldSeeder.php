@@ -17,9 +17,9 @@ class ProductCustomFieldSeeder extends Seeder
     {
         for($product_id=1;$product_id<12;$product_id++){
             for($customfield_id=1;$customfield_id<12;$customfield_id++) {
-                DB::table('products_custom_fields')->insert(
+                DB::table('products_custom_field_value')->insert(
                     [
-                        'customfield_id'=>$customfield_id,
+                        'custom_field_value_id'=>$customfield_id,
                         'product_id'=>$product_id
                     ]);
             }

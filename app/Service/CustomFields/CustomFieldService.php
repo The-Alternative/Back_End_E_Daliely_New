@@ -32,7 +32,7 @@ class CustomFieldService
     public function getAll()
     {
         try{
-            $custom_field = $this->CustomFieldModel->with('Custom_Field_Value')->get();
+            $custom_field = $this->CustomFieldModel->with('CustomFieldImages','Custom_Field_Value')->get();
             if (count($custom_field) > 0){
                 return $response= $this->returnData('Category',$custom_field,'done');
             }else{
@@ -46,7 +46,7 @@ class CustomFieldService
     public function getById($id)
     {
         try{
-            $custom_field =$this->CustomFieldModel->with('Custom_Field_Value')->find($id);
+            $custom_field =$this->CustomFieldModel->with('CustomFieldImages','Custom_Field_Value')->find($id);
             if (is_null($custom_field) ){
                 return $response= $this->returnSuccessMessage('This Category not found','done');
             }else{
@@ -164,7 +164,31 @@ class CustomFieldService
                         ];
                     }
                     $CustomField = Custom_Field_Value::insert($cfv);
-
+                }
+                $images = $request->images;
+                foreach ($images as $image) {
+                    $arr[] = $image['image'];
+                }
+                foreach ($arr as $ar) {
+                    if (isset($image)) {
+                        if ($request->hasFile($ar)) {
+                            //save
+                            $file_extension = $ar->getClientOriginalExtension();
+                            $file_name = time() . $file_extension;
+                            $path = 'images/custom_fieldes';
+                            $ar->move($path, $file_name);
+                        }
+                    }
+                }
+                if ($request->has('images')) {
+                    foreach ($images as $image) {
+                        $customFieldImages = $this->CustomFieldModel->find($unTransCustomField_id);
+                        $customFieldImages->CustomFieldImages()->insert([
+                            'custom_field_id' => $unTransCustomField_id,
+                            'image' => $image['image'],
+                            'is_cover' => $image['is_cover'],
+                        ]);
+                    }
                 }
             }
 

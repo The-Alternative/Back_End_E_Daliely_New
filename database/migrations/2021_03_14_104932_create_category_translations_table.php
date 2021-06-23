@@ -33,21 +33,7 @@ class CreateCategoryTranslationsTable extends Migration
 //            $table->string('title');
 //            $table->longText('full_text');
         });
-        DB::table('category_translations')->insert([
-            ['name' => 'Developer',   'local' => 'en', 'category_id' => 1,'language_id' => 1],
-            ['name' => 'عربي', 'local' => 'ar', 'category_id' => 1, 'language_id' => 1],
-            ['name' => 'Journalist2', 'local' => 'en', 'category_id' => 2, 'language_id' => 2],
-            ['name' => 'عربي', 'local' => 'ar', 'category_id' => 2, 'language_id' => 2],
-            ['name' => 'Journalist4', 'local' => 'en', 'category_id' => 3, 'language_id' => 3],
-            ['name' => 'عربي', 'local' => 'ar', 'category_id' => 3, 'language_id' => 3],
-            ['name' => 'Journalist6', 'local' => 'en', 'category_id' => 4, 'language_id' => 4],
-            ['name' => 'عربي', 'local' => 'ar', 'category_id' => 4, 'language_id' => 4],
-            ['name' => 'Journalist8', 'local' => 'en', 'category_id' => 5, 'language_id' => 5],
-            ['name' => 'عربي', 'local' => 'ar', 'category_id' => 5, 'language_id' => 5],
-            ['name' => 'Journalist10', 'local' => 'en', 'category_id' => 6, 'language_id' =>6],
-            ['name' => 'عربي', 'local' => 'ar', 'category_id' => 6, 'language_id' =>6],
 
-        ]);
     }
 
     /**

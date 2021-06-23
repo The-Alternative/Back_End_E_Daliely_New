@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-
 class AuthController extends Controller
 {
     /**
@@ -21,7 +20,6 @@ class AuthController extends Controller
     {
         $this->middleware('auth:api', ['except' => ['login','register']]);
     }
-
     /**
      * Get a JWT via given credentials.
      *
@@ -29,15 +27,14 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = request(['email','password']);
 
-        if ($token = auth()->attempt($credentials)) {
-            return $this->respondWithToken($token);
+        if (! $token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return response()->json(['error' => 'Unauthorized'], 401);
+        return $this->respondWithToken($token);
     }
-
     /**
      * Get the authenticated User.
      *
@@ -47,7 +44,6 @@ class AuthController extends Controller
     {
         return response()->json(auth()->user());
     }
-
     /**
      * Log the user out (Invalidate the token).
      *
@@ -55,11 +51,10 @@ class AuthController extends Controller
      */
     public function logout()
     {
+        return auth();
         auth()->logout();
-
         return response()->json(['message' => 'Successfully logged out']);
     }
-
     /**
      * Refresh a token.
      *
@@ -81,7 +76,6 @@ class AuthController extends Controller
 
         return $this->respondWithToken($token);
     }
-
     /**
      * Get the token array structure.
      *

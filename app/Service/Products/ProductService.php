@@ -10,6 +10,7 @@ use App\Models\Stores\StoreProduct;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\ProductRequest;
 use App\Models\Products\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProductService
@@ -139,8 +140,9 @@ class ProductService
     }
     /*__________________________________________________________________*/
     /****  Create Products   ***/
-    public function create(ProductRequest $request)
+    public function create(Request $request)
     {
+
         try {
 //            dd($request->all());
 //                validated = $request->validated();
@@ -159,7 +161,7 @@ class ProductService
                 'brand_id' => $request['brand_id'],
                 'offer_id' => $request['offer_id'],
             ]);
-            //check the category and request
+            //check the product and request
             if (isset($allproducts) && count($allproducts)) {
                 //insert other traslations for products
                 foreach ($allproducts as $allproduct) {
@@ -196,23 +198,24 @@ class ProductService
                 foreach ($arr as $ar){
                     if (isset($image)) {
                         if ($request->hasFile($ar)) {
-
-                            $file_exctension = $ar->getclientoriginalextension();
-                            $file_name = time() . '.' . $file_exctension;
-                            $path = 'images/products';
-                            $imageq = $ar->move($path, $file_name);
+                            //save
+                            $file_extension = $ar-> getClientOriginalExtension();
+                            $file_name=time().$file_extension;
+                            $path='images/products';
+                            $ar->move($path,$file_name);
                         }
                     }
                 }
             }
             if ($request->has('images')) {
-
-                $product = $this->productModel->find($unTransProduct_id);
-                $product->ProductImage()->insert([
-                    'product_id' => $unTransProduct_id,
-                    'name' => $image['name'],
-                    'is_cover' => $image['is_cover'],
-                ]);
+                foreach ($images as $image) {
+                    $product = $this->productModel->find($unTransProduct_id);
+                    $product->ProductImage()->insert([
+                        'product_id' => $unTransProduct_id,
+                        'name' => $image['name'],
+                        'is_cover' => $image['is_cover'],
+                    ]);
+                }
             }
                 DB::commit();
                 return $this->returnData('Product', [$unTransProduct_id,$transProduct_arr],'done');
@@ -285,7 +288,7 @@ class ProductService
                 }
             }
             DB::commit();
-            return $this->returnData('Category', $dbdproducts,'done');
+            return $this->returnData('Product', $dbdproducts,'done');
         }
         catch(\Exception $ex){
             DB::rollback();
@@ -325,3 +328,4 @@ class ProductService
         }
     }
 }
+

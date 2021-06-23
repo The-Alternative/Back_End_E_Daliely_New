@@ -1,26 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-// use LaravelLocalization;
-
-Route::group([
-
-    'middleware' => 'api',
-    'prefix' => 'auth',
-    'namespace' => 'Auth'
-
-], function ($router) {
-
-    Route::post('login', 'AuthController@login');
-    Route::post('register', 'AuthController@register');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
-
-});
 Route::group(
     [
         'prefix'     => LaravelLocalization::setLocale(),
@@ -28,6 +10,15 @@ Route::group(
     ],
  function()
     {
+        Route::group(['prefix' => 'auth','namespace' => 'Auth'], function ()
+        {
+            Route::post('login', 'AuthController@login');
+            Route::post('register', 'AuthController@register');
+            Route::post('logout', 'AuthController@logout');
+            Route::post('refresh', 'AuthController@refresh');
+            Route::post('me', 'AuthController@me');
+        });
+
         /*_____________ Product routes _____________*/
         Route::group(['prefix'=>'products','namespace'=>'Product'],function()
             {

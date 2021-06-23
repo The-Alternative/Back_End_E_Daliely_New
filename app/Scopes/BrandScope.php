@@ -16,7 +16,7 @@ class BrandScope implements Scope
         $builder->join('brand_translation', 'brands.id', '=', 'brand_translation.brand_id')
             ->where('brand_translation.locale', '=', Config::get('app.locale'))
             ->select([
-                'brands.id','brands.is_active','brands.image',
+                'brands.id','brands.is_active',
                 'brand_translation.name','brand_translation.description', 'brand_translation.locale']);
     }
 }
