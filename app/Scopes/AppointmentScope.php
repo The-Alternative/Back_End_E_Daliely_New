@@ -18,13 +18,10 @@ class AppointmentScope implements \Illuminate\Database\Eloquent\Scope
     public function apply(Builder $builder, Model $model)
     {
         // TODO: Implement apply() method.
-         DB::table('appointment_translations')
-             ->select('appointments.id','appointments.is_active','appointments.is_approved',
-                 'appointment_translations.description');
-//           ->join('appointment_translations','appointments.id','=','appointment_translations.appointment_id')
-//               ->where('appointment_translations.locale','=', config::get('app.local'));
-
-
+       $builder->join('appointment_translations','appointments.id','=','appointment_translations.appointment_id')
+           ->where('appointment_translations.locale','=',config::get('app.locale'))
+           ->select(['appointments.id','appointments.is_active','appointments.is_approved','appointments.morning_evening'
+               ,'appointment_translations.description']);
     }
 }
 

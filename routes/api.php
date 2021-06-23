@@ -134,15 +134,15 @@ Route::group(['prefix'=>'doctor','namespace'=>'Doctors'],function () {
     Route::delete('/delete/{id}', 'DoctorController@delete');
     Route::PUT('/restoreTrashed/{id}', 'DoctorController@restoreTrashed');
 
-    Route::GET('/Doctor-social-media/{doctor_name}', 'DoctorController@SocialMedia');
-    Route::GET('/doctor-medical-device/{doctor_name}', 'DoctorController@doctormedicaldevice');
-    Route::GET('/hospital-doctor/{doctor_name}', 'DoctorController@hospital');
-    Route::GET('/appointment-doctor/{doctor_name}', 'DoctorController@appointment');
-    Route::GET('/clinic-doctor/{doctor_name}', 'DoctorController@clinic');
-    Route::get('/view-customer/{doctor_name}','DoctorController@customer');
-    Route::GET('/doctor-details/{doctor_name}', 'DoctorController@getalldetails');
-    Route::get('/doctor-rate/{doctor_name}','DoctorController@DoctorRate');
-    Route::get('/doctor-specialty/{doctor_name}','DoctorController@DoctorSpecialty');
+    Route::GET('/Doctor-social-media/{doctor_id}', 'DoctorController@SocialMedia');
+    Route::GET('/doctor-medical-device/{doctor_id}', 'DoctorController@doctormedicaldevice');
+    Route::GET('/hospital-doctor/{doctor_id}', 'DoctorController@hospital');
+    Route::GET('/appointment-doctor/{doctor_id}', 'DoctorController@appointment');
+    Route::GET('/clinic-doctor/{doctor_id}', 'DoctorController@clinic');
+    Route::get('/view-customer/{doctor_id}','DoctorController@customer');
+    Route::GET('/doctor-details/{doctor_id}', 'DoctorController@getalldetails');
+    Route::get('/doctor-rate/{doctor_id}','DoctorController@DoctorRate');
+    Route::get('/doctor-specialty/{doctor_id}','DoctorController@DoctorSpecialty');
 
 
     Route::post('/create-customer-by-doctor/{doctor_id}/{medical_file_id}','DoctorController@createcustomer');

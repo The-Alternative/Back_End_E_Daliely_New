@@ -10,6 +10,7 @@ class ClinicTranslation extends Model
     use HasFactory;
     protected $table='clinic_translation';
     protected $fillable=['id','clinic_id','name','locale'];
+    protected $hidden=['clinic_id'];
 
     public function clinic()
     {

@@ -33,84 +33,84 @@ class DoctorController extends Controller
         return $this->DoctorService->getById($id);
     }
 
-//    public function getTrashed()
-//    {
-//        return  $this->DoctorService->getTrashed();
-//    }
-//
-//    public function create(DoctorRequest  $request)
-//    {
-//        return $this->DoctorService->create($request);
-//    }
-//
-//    public function update(DoctorRequest $request,$id)
-//    {
-//        return $this->DoctorService->update($request,$id);
-//    }
-//    public function search($name)
-//    {
-//        return  $this->DoctorService->search($name);
-//    }
-//
-//    public function trash($id)
-//    {
-//        return $this->DoctorService->trash($id);
-//    }
-//
-//    public function restoreTrashed($id)
-//    {
-//        return $this->DoctorService->restoreTrashed($id);
-//    }
-//
-//    public function delete($id)
-//    {
-//        return $this->DoctorService->delete($id);
-//    }
-//
-//    public function SocialMedia($doctor_name)
-//    {
-//        return $this->DoctorService->SocialMedia($doctor_name);
-//    }
-//
-//    public function doctormedicaldevice($doctor_name)
-//    {
-//        return $this->DoctorService->doctormedicaldevice($doctor_name);
-//    }
-//    public function getalldetails($doctor_name)
-//    {
-//        return $this->DoctorService->getalldetails($doctor_name);
-//    }
-//
-//    public function hospital($doctor_name)
-//    {
-//        return $this->DoctorService->hospital($doctor_name);
-//    }
-//
-//    public function appointment($doctor_name)
-//    {
-//        return $this->DoctorService->appointment($doctor_name);
-//    }
-//
-//    public function clinic($doctor_name)
-//    {
-//        return $this->DoctorService->clinic($doctor_name);
-//    }
-//
-//    public function customer($doctor_name)
-//    {
-//        return $this->DoctorService->customer($doctor_name);
-//    }
-//
-//    public function createcustomer(Request $request,$doctorid,$fileId)
-//    {
-//        return $this->DoctorCustomerService->create( $request,$doctorid,$fileId );
-//    }
-//    public function DoctorRate($doctor_name)
-//    {
-//        return $this->DoctorService->DoctorRate($doctor_name);
-//    }
-//    public function DoctorSpecialty($doctor_name)
-//    {
-//        return $this->DoctorService->DoctorSpecialty($doctor_name);
-//    }
+    public function getTrashed()
+    {
+        return  $this->DoctorService->getTrashed();
+    }
+
+    public function create(DoctorRequest  $request)
+    {
+        return $this->DoctorService->create($request);
+    }
+
+    public function update(DoctorRequest $request,$id)
+    {
+        return $this->DoctorService->update($request,$id);
+    }
+    public function search($name)
+    {
+        return  $this->DoctorService->search($name);
+    }
+
+    public function trash($id)
+    {
+        return $this->DoctorService->trash($id);
+    }
+
+    public function restoreTrashed($id)
+    {
+        return $this->DoctorService->restoreTrashed($id);
+    }
+
+    public function delete($id)
+    {
+        return $this->DoctorService->delete($id);
+    }
+
+    public function SocialMedia($id)
+    {
+        return $this->DoctorService->SocialMedia($id);
+    }
+
+    public function doctormedicaldevice($id)
+    {
+        return $this->DoctorService->doctormedicaldevice($id);
+    }
+    public function getalldetails($id)
+    {
+        return $this->DoctorService->getalldetails($id);
+    }
+
+    public function hospital($id)
+    {
+        return $this->DoctorService->hospital($id);
+    }
+
+    public function appointment($id)
+    {
+        return $this->DoctorService->appointment($id);
+    }
+
+    public function clinic($id)
+    {
+        return $this->DoctorService->clinic($id);
+    }
+
+    public function customer($id)
+    {
+        return $this->DoctorService->customer($id);
+    }
+
+    public function createcustomer(Request $request,$doctorid,$fileId)
+    {
+        return $this->DoctorCustomerService->create( $request,$doctorid,$fileId );
+    }
+    public function DoctorRate($id)
+    {
+        return $this->DoctorService->DoctorRate($id);
+    }
+    public function DoctorSpecialty($id)
+    {
+        return $this->DoctorService->DoctorSpecialty($id);
+    }
 }
