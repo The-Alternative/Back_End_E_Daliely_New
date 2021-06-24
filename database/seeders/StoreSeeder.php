@@ -16,19 +16,6 @@ class StoreSeeder extends Seeder
     public function run()
     {
         $faker=Faker::create();
-        for ($i = 1; $i <= 200; $i++) {
-            $s = DB::table('stores')->insertGetId([
-                'loc_id' => 1,
-                'country_id' => 1,
-                'gov_id' => 1,
-                'city_id'=> 1,
-                'offer_id'=>1,
-                'street_id'=> 1,
-                'followers_id'=>1,
-                'is_active'=>1,
-                'is_approved'=>1,
-                'delivery'=>1,
-                'socialMedia_id'=>1,]);
         for ($i = 1; $i <= 5; $i++) {
             $s = DB::table('stores')->insertGetId([
                 'loc_id' =>  $faker->numberBetween(1,200),
@@ -60,5 +47,4 @@ class StoreSeeder extends Seeder
 
         }
     }
-}
 }

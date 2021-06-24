@@ -28,8 +28,6 @@ class MedicalFileSedeer extends Seeder
                     'file_number' => $faker->numberBetween(1, 200),
                     'file_date' => $faker->date('2021-8-20'),
                     'review_date' => $faker->date('2021-9-20'),
-                    'doctor_id' => 1,
-                    'customer_id' => 1,
                     'doctor_id' => $faker->numberBetween(1, 200),
                     'customer_id' => $faker->numberBetween(1, 200),
 

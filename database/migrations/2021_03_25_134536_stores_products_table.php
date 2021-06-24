@@ -24,17 +24,6 @@ class StoresProductsTable extends Migration
             $table->boolean('is_appear')->default(1);
             $table->timestamps();
         });
-        for($store_id=1;$store_id<12;$store_id++){
-            for($product_id=1;$product_id<24;$product_id++) {
-                DB::table('stores_products')->insert(
-                    $arr = [
-                    'product_id'=>$product_id,
-                    'store_id'=>$store_id,
-                    'price'=>rand(100,1000)
-                ]
-            );
-            }
-        }
   }
 
     /**

@@ -16,18 +16,10 @@ class CategoriesSeeder extends Seeder
     public function run()
     {
         $faker=Faker::create();
-        for ($i = 1; $i <= 200; $i++) {
-            $s = DB::table('categories')->insertGetId([
-                'slug' => $faker->sentence(1),
-                'is_active' => 1,
-                'parent_id' =>1,
-                'lang_id' => 1,
-                'section_id' => 1]);
         for ($i = 1; $i <= 5; $i++) {
             $s = DB::table('categories')->insertGetId([
                 'slug' => $faker->sentence(1),
                 'is_active' => $faker->boolean,
-                'image' => $faker->sentence(3),
                 'parent_id' => $faker->numberBetween(1,200),
                 'lang_id' =>  $faker->numberBetween(1,200),
                 'section_id' =>  $faker->numberBetween(1,200)
@@ -47,6 +39,4 @@ class CategoriesSeeder extends Seeder
 
         }
     }
-
-}
 }

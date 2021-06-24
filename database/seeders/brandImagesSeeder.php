@@ -16,7 +16,7 @@ class brandImagesSeeder extends Seeder
     public function run()
     {
         $faker=Faker::create();
-        for($brand=1;$brand<12;$brand++){
+        for($brand=1;$brand<5;$brand++){
             for($image=1;$image<5;$image++) {
                 DB::table('brand_images')->insert(
                     [

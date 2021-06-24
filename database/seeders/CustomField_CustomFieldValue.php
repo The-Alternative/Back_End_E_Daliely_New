@@ -21,7 +21,6 @@ class CustomField_CustomFieldValue extends Seeder
                 DB::table('custom_field_value')->insert(
                     [
                         'custom_field_id'=>$customFiled,
-                        'image'=>$faker->sentence(1),
                         'value'=>$faker->sentence(1)
                     ]
                 );

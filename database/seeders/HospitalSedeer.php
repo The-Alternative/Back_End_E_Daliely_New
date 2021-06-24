@@ -26,18 +26,6 @@ class HospitalSedeer extends Seeder
                 'private_hospital' => 1,
                 'location_id' => 1,
                 'doctor_id' => 1,]);
-            for ($i = 0; $i <= 5; $i++) {
-                DB::table('hospitals')->insert([
-                    'is_active' => $faker->boolean,
-                    'is_approved' => $faker->boolean,
-                    'name' => $faker->sentence(3),
-                    'medical_center' => $faker->sentence(2),
-                    'general_hospital' => $faker->boolean,
-                    'private_hospital' => $faker->boolean,
-                    'location_id' => $faker->numberBetween(1, 200),
-                    'doctor_id' => $faker->numberBetween(1, 200),
-                ]);
-            }
         }
     }
 }

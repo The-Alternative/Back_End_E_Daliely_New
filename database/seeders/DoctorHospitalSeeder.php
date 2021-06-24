@@ -14,8 +14,7 @@ class DoctorHospitalSeeder extends Seeder
      */
     public function run()
     {
-        for ($doctor_id = 1; $doctor_id < 200; $doctor_id++) {
-            for ($doctor_id = 1; $doctor_id < 5; $doctor_id++) {
+        for ($doctor_id = 1; $doctor_id < 5; $doctor_id++) {
                 for ($hospital_id = 1; $hospital_id < 3; $hospital_id++) {
                     DB::table('doctor_hospital')->insert(
                         [
@@ -24,7 +23,6 @@ class DoctorHospitalSeeder extends Seeder
                         ]
                     );
                 }
-            }
         }
     }
 }

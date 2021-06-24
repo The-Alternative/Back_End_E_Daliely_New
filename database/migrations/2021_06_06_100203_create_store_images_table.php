@@ -17,7 +17,6 @@ class CreateStoreImagesTable extends Migration
             $table->id();
             $table->unsignedInteger('store_id');
             $table->string('image');
-            $table->string('name');
             $table->boolean('is_cover');
             $table->timestamps();
         });

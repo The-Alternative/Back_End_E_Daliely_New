@@ -16,28 +16,6 @@ class ClinicSedeer extends Seeder
     public function run()
     {
         $faker=Faker::create();
-//        for ($i = 0; $i <= 200; $i++) {
-//            $s = DB::table('clinics')->insertGetId([
-//                'is_active' => 1,
-//                'is_approved' =>1,
-//                'phone_number' => $faker->phoneNumber,
-//                'doctor_id' => 1,
-//                'active_times_id' => 1,
-//                'location_id'=>1
-//
-//            ]);
-//            DB::table('clinic_translation')->insert([[
-//                'clinic_id'   => $s,
-//                'name'  => $faker->sentence(3),
-//                'locale'      => 'en',
-//            ],
-//                [
-//                    'clinic_id'   => $s,
-//                    'name'  => $faker->sentence(3),
-//                    'locale' => 'ar',
-//                ]]);
-//
-//        }
         for ($i = 0; $i <= 5; $i++) {
             $s = DB::table('clinics')->insertGetId([
                 'is_active' => $faker->boolean,
