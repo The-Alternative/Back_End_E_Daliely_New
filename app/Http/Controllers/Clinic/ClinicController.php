@@ -13,7 +13,6 @@ class ClinicController extends Controller
 {
     use GeneralTrait;
     private $ClinicService;
-    private $response;
 
     public function __construct(ClinicService $ClinicService,Response $response )
     {
@@ -31,56 +30,36 @@ class ClinicController extends Controller
         return $this->ClinicService->getById($id);
     }
 
+    public function create(ClinicRequest $request)
+    {
+        return $response=$this->ClinicService->create($request);
+    }
+
+    public function update(ClinicRequest $request,$id)
+    {
+        return  $response=$this->ClinicService->update($request,$id);
+    }
+    public function search($name)
+    {
+        return $response= $this->ClinicService->search($name);
+    }
+
+    public function trash($id)
+    {
+        return  $response= $this->ClinicService->trash($id);
+    }
     public function getTrashed()
     {
         return  $this->ClinicService->getTrashed();
     }
 
-    public function create(ClinicRequest $request)
-    {
-        $response=$this->ClinicService->create($request);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
-    }
-
-    public function update(ClinicRequest $request,$id)
-    {
-        $response=$this->ClinicService->update($request,$id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
-
-    }
-    public function search($name)
-    {
-        $response= $this->ClinicService->search($name);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
-    }
-
-    public function trash($id)
-    {
-        $response= $this->ClinicService->trash($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
-    }
-
     public function restoreTrashed($id)
     {
-        $response= $this->ClinicService->restoreTrashed($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return $response= $this->ClinicService->restoreTrashed($id);
     }
 
     public function delete($id)
     {
-        $response=$this->ClinicService->delete($id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $response=$this->ClinicService->delete($id);
     }
 }

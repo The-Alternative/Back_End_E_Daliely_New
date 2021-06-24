@@ -3,6 +3,8 @@
 namespace App\Models\Doctors;
 
 use App\Models\Doctors\doctor;
+use App\Models\Hospital\Hospital;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,4 +19,5 @@ class DoctorTranslation extends Model
     {
         return $this->belongsTo(doctor::class);
     }
+
 }

@@ -16,9 +16,15 @@ class SpecialtySedeer extends Seeder
     public function run()
     {
         $faker=Faker::create();
+<<<<<<< HEAD
         for ($i = 0; $i <= 200; $i++) {
             $s = DB::table('specialties')->insertGetId([
                 'is_active' => 1,
+=======
+        for ($i = 0; $i <= 5; $i++) {
+            $s = DB::table('specialties')->insertGetId([
+                'is_active' =>  $faker->boolean,
+>>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
                 'graduation_year' => $faker->year,
 
             ]);

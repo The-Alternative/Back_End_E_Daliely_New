@@ -8,7 +8,6 @@ use http\Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -349,6 +348,7 @@ trait GeneralTrait
 //        }
         return $this->returnData('Store', $Arr1,'done');
     }
+<<<<<<< HEAD
 
 
 
@@ -388,6 +388,8 @@ trait GeneralTrait
     $path = 'images/' . $folder . '/' . $filename;
     return $path;
 }
+=======
+>>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
 }
 
     // protected $statusCode = 200;

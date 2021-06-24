@@ -16,11 +16,19 @@ class SectionSeeder extends Seeder
     public function run()
     {
         $faker=Faker::create();
+<<<<<<< HEAD
         for ($i = 1; $i <= 200; $i++) {
             $s = DB::table('sections')->insertGetId([
                 'slug' => $faker->sentence(1),
                 'image' => $faker->sentence(10),
                 'is_active' => 1
+=======
+        for ($i = 1; $i <= 10; $i++) {
+            $s = DB::table('sections')->insertGetId([
+                'slug' => $faker->sentence(1),
+                'image' => $faker->sentence(10),
+                'is_active' => $faker->boolean,
+>>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
             ]);
             DB::table('section_translations')->insert([[
                 'name' => $faker->sentence(2),
@@ -31,7 +39,11 @@ class SectionSeeder extends Seeder
                 [
                     'name' => $faker->sentence(2),
                     'description' => $faker->sentence(10),
+<<<<<<< HEAD
                     'local' => 'en',
+=======
+                    'local' => 'ar',
+>>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
                     'section_id' => $s
                 ]]);
 

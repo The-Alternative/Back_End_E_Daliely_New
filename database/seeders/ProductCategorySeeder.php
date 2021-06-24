@@ -14,8 +14,13 @@ class ProductCategorySeeder extends Seeder
      */
     public function run()
     {
+<<<<<<< HEAD
         for($category_id=1;$category_id<12;$category_id++){
             for($product_id=1;$product_id<12;$product_id++) {
+=======
+        for($category_id=1;$category_id<5;$category_id++){
+            for($product_id=1;$product_id<3;$product_id++) {
+>>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
                 DB::table('products_categories')->insert(
                      [
                         'category_id'=>$category_id,

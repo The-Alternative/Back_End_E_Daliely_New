@@ -44,8 +44,12 @@ class ProductService
     {
         try{
         $products = $this->productModel
+<<<<<<< HEAD
             ->with(['Store','ProductImage'=>function($q){
                 return $q->where('is_cover',1)->get();}])->get();
+=======
+            ->with('Store')->paginate(10);
+>>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
             if (count($products) > 0)
             {
                 return $response=$this->returnData('Products',$products,'done');
@@ -184,6 +188,7 @@ class ProductService
             if ($request->has('CustomFieldValue')) {
                 $product = $this->productModel->find($unTransProduct_id);
                 $product->Custom_Field_Value()->syncWithoutDetaching($request->get('CustomFieldValue'));
+<<<<<<< HEAD
 //                  $Arr=collect($request->CustomFieldValue);
 //                $customFeilds=$Arr->pluck('custom_field_value_id');;
 //                foreach ($customFeilds as $customFeild){
@@ -218,6 +223,33 @@ class ProductService
                     ]);
                 }
             }
+=======
+
+            $images = $request->images;
+            foreach ($images as $image){
+                $arr[]=$image['name'];
+            }
+            foreach ($arr as $ar){
+                if (isset($image)) {
+                    if ($request->hasFile($ar)) {
+                        $file_exctension = $ar->getclientoriginalextension();
+                        $file_name = time() . '.' . $file_exctension;
+                        $path = 'images/products';
+                        $imageq = $ar->move($path, $file_name);
+                    }
+                }
+            }
+        }
+            if ($request->has('images')) {
+
+                $product = $this->productModel->find($unTransProduct_id);
+                $product->ProductImage()->insert([
+                    'product_id' => $unTransProduct_id,
+                    'name' => $image['name'],
+                    'is_cover' => $image['is_cover'],
+                ]);
+            }
+>>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
                 DB::commit();
                 return $this->returnData('Product', [$unTransProduct_id,$transProduct_arr],'done');
             }

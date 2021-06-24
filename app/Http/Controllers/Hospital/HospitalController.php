@@ -24,75 +24,41 @@ class HospitalController extends Controller
     {
         return $this->HospitalService->get();
     }
-
     public function  getById($id)
     {
         return $this->HospitalService->getById($id);
     }
-
     public function getTrashed()
     {
         return$this->HospitalService->getTrashed();
     }
-
     public function create(HospitalRequest $request)
     {
-        $response=$this->HospitalService->create($request);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->HospitalService->create($request);
     }
-
     public function update(HospitalRequest $request,$id)
     {
-        $response=$this->HospitalService->update($request,$id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
-
+        return $this->HospitalService->update($request,$id);
     }
     public function search($name)
     {
-        $response= $this->HospitalService->search($name);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return $this->HospitalService->search($name);
     }
-
     public function trash($id)
     {
-        $response= $this->HospitalService->trash($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return $this->HospitalService->trash($id);
     }
-
     public function restoreTrashed($id)
     {
-        $response= $this->HospitalService->restoreTrashed($id);
-        return response($response, 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*');
+        return $this->HospitalService->restoreTrashed($id);
     }
-//
     public function delete($id)
     {
-        $response=$this->HospitalService->delete($id);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
+        return $this->HospitalService->delete($id);
     }
-
     //get all the doctors who work in the hospital according to her name
-
-    public function doctors($hospital_name)
+    public function hospitalsDoctor($hospital_name)
     {
-        $response=$this->HospitalService->hospitalsDoctor($hospital_name);
-        return  response($response,200)
-            ->header('Access-control-Allow-Origin','*')
-            ->header('Access-control-Allow-Methods','*');
-
-
+        return $this->HospitalService->hospitalsDoctor($hospital_name);
     }
-
 }
