@@ -15,37 +15,32 @@ class CustomFieldSeeder extends Seeder
      */
     public function run()
     {
-        $faker=Faker::create();
-<<<<<<< HEAD
+        $faker = Faker::create();
         for ($i = 0; $i <= 200; $i++) {
             $s = DB::table('custom_fields')->insertGetId([
-                'is_active' => 1,
-=======
-        for ($i = 0; $i <= 5; $i++) {
-            $s = DB::table('custom_fields')->insertGetId([
-                'image' => $faker->sentence(5),
-                'is_active' => $faker->boolean,
->>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
+                'is_active' => 1,]);
+            for ($i = 0; $i <= 5; $i++) {
+                $s = DB::table('custom_fields')->insertGetId([
+                    'image' => $faker->sentence(5),
+                    'is_active' => $faker->boolean,
 
-            ]);
-            DB::table('custom__fields__translations')->insert([[
-                'custom_field_id' => $s,
-                'description' =>$faker->sentence(10),
-                'local' => 'en',
-                'name' => $faker->sentence(2),
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
-            ],
-                [
+                ]);
+                DB::table('custom__fields__translations')->insert([[
                     'custom_field_id' => $s,
-                    'description' =>$faker->sentence(10),
-                    'local' => 'ar',
+                    'description' => $faker->sentence(10),
+                    'local' => 'en',
                     'name' => $faker->sentence(2),
-                ]]);
 
+
+                ],
+                    [
+                        'custom_field_id' => $s,
+                        'description' => $faker->sentence(10),
+                        'local' => 'ar',
+                        'name' => $faker->sentence(2),
+                    ]]);
+
+            }
         }
     }
 }

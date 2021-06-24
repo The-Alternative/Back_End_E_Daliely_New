@@ -79,8 +79,5 @@ class Store extends Model
     {
         return $this->hasMany(StoreImage::class);
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
 }

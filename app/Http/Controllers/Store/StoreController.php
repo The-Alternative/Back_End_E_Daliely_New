@@ -3,10 +3,7 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Requests\Store\StoreRequest;
-<<<<<<< HEAD
 use App\Http\Requests\StoreProduct\StoreProductRequest;
-=======
->>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
 use App\Traits\GeneralTrait;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -19,17 +16,11 @@ class StoreController extends Controller
     private $StoreService;
     private $response;
 
-    /* ProductsController constructor.
-    */
     public function __construct(StoreService $StoreService,Response  $response)
     {
         $this->StoreService=$StoreService;
         $this->response=$response;
     }
-//
-//"files": [
-//"App/Helpers/GeneralHelpers.php"
-//]
     public function getAll()
     {
         $response= $this->StoreService->getAll();
