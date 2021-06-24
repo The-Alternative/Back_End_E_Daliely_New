@@ -16,10 +16,6 @@ class ActiveTimeSedeer extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        for ($i = 0; $i <= 200; $i++) {
-            DB::table('active_times')->insert([
-                'is_active' => 1,
-                'is_approved' => 1,]);
         for ($i = 0; $i <= 5; $i++) {
             DB::table('active_times')->insert([
                 'is_active' => $faker->boolean,
@@ -29,5 +25,4 @@ class ActiveTimeSedeer extends Seeder
             ]);
         }
     }
-}
 }

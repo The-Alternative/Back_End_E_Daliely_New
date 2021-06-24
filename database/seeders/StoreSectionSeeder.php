@@ -16,8 +16,6 @@ class StoreSectionSeeder extends Seeder
     {
         for ($section_id = 1; $section_id < 12; $section_id++) {
             for ($store_id = 1; $store_id < 12; $store_id++) {
-                for ($section_id = 1; $section_id < 5; $section_id++) {
-                    for ($store_id = 1; $store_id < 3; $store_id++) {
                         DB::table('stores_sections')->insert(
                             [
                                 'section_id' => $section_id,
@@ -27,6 +25,4 @@ class StoreSectionSeeder extends Seeder
                     }
                 }
             }
-        }
-    }
 }

@@ -16,7 +16,7 @@ class CategoriesImagesSeeder extends Seeder
     public function run()
     {
         $faker=Faker::create();
-        for($category=1;$category<12;$category++){
+        for($category=1;$category<5;$category++){
             for($image=1;$image<5;$image++) {
                 DB::table('category_images')->insert(
                     [

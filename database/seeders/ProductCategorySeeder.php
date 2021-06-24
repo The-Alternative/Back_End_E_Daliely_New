@@ -16,8 +16,6 @@ class ProductCategorySeeder extends Seeder
     {
         for ($category_id = 1; $category_id < 12; $category_id++) {
             for ($product_id = 1; $product_id < 12; $product_id++) {
-                for ($category_id = 1; $category_id < 5; $category_id++) {
-                    for ($product_id = 1; $product_id < 3; $product_id++) {
                         DB::table('products_categories')->insert(
                             [
                                 'category_id' => $category_id,
@@ -26,6 +24,4 @@ class ProductCategorySeeder extends Seeder
                     }
                 }
             }
-        }
-    }
 }

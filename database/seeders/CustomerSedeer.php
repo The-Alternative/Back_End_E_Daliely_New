@@ -16,11 +16,6 @@ class CustomerSedeer extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        for ($i = 0; $i <= 200; $i++) {
-            $s = DB::table('customers')->insertGetId([
-                'is_active' => 1,
-                'is_approved' => 1,
-                'social_media_id' => 1]);
             for ($i = 0; $i <= 5; $i++) {
                 $s = DB::table('customers')->insertGetId([
                     'is_active' => $faker->boolean,
@@ -44,5 +39,4 @@ class CustomerSedeer extends Seeder
 
             }
         }
-    }
 }

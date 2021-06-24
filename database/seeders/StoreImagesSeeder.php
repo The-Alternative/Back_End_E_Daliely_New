@@ -16,8 +16,8 @@ class StoreImagesSeeder extends Seeder
     public function run()
     {
         $faker=Faker::create();
-        for($store_id=1;$store_id<12;$store_id++){
-            for($image=1;$image<12;$image++) {
+        for($store_id=1;$store_id<5;$store_id++){
+            for($image=1;$image<3;$image++) {
                 DB::table('store_images')->insert(
                     [
                         'store_id'=>$store_id,

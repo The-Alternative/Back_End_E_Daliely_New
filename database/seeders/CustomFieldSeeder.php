@@ -16,9 +16,6 @@ class CustomFieldSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        for ($i = 0; $i <= 200; $i++) {
-            $s = DB::table('custom_fields')->insertGetId([
-                'is_active' => 1,]);
             for ($i = 0; $i <= 5; $i++) {
                 $s = DB::table('custom_fields')->insertGetId([
                     'is_active' => $faker->boolean,
@@ -41,5 +38,4 @@ class CustomFieldSeeder extends Seeder
 
             }
         }
-    }
 }

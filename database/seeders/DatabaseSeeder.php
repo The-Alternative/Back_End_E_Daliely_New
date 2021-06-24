@@ -38,6 +38,8 @@ class DatabaseSeeder extends Seeder
             DoctorMedicalDeviceSeeder::class,
             DoctorRateSeeder::class,
             ProductsSeeder::class,
+            StoreSeeder::class,
+            StoreImagesSeeder::class,
             DoctorSeeder::class,
             ActiveTimeSedeer::class,
             appointmentSedeer::class,
@@ -48,9 +50,6 @@ class DatabaseSeeder extends Seeder
             MedicalFileSedeer::class,
             SocialMediaSedeer::class,
             SpecialtySedeer::class,
-            StoreSeeder::class,
-            StoreImagesSeeder::class,
-
 
 //restaurant
 //            RestaurantSeeder::class,
