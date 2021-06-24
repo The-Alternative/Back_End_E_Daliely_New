@@ -15,9 +15,11 @@ class CreateAppointmentTranslationsTable extends Migration
     {
         Schema::create('appointment_translations', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
+            $table->Integer('appointment_id')->unsigned();
             $table->string('locale');
-            $table->Integer('appointment_id');
+            $table->string('description');
+
+
             $table->timestamps();
         });
     }

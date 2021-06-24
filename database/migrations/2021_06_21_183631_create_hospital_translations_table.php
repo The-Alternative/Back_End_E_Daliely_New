@@ -15,10 +15,11 @@ class CreateHospitalTranslationsTable extends Migration
     {
         Schema::create('hospital_translations', function (Blueprint $table) {
             $table->id();
+            $table->Integer('hospital_id')->unsigned();
+            $table->string('locale');
             $table->string('name');
             $table->string('description');
-            $table->string('locale');
-            $table->Integer('hospital_id');
+
             $table->timestamps();
         });
     }

@@ -42,11 +42,10 @@ class doctor extends Model
 
     }
 
-//
-//    public function doctorTranslation()
-//    {
-//        return $this->hasMany(DoctorTranslation::class,'doctor_id');
-//    }
+    public function doctorTranslation()
+    {
+        return $this->hasMany(DoctorTranslation::class,'doctor_id');
+    }
 
     public function socialMedia()
     {

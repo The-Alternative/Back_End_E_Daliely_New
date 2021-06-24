@@ -15,13 +15,13 @@ class CreateSocialMediaTable extends Migration
     {
         Schema::create('social_media', function (Blueprint $table) {
             $table->id();
+            $table->integer('doctor_id')->unsigned();
             $table->string('phone_number');
             $table->string('whatsapp_number');
             $table->string('facebook_account');
             $table->string( 'instagram_account');
             $table->string('telegram_number');
             $table->string( 'email');
-            $table->integer('doctor_id')->unsigned();
             $table->boolean('is_active');
 
             $table->timestamps();

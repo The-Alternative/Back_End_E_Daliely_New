@@ -100,11 +100,6 @@ class DoctorController extends Controller
     {
         return $this->DoctorService->customer($id);
     }
-
-    public function createcustomer(Request $request,$doctorid,$fileId)
-    {
-        return $this->DoctorCustomerService->create( $request,$doctorid,$fileId );
-    }
     public function DoctorRate($id)
     {
         return $this->DoctorService->DoctorRate($id);
@@ -112,5 +107,10 @@ class DoctorController extends Controller
     public function DoctorSpecialty($id)
     {
         return $this->DoctorService->DoctorSpecialty($id);
+    }
+    public function createcustomer(Request $request)
+    {
+        return "ok";
+//        return $this->DoctorCustomerService->create( $request);
     }
 }

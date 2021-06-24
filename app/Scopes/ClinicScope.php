@@ -18,8 +18,7 @@ class ClinicScope implements \Illuminate\Database\Eloquent\Scope
     public function apply(Builder $builder, Model $model)
     {
         // TODO: Implement apply() method.
-      $builder->join('clinic_translation','clinics.id','=','clinic_translation.clinic_id')
-          ->where('clinic_translation.locale','=',config::get('app.locale'))
-          ->select(['clinics.id','clinics.is_active','clinics.is_approved','clinic_translation.name','clinic_translation.locale']);
+      $builder ->where('clinics.is_active','=',1)
+          ->select(['clinics.id','clinics.is_active','clinics.is_approved','clinics.name','clinic_translation.locale']);
     }
 }

@@ -238,7 +238,7 @@ class DoctorService
 
     }
 
-//    get all doctor's social media by doctor's name
+//    get all doctor's social media by doctor's id
     public function SocialMedia($id)
     {
         try {
@@ -250,7 +250,7 @@ class DoctorService
     }
 
 
-    //get  doctor's medical devices by doctor's name
+    //get  doctor's medical devices by doctor's id
     public function doctormedicaldevice($id)
     {
         try{
@@ -261,7 +261,7 @@ class DoctorService
         }
     }
 
-    //get hospital by doctor's name
+    //get hospital by doctor's id
     public function hospital($id)
     {
       try{
@@ -283,12 +283,12 @@ class DoctorService
         }
     }
 
-    //get clinic by doctor's name
+    //get clinic by doctor's id
     public function clinic($id)
     {
 
         try{
-            return $s= doctor::with('clinic')->find($id);
+            return doctor::with('clinic')->find($id);
 
         }
         catch (\Exception $ex) {
@@ -296,12 +296,12 @@ class DoctorService
         }
     }
 
-    //get all doctor's details by doctor's name
+    //get all doctor's details by doctor's id
     public function getalldetails($id)
     {
 
         try{
-        return  doctor::with('medicalDevice','socialMedia','clinic','hospital','Specialty')->find($id);
+        return  doctor::with('Specialty','clinic','medicalDevice','socialMedia','hospital')->find($id);
 
         }
         catch (\Exception $ex) {
@@ -309,21 +309,18 @@ class DoctorService
         }
     }
 
-    //get paitent by doctor's name
-    public function customer($doctor_name)
+    //get paitent by doctor's id
+    public function customer($id)
     {
         try{
-        return  doctor::with('customer')
-             ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
-             ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
-             ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name')->get();
+        return  doctor::with('customer')->find($id);
         }
         catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }
     }
 
-    //get doctor rate by doctor's name
+    //get doctor rate by doctor's id
     public function DoctorRate($id)
     {
         try{
@@ -333,7 +330,7 @@ class DoctorService
             return $this->returnError('400', $ex->getMessage());
         }
     }
-    //get specialty by doctor name
+    //get specialty by doctor id
     public function DoctorSpecialty($id)
     {
         try {

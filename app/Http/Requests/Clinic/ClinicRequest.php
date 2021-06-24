@@ -30,10 +30,8 @@ class ClinicRequest extends FormRequest
             'phone_number'=>'required',
             'active_times_id'=>'required',
             'location_id'=>'required',
+            'name'=>'required|string|min:3|max:255'
 
-            'clinic'=>'required|array|min:1',
-            'clinic.*.name'=>'required',
-            'clinic.*.locale'=>'required',
 
         ];
     }
@@ -44,8 +42,8 @@ class ClinicRequest extends FormRequest
             'required' => 'this field is required',
             'in'=>'this field must be 0 (is not active) or 1 (is active)',
 
-            'clinic.*.name.min' => 'Your clinic\'s  Name Is Too Short',
-            'clinic.*.name.max' => 'Your clinic\'s  Name Is Too Long',
+            'min' => 'Your clinic\'s  Name Is Too Short',
+            'max' => 'Your clinic\'s  Name Is Too Long',
 
         ];
     }

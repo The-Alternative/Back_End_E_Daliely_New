@@ -145,7 +145,7 @@ Route::group(['prefix'=>'doctor','namespace'=>'Doctors'],function () {
     Route::get('/doctor-specialty/{doctor_id}','DoctorController@DoctorSpecialty');
 
 
-    Route::post('/create-customer-by-doctor/{doctor_id}/{medical_file_id}','DoctorController@createcustomer');
+    Route::post('/create-customer-by-doctor','DoctorController@createcustomer');
 
 });
 /*---------------Doctor Rate Route--------*/

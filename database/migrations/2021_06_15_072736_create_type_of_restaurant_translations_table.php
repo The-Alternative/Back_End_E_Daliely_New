@@ -15,11 +15,11 @@ class CreateTypeOfRestaurantTranslationsTable extends Migration
     {
         Schema::create('type_of_restaurant_translations', function (Blueprint $table) {
             $table->id();
-            $table->integer('type_of_restaurant_id');
+            $table->integer('type_of_restaurant_id')->unsigned();
+            $table->string('locale');
             $table->string('title');
             $table->string('short_description');
             $table->string('long_description');
-            $table->string('locale');
             $table->timestamps();
         });
     }

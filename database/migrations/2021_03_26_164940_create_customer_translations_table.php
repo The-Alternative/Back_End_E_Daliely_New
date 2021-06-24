@@ -15,11 +15,12 @@ class CreateCustomerTranslationsTable extends Migration
     {
         Schema::create('customer_translations', function (Blueprint $table) {
             $table->id();
-            $table->integer('customer_id');
+            $table->integer('customer_id')->unsigned();
+            $table->string('locale');
             $table->string('first_name');
             $table->string('last_name');
             $table->string('address');
-            $table->string('locale');
+
 
 
 

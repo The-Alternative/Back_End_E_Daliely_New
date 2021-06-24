@@ -21,7 +21,7 @@ class DoctorCustomer extends Pivot
         return $this->belongsTo(doctor::class);
     }
     public function customer(){
-        return $this->belongsTo(customer::class,);
+        return $this->belongsTo(customer::class);
     }
 
 }
