@@ -16,10 +16,6 @@ class StoreImage extends Model
 
     public function Store()
     {
-<<<<<<< HEAD
         return $this->belongsTo(Store::class);
-=======
-        return $this->hasMany(Store::class);
->>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
     }
 }

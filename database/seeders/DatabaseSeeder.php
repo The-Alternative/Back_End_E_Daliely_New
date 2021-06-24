@@ -16,11 +16,13 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         $this->call([
-            //store
             BrandSectionSeeder::class,
             BrandSeeder::class,
+            brandImagesSeeder::class,
             CategoriesSeeder::class,
             CustomFieldSeeder::class,
+            CustomField_CustomFieldValue::class,
+            CategoriesImagesSeeder::class,
             ProductCategorySeeder::class,
             ProductCustomFieldSeeder::class,
             ProductsSeeder::class,
@@ -29,11 +31,7 @@ class DatabaseSeeder extends Seeder
             StoreProductSeeder::class,
             StoreSectionSeeder::class,
             StoreSeeder::class,
-<<<<<<< HEAD
-            //doctor
-=======
-           //doctor
->>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
+            StoreImagesSeeder::class,
             DoctorSpecialtySeeder::class,
             CustomerDoctorSeeder::class,
             DoctorHospitalSeeder::class,
@@ -50,12 +48,12 @@ class DatabaseSeeder extends Seeder
             MedicalFileSedeer::class,
             SocialMediaSedeer::class,
             SpecialtySedeer::class,
-<<<<<<< HEAD
+            StoreSeeder::class,
+            StoreImagesSeeder::class,
 
-=======
+
 //restaurant
 //            RestaurantSeeder::class,
->>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
         ]);
 
     }

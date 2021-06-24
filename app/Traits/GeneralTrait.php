@@ -348,9 +348,6 @@ trait GeneralTrait
 //        }
         return $this->returnData('Store', $Arr1,'done');
     }
-<<<<<<< HEAD
-
-
 
     //trait for handler Exception......//
     public function dataResponse($data): JsonResponse
@@ -388,8 +385,6 @@ trait GeneralTrait
     $path = 'images/' . $folder . '/' . $filename;
     return $path;
 }
-=======
->>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
 }
 
     // protected $statusCode = 200;
