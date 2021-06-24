@@ -16,11 +16,8 @@ class CreateStoreImagesTable extends Migration
         Schema::create('store_images', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('store_id');
-<<<<<<< HEAD
             $table->string('image');
-=======
             $table->string('name');
->>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
             $table->boolean('is_cover');
             $table->timestamps();
         });
