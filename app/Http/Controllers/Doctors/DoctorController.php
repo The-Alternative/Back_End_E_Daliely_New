@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Doctors;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Doctors\DoctorRequest;
-use App\Service\Doctors\DoctorCustomerService;
+use App\Service\Doctors\CustomerDoctorService;
 use App\Service\Doctors\DoctorService;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
@@ -14,11 +14,11 @@ class DoctorController extends Controller
 {
     use GeneralTrait;
     private $DoctorService;
-    private $DoctorCustomerService;
+    private $CustomerDoctorService;
 
-    public function __construct(DoctorService $DoctorService,DoctorCustomerService $doctorCustomerService,Response $response )
+    public function __construct(DoctorService $DoctorService,CustomerDoctorService $CustomerDoctorService,Response $response )
     {
-        $this->DoctorCustomerService=$doctorCustomerService;
+        $this->CustomerDoctorService=$CustomerDoctorService;
         $this->DoctorService=$DoctorService;
         $this->response=$response;
     }
@@ -110,7 +110,6 @@ class DoctorController extends Controller
     }
     public function createcustomer(Request $request)
     {
-        return "ok";
-//        return $this->DoctorCustomerService->create( $request);
+        return $this->CustomerDoctorService->create( $request);
     }
 }
