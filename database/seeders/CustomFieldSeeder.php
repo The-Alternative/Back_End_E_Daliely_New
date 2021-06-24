@@ -21,7 +21,6 @@ class CustomFieldSeeder extends Seeder
                 'is_active' => 1,]);
             for ($i = 0; $i <= 5; $i++) {
                 $s = DB::table('custom_fields')->insertGetId([
-                    'image' => $faker->sentence(5),
                     'is_active' => $faker->boolean,
 
                 ]);
