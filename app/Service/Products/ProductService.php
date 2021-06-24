@@ -44,7 +44,8 @@ class ProductService
     {
         try{
         $products = $this->productModel
-            ->with('Store')->get();
+            ->with(['Store','ProductImage'=>function($q){
+                return $q->where('is_cover',1)->get();}])->get();
             if (count($products) > 0)
             {
                 return $response=$this->returnData('Products',$products,'done');

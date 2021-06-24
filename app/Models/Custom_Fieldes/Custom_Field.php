@@ -38,6 +38,6 @@ class Custom_Field extends Model
     }
     public function CustomFieldImages()
     {
-        return $this->belongsTo(CustomFieldImages::class,'custom_field_id');
+        return $this->hasMany(CustomFieldImages::class,'custom_field_id');
     }
 }

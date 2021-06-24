@@ -28,7 +28,8 @@ class StoreService
     public function getAll()
     {
         try {
-            $store =collect($this->storeModel->with(['Section','Product','Brand','StoreImage'])->get());
+            $store =collect($this->storeModel->with(['Section','Product','Brand','StoreImage'=>function($q){
+                return $q->where('is_cover',1)->get();}])->get());
             if (count($store) > 0){
                 return $this->returnData('Stores',$store,'done');
             }else{

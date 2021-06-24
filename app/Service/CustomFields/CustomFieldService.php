@@ -32,9 +32,11 @@ class CustomFieldService
     public function getAll()
     {
         try{
-            $custom_field = $this->CustomFieldModel->with('CustomFieldImages','Custom_Field_Value')->get();
+            $custom_field = $this->CustomFieldModel->with(['CustomFieldImages'=>function($q){
+                return $q->where('is_cover',1)->get();
+            },'Custom_Field_Value'])->get();
             if (count($custom_field) > 0){
-                return $response= $this->returnData('Category',$custom_field,'done');
+                return $response= $this->returnData('Custom_fields',$custom_field,'done');
             }else{
                 return $response= $this->returnSuccessMessage('custom_field','custom_field doesnt exist yet');
             }
@@ -137,7 +139,6 @@ class CustomFieldService
             DB::beginTransaction();
             // //create the default language's product
              $unTransCustomField_id=$this->CustomFieldModel->insertGetId([
-                'image' =>$request['image'],
                 'is_active' =>$request['is_active'],
             ]);
             //check the category and request

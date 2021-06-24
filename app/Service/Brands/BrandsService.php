@@ -4,6 +4,7 @@ namespace App\Service\Brands;
 
 use App\Models\Brands\Brand;
 use App\Models\Brands\BrandTranslation;
+use App\Models\Images\BrandImages;
 use Illuminate\Support\Facades\DB;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\Brands\BrandRequest;
@@ -25,7 +26,9 @@ class BrandsService
     public function getAll()
     {
         try {
-            $brands = $this->BrandModel->with('Product')->get();
+            $brands = $this->BrandModel->with(['Product',
+                'BrandImages'=>function($q){
+                return $q->where('is_cover',1)->get();}])->get();
             if (count($brands) > 0) {
                 return $response = $this->returnData('Brand', $brands, 'done');
             } else {
@@ -43,7 +46,7 @@ class BrandsService
     public function getById($id)
     {
         try {
-            $brand = $this->BrandModel->with('Product')->find($id);
+            $brand = $this->BrandModel->with(['Product','BrandImages'])->find($id);
 
             if (!isset($brand)) {
                 return $response = $this->returnSuccessMessage('This Brand not found', 'done');
@@ -120,7 +123,7 @@ class BrandsService
         try {
 //                $validated = $request->validated();
             $request->is_active ? $is_active = true : $is_active = false;
-            /////////////transformation to collection/////////////////////////
+            /////////////////////transformation to collection///////////////////////////
             $allbrands = collect($request->brands)->all();
             DB::beginTransaction();
             // //create the default language's product

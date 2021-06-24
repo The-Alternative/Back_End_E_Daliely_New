@@ -70,7 +70,7 @@ class Product extends Model
                 'stores_products.price',
                 'stores_products.quantity'])->get();
     }
-    //______________________________ scopes end _____________________________//
+    //______________________________ scopes end _______________________________________//
     public function ProductTranslation()
     {
         return $this->hasMany(ProductTranslation::class,'product_id');

@@ -29,7 +29,8 @@ class CategoryService
     public function getAll()
     {
         try{
-        $category = $this->categoryModel->with('CategoryImages')->get();
+        $category = $this->categoryModel->with(['CategoryImages'=>function($q){
+                return $q->where('is_cover',1)->get();}])->get();
             if (count($category) > 0){
                 return $response= $this->returnData('Category',$category,'done');
             }else{
@@ -43,7 +44,7 @@ class CategoryService
     public function getById($id)
     {
         try{
-        $category =$this->categoryModel->find($id);
+        $category =$this->categoryModel->with('CategoryImages')->find($id);
             if (is_null($category) ){
                 return $response= $this->returnSuccessMessage('This Category not found','done');
             }else{
