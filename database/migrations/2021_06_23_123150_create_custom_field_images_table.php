@@ -2,10 +2,9 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBrandsTable extends Migration
+class CreateCustomFieldImagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +13,11 @@ class CreateBrandsTable extends Migration
      */
     public function up()
     {
-        Schema::create('brands', function (Blueprint $table) {
+        Schema::create('custom_field_images', function (Blueprint $table) {
             $table->id();
-            $table->string('slug');
-            $table->boolean('is_active');
+            $table->unsignedInteger('custom_field_id');
+            $table->string('image');
+            $table->boolean('is_cover');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateBrandsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('brands');
+        Schema::dropIfExists('custom_field_images');
     }
 }

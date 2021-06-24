@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Requests\Store\StoreRequest;
+<<<<<<< HEAD
+use App\Http\Requests\StoreProduct\StoreProductRequest;
+=======
+>>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
 use App\Traits\GeneralTrait;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

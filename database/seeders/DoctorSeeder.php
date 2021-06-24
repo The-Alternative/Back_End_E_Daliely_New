@@ -22,6 +22,19 @@ class DoctorSeeder extends Seeder
     public function run()
     {
         $faker=Faker::create();
+<<<<<<< HEAD
+        for ($i = 0; $i <= 200; $i++) {
+            $s = DB::table('doctors')->insertGetId([
+                'image' => $faker->sentence(5),
+                'is_active' => 1,
+                'is_approved' =>1,
+                'social_media_id' => 1,
+                'hospital_id' => 1,
+                'clinic_id' => 1,
+                'appointments_id' => 1,
+
+                'specialty_id' => 1
+=======
         for ($i = 0; $i <= 5; $i++) {
             $s = DB::table('doctors')->insertGetId([
                 'image' => $faker->sentence(5),
@@ -33,6 +46,7 @@ class DoctorSeeder extends Seeder
                 'appointments_id' =>  $faker->numberBetween(1,200),
 
                 'specialty_id' =>  $faker->numberBetween(1,200),
+>>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
             ]);
             DB::table('doctor_translation')->insert([[
                 'description' =>$faker->sentence(10),

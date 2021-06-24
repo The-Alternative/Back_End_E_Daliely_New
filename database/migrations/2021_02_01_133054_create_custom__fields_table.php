@@ -16,7 +16,6 @@ class CreateCustomFieldsTable extends Migration
     {
         Schema::create('custom_fields', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
             $table->boolean('is_active');
             $table->timestamps();
         });

@@ -1,18 +1,13 @@
 <?php
 namespace App\Service\CustomFields;
 
-use App\Models\Categories\CategoryTranslation;
 use App\Models\Custom_Fieldes\Custom_Field;
 use App\Models\Custom_Fieldes\Custom_Field_Translation;
-use App\Models\Products\Product;
-use App\Models\Categories\Category;
+use App\Models\Custom_Fieldes\Custom_Field_Value;
 use App\Http\Requests\CategoryRequest;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use phpDocumentor\Reflection\Types\This;
-use App\Exceptions\GeneralHandler;
 use Exception;
 use LaravelLocalization;
 
@@ -21,10 +16,11 @@ class CustomFieldService
     use GeneralTrait;
     private $CustomFieldModel;
     private $Custom_Field_Translation;
+
     /**
      * Category Service constructor.
-     * @param Category $category
-     * @param CategoryTranslation $categoryTranslation
+     * @param Custom_Field $CustomFieldModel
+     * @param Custom_Field_Translation $Custom_Field_Translation
      */
     public function __construct(Custom_Field $CustomFieldModel , Custom_Field_Translation $Custom_Field_Translation)
     {
@@ -36,28 +32,34 @@ class CustomFieldService
     public function getAll()
     {
         try{
+<<<<<<< HEAD
+            $custom_field = $this->CustomFieldModel->with(['CustomFieldImages'=>function($q){
+                return $q->where('is_cover',1)->get();
+            },'Custom_Field_Value'])->get();
+=======
             $custom_field = $this->CustomFieldModel->paginate(10);
+>>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
             if (count($custom_field) > 0){
-                return $response= $this->returnData('Category',$custom_field,'done');
+                return $response= $this->returnData('Custom_fields',$custom_field,'done');
             }else{
                 return $response= $this->returnSuccessMessage('custom_field','custom_field doesnt exist yet');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
     public function getById($id)
     {
         try{
-            $custom_field =$this->CustomFieldModel->find($id);
+            $custom_field =$this->CustomFieldModel->with('CustomFieldImages','Custom_Field_Value')->find($id);
             if (is_null($custom_field) ){
                 return $response= $this->returnSuccessMessage('This Category not found','done');
             }else{
                 return $response= $this->returnData('Custom_field',$custom_field,'done');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
@@ -75,7 +77,7 @@ class CustomFieldService
             $custom_field = $this->CustomFieldModel->where('is_active',0)->get();
             return $this -> returnData('Custom_field',$custom_field,'done');
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
@@ -95,7 +97,7 @@ class CustomFieldService
                 return $this->returnData('Custom_field', $custom_field,'This Custom_field Is trashed Now');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
@@ -103,7 +105,7 @@ class CustomFieldService
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function trash( $id)
+    public function trash($id)
     {
         try{
             $custom_field=$this->CustomFieldModel->find($id);
@@ -115,7 +117,7 @@ class CustomFieldService
                 return $this->returnData('Custom_field', $custom_field,'This Custom_field Is trashed Now');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
@@ -126,8 +128,8 @@ class CustomFieldService
     /*___________________________________________________________________________*/
     public function create(Request $request)
     {
-//        try
-//        {
+        try
+        {
 //            $validated = $request->validated();
             $request->is_active?$is_active=true:$is_active=false;
             //transformation to collection
@@ -140,33 +142,70 @@ class CustomFieldService
             //     }
             DB::beginTransaction();
             // //create the default language's product
-            $unTransCustomField_id=$this->CustomFieldModel->insertGetId([
-                'image' =>$request['image'],
+             $unTransCustomField_id=$this->CustomFieldModel->insertGetId([
                 'is_active' =>$request['is_active'],
             ]);
             //check the category and request
-            if(isset($allcustom_fields) && count($allcustom_fields))
-            {
+            if(isset($allcustom_fields) && count($allcustom_fields)) {
                 //insert other traslations for custom field
-                foreach ($allcustom_fields as $allCustomField)
-                {
-                    $transCustom_field_arr[]=[
+                foreach ($allcustom_fields as $allCustomField) {
+                    $transCustom_field_arr[] = [
                         'name' => $allCustomField ['name'],
                         'local' => $allCustomField['local'],
                         'description' => $allCustomField['description'],
                         'custom_field_id' => $unTransCustomField_id
                     ];
                 }
-                 $this->Custom_Field_Translation->insert($transCustom_field_arr);
+                $this->Custom_Field_Translation->insert($transCustom_field_arr);
+
+                if ($request->has('CustomFieldValues')) {
+                    $CustomFields = $this->CustomFieldModel->find($unTransCustomField_id);
+                    $customFieldValues = $request->CustomFieldValues;
+                    foreach ($customFieldValues as $customFieldValue) {
+                        //Custom Field Value
+                        $cfv[] = [
+                            'value' => $customFieldValue['value'],
+                            'custom_field_id' => $unTransCustomField_id
+                        ];
+                    }
+                    $CustomField = Custom_Field_Value::insert($cfv);
+                }
+                $images = $request->images;
+                foreach ($images as $image) {
+                    $arr[] = $image['image'];
+                }
+                foreach ($arr as $ar) {
+                    if (isset($image)) {
+                        if ($request->hasFile($ar)) {
+                            //save
+                            $file_extension = $ar->getClientOriginalExtension();
+                            $file_name = time() . $file_extension;
+                            $path = 'images/custom_fieldes';
+                            $ar->move($path, $file_name);
+                        }
+                    }
+                }
+                if ($request->has('images')) {
+                    foreach ($images as $image) {
+                        $customFieldImages = $this->CustomFieldModel->find($unTransCustomField_id);
+                        $customFieldImages->CustomFieldImages()->insert([
+                            'custom_field_id' => $unTransCustomField_id,
+                            'image' => $image['image'],
+                            'is_cover' => $image['is_cover'],
+                        ]);
+                    }
+                }
             }
+
+
             DB::commit();
             return $this->returnData('customField', [$unTransCustomField_id,$transCustom_field_arr],'done');
-//        }
-//        catch(\Exception $ex)
-//        {
-//            DB::rollback();
-//            return $this->returnError('category','faild');
-//        }
+        }
+        catch(\Exception $ex)
+        {
+            DB::rollback();
+            return $this->returnError('customField',$ex->getMessage());
+        }
     }
     /*___________________________________________________________________________*/
     /****  Update category   ***
@@ -176,9 +215,9 @@ class CustomFieldService
      */
     public function update(Request $request,$id)
     {
-//        try{
-            $validated = $request->validated();
-            $custom_field= $this->CustomFieldModel->find($id);
+        try{
+//            $validated = $request->validated();
+             $custom_field= $this->CustomFieldModel->find($id);
             if(!$custom_field)
                 return $this->returnError('400', 'not found this custom_field');
             $allcustom_fields = collect($request->custom_field)->all();
@@ -194,28 +233,28 @@ class CustomFieldService
             //             'image' => $filePath,
             //         ]);
             // }
-
-            $ncustom_field=$this->CustomFieldModel->where('id',$id)
+            DB::beginTransaction();
+            $ncustom_field=$this->CustomFieldModel->where('custom_fields.id',$id)
                 ->update([
                     'image' =>$request['image'],
                     'is_active' =>$request['is_active']
                 ]);
-            $ss=$this->Custom_Field_Translation->where('category_id',$id);
+            $ss=$this->Custom_Field_Translation->where('custom__fields__translations.custom_field_id',$id);
             $collection1 = collect($allcustom_fields);
             $allcustom_fieldlength=$collection1->count();
             $collection2 = collect($ss);
 
             $db_custom_fields= array_values(
                 $this->Custom_Field_Translation
-                    ->where('category_id',$id)
+                    ->where('custom__fields__translations.custom_field_id',$id)
                     ->get()
                     ->all());
             $dbdcustom_fields= array_values($db_custom_fields);
             $request_custom_fields = array_values($request->custom_field);
             foreach($db_custom_fields as $db_custom_field){
                 foreach($request_custom_fields as $request_custom_field){
-                    $values= $this->Custom_Field_Translation->where('category_id',$id)
-                        ->where('locale',$request_custom_field['local'])
+                    $values= $this->Custom_Field_Translation->where('custom__fields__translations.custom_field_id',$id)
+                        ->where('local',$request_custom_field['local'])
                         ->update([
                             'name' => $request_custom_field ['name'],
                             'local' => $request_custom_field['local'],
@@ -227,12 +266,11 @@ class CustomFieldService
             DB::commit();
             return $this->returnData('custom_field', $dbdcustom_fields,'done');
 
-//        }
-//        catch(\Exception $ex){
-//            DB::rollBack();
-////            return $ex;
-//            return $this->returnError('400', 'saving failed');
-//        }
+        }
+        catch(\Exception $ex){
+            DB::rollBack();
+            return $this->returnError('400', $ex->getMessage());
+        }
     }
     /*___________________________________________________________________________*/
     /****  ٍsearch for Product   ***
@@ -254,7 +292,7 @@ class CustomFieldService
                 return $this->returnData('Custom_field', $custom_field,'done');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
@@ -269,10 +307,10 @@ class CustomFieldService
             if ($custom_field->is_active=0)
             {
                 $custom_field=$this->CustomFieldModel->destroy($id);
-                return $this->returnData('C$custom_fieldustom_field', $custom_field,'This C$custom_fieldustom_field Is deleted Now');
+                return $this->returnData( $custom_field,'This Custom_field Is deleted Now',200);
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
 }

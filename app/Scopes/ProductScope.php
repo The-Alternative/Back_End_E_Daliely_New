@@ -16,7 +16,7 @@ class ProductScope implements Scope
             ->select([
                 'products.id','products.is_appear','products.created_at',
                 'product_translations.name',
-                'product_translations.short_des','product_translations.long_des',]);
+                'product_translations.short_des','product_translations.long_des']);
 //        $builder->join('product_translations', 'product_translations.product_id', '=', 'products.id')
 //            ->where('product_translations.local','=',Config::get('app.locale'))
 //            ->join('stores_products', 'stores_products.product_id', '=', 'products.id')

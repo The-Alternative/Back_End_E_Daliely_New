@@ -43,7 +43,31 @@ return [
         ],
         'products' => [
             'driver' => 'local',
-            'root' => base_path().'public\images\products',
+            'root' => base_path().'public/images/products/',
+            'url' => env('APP_URL').'/public',
+            'visibility' => 'public',
+        ],
+        'stores' => [
+            'driver' => 'local',
+            'root' => base_path().'public/images/stores/',
+            'url' => env('APP_URL').'/public',
+            'visibility' => 'public',
+        ],
+        'categories' => [
+            'driver' => 'local',
+            'root' => base_path().'public/images/categories/',
+            'url' => env('APP_URL').'/public',
+            'visibility' => 'public',
+        ],
+        'custom_fieldes' => [
+            'driver' => 'local',
+            'root' => base_path().'public/images/custom_fieldes/',
+            'url' => env('APP_URL').'/public',
+            'visibility' => 'public',
+        ],
+        'brands' => [
+            'driver' => 'local',
+            'root' => base_path().'public/images/brands/',
             'url' => env('APP_URL').'/public',
             'visibility' => 'public',
         ],

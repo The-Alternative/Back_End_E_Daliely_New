@@ -4,13 +4,13 @@ namespace App\Service\Products;
 use App\Models\Categories\Category;
 use App\Models\Categories\Section;
 use App\Models\Custom_Fieldes\Custom_Field;
-use App\Models\Custom_Fieldes\Custom_Field_Value;
 use App\Models\Products\ProductTranslation;
 use App\Models\Stores\Store;
 use App\Models\Stores\StoreProduct;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\ProductRequest;
 use App\Models\Products\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProductService
@@ -44,7 +44,12 @@ class ProductService
     {
         try{
         $products = $this->productModel
+<<<<<<< HEAD
+            ->with(['Store','ProductImage'=>function($q){
+                return $q->where('is_cover',1)->get();}])->get();
+=======
             ->with('Store')->paginate(10);
+>>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
             if (count($products) > 0)
             {
                 return $response=$this->returnData('Products',$products,'done');
@@ -77,22 +82,10 @@ class ProductService
         try{
         $product = $this->productModel->with(['Store','Category','ProductImage','Brand','StoreProduct'])
             ->find($id);
-            $prices = $this->storeProductModel->where('product_id','=',$id)->get();
-            if(isset($prices) && count($prices)){
-            foreach($prices as $price)
-            {
-                $collection1[]=[
-                $price['price']
-            ];
-            }
-        $max = collect($collection1)->max();
-        $min = collect($collection1)->min();
-        $rangeOfPrice=[$max,$min];
-            }
             if (!isset($product) ){
                 return $response= $this->returnSuccessMessage('This Product not found','done');
             }
-            return $response=$this->returnData('product',[$product,$rangeOfPrice],'done');
+            return $response=$this->returnData('product',$product,'done');
         }catch(\Exception $ex){
             return $this->returnError('400',$ex->getMessage());
         }
@@ -152,49 +145,85 @@ class ProductService
     }
     /*__________________________________________________________________*/
     /****  Create Products   ***/
-    public function create(ProductRequest $request)
+    public function create(Request $request)
     {
-        try{
+
+        try {
+//            dd($request->all());
 //                validated = $request->validated();
-                $request->is_active?$is_active=true:$is_active=false;
-                $request->is_appear?$is_appear=true:$is_appear=false;
-                /////////////transformation to collection/////////////////////////
-                $allproducts = collect($request->product)->all();
-                DB::beginTransaction();
-                // //create the default language's product
-                $unTransProduct_id=$this->productModel->insertGetId([
-                    'slug' =>$request['slug'],
-                    'barcode' =>$request['barcode'],
-                    'is_active' =>$request['is_active'],
-                    'is_appear' =>$request['is_appear'],
-                    'rating_id' =>$request['rating_id'],
-                    'brand_id' =>$request['brand_id'],
-                    'offer_id' =>$request['offer_id'],
-                ]);
-                //check the category and request
-                if(isset($allproducts) && count($allproducts))
-                {
-                    //insert other traslations for products
-                    foreach ($allproducts as $allproduct)
-                    {
-                        $transProduct_arr[]=[
-                            'name' => $allproduct ['name'],
-                            'short_des' => $allproduct['short_des'],
-                            'local' => $allproduct['local'],
-                            'long_des' => $allproduct['long_des'],
-                            'meta' => $allproduct['meta'],
-                            'product_id' => $unTransProduct_id
-                        ];
-                    }
-                    $this->productTranslation->insert($transProduct_arr);
+            $request->is_active ? $is_active = true : $is_active = false;
+            $request->is_appear ? $is_appear = true : $is_appear = false;
+            /////////////transformation to collection/////////////////////////
+            $allproducts = collect($request->product)->all();
+            DB::beginTransaction();
+            // //create the default language's product
+            $unTransProduct_id = $this->productModel->insertGetId([
+                'slug' => $request['slug'],
+                'barcode' => $request['barcode'],
+                'is_active' => $request['is_active'],
+                'is_appear' => $request['is_appear'],
+                'rating_id' => $request['rating_id'],
+                'brand_id' => $request['brand_id'],
+                'offer_id' => $request['offer_id'],
+            ]);
+            //check the product and request
+            if (isset($allproducts) && count($allproducts)) {
+                //insert other traslations for products
+                foreach ($allproducts as $allproduct) {
+                    $transProduct_arr[] = [
+                        'name' => $allproduct ['name'],
+                        'short_des' => $allproduct['short_des'],
+                        'local' => $allproduct['local'],
+                        'long_des' => $allproduct['long_des'],
+                        'meta' => $allproduct['meta'],
+                        'product_id' => $unTransProduct_id
+                    ];
                 }
-                if ($request->has('category')){
-                    $product=$this->productModel->find($unTransProduct_id);
-                    $product->Category()->syncWithoutDetaching($request->get('category'));
-                }
-            if ($request->has('CustomFieldValue')){
-                $product=$this->productModel->find($unTransProduct_id);
+                $this->productTranslation->insert($transProduct_arr);
+            }
+            if ($request->has('category')) {
+                $product = $this->productModel->find($unTransProduct_id);
+                $product->Category()->syncWithoutDetaching($request->get('category'));
+            }
+            if ($request->has('CustomFieldValue')) {
+                $product = $this->productModel->find($unTransProduct_id);
                 $product->Custom_Field_Value()->syncWithoutDetaching($request->get('CustomFieldValue'));
+<<<<<<< HEAD
+//                  $Arr=collect($request->CustomFieldValue);
+//                $customFeilds=$Arr->pluck('custom_field_value_id');;
+//                foreach ($customFeilds as $customFeild){
+//
+//                   $s[]= Custom_Field_Value::find($customFeild);
+//                }
+//            }
+             $images = $request->images;
+            foreach ($images as $image){
+                $arr[]=$image['name'];
+            }
+//            return $arr;
+                foreach ($arr as $ar){
+                    if (isset($image)) {
+                        if ($request->hasFile($ar)) {
+                            //save
+                            $file_extension = $ar-> getClientOriginalExtension();
+                            $file_name=time().$file_extension;
+                            $path='images/products';
+                            $ar->move($path,$file_name);
+                        }
+                    }
+                }
+            }
+            if ($request->has('images')) {
+                foreach ($images as $image) {
+                    $product = $this->productModel->find($unTransProduct_id);
+                    $product->ProductImage()->insert([
+                        'product_id' => $unTransProduct_id,
+                        'name' => $image['name'],
+                        'is_cover' => $image['is_cover'],
+                    ]);
+                }
+            }
+=======
 
             $images = $request->images;
             foreach ($images as $image){
@@ -220,6 +249,7 @@ class ProductService
                     'is_cover' => $image['is_cover'],
                 ]);
             }
+>>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
                 DB::commit();
                 return $this->returnData('Product', [$unTransProduct_id,$transProduct_arr],'done');
             }
@@ -291,7 +321,7 @@ class ProductService
                 }
             }
             DB::commit();
-            return $this->returnData('Category', $dbdproducts,'done');
+            return $this->returnData('Product', $dbdproducts,'done');
         }
         catch(\Exception $ex){
             DB::rollback();
@@ -331,3 +361,4 @@ class ProductService
         }
     }
 }
+
