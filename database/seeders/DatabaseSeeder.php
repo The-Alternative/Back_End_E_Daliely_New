@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\DoctorRate\DoctorRate;
+use App\Models\RestaurantType\RestaurantType;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -47,7 +48,9 @@ class DatabaseSeeder extends Seeder
             SocialMediaSedeer::class,
             SpecialtySedeer::class,
 //restaurant
-//            RestaurantSeeder::class,
+            RestaurantSeeder::class,
+            RestaurantTypeSeeder::class,
+            MenuSeeder::class
         ]);
 
     }

@@ -15,11 +15,15 @@ class CustomerDoctor extends Model
 
     protected $hidden=['created_at','updated_at'];
 
-
-    public function doctor(){
-        return $this->belongsTo(doctor::class);
+    public function scopeNotActive($query)
+    {
+        return $query->where('is_active',0);
     }
-    public function customer(){
-        return $this->belongsTo(customer::class);
-    }
+//
+//    public function doctor(){
+//        return $this->belongsTo(doctor::class);
+//    }
+//    public function customer(){
+//        return $this->belongsTo(customer::class);
+//    }
 }

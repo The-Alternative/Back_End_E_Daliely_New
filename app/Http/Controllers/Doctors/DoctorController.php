@@ -14,7 +14,7 @@ class DoctorController extends Controller
 {
     use GeneralTrait;
     private $DoctorService;
-    private $CustomerDoctorService;
+
 
     public function __construct(DoctorService $DoctorService,CustomerDoctorService $CustomerDoctorService,Response $response )
     {
@@ -108,8 +108,5 @@ class DoctorController extends Controller
     {
         return $this->DoctorService->DoctorSpecialty($id);
     }
-    public function createcustomer(Request $request)
-    {
-        return $this->CustomerDoctorService->create( $request);
-    }
+
 }

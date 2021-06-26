@@ -14,6 +14,7 @@ class SpecialtyTranslation extends Model
     protected $fillable=['id','specialty_id','name','locale','description'];
 
     protected $hidden=['specialty_id'];
+
     public function specialty()
     {
         return $this->belongsTo(Specialty::class);

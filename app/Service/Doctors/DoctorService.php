@@ -6,14 +6,11 @@ namespace App\Service\Doctors;
 use App\Models\Customer\Customer;
 use App\Models\DoctorRate\DoctorRate;
 use App\Models\Doctors\doctor;
-use App\Models\Doctors\DoctorCustomer;
 use App\Models\Doctors\DoctorTranslation;
-use App\Service\Brands\BrandsService;
+use App\Models\MedicalFile\MedicalFile;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\Doctors\DoctorRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -57,9 +54,7 @@ class DoctorService
             return $this->returnError('400',$ex->getMessage());
         }
     }
-//
 ////__________________________________________________________________________//
-//
     public function create( DoctorRequest $request )
     {
         try {
@@ -286,10 +281,8 @@ class DoctorService
     //get clinic by doctor's id
     public function clinic($id)
     {
-
         try{
             return doctor::with('clinic')->find($id);
-
         }
         catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
@@ -299,10 +292,8 @@ class DoctorService
     //get all doctor's details by doctor's id
     public function getalldetails($id)
     {
-
         try{
         return  doctor::with('Specialty','clinic','medicalDevice','socialMedia','hospital')->find($id);
-
         }
         catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());

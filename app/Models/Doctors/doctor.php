@@ -13,7 +13,6 @@ use App\Models\Customer\Customer;
 use App\Models\DoctorRate\DoctorRate;
 use App\Models\medicalDevice\medicalDevice;
 use App\Models\Appointment\Appointment;
-use App\Observers\DoctorObServe;
 use App\Scopes\DoctorScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,7 +27,6 @@ class doctor extends Model
     protected $table='doctors';
     protected $fillable =['Id','image','appointments_id','specialty_id','hospital_id','clinic_id','social_media_id','is_active','is_approved'];
     protected $hidden   =['social_media_id','specialty_id','hospital_id','work_places_id','created_at','updated_at','clinic_id','appointments_id','pivot'];
-     public $timestamps=false;
 
    protected static function boot()
    {
@@ -39,7 +37,6 @@ class doctor extends Model
     public function scopeNotActive($query)
     {
         return $query->where('is_active',0)->get();
-
     }
 
     public function doctorTranslation()
@@ -82,9 +79,7 @@ class doctor extends Model
 
     public function customer()
     {
-        return $this->belongsToMany(Customer::class)->using(DoctorCustomer::class)
-                    ->withPivot(['medical_file_id','age','gender','social_status'
-                                 ,'blood_type','note','is_active','is_approved']);
+        return $this -> belongsToMany('App\Models\Customer\Customer','Customer_Doctor','doctor_id','customer_id','id','id');
     }
 
     public function appointment()

@@ -3,10 +3,11 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-
-use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
-class TypeOfRestaurantSeeder extends Seeder
+use Illuminate\Support\Facades\DB;
+
+
+class MenuSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,27 +18,28 @@ class TypeOfRestaurantSeeder extends Seeder
     {
         $faker=Faker::create();
         for ($i = 0; $i <= 5; $i++) {
-            $s = DB::table('type_of_restaurants')->insertGetId([
+            $s = DB::table('menus')->insertGetId([
                 'image' => $faker->sentence(5),
                 'is_active' => $faker->boolean,
                 'is_approved' =>$faker->boolean,
+                'restaurant_id' => $faker->numberBetween(1,10),
+                'menu_type_id' =>  $faker->numberBetween(1,10),
             ]);
-            DB::table('type_of_restaurant_translations')->insert([[
-                'short_description' =>$faker->sentence(5),
-                'long_description' =>$faker->sentence(10),
-                'type_of_restaurant_id' => $s,
+            DB::table('menu_translations')->insert([[
                 'title' => $faker->sentence(2),
+                'short_description' =>$faker->sentence(5),
+                'long_description'  => $faker->sentence(10),
+                'menu_id' => $s,
                 'locale' => 'en',
             ],
                 [
-                    'short_description' =>$faker->sentence(5),
-                    'long_description' =>$faker->sentence(10),
-                    'type_of_restaurant_id' => $s,
                     'title' => $faker->sentence(2),
+                    'short_description' =>$faker->sentence(5),
+                    'long_description'  => $faker->sentence(10),
+                    'menu_id' => $s,
                     'locale' => 'ar',
                 ]]);
 
         }
-
     }
 }

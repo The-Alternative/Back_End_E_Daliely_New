@@ -11,4 +11,9 @@ class RestaurantTranslation extends Model
     protected $table='restaurant_translations';
     protected $fillable =['Id','locale','title','short_description','long_description','restaurant_id'];
     public $timestamps=false;
+
+    public function restaurant()
+    {
+        return$this->belongsTo(restaurant::class);
+    }
 }

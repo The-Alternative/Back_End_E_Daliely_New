@@ -4,7 +4,9 @@
 namespace App\Service\Doctors;
 
 
+use App\Http\Requests\CustomerDoctor\CusromerDoctorRequest;
 use App\Models\Doctors\CustomerDoctor;
+use App\Models\Doctors\doctor;
 use App\Traits\GeneralTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -16,31 +18,45 @@ class CustomerDoctorService
     use GeneralTrait;
 
 
-    public function __construct(CustomerDoctor $doctorcustomer)
+    public function __construct(CustomerDoctor $patient)
     {
-        $this->doctorCustomerModel=$doctorcustomer;
+        $this->CustomerDoctorModel=$patient;
     }
-
-    public function create(Request $request)
+    public function getByIdpatient($id)
     {
-
+        try{
+            $patient= $this->CustomerDoctorModel->find($id);
+            if (is_null($patient)){
+                return $this->returnSuccessMessage('this patient not found','done');
+            }
+            else {
+                return $this->returnData('patient', $patient, 'done');
+            }
+        }
+        catch(\Exception $ex)
+        {
+            return $this->returnError('400',$ex->getMessage());
+        }
+    }
+    public function createpatient(CusromerDoctorRequest $request)
+    {
         try {
 
-            $customer=new CustomerDoctor();
-            $customer->doctor_id           =$request->doctor_id;
-            $customer->customer_id         =$request->customer_id;
-            $customer->medical_file_id     =$request->medical_file_id;
-            $customer->age                 =$request->age;
-            $customer->gender              =$request->gender;
-            $customer->social_status      =$request->social_status;
-            $customer->note                =$request->note;
-            $customer->blood_type          =$request->blood_type;
-            $customer->is_active           =$request->is_active;
-            $customer->is_approved           =$request->is_approved;
+            $patient=new CustomerDoctor();
+            $patient->doctor_id           =$request->doctor_id;
+            $patient->customer_id         =$request->customer_id;
+            $patient->medical_file_id     =$request->medical_file_id;
+            $patient->age                 =$request->age;
+            $patient->gender              =$request->gender;
+            $patient->social_status      =$request->social_status;
+            $patient->note                =$request->note;
+            $patient->blood_type          =$request->blood_type;
+            $patient->is_active           =$request->is_active;
+            $patient->is_approved           =$request->is_approved;
 
-           $result= $customer->save();
+           $result= $patient->save();
            if($result) {
-               return $this->returnData('patient', $customer, 'done');
+               return $this->returnData('patient', $result, 'done');
            }
            else{
                return $this->returnError('400', 'saving failed');
@@ -51,23 +67,23 @@ class CustomerDoctorService
             return $this->returnError('400',$ex->getMessage());
         }
     }
-    public function update(Request $request,$id)
+    public function updatepatient(CusromerDoctorRequest $request,$id)
     {
         try {
-           $customer=$this->CustomerDoctorModel->find($id);
+            $patient=$this->CustomerDoctorModel->find($id);
 
-            $customer->doctor_id           =$request->doctor_id;
-            $customer->customer_id         =$request->customer_id;
-            $customer->medical_file_id     =$request->medical_file_id;
-            $customer->age                 =$request->age;
-            $customer->gender              =$request->gender;
-            $customer->social_status      =$request->social_status;
-            $customer->note                =$request->note;
-            $customer->blood_type          =$request->blood_type;
-            $customer->is_active           =$request->is_active;
-            $customer->is_approved           =$request->is_approved;
+            $patient->doctor_id           =$request->doctor_id;
+            $patient->customer_id         =$request->customer_id;
+            $patient->medical_file_id     =$request->medical_file_id;
+            $patient->age                 =$request->age;
+            $patient->gender              =$request->gender;
+            $patient->social_status      =$request->social_status;
+            $patient->note                =$request->note;
+            $patient->blood_type          =$request->blood_type;
+            $patient->is_active           =$request->is_active;
+            $patient->is_approved           =$request->is_approved;
 
-           $result= $customer->save();
+           $result= $patient->save();
 
             if ($result)
             {
@@ -82,4 +98,71 @@ class CustomerDoctorService
             return $this->returnError('400',$ex->getMessage());
         }
     }
+    public function trashpatient( $id)
+    {
+        try{
+            $patient= $this->CustomerDoctorModel::find($id);
+            if(is_null($patient)){
+                return $this->returnSuccessMessage('This patient not found', 'done');}
+            else{
+                $patient->is_active =0;
+                $patient->save();
+                return $this->returnData('patient', $patient, 'This patient is trashed Now');
+            }
+        }
+        catch(\Exception $ex)
+        {
+            return $this->returnError('400',$ex->getMessage());
+        }
+    }
+    public function getTrashedpatient()
+    {
+        try {
+            $patient = $this->CustomerDoctorModel::NotActive();
+            return $this->returnData('patient', $patient, 'done');
+        }
+        catch(\Exception $ex)
+        {
+            return $this->returnError('400',$ex->getMessage());
+        }
+    }
+    public function restoreTrashedpatient( $id)
+    {
+        try {
+            $patient = $this->CustomerDoctorModel::find($id);
+            if (is_null($patient)) {
+                return $this->returnSuccessMessage('This patient not found', 'done');
+            } else {
+                $patient->is_active =1;
+                $patient->save();
+                return $this->returnData('patient', $patient, 'This patient is trashed Now');
+            }
+        }
+        catch(\Exception $ex)
+        {
+            return $this->returnError('400',$ex->getMessage());
+        }
+    }
+    public function deletepatient($id)
+    {
+        try{
+            $patient = $this->CustomerDoctorModel::find($id);
+            if ($patient->is_active == 0) {
+                $patient->delete();
+                return $this->returnData('patient', $patient, 'This patient is deleted Now');
+
+            }
+            else {
+                return $this->returnData('patient', $patient, 'This patient can not deleted Now');
+            }
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
+
+    }
 }
+//$doctor=doctor::find($request->doctor_id);
+//        if(!$doctor)
+//            return "error";
+//        $doctor->customer()->sync($request->customer_id);
+//        return " success";
