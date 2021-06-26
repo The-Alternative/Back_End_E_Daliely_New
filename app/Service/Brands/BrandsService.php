@@ -26,20 +26,17 @@ class BrandsService
     public function getAll()
     {
         try {
-<<<<<<< HEAD
             $brands = $this->BrandModel->with(['Product',
                 'BrandImages'=>function($q){
                 return $q->where('is_cover',1)->get();}])->get();
-=======
             $brands = $this->BrandModel->with('Product')->paginate(10);
->>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
             if (count($brands) > 0) {
                 return $response = $this->returnData('Brand', $brands, 'done');
             } else {
                 return $response = $this->returnSuccessMessage('Brand', 'Brands doesnt exist yet');
             }
         } catch (\Exception $ex) {
-            return $this->returnError('400', 'Failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -133,7 +130,6 @@ class BrandsService
             // //create the default language's product
             $unTransBrand_id = $this->BrandModel->insertGetId([
                 'slug' => $request['slug'],
-                'image' => $request['image'],
                 'is_active' => $request['is_active'],
             ]);
             //check the Brand and request

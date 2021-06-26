@@ -32,13 +32,10 @@ class CustomFieldService
     public function getAll()
     {
         try{
-<<<<<<< HEAD
             $custom_field = $this->CustomFieldModel->with(['CustomFieldImages'=>function($q){
                 return $q->where('is_cover',1)->get();
             },'Custom_Field_Value'])->get();
-=======
             $custom_field = $this->CustomFieldModel->paginate(10);
->>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
             if (count($custom_field) > 0){
                 return $response= $this->returnData('Custom_fields',$custom_field,'done');
             }else{
@@ -134,12 +131,6 @@ class CustomFieldService
             $request->is_active?$is_active=true:$is_active=false;
             //transformation to collection
             $allcustom_fields = collect($request->custom_field)->all();
-            ///select folder to save the image
-            // $fileBath = "" ;
-            //     if($request->has('image'))
-            //     {
-            //         $fileBath=uploadImage('images/products',$request->image);
-            //     }
             DB::beginTransaction();
             // //create the default language's product
              $unTransCustomField_id=$this->CustomFieldModel->insertGetId([
