@@ -189,7 +189,7 @@ class ProductService
             }
             $images = $request->images;
             foreach ($images as $image) {
-                $arr[] = $image['name'];
+                $arr[] = $image['image'];
             }
             foreach ($arr as $ar) {
                 if (isset($image)) {
@@ -207,7 +207,7 @@ class ProductService
                     $product = $this->productModel->find($unTransProduct_id);
                     $product->ProductImage()->insert([
                         'product_id' => $unTransProduct_id,
-                        'name' => $image['name'],
+                        'image' => $image['image'],
                         'is_cover' => $image['is_cover'],
                     ]);
                 }
@@ -215,7 +215,7 @@ class ProductService
 
             $images = $request->images;
             foreach ($images as $image) {
-                $arr[] = $image['name'];
+                $arr[] = $image['image'];
             }
             foreach ($arr as $ar) {
                 if (isset($image)) {

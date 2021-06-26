@@ -13,18 +13,14 @@ use Illuminate\Http\Response;
 
 class CustomFieldsController extends Controller
 {
-
     use GeneralTrait;
     private $customfieldService;
     private $response;
-
     /**
      *
      * @param CustomFieldService $CustomFieldService
      * @param Response $response
      */
-
-
     public function __construct(CustomFieldService $CustomFieldService,Response  $response)
     {
         $this->customfieldService=$CustomFieldService;
@@ -55,16 +51,9 @@ class CustomFieldsController extends Controller
         $response= $this->customfieldService->create($request);
         return $response;
     }
-<<<<<<< HEAD
     public function update(Request $request,$id)
     {
-        $response= $this->customfieldService->update($request,$id);
-=======
-    public function update(Request $request,$pro_id)
-    {
-        $response= $this->customfieldService->update($request,$pro_id);
->>>>>>> 55c7ce8571894fbf4debf8d3b329d253f0d5c509
-        return $response;
+        $response = $this->customfieldService->update($request, $id);
     }
     public function search($title)
     {

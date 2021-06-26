@@ -136,7 +136,6 @@ class CategoryService
             DB::beginTransaction();
             // //create the default language's product
             $unTransCategory_id = $this->categoryModel->insertGetId([
-                'image' => $request['image'],
                 'slug' => $request['slug'],
                 'lang_id' => $request['lang_id'],
                 'is_active' => $request['is_active'],
