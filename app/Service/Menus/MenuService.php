@@ -102,19 +102,19 @@ class MenuService
                     'is_active' => $request['is_active'],
                 ]);
 
-            $ss=MenuTranslation::where('menu_translations.restaurant_id',$id);
+            $ss=MenuTranslation::where('menu_translations.menu_id',$id);
             $collection1 = collect($allmenu);
             $allmenulength=$collection1->count();
             $collection2 = collect($ss);
 
-            $db_menu= array_values(MenuTranslation::where('menu_translations.restaurant_id',$id)
+            $db_menu= array_values(MenuTranslation::where('menu_translations.menu_id',$id)
                 ->get()
                 ->all());
             $dbmenu = array_values($db_menu);
             $request_menu= array_values($request->Menu);
             foreach($dbmenu as $dbmenus){
                 foreach($request_menu as $request_menus){
-                    $values= MenuTranslation::where('menu_translations.restaurant_id',$id)
+                    $values= MenuTranslation::where('menu_translations.menu_id',$id)
                         ->where('locale',$request_menus['locale'])
                         ->update([
                             'title' => $dbmenus ['title'],
@@ -133,11 +133,11 @@ class MenuService
         }
     }
 //___________________________________________________________//
-    public function search($restaurant_name)
+    public function search($menu_name)
     {
         try {
             $menu = DB::table('menu_translations')
-                ->where("title", "like", "%" . $restaurant_name . "%")
+                ->where("title", "like", "%" . $menu_name . "%")
                 ->get();
             if (!$menu) {
                 return $this->returnError('400', 'not found this Menu');
@@ -200,13 +200,13 @@ class MenuService
         try{
             $menu = $this->MenuModel::find($id);
             if ($menu->is_active == 0) {
-                $menu ->MenuModel->delete();
+                $menu ->delete();
                 $menu ->MenuTranslation()->delete();
                 return $this->returnData('menu', $menu, 'This menu is deleted Now');
 
             }
             else {
-                return $this->returnData('menu', $menu, 'This menu is deleted Now');
+                return $this->returnData('menu', $menu, 'This menu can not deleted Now');
             }
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());

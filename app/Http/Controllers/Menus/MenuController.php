@@ -29,7 +29,7 @@ class MenuController extends Controller
     {
         return$this->MenuService->getTrashed();
     }
-    public function create(MenuService $request)
+    public function create(MenuRequest $request)
     {
         return $this->MenuService->create($request);
     }
@@ -37,9 +37,9 @@ class MenuController extends Controller
     {
         return $this->MenuService->update($request,$id);
     }
-    public function search($restaurant_type_title)
+    public function search($menu_name)
     {
-        return $this->MenuService->search($restaurant_type_title);
+        return $this->MenuService->search($menu_name);
     }
     public function trash($id)
     {
