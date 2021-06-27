@@ -215,12 +215,10 @@ class HospitalService
         }
     }
     //get all the doctors who work in the hospital according to her name
-    public function hospitalsDoctor($hospital_name)
+    public function hospitalsDoctor($id)
     {
         try{
-               return  Hospital::with('doctor')
-                               ->where('name','like','%'.$hospital_name.'%')
-                               ->get();
+               return  Hospital::with('doctor')->find($id);
         }
         catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());

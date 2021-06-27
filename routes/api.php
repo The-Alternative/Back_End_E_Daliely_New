@@ -148,13 +148,12 @@ Route::group(['prefix'=>'doctor','namespace'=>'Doctors'],function () {
 });
 ///___________Create Patient By Doctor Route ______________//
 Route::group(['prefix'=>'Patient','namespace'=>'Doctors'],function () {
-    Route::get('/get-patient','CustomerDoctorController@getByIdpatient');
-    Route::post('/create-patient-by-doctor', 'CustomerDoctorController@createpatient');
-    Route::put('/update-patient/{id}', 'CustomerDoctorController@updatepatient');
+    Route::get('/get-patient/{id}','CustomerDoctorController@getById');
+    Route::post('/create-patient-by-doctor', 'CustomerDoctorController@create');
+    Route::put('/update-patient/{id}', 'CustomerDoctorController@update');
     Route::PUT('/trash-patient/{id}', 'CustomerDoctorController@trashpatient');
     Route::delete('/delete-patient/{id}', 'CustomerDoctorController@deletepatient');
     Route::get('/getTrashed-patient', 'CustomerDoctorController@getTrashedpatient');
-
     Route::PUT('/restoreTrashed-patient/{id}', 'CustomerDoctorController@restoreTrashedpatient');
 });
 
@@ -193,7 +192,7 @@ Route::group(['prefix'=>'Hospital','namespace'=>'Hospital'],function () {
     Route::PUT('/restoreTrashed/{id}', 'HospitalController@restoreTrashed');
 
 
-    Route::GET('/doctor-work-in-this-hospital/{hospital_name}', 'HospitalController@hospitalsDoctor');
+    Route::GET('/doctor-work-in-this-hospital/{id}', 'HospitalController@hospitalsDoctor');
 });
 
 ///*---------------Clinic Route-------------*/
@@ -233,7 +232,7 @@ Route::group(['prefix'=>'MedicalDevice','namespace'=>'MedicalDevice'],function (
     Route::delete('/delete/{id}', 'MedicalDeviceController@delete');
     Route::PUT('/restoreTrashed/{id}', 'MedicalDeviceController@restoreTrashed');
 
-    Route::GET('/get-doctor-by-medical-device/{medical_device_name}','MedicalDeviceController@getdoctor');
+    Route::GET('/get-doctor-by-medical-device/{id}','MedicalDeviceController@getdoctor');
 });
 /*---------------Specialty Route-------------*/
 Route::group(['prefix'=>'Specialty','namespace'=>'Specialty'],function () {
@@ -247,7 +246,7 @@ Route::group(['prefix'=>'Specialty','namespace'=>'Specialty'],function () {
     Route::delete('/delete/{id}', 'SpecialtyController@delete');
     Route::PUT('/restoreTrashed/{id}', 'SpecialtyController@restoreTrashed');
 
-    Route::get('/specialty-doctor/{specialty_name}', 'SpecialtyController@DoctorSpecialty');
+    Route::get('/specialty-doctor/{$id}', 'SpecialtyController@DoctorSpecialty');
 });
 
 ///*--------------- Calendar Route-------------*/

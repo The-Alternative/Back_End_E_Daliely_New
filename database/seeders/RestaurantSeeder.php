@@ -21,14 +21,14 @@ class RestaurantSeeder extends Seeder
                 'image' => $faker->sentence(5),
                 'is_active' => $faker->boolean,
                 'is_approved' =>$faker->boolean,
-                'social_media_id' => $faker->unique()->numberBetween(1,10),
-                'appointment_id' =>  $faker->unique()->numberBetween(1,10),
-                'active_time_id' =>  $faker->unique()->numberBetween(1,10),
-                'user_id' =>  $faker->unique()->numberBetween(1,10),
-                'rate_id' =>  $faker->unique()->numberBetween(1,10),
-                'customer_id' =>  $faker->unique()->numberBetween(1,10),
-                'type_of_restaurant_id' =>  $faker->unique()->numberBetween(1,10),
-                'location_id' =>  $faker->unique()->numberBetween(1,10),
+                'social_media_id' => $faker->numberBetween(1,10),
+                'appointment_id' =>  $faker->numberBetween(1,10),
+                'active_time_id' =>  $faker->numberBetween(1,10),
+                'user_id' =>  $faker->numberBetween(1,10),
+                'rate_id' =>  $faker->numberBetween(1,10),
+                'customer_id' =>  $faker->numberBetween(1,10),
+                'type_of_restaurant_id' =>  $faker->numberBetween(1,10),
+                'location_id' =>  $faker->numberBetween(1,10),
             ]);
 
             DB::table('restaurant_translations')->insert([[

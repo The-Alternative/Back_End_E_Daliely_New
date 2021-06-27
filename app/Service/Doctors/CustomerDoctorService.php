@@ -22,7 +22,7 @@ class CustomerDoctorService
     {
         $this->CustomerDoctorModel=$patient;
     }
-    public function getByIdpatient($id)
+    public function getById($id)
     {
         try{
             $patient= $this->CustomerDoctorModel->find($id);
@@ -38,11 +38,11 @@ class CustomerDoctorService
             return $this->returnError('400',$ex->getMessage());
         }
     }
-    public function createpatient(CusromerDoctorRequest $request)
+    public function create(CusromerDoctorRequest $request)
     {
         try {
-
             $patient=new CustomerDoctor();
+
             $patient->doctor_id           =$request->doctor_id;
             $patient->customer_id         =$request->customer_id;
             $patient->medical_file_id     =$request->medical_file_id;
@@ -56,7 +56,7 @@ class CustomerDoctorService
 
            $result= $patient->save();
            if($result) {
-               return $this->returnData('patient', $result, 'done');
+               return $this->returnData('patient', $patient, 'done');
            }
            else{
                return $this->returnError('400', 'saving failed');
@@ -67,7 +67,8 @@ class CustomerDoctorService
             return $this->returnError('400',$ex->getMessage());
         }
     }
-    public function updatepatient(CusromerDoctorRequest $request,$id)
+    //__________________________________________________________
+    public function update(CusromerDoctorRequest $request,$id)
     {
         try {
             $patient=$this->CustomerDoctorModel->find($id);
@@ -87,7 +88,7 @@ class CustomerDoctorService
 
             if ($result)
             {
-                return $this->returnData('Patient', $result,'done');
+                return $this->returnData('Patient', $patient,'done');
             }
             else
             {
@@ -135,7 +136,7 @@ class CustomerDoctorService
             } else {
                 $patient->is_active =1;
                 $patient->save();
-                return $this->returnData('patient', $patient, 'This patient is trashed Now');
+                return $this->returnData('patient', $patient, 'This patient is restore trashed Now');
             }
         }
         catch(\Exception $ex)

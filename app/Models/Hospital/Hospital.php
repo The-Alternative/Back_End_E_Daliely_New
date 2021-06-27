@@ -22,11 +22,7 @@ class Hospital extends Model
      }
 
     //scope
-    public function scopeIsActive($query)
-    {
-        return $query->where('is_active',1)->get();
 
-    }
     public function scopeNotActive($query)
     {
         return $query->where('is_active',0)->get();

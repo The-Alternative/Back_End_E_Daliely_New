@@ -19,17 +19,17 @@ class CustomerDoctorController extends Controller
     }
 
     //PATIENT
-    public function getByIdpatient($id)
+    public function getById($id)
     {
-        return $this->CustomerDoctorService->getByIdpatient($id);
+        return $this->CustomerDoctorService->getById($id);
     }
-    public function createpatient(CusromerDoctorRequest $request)
+    public function create(CusromerDoctorRequest $request)
     {
-        return $this->CustomerDoctorService->createpatient($request);
+        return $this->CustomerDoctorService->create($request);
     }
-    public function updatepatient(CusromerDoctorRequest $request,$id)
+    public function update(CusromerDoctorRequest $request,$id)
     {
-        return $this->CustomerDoctorService->updatepatient($request,$id);
+        return $this->CustomerDoctorService->update($request,$id);
     }
 
     public function trashpatient($id)
@@ -46,6 +46,6 @@ class CustomerDoctorController extends Controller
     }
     public function deletepatient($id)
     {
-        return $this->CustomerDoctorService->restoreTrashedpatient($id);
+        return $this->CustomerDoctorService->deletepatient($id);
     }
 }

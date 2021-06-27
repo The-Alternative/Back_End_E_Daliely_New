@@ -214,13 +214,10 @@ class MedicalDeviceService
         }
     }
 
-    public function doctormedicaldevice($medical_device_name)
+    public function doctormedicaldevice($id)
     {
         try {
-            return MedicalDevice::with('doctor')
-                ->join('medical_device_translation','medical_device_translation.medical_device_id','=','medical_devices.id')
-                ->where('medical_device_translation.name','like','%'.$medical_device_name.'%')
-                ->select('medical_devices.id','medical_device_translation.name','doctors.id')->get();
+            return MedicalDevice::with('doctor')->find($id);
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }
