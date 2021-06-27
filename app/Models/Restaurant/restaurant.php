@@ -17,9 +17,16 @@ class restaurant extends Model
         'type_of_restaurant_id','rate_id','user_id','created_at','updated_at'];
 
     //scope
+//    public function scopewithTrans($q)
+//    {
+//       return $q->join('restaurant_translations','restaurants.id','=','restaurant_translations.restaurant_id')
+//            ->where('restaurant_translations.locale','=', Config::get('app.locale'))
+//            ->select('restaurants.id','restaurants.is_active','restaurants.is_approved','restaurants.image',
+//                'restaurant_translations.title','restaurant_translations.short_description','restaurant_translations.locale')->get();
+//    }
     public function scopeNotActive($query)
     {
-        return $query->where('is_active',0);
+        return $query->where('is_active',0)->get();
     }
     //________________________________________
     public function RestaurantTranslation()

@@ -20,6 +20,6 @@ class RestaurantScope implements \Illuminate\Database\Eloquent\Scope
         $builder->join('restaurant_translations','restaurants.id','=','restaurant_translations.restaurant_id')
             ->where('restaurant_translations.locale','=',config::get('app.locale'))
             ->select('restaurants.id', 'restaurants.is_active', 'restaurants.is_approved', 'restaurants.image',
-                'restaurant_translations.title', 'restaurant_translations.short_description', 'restaurant_translations.locale');
+                'restaurant_translations.title');
     }
 }

@@ -24,7 +24,7 @@ class RestaurantService
     public function get()
     {
         try{
-            $restaurant= $this->RestaurantModel::paginate(5);
+            $restaurant= $this->RestaurantModel::withTrans()->get();
             return $this->returnData('restaurant',$restaurant,'done');
         }
         catch(\Exception $ex)
@@ -36,7 +36,7 @@ class RestaurantService
     public function getById($id)
     {
         try{
-            $restaurant= $this->RestaurantModel->find($id);
+            $restaurant= $this->RestaurantModel->withTrans()->find($id);
             if (is_null($restaurant)){
                 return $this->returnSuccessMessage('this Restaurant not found','done');
             }
@@ -128,22 +128,22 @@ class RestaurantService
                 ->get()
                 ->all());
             $dbrestarurant = array_values($db_restarurant);
-            $request_restarurant= array_values($request->restarurant);
+            $request_restarurant= array_values($request->restaurant);
             foreach($dbrestarurant as $dbrestarurants){
                 foreach($request_restarurant as $request_restarurants){
                     $values= RestaurantTranslation::where('restaurant_translations.restaurant_id',$id)
                         ->where('locale',$request_restarurants['locale'])
                         ->update([
-                            'title' => $dbrestarurants ['title'],
-                            'short_description' => $dbrestarurants ['short_description'],
-                            'long_description' => $dbrestarurants ['short_description'],
-                            'locale' => $dbrestarurants['locale'],
+                            'title' => $request_restarurants ['title'],
+                            'short_description' => $request_restarurants ['short_description'],
+                            'long_description' => $request_restarurants ['short_description'],
+                            'locale' => $request_restarurants['locale'],
                             'restaurant_id' => $id,
                         ]);
                 }
             }
             DB::commit();
-            return $this->returnData('restaurant', $dbrestarurant,'done');
+            return $this->returnData('restaurant',[$dbrestarurant,$values],'done');
 
         }
         catch(\Exception $ex){
@@ -222,7 +222,7 @@ class RestaurantService
         try{
             $restaurant = $this->RestaurantModel::find($id);
             if ($restaurant->is_active == 0) {
-                $restaurant->RestaurantModel->delete();
+                $restaurant->delete();
                 $restaurant->RestaurantTranslation()->delete();
                 return $this->returnData('restaurant', $restaurant, 'This restaurant is deleted Now');
             }

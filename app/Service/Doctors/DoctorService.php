@@ -141,10 +141,9 @@ class DoctorService
             }
             DB::commit();
             return $this->returnData('doctor', $dbdoctor,'done');
-
         }
         catch(\Exception $ex){
-                        return $this->returnError('400', $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 //___________________________________________________________//

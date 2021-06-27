@@ -313,6 +313,7 @@ Route::group(['prefix'=>'ActiveTime','namespace'=>'ActiveTime'],function () {
          Route::get('/getTrashed', 'RestaurantController@getTrashed');
          Route::post('/create', 'RestaurantController@create');
          Route::put('/update/{id}', 'RestaurantController@update');
+         Route::GET('/search/{name}','RestaurantController@search');
          Route::PUT('/trash/{id}', 'RestaurantController@trash');
          Route::delete('/delete/{id}', 'RestaurantController@delete');
          Route::PUT('/restoreTrashed/{id}', 'RestaurantController@restoreTrashed');
