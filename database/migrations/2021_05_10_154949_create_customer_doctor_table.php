@@ -28,15 +28,7 @@ class CreateCustomerDoctorTable extends Migration
             $table->boolean('is_approved');
             $table->timestamps();
         });
-//        DB::table('customer_doctor')->insert([
-//            ['doctor_id'=>1, 'customer_id'=>1, 'medical_file_id'=>1, 'age'=>45, 'gender'=>'male', 'social_status'=>'married', 'blood_type'=>'A-', 'note'=>'dead', 'is_active'=>1, 'is_approved'=>1 ],
-//            ['doctor_id'=>2, 'customer_id'=>1, 'medical_file_id'=>1, 'age'=>45, 'gender'=>'male', 'social_status'=>'married', 'blood_type'=>'A-', 'note'=>'dead', 'is_active'=>1, 'is_approved'=>1 ],
-//            ['doctor_id'=>3, 'customer_id'=>1, 'medical_file_id'=>1, 'age'=>45, 'gender'=>'male', 'social_status'=>'married', 'blood_type'=>'A-', 'note'=>'dead', 'is_active'=>1, 'is_approved'=>1 ],
-//            ['doctor_id'=>4, 'customer_id'=>1, 'medical_file_id'=>1, 'age'=>45, 'gender'=>'male', 'social_status'=>'married', 'blood_type'=>'A-', 'note'=>'dead', 'is_active'=>1, 'is_approved'=>1 ],
-//            ['doctor_id'=>5, 'customer_id'=>1, 'medical_file_id'=>1, 'age'=>45, 'gender'=>'male', 'social_status'=>'married', 'blood_type'=>'A-', 'note'=>'dead', 'is_active'=>1, 'is_approved'=>1 ],
-//            ['doctor_id'=>6, 'customer_id'=>1, 'medical_file_id'=>1, 'age'=>45, 'gender'=>'male', 'social_status'=>'married', 'blood_type'=>'A-', 'note'=>'dead', 'is_active'=>1, 'is_approved'=>1 ]
-//
-//        ]);
+
     }
 
     /**

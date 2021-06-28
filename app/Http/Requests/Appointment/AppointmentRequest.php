@@ -26,12 +26,10 @@ class AppointmentRequest extends FormRequest
         return [
                    'doctor_id'  =>'required',
                    'customer_id'=>'required',
-                   'start_date'  =>'required',
-                   'end_date'    =>'required',
-                   'start_time'  =>'required',
-                   'end_time'    =>'required',
                    'is_approved' =>'required|in:1,0',
                    'is_active'   =>'required|in:1,0',
+                   'morning_evening' =>'required|in:1,0',
+                   'active_times_id'=>'required',
         ];
     }
     public function messages()

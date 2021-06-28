@@ -6,6 +6,7 @@ namespace App\Service\Hospital;
 
 use App\Http\Requests\Hospital\HospitalRequest;
 use App\Models\Hospital\Hospital;
+use App\Models\Hospital\HospitalTranslation;
 use App\Traits\GeneralTrait;
 use Illuminate\Support\Facades\DB;
 
@@ -21,11 +22,11 @@ class HospitalService
     public function get()
     {
         try {
-            $Hospital = $this->HospitalModel::IsActive()->all();
+            $Hospital = $this->HospitalModel::paginate(5);
             return $this->returnData('Hospital', $Hospital, 'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function getById($id)
@@ -41,70 +42,101 @@ class HospitalService
     }
     catch(\Exception $ex)
       {
-         return $this->returnError('400','failed');
+         return $this->returnError('400',$ex->getMessage());
       }
     }
+    //__________________________________________________________//
     public function create( HospitalRequest $request )
     {
-        try{
-              $Hospital=new Hospital();
-
-              $Hospital->name                      =$request->name;
-              $Hospital->medical_center            =$request->medical_center ;
-              $Hospital->general_hospital          =$request->general_hospital;
-              $Hospital->private_hospital          =$request->private_hospital;
-              $Hospital->location_id               =$request->location_id;
-              $Hospital->doctor_id                 =$request->doctor_id;
-              $Hospital->is_active                 =$request->is_active;
-              $Hospital->is_approved               =$request->is_approved;
-
-              $result=$Hospital->save();
-              if ($result)
-              {
-                  return $this->returnData('Hospital', $Hospital,'done');
-              }
-              else
-              {
-                  return $this->returnError('400', 'saving failed');
-              }
+        try {
+            $allhospital = collect($request->hospital)->all();
+            DB::beginTransaction();
+            $unTranshospital_id = Hospital::insertGetId([
+                'general_hospital'   => $request['general_hospital'],
+                'private_hospital' => $request['private_hospital'],
+                'is_approved' => $request['is_approved'],
+                'is_active'   => $request['is_active'],
+                'location_id'=>$request['location_id'],
+                'doctor_id'=>$request['doctor_id'],
+            ]);
+            if (isset($allhospital)) {
+                foreach ($allhospital as $allhospitals) {
+                    $transhospital[] = [
+                        'name' => $allhospitals ['name'],
+                        'description' => $allhospitals ['description'],
+                        'locale' => $allhospitals['locale'],
+                        'hospital_id' => $unTranshospital_id,
+                    ];
+                }
+                HospitalTranslation::insert($transhospital);
+            }
+            DB::commit();
+            return $this->returnData('Hospital',[$unTranshospital_id, $transhospital],'done');
         }
-          catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+        catch(\Exception $ex)
+        {
+            DB::rollback();
+            return $this->returnError('Hospital', $ex->getMessage());
         }
+
     }
+    //___________________________________________________________________//
     public function update(HospitalRequest $request,$id)
     {
         try{
-             $Hospital= $this->HospitalModel::find($id);
+            $hospital= Hospital::find($id);
+            if(!$hospital)
+                return $this->returnError('400', 'not found this hospital');
+            $allhospital = collect($request->hospital)->all();
+            if (!($request->has('hospitals.is_active')))
+                $request->request->add(['is_active'=>0]);
+            else
+                $request->request->add(['is_active'=>1]);
 
-             $Hospital->name                      =$request->name;
-             $Hospital->medical_center            =$request->medical_center ;
-             $Hospital->general_hospital          =$request->general_hospital;
-             $Hospital->private_hospital          =$request->private_hospital;
-             $Hospital->location_id               =$request->location_id;
-             $Hospital->doctor_id                 =$request->doctor_id;
-             $Hospital->is_active                 =$request->is_active;
-             $Hospital->is_approved               =$request->is_approved;
+            $newhospital=Hospital::where('hospitals.id',$id)
+                ->update([
+                    'general_hospital'   => $request['general_hospital'],
+                    'private_hospital' => $request['private_hospital'],
+                    'is_approved' => $request['is_approved'],
+                    'is_active'   => $request['is_active'],
+                    'location_id'=>$request['location_id'],
+                    'doctor_id'=>$request['doctor_id'],
+                ]);
 
-             $result=$Hospital->save();
-             if ($result)
-             {
-                 return $this->returnData('Hospital', $Hospital,'done');
-             }
-             else
-             {
-                 return $this->returnError('400', 'updating failed');
-             }
+            $ss=HospitalTranslation::where('hospital_translations.hospital_id',$id);
+            $collection1 = collect($allhospital);
+            $alldoctorlength=$collection1->count();
+            $collection2 = collect($ss);
+
+            $db_hospital= array_values(HospitalTranslation::where('hospital_translations.hospital_id',$id)
+                ->get()
+                ->all());
+            $dbhospital = array_values($db_hospital);
+            $request_hospital= array_values($request->hospital);
+            foreach($dbhospital as $dbhospitals){
+                foreach($request_hospital as $request_hospitals){
+                    $values=HospitalTranslation::where('hospital_translations.hospital_id',$id)
+                        ->where('locale',$request_hospitals['locale'])
+                        ->update([
+                            'name' => $request_hospitals ['name'],
+                            'description' => $request_hospitals ['description'],
+                            'locale' => $request_hospitals['locale'],
+                            'hospital_id' => $id,
+                        ]);
+                }
+            }
+            DB::commit();
+            return $this->returnData(' hospital', [$dbhospital,$values],'done');
         }
-          catch (\Exception $ex) {
-              return $this->returnError('400', 'failed');
+        catch(\Exception $ex){
+            return $this->returnError('400', $ex->getMessage());
         }
-
     }
+    //____________________________________________________________//
     public function search($name)
     {
         try {
-            $Hospital = DB::table('hospitals')
+            $Hospital = DB::table('hospital_translations')
                 ->where("name", "like", "%" . $name . "%")
                 ->get();
             if (!$Hospital) {
@@ -114,7 +146,7 @@ class HospitalService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function trash( $id)
@@ -126,13 +158,13 @@ class HospitalService
             }
             else
             {
-                $Hospital->is_active=false;
+                $Hospital->is_active=0;
                 $Hospital->save();
                 return $this->returnData('Hospital', $Hospital,'This Hospital is trashed Now');
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
 
     }
@@ -143,7 +175,7 @@ class HospitalService
             return $this -> returnData('Hospital',$Hospital,'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }    }
     public function restoreTrashed( $id)
     {
@@ -154,40 +186,42 @@ class HospitalService
             }
             else
             {
-                $Hospital->is_active=true;
+                $Hospital->is_active=1;
                 $Hospital->save();
                 return $this->returnData('Hospital', $Hospital,'This Hospital is trashed Now');
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
-
-
     }
+    //________________________________________//
     public function delete($id)
     {
         try{
         $Hospital = Hospital::find($id);
             if ($Hospital->is_active == 0) {
-                $clinic = $this->HospitalModel->destroy($id);
-            }
+
+                $Hospital->delete();
+                $Hospital->hospitalTranslation()->delete();
             return $this->returnData('Hospital', $Hospital, 'This Hospital is deleted Now');
+            }
+            else{
+                return $this->returnData('Hospital', $Hospital, 'This Hospital can not deleted Now');
+            }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     //get all the doctors who work in the hospital according to her name
-    public function hospitalsDoctor($hospital_name)
+    public function hospitalsDoctor($id)
     {
         try{
-               return  Hospital::with('doctor')
-                               ->where('name','like','%'.$hospital_name.'%')
-                               ->get();
+               return  Hospital::with('doctor')->find($id);
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 

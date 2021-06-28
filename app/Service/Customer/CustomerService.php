@@ -26,19 +26,19 @@ class CustomerService
     {
         try
         {
-        $customer= $this->CustomerModel::IsActive()->WithTrans()->get();
+        $customer= $this->CustomerModel::paginate(5);
         return $this->returnData('customer',$customer,'done');
         }
         catch(\Exception $ex)
         {
-            return $this->returnError('400','failed');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
 
     public function getById($id)
     {
         try{
-            $customer= $this->CustomerModel::WithTrans()->find($id);
+            $customer= $this->CustomerModel::find($id);
         if (is_null($customer)){
             return $this->returnSuccessMessage('this customer not found','done');
         }
@@ -48,17 +48,13 @@ class CustomerService
         }
         catch(\Exception $ex)
         {
-            return $this->returnError('400','failed');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
-
-
 //__________________________________________________________________________//
-
     public function create( CustomerRequest $request )
     {
         try {
-//        $validated =validator::make($request->all());
             $allcustomer = collect($request->customer)->all();
             DB::beginTransaction();
             $unTranscustomer_id = Customer::insertGetId([
@@ -75,20 +71,16 @@ class CustomerService
                         'locale' => $allcustomers['locale'],
                         'customer_id' => $unTranscustomer_id,
                     ];
-
-               CustomerTranslation::insert($transcustomer);
-
                 }
-
+                  CustomerTranslation::insert($transcustomer);
             }
-
-            DB::commit();
+          DB::commit();
             return $this->returnData('Customer', [$unTranscustomer_id, $transcustomer], 'done');
         }
         catch(\Exception $ex)
         {
             DB::rollback();
-            return $this->returnError('Customer', 'failed');
+            return $this->returnError('Customer', $ex->getMessage());
         }
     }
 //__________________________________________________________//
@@ -99,31 +91,29 @@ class CustomerService
         if (!$customer)
             return $this->returnError('400', 'not found this customer');
         $allcustomer = collect($request->Customer)->all();
-        if (!($request->has('customer.is_active')))
+        if (!($request->has('customers.is_active')))
             $request->request->add(['is_active' => 0]);
         else
             $request->request->add(['is_active' => 1]);
-
-        $newcustomer = Customer::where('id', $id)
+        $newcustomer = Customer::where('customers.id', $id)
             ->update([
                 'social_media_id' => $request['social_media_id'],
                 'is_approved' => $request['is_approved'],
                 'is_active' => $request['is_active'],
             ]);
-
-        $ss = CustomerTranslation::where('customer_id', $id);
+        $ss = CustomerTranslation::where('customer_translations.customer_id', $id);
         $collection1 = collect($allcustomer);
         $allcustomerlength = $collection1->count();
         $collection2 = collect($ss);
 
-        $db_customer = array_values(CustomerTranslation::where('customer_id', $id)
+        $db_customer = array_values(CustomerTranslation::where('customer_translations.customer_id', $id)
             ->get()
             ->all());
         $dbcustomer = array_values($db_customer);
         $request_customer = array_values($request->customer);
         foreach ($dbcustomer as $dbcustomers) {
             foreach ($request_customer as $request_customers) {
-                $values = CustomerTranslation::where('customer_id', $id)
+                $values = CustomerTranslation::where('customer_translations.customer_id', $id)
                     ->where('locale', $request_customers['locale'])
                     ->update([
                         'first_name' => $request_customers ['first_name'],
@@ -135,18 +125,18 @@ class CustomerService
             }
         }
         DB::commit();
-        return $this->returnData('customer', $dbcustomer, 'done');
+        return $this->returnData('customer',[$dbcustomer,$values], 'done');
     }
             catch(\Exception $ex)
         {
-                  return $this->returnError('400', 'saving failed');
+                  return $this->returnError('400', $ex->getMessage());
         }
     }
 //___________________________________________________________//
     public function search($name)
     {
         try{
-        $customer = DB::table('customers')
+        $customer = DB::table('customer_translations')
             ->where("first_name","like","%".$name."%")
             ->get();
         if (!$customer)
@@ -159,7 +149,7 @@ class CustomerService
         }
         }
         catch(\Exception $ex){
-            return $this->returnError('400','failed');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
 
@@ -172,25 +162,25 @@ class CustomerService
             }
             else
             {
-               $customer->is_active=false;
+               $customer->is_active=0;
                $customer->save();
-               return $this->returnData('customer', $customer,'This customer is trashed Now');
+               return $this->returnData('customer',$customer,'This customer is trashed Now');
             }
         }
         catch (\Exception $ex)
         {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function getTrashed()
     {
         try {
-        $customer= $this->CustomerModel::NotActive()->get();
+        $customer= $this->CustomerModel::NotActive();
         return $this -> returnData('customer',$customer,'done');
         }
         catch (\Exception $ex)
         {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 
@@ -204,16 +194,15 @@ class CustomerService
             }
             else
             {
-                $customer->is_active=true;
+                $customer->is_active=1;
                 $customer->save();
                 return $this->returnData('customer', $customer,'This customer is trashed Now');
             }
         }
         catch (\Exception $ex)
         {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
-
     }
 
     public function delete($id)
@@ -221,13 +210,18 @@ class CustomerService
         try {
        $customer = Customer::find($id);
             if ($customer->is_active == 0) {
-                $customer = $this->CustomerModel->destroy($id);
+                $customer->delete();
+                $customer->customerTranslation()->delete();
+                return $this->returnData('customer', $customer, 'This customer is deleted Now');
             }
-            return $this->returnData('customer', $customer, 'This customer is deleted Now');
-        } catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            else
+            {
+                return $this->returnData('customer',$id,'this customer can not deleted');
+            }
         }
-
+        catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
     }
 
 

@@ -58,9 +58,9 @@ class SpecialtyController extends Controller
     }
 
    // get doctor by specialty
-    public function DoctorSpecialty($specialty_name)
+    public function DoctorSpecialty($id)
     {
-        return  $this->SpecialtyService->DoctorSpecialty($specialty_name);
+        return  $this->SpecialtyService->DoctorSpecialty($id);
     }
 
 }

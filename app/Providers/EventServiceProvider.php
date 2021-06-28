@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\medicalDevice\medicalDevice;
+use App\Scopes\MedicalDeviceScope;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -26,7 +28,7 @@ class EventServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
-    {
-        //
+    { medicalDevice::observe(MedicalDeviceScope::class);
+        parent::boot();
     }
 }

@@ -18,6 +18,16 @@ class MedicalFileSedeer extends Seeder
         $faker = Faker::create();
         for ($i = 0; $i <= 200; $i++) {
             DB::table('medical_files')->insert([
+<<<<<<< HEAD
+                'is_active' => $faker->boolean,
+                'is_approved' => $faker->boolean,
+                'pdf'=>$faker->sentence(3),
+                'file_number' => $faker->numberBetween(1,10),
+                'file_date' => $faker->date('2021-8-20'),
+                'review_date' =>$faker->date('2021-9-20'),
+                'doctor_id' => $faker->numberBetween(1, 10),
+                'customer_id' =>$faker->numberBetween(1, 10),
+=======
                 'is_active' => 1,
                 'is_approved' => 1,]);
             for ($i = 0; $i <= 5; $i++) {
@@ -30,6 +40,7 @@ class MedicalFileSedeer extends Seeder
                     'review_date' => $faker->date('2021-9-20'),
                     'doctor_id' => $faker->numberBetween(1, 200),
                     'customer_id' => $faker->numberBetween(1, 200),
+>>>>>>> a9264f83549a1973c725d0e31b50e2600d61d728
 
                 ]);
             }
