@@ -49,8 +49,6 @@ class RestaurantTypeRequest extends FormRequest
             'restaurantType.*.long_description.min' => 'Your restaurantType Description\'s Is Too Long',
             'restaurantType.*.long_description.max' => 'Your restaurantType Description\'s Is Too Long',
 
-
-
         ];
     }
 }
