@@ -4,6 +4,7 @@ namespace App\Service\Brands;
 
 use App\Models\Brands\Brand;
 use App\Models\Brands\BrandTranslation;
+use App\Models\Images\BrandImages;
 use Illuminate\Support\Facades\DB;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\Brands\BrandRequest;
@@ -25,14 +26,17 @@ class BrandsService
     public function getAll()
     {
         try {
-            $brands = $this->BrandModel->with('Product')->get();
+            $brands = $this->BrandModel->with(['Product',
+                'BrandImages'=>function($q){
+                return $q->where('is_cover',1)->get();}])->get();
+            $brands = $this->BrandModel->with('Product')->paginate(10);
             if (count($brands) > 0) {
                 return $response = $this->returnData('Brand', $brands, 'done');
             } else {
                 return $response = $this->returnSuccessMessage('Brand', 'Brands doesnt exist yet');
             }
         } catch (\Exception $ex) {
-            return $this->returnError('400', 'Failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -43,7 +47,7 @@ class BrandsService
     public function getById($id)
     {
         try {
-            $brand = $this->BrandModel->with('Product')->find($id);
+            $brand = $this->BrandModel->with(['Product','BrandImages'])->find($id);
 
             if (!isset($brand)) {
                 return $response = $this->returnSuccessMessage('This Brand not found', 'done');
@@ -120,13 +124,12 @@ class BrandsService
         try {
 //                $validated = $request->validated();
             $request->is_active ? $is_active = true : $is_active = false;
-            /////////////transformation to collection/////////////////////////
+            /////////////////////transformation to collection///////////////////////////
             $allbrands = collect($request->brands)->all();
             DB::beginTransaction();
             // //create the default language's product
             $unTransBrand_id = $this->BrandModel->insertGetId([
                 'slug' => $request['slug'],
-                'image' => $request['image'],
                 'is_active' => $request['is_active'],
             ]);
             //check the Brand and request
@@ -142,11 +145,36 @@ class BrandsService
                 }
                 $this->brandTranslation->insert($transBrand_arr);
             }
+            $images = $request->images;
+            foreach ($images as $image) {
+                $arr[] = $image['image'];
+            }
+            foreach ($arr as $ar) {
+                if (isset($image)) {
+                    if ($request->hasFile($ar)) {
+                        //save
+                        $file_extension = $ar->getClientOriginalExtension();
+                        $file_name = time() . $file_extension;
+                        $path = 'images/brands';
+                        $ar->move($path, $file_name);
+                    }
+                }
+            }
+            if ($request->has('images')) {
+                foreach ($images as $image) {
+                    $brandImages = $this->BrandModel->find($unTransBrand_id);
+                    $brandImages->BrandImages()->insert([
+                        'brand_id' => $unTransBrand_id,
+                        'image' => $image['image'],
+                        'is_cover' => $image['is_cover'],
+                    ]);
+                }
+            }
             DB::commit();
-            return $this->returnData('Product', [$unTransBrand_id, $transBrand_arr], 'done');
+            return $this->returnData('Brand', [$unTransBrand_id, $transBrand_arr], 'done');
         } catch (\Exception $ex) {
             DB::rollback();
-            return $this->returnError('Product', 'Faild');
+            return $this->returnError('Brand', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/

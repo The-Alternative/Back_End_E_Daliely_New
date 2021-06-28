@@ -18,10 +18,16 @@ class DoctorScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
+<<<<<<< HEAD
       $builder->join('doctor_translation','doctors.id','=','doctor_translation.doctor_id')
           ->where('doctor_translation.locale','=',config::get('app.locale'))
           ->select(['doctors.id','doctors.is_active','doctors.is_approved','doctors.image',
               'doctor_translation.first_name', 'doctor_translation.last_name', 'doctor_translation.description']);
+=======
+        $builder->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
+            ->where('doctor_translation.locale','=',Config::get('app.locale'))
+            ->select('doctors.id','doctors.specialty_id','doctor_translation.*')->get();
+>>>>>>> a9264f83549a1973c725d0e31b50e2600d61d728
     }
 
 }

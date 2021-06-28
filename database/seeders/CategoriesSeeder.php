@@ -20,10 +20,16 @@ class CategoriesSeeder extends Seeder
             $s = DB::table('categories')->insertGetId([
                 'slug' => $faker->sentence(1),
                 'is_active' => $faker->boolean,
+<<<<<<< HEAD
                 'image' => $faker->sentence(3),
                 'parent_id' => $faker->numberBetween(1,10),
                 'lang_id' =>  $faker->numberBetween(1,10),
                 'section_id' =>  $faker->numberBetween(1,10)
+=======
+                'parent_id' => $faker->numberBetween(1,200),
+                'lang_id' =>  $faker->numberBetween(1,200),
+                'section_id' =>  $faker->numberBetween(1,200)
+>>>>>>> a9264f83549a1973c725d0e31b50e2600d61d728
             ]);
             DB::table('category_translations')->insert([[
                 'name' => $faker->sentence(5),
@@ -40,5 +46,4 @@ class CategoriesSeeder extends Seeder
 
         }
     }
-
 }

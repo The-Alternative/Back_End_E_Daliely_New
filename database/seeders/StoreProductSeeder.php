@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
 
 class StoreProductSeeder extends Seeder
@@ -15,6 +15,7 @@ class StoreProductSeeder extends Seeder
      */
     public function run()
     {
+        //
         $faker=Faker::create();
         for ($i = 1; $i <= 5; $i++) {
            DB::table('stores_products')->insertGetId([

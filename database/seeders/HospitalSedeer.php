@@ -16,6 +16,7 @@ class HospitalSedeer extends Seeder
     public function run()
     {
         $faker = Faker::create();
+<<<<<<< HEAD
         for ($i = 0; $i <= 5; $i++) {
             $s =DB::table('hospitals')->insertGetId([
                 'is_active' =>  $faker->boolean,
@@ -38,6 +39,18 @@ class HospitalSedeer extends Seeder
                     'name' => $faker->sentence(4),
                     'locale' => 'ar',
                 ]]);
+=======
+        for ($i = 0; $i <= 200; $i++) {
+            DB::table('hospitals')->insert([
+                'is_active' => 1,
+                'is_approved' => 1,
+                'name' => $faker->sentence(3),
+                'medical_center' => $faker->sentence(2),
+                'general_hospital' => 0,
+                'private_hospital' => 1,
+                'location_id' => 1,
+                'doctor_id' => 1,]);
+>>>>>>> a9264f83549a1973c725d0e31b50e2600d61d728
         }
     }
 }

@@ -1,5 +1,6 @@
 <?php
 namespace App\Service\Stores;
+
 use App\Http\Requests\Store\StoreRequest;
 use App\Http\Requests\StoreProduct\StoreProductRequest;
 use App\Models\Stores\Store;
@@ -15,7 +16,6 @@ class  StoreService
     private $storeModel;
     private $storeTranslation;
     private $Store;
-
     public function __construct(Store $store ,StoreTranslation $storeTranslation)
     {
         $this->storeModel=$store;
@@ -25,7 +25,9 @@ class  StoreService
     public function getAll()
     {
         try {
-            $store =collect($this->storeModel->with(['Section','Product','Brand'])->get());
+            $store =collect($this->storeModel->with(['Section','Product','Brand','StoreImage'=>function($q){
+                return $q->where('is_cover',1)->get();}])->get());
+            $store =$this->storeModel->with(['Section','Product','Brand'])->paginate(10);
             if (count($store) > 0){
                 return $this->returnData('Stores',$store,'done');
             }else{
@@ -33,13 +35,13 @@ class  StoreService
             }
         } catch(\Exception $ex){
 
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
     public function getById($store_id)
     {
-//        try {
+        try {
         $store =  $this->storeModel->with(['Product'=>function($q) use ($store_id) {
             return $q->with(['Category'=>function($q){
                 return $q->with('Section')->get();
@@ -54,9 +56,9 @@ class  StoreService
             }else{
                 return $this->returnData('Store',$store,'done');
             }
-//        }catch(\Exception $ex){
-//            return $this->returnError('400','faild');
-//        }
+        }catch(\Exception $ex){
+            return $this->returnError('400',$ex->getMessage());
+        }
     }
     /*___________________________________________________________________________*/
     /****  This Functions For Trashed category  ****/
@@ -71,7 +73,7 @@ class  StoreService
                 return $response= $this->returnSuccessMessage('Store','stores doesnt exist yet');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
@@ -88,7 +90,7 @@ class  StoreService
                 return $this->returnData('Store', $store,'This Store Is trashed Now');
             }
             }catch(\Exception $ex){
-        return $this->returnError('400','faild');
+        return $this->returnError('400',$ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
@@ -105,7 +107,7 @@ class  StoreService
                 return $this->returnData('Store', $store,'This Store Is trashed Now');
             }
         }catch(\Exception $ex){
-              return $this->returnError('400','faild');
+              return $this->returnError('400',$ex->getMessage());
         }
     }
     /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
@@ -227,7 +229,7 @@ class  StoreService
         }
         catch(\Exception $ex){
             DB::rollback();
-            return $this->returnError('400', 'Updating failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
@@ -247,7 +249,7 @@ class  StoreService
             return $this->returnData('Store', $store,'done');
         }
             }catch(\Exception $ex){
-        return $this->returnError('400','faild');
+        return $this->returnError('400',$ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
@@ -264,7 +266,7 @@ class  StoreService
         }
         return $this->returnData('Category', $store,'This Store Is deleted Now');
          }catch(\Exception $ex){
-           return $this->returnError('400','faild');
+           return $this->returnError('400',$ex->getMessage());
         }
     }
     public function getSectionInStore($id)
@@ -277,7 +279,7 @@ class  StoreService
                 return $this->returnData('Category', $store, 'This Store Is deleted Now');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
 }

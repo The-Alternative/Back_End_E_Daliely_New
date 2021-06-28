@@ -15,26 +15,27 @@ class SectionSeeder extends Seeder
      */
     public function run()
     {
-        $faker=Faker::create();
-        for ($i = 1; $i <= 5; $i++) {
-            $s = DB::table('sections')->insertGetId([
-                'slug' => $faker->sentence(1),
-                'image' => $faker->sentence(10),
-                'is_active' => $faker->boolean,
-            ]);
-            DB::table('section_translations')->insert([[
-                'name' => $faker->sentence(2),
-                'description' => $faker->sentence(10),
-                'local' => 'en',
-                'section_id' => $s
-            ],
-                [
+        $faker = Faker::create();
+
+            for ($i = 1; $i <= 10; $i++) {
+                $s = DB::table('sections')->insertGetId([
+                    'slug' => $faker->sentence(1),
+                    'image' => $faker->sentence(10),
+                    'is_active' => $faker->boolean,
+                ]);
+                DB::table('section_translations')->insert([[
                     'name' => $faker->sentence(2),
                     'description' => $faker->sentence(10),
                     'local' => 'en',
                     'section_id' => $s
-                ]]);
+                ],
+                    [
+                        'name' => $faker->sentence(2),
+                        'description' => $faker->sentence(10),
+                        'local' => 'ar',
+                        'section_id' => $s
+                    ]]);
 
+            }
         }
-    }
 }

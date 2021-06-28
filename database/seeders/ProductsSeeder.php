@@ -15,6 +15,7 @@ class ProductsSeeder extends Seeder
      */
     public function run()
     {
+<<<<<<< HEAD
         $faker=Faker::create();
         for ($i = 1; $i <= 5; $i++) {
             $s = DB::table('products')->insertGetId([
@@ -36,14 +37,36 @@ class ProductsSeeder extends Seeder
                 'product_id' => $s
             ],
                 [
+=======
+        $faker = Faker::create();
+            for ($i = 1; $i <= 5; $i++) {
+                $s = DB::table('products')->insertGetId([
+                    'slug' => $faker->sentence(1),
+                    'barcode' => $faker->sentence(1),
+                    'is_active' => $faker->boolean,
+                    'is_appear' => $faker->boolean,
+                    'rating_id' => $faker->numberBetween(1, 200),
+                    'brand_id' => $faker->numberBetween(1, 200),
+                    'offer_id' => $faker->numberBetween(1, 200),
+                ]);
+                DB::table('product_translations')->insert([[
+>>>>>>> a9264f83549a1973c725d0e31b50e2600d61d728
                     'name' => $faker->sentence(5),
                     'short_des' => $faker->sentence(10),
-                    'local' => 'ar',
+                    'local' => 'en',
                     'long_des' => $faker->sentence(10),
                     'meta' => $faker->sentence(5),
                     'product_id' => $s
-                ]]);
+                ],
+                    [
+                        'name' => $faker->sentence(5),
+                        'short_des' => $faker->sentence(10),
+                        'local' => 'ar',
+                        'long_des' => $faker->sentence(10),
+                        'meta' => $faker->sentence(5),
+                        'product_id' => $s
+                    ]]);
 
+            }
         }
-    }
 }

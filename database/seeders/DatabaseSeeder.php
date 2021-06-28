@@ -17,11 +17,13 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         $this->call([
-            //store
             BrandSectionSeeder::class,
             BrandSeeder::class,
+            brandImagesSeeder::class,
             CategoriesSeeder::class,
             CustomFieldSeeder::class,
+            CustomField_CustomFieldValue::class,
+            CategoriesImagesSeeder::class,
             ProductCategorySeeder::class,
             ProductCustomFieldSeeder::class,
             ProductsSeeder::class,
@@ -30,13 +32,15 @@ class DatabaseSeeder extends Seeder
             StoreProductSeeder::class,
             StoreSectionSeeder::class,
             StoreSeeder::class,
-           //doctor
+            StoreImagesSeeder::class,
             DoctorSpecialtySeeder::class,
             CustomerDoctorSeeder::class,
             DoctorHospitalSeeder::class,
             DoctorMedicalDeviceSeeder::class,
             DoctorRateSeeder::class,
             ProductsSeeder::class,
+            StoreSeeder::class,
+            StoreImagesSeeder::class,
             DoctorSeeder::class,
             ActiveTimeSedeer::class,
             appointmentSedeer::class,
@@ -47,6 +51,7 @@ class DatabaseSeeder extends Seeder
             MedicalFileSedeer::class,
             SocialMediaSedeer::class,
             SpecialtySedeer::class,
+
 //restaurant
             RestaurantSeeder::class,
             RestaurantTypeSeeder::class,

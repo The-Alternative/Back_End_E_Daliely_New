@@ -14,15 +14,15 @@ class DoctorHospitalSeeder extends Seeder
      */
     public function run()
     {
-        for($doctor_id=1;$doctor_id<5;$doctor_id++) {
-            for ($hospital_id = 1; $hospital_id < 3; $hospital_id++) {
-                DB::table('doctor_hospital')->insert(
-                    [
-                        'doctor_id' => $doctor_id,
-                        'hospital_id' => $hospital_id
-                    ]
-                );
-            }
+        for ($doctor_id = 1; $doctor_id < 5; $doctor_id++) {
+                for ($hospital_id = 1; $hospital_id < 3; $hospital_id++) {
+                    DB::table('doctor_hospital')->insert(
+                        [
+                            'doctor_id' => $doctor_id,
+                            'hospital_id' => $hospital_id
+                        ]
+                    );
+                }
         }
     }
 }

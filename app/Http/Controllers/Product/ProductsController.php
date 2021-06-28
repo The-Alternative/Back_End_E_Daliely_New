@@ -6,6 +6,7 @@ use App\Service\Products\ProductService;
 use App\Traits\GeneralTrait;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ProductsController extends Controller
@@ -39,7 +40,7 @@ class ProductsController extends Controller
          $response= $this->ProductService->getTrashed();
             return $response;
         }
-        public function create(ProductRequest $request)
+        public function create(Request $request)
         {
             $response= $this->ProductService->create($request);
             return $response;

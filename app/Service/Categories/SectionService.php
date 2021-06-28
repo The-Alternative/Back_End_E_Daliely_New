@@ -41,7 +41,7 @@ class SectionService
                 return $response = $this->returnSuccessMessage('Section', 'Section doesnt exist yet');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
         }
     /*___________________________________________________________________________*/
@@ -61,17 +61,17 @@ class SectionService
                 return $response= $this->returnData('Section',$section,'done');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
     public function getCategoryBySection()
     {
-        $category=$this->SectionModel->with('Category')->get();
-        if (is_null($category) ){
+        $sec=$this->SectionModel->with('Category')->get();
+        if (is_null($sec) ){
             return $response= $this->returnSuccessMessage('This category not found','done');
         }else{
-            return $response= $this->returnData('category',$category,'done');
+            return $response= $this->returnData('Section',$sec,'done');
         }
     }
     /*___________________________________________________________________________*/
@@ -173,7 +173,7 @@ class SectionService
             catch(\Exception $ex)
             {
                 DB::rollback();
-                return $this->returnError('category','faild');
+                return $this->returnError('Section',$ex->getMessage());
             }
         }
     /*___________________________________________________________________________*/

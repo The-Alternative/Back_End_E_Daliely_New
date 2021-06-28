@@ -348,6 +348,43 @@ trait GeneralTrait
 //        }
         return $this->returnData('Store', $Arr1,'done');
     }
+
+    //trait for handler Exception......//
+    public function dataResponse($data): JsonResponse
+    {
+        return response()->json(['content' => $data], Response::HTTP_OK);
+    }
+
+    /**
+     * Success Response
+     * @param string $message
+     * @param int $code
+     * @return JsonResponse
+     */
+    public function successResponse(string $message, $code = Response::HTTP_OK): JsonResponse
+    {
+        return response()->json(['success' => $message, 'code' => $code], $code);
+    }
+
+    /**
+     * Error Response
+     * @param $message
+     * @param int $code
+     * @return JsonResponse
+     *
+     */
+    public function errorResponse($message, $code = Response::HTTP_BAD_REQUEST): JsonResponse
+    {
+        return response()->json(['error' => $message, 'code' => $code], $code);
+    }
+
+    public function uploadImage($folder, $image)
+{
+    $image->store('/', $folder);
+    $filename = $image->hashName();
+    $path = 'images/' . $folder . '/' . $filename;
+    return $path;
+}
 }
 
     // protected $statusCode = 200;

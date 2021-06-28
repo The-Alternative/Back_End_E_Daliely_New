@@ -2,7 +2,7 @@
 
 namespace App\Models\Categories;
 
-
+use App\Models\Images\CategoryImages;
 use App\Models\Products\Product;
 use App\Scopes\CategoryScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-
     use HasFactory;
 
     protected $table = 'categories';
@@ -24,14 +23,11 @@ class Category extends Model
         'is_active' => 'boolean'
     ];
     public $timestamps = false;
-
     public function getIsActiveAttribute($value)
     {
         return $value==1 ? 'Active' : 'Not Active';
     }
-
     //________________ scopes begin _________________//
-
     protected static function booted()
     {
         parent::booted();
@@ -41,10 +37,7 @@ class Category extends Model
     {
         return $query->select('id')->get();
     }
-
     //________________ scopes end _________________//
-
-
 //    public function language()
 //    {
 //        return $this->belongsTo(Language::class, 'lang_id', 'id');
@@ -73,7 +66,10 @@ class Category extends Model
     {
         return $this->hasMany(ProductCategory::class);
     }
-
+    public function CategoryImages()
+    {
+        return $this->hasMany(CategoryImages::class);
+    }
 ////    public function products(){
 ////        return $this->belongsToMany(product::class)->withTimestamps()->withPivot(['']);
 ////    }

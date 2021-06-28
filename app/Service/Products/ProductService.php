@@ -4,18 +4,19 @@ namespace App\Service\Products;
 use App\Models\Categories\Category;
 use App\Models\Categories\Section;
 use App\Models\Custom_Fieldes\Custom_Field;
-use App\Models\Custom_Fieldes\Custom_Field_Value;
 use App\Models\Products\ProductTranslation;
 use App\Models\Stores\Store;
 use App\Models\Stores\StoreProduct;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\ProductRequest;
 use App\Models\Products\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProductService
 {
     use GeneralTrait;
+
     private $customFieldModel;
     private $productModel;
     private $productTranslation;
@@ -25,76 +26,66 @@ class ProductService
     private $storeProductModel;
 
     public function __construct(
-        Product $product ,ProductTranslation $productTranslation ,
-        Category $category,Section $sectionModel,Store $storeModel ,
-        StoreProduct $storeProduct,Custom_Field $CustomField
+        Product $product, ProductTranslation $productTranslation,
+        Category $category, Section $sectionModel, Store $storeModel,
+        StoreProduct $storeProduct, Custom_Field $CustomField
     )
     {
-        $this->productModel=$product;
-        $this->productTranslation=$productTranslation;
-        $this->categoryModel=$category;
-        $this->SectionModel=$sectionModel;
-        $this->storeModel=$storeModel;
-        $this->storeProductModel=$storeProduct;
-        $this->customFieldModel=$CustomField;
+        $this->productModel = $product;
+        $this->productTranslation = $productTranslation;
+        $this->categoryModel = $category;
+        $this->SectionModel = $sectionModel;
+        $this->storeModel = $storeModel;
+        $this->storeProductModel = $storeProduct;
+        $this->customFieldModel = $CustomField;
     }
     /*__________________________________________________________________*/
     /****Get All Active Products  ****/
     public function getAll()
     {
-        try{
-        $products = $this->productModel
-            ->with('Store')->get();
-            if (count($products) > 0)
-            {
-                return $response=$this->returnData('Products',$products,'done');
-            }else
-            {
-                return $response=$this->returnSuccessMessage('Product','Products doesnt exist yet');
+        try {
+            $products = $this->productModel
+                ->with(['Store', 'ProductImage' => function ($q) {
+                    return $q->where('is_cover', 1)->get();
+                }])->get();
+            with('Store')->paginate(10);
+            if (count($products) > 0) {
+                return $response = $this->returnData('Products', $products, 'done');
+            } else {
+                return $response = $this->returnSuccessMessage('Product', 'Products doesnt exist yet');
             }
-        }catch(\Exception $e){
-            return $this->returnError('400',$e->getMessage());
+        } catch (\Exception $e) {
+            return $this->returnError('400', $e->getMessage());
         }
 //        return $this->errorResponse('failed','400');
     }
+
     public function getProductByCategory($id)
     {
-        try{
+        try {
             $products = $this->categoryModel->with('Product')->find($id);
-            if (is_null($products) ){
-                return $response= $this->returnSuccessMessage('This category not have products','done');
-            }else{
-                return $response= $this->returnData($products,'$products','done');
+            if (is_null($products)) {
+                return $response = $this->returnSuccessMessage('This category not have products', 'done');
+            } else {
+                return $response = $this->returnData($products, '$products', 'done');
             }
-        }catch(\Exception $e){
-            return $this->returnError('400',$e->getMessage());
+        } catch (\Exception $e) {
+            return $this->returnError('400', $e->getMessage());
         }
     }
     /*__________________________________________________________________*/
     /****Get Active Product By ID  ***/
-    public function getById( $id)
+    public function getById($id)
     {
-        try{
-        $product = $this->productModel->with(['Store','Category','ProductImage','Brand','StoreProduct'])
-            ->find($id);
-            $prices = $this->storeProductModel->where('product_id','=',$id)->get();
-            if(isset($prices) && count($prices)){
-            foreach($prices as $price)
-            {
-                $collection1[]=[
-                $price['price']
-            ];
+        try {
+            $product = $this->productModel->with(['Store', 'Category', 'ProductImage', 'Brand', 'StoreProduct'])
+                ->find($id);
+            if (!isset($product)) {
+                return $response = $this->returnSuccessMessage('This Product not found', 'done');
             }
-        $max = collect($collection1)->max();
-        $min = collect($collection1)->min();
-        $rangeOfPrice=[$max,$min];
-            }
-            if (!isset($product) ){
-                return $response= $this->returnSuccessMessage('This Product not found','done');
-            }
-            return $response=$this->returnData('product',[$product,$rangeOfPrice],'done');
-        }catch(\Exception $ex){
-            return $this->returnError('400',$ex->getMessage());
+            return $response = $this->returnData('product', $product, 'done');
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -102,105 +93,131 @@ class ProductService
     /****Get All Trashed Products Or By ID  ****/
     public function getTrashed()
     {
-        try{
-        $product= $this->productModel->where('is_active',0)->get();
+        try {
+            $product = $this->productModel->where('is_active', 0)->get();
 
-            if (count($product) > 0){
-                return $response= $this->returnData('Store',$product,'done');
-            }else{
-                return $response= $this->returnSuccessMessage('product','Products trashed doesnt exist yet');
+            if (count($product) > 0) {
+                return $response = $this->returnData('Store', $product, 'done');
+            } else {
+                return $response = $this->returnSuccessMessage('product', 'Products trashed doesnt exist yet');
             }
-        }catch(\Exception $ex){
-            return $this->returnError('400',$ex->getMessage());
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
     /****Restore Products Fore Active status  ***/
-    public function restoreTrashed( $id)
+    public function restoreTrashed($id)
     {
-        try{
-        $product=$this->productModel->find($id);
-            if (is_null($product) ){
-                return $response= $this->returnSuccessMessage('Product','This Products not found');
-            }else {
+        try {
+            $product = $this->productModel->find($id);
+            if (is_null($product)) {
+                return $response = $this->returnSuccessMessage('Product', 'This Products not found');
+            } else {
                 $product->is_active = true;
                 $product->save();
                 return $this->returnData('Product', $product, 'This Product Is trashed Now');
             }
-        }catch(\Exception $ex){
-            return $this->returnError('400',$ex->getMessage());
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
     /****   Product's Soft Delete   ***/
-    public function trash( $id)
+    public function trash($id)
 
     {
         try {
-        $product= $this->productModel->find($id);
-            if (is_null($product) ){
-                return $response= $this->returnSuccessMessage('Product','This Products not found');
-            }else {
-                $product->is_active=false;
+            $product = $this->productModel->find($id);
+            if (is_null($product)) {
+                return $response = $this->returnSuccessMessage('Product', 'This Products not found');
+            } else {
+                $product->is_active = false;
                 $product->save();
-                return $this->returnData('Product', $product,'This Product Is trashed Now');
+                return $this->returnData('Product', $product, 'This Product Is trashed Now');
             }
 
-        }catch(\Exception $ex){
-            return $this->returnError('400',$ex->getMessage());
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
     /****  Create Products   ***/
-    public function create(ProductRequest $request)
+    public function create(Request $request)
     {
-        try{
+
+        try {
+//            dd($request->all());
 //                validated = $request->validated();
-                $request->is_active?$is_active=true:$is_active=false;
-                $request->is_appear?$is_appear=true:$is_appear=false;
-                /////////////transformation to collection/////////////////////////
-                $allproducts = collect($request->product)->all();
-                DB::beginTransaction();
-                // //create the default language's product
-                $unTransProduct_id=$this->productModel->insertGetId([
-                    'slug' =>$request['slug'],
-                    'barcode' =>$request['barcode'],
-                    'is_active' =>$request['is_active'],
-                    'is_appear' =>$request['is_appear'],
-                    'rating_id' =>$request['rating_id'],
-                    'brand_id' =>$request['brand_id'],
-                    'offer_id' =>$request['offer_id'],
-                ]);
-                //check the category and request
-                if(isset($allproducts) && count($allproducts))
-                {
-                    //insert other traslations for products
-                    foreach ($allproducts as $allproduct)
-                    {
-                        $transProduct_arr[]=[
-                            'name' => $allproduct ['name'],
-                            'short_des' => $allproduct['short_des'],
-                            'local' => $allproduct['local'],
-                            'long_des' => $allproduct['long_des'],
-                            'meta' => $allproduct['meta'],
-                            'product_id' => $unTransProduct_id
-                        ];
-                    }
-                    $this->productTranslation->insert($transProduct_arr);
+            $request->is_active ? $is_active = true : $is_active = false;
+            $request->is_appear ? $is_appear = true : $is_appear = false;
+            /////////////transformation to collection/////////////////////////
+            $allproducts = collect($request->product)->all();
+            DB::beginTransaction();
+            // //create the default language's product
+            $unTransProduct_id = $this->productModel->insertGetId([
+                'slug' => $request['slug'],
+                'barcode' => $request['barcode'],
+                'is_active' => $request['is_active'],
+                'is_appear' => $request['is_appear'],
+                'rating_id' => $request['rating_id'],
+                'brand_id' => $request['brand_id'],
+                'offer_id' => $request['offer_id'],
+            ]);
+            //check the product and request
+            if (isset($allproducts) && count($allproducts)) {
+                //insert other traslations for products
+                foreach ($allproducts as $allproduct) {
+                    $transProduct_arr[] = [
+                        'name' => $allproduct ['name'],
+                        'short_des' => $allproduct['short_des'],
+                        'local' => $allproduct['local'],
+                        'long_des' => $allproduct['long_des'],
+                        'meta' => $allproduct['meta'],
+                        'product_id' => $unTransProduct_id
+                    ];
                 }
-                if ($request->has('category')){
-                    $product=$this->productModel->find($unTransProduct_id);
-                    $product->Category()->syncWithoutDetaching($request->get('category'));
-                }
-            if ($request->has('CustomFieldValue')){
-                $product=$this->productModel->find($unTransProduct_id);
+                $this->productTranslation->insert($transProduct_arr);
+            }
+            if ($request->has('category')) {
+                $product = $this->productModel->find($unTransProduct_id);
+                $product->Category()->syncWithoutDetaching($request->get('category'));
+            }
+            if ($request->has('CustomFieldValue')) {
+                $product = $this->productModel->find($unTransProduct_id);
                 $product->Custom_Field_Value()->syncWithoutDetaching($request->get('CustomFieldValue'));
+            }
+            $images = $request->images;
+            foreach ($images as $image) {
+                $arr[] = $image['image'];
+            }
+            foreach ($arr as $ar) {
+                if (isset($image)) {
+                    if ($request->hasFile($ar)) {
+                        //save
+                        $file_extension = $ar->getClientOriginalExtension();
+                        $file_name = time() . $file_extension;
+                        $path = 'images/products';
+                        $ar->move($path, $file_name);
+                    }
+                }
+            }
+            if ($request->has('images')) {
+                foreach ($images as $image) {
+                    $product = $this->productModel->find($unTransProduct_id);
+                    $product->ProductImage()->insert([
+                        'product_id' => $unTransProduct_id,
+                        'image' => $image['image'],
+                        'is_cover' => $image['is_cover'],
+                    ]);
+                }
+            }
 
             $images = $request->images;
-            foreach ($images as $image){
-                $arr[]=$image['name'];
+            foreach ($images as $image) {
+                $arr[] = $image['image'];
             }
-            foreach ($arr as $ar){
+            foreach ($arr as $ar) {
                 if (isset($image)) {
                     if ($request->hasFile($ar)) {
                         $file_exctension = $ar->getclientoriginalextension();
@@ -210,23 +227,21 @@ class ProductService
                     }
                 }
             }
-        }
             if ($request->has('images')) {
 
                 $product = $this->productModel->find($unTransProduct_id);
                 $product->ProductImage()->insert([
                     'product_id' => $unTransProduct_id,
-                    'name' => $image['name'],
+                    'image' => $image['image'],
                     'is_cover' => $image['is_cover'],
                 ]);
             }
-                DB::commit();
-                return $this->returnData('Product', [$unTransProduct_id,$transProduct_arr],'done');
-            }
-        catch(\Exception $ex)
-        {
+
+            DB::commit();
+            return $this->returnData('Product', [$unTransProduct_id, $transProduct_arr], 'done');
+        } catch (\Exception $ex) {
             DB::rollback();
-            return $this->returnError('400',$ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -291,7 +306,7 @@ class ProductService
                 }
             }
             DB::commit();
-            return $this->returnData('Category', $dbdproducts,'done');
+            return $this->returnData('Product', $dbdproducts,'done');
         }
         catch(\Exception $ex){
             DB::rollback();
@@ -331,3 +346,4 @@ class ProductService
         }
     }
 }
+

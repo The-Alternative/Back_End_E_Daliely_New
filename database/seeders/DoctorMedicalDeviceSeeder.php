@@ -14,6 +14,7 @@ class DoctorMedicalDeviceSeeder extends Seeder
      */
     public function run()
     {
+
         for($doctor_id=1;$doctor_id<5;$doctor_id++) {
             for ($medical_device_id = 1; $medical_device_id < 5; $medical_device_id++) {
                 DB::table('doctor_Medical_Device')->insert(
