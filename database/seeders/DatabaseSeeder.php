@@ -59,7 +59,13 @@ class DatabaseSeeder extends Seeder
             MenuTypeSeeder::class,
             MealSeeder::class,
             MealTypeSeeder::class,
-            OrderSeeder::class
+            OrderSeeder::class,
+            RestaurantTypeRestaurantSeeder::class,
+            RestaurantHasMealSeeder::class,
+            MealTypeMealSeeder::class,
+            MenuTypeMenuSeeder::class,
+            OrderHasMealSeeder::class,
+
         ]);
 
     }
