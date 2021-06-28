@@ -47,8 +47,7 @@ class ProductService
             $products = $this->productModel
                 ->with(['Store', 'ProductImage' => function ($q) {
                     return $q->where('is_cover', 1)->get();
-                }])->get();
-            with('Store')->paginate(10);
+                }])->paginate(10);
             if (count($products) > 0) {
                 return $response = $this->returnData('Products', $products, 'done');
             } else {
@@ -57,7 +56,6 @@ class ProductService
         } catch (\Exception $e) {
             return $this->returnError('400', $e->getMessage());
         }
-//        return $this->errorResponse('failed','400');
     }
 
     public function getProductByCategory($id)
@@ -67,7 +65,7 @@ class ProductService
             if (is_null($products)) {
                 return $response = $this->returnSuccessMessage('This category not have products', 'done');
             } else {
-                return $response = $this->returnData($products, '$products', 'done');
+                return $response = $this->returnData('Products', $products, 'done');
             }
         } catch (\Exception $e) {
             return $this->returnError('400', $e->getMessage());
@@ -89,7 +87,7 @@ class ProductService
         }
     }
     /*__________________________________________________________________*/
-    /****ــــــThis Functions For Trashed Productsــــــ  ****/
+    /****ــــــ This Functions For Trashed Productsــــــ  ****/
     /****Get All Trashed Products Or By ID  ****/
     public function getTrashed()
     {
@@ -212,31 +210,6 @@ class ProductService
                     ]);
                 }
             }
-
-            $images = $request->images;
-            foreach ($images as $image) {
-                $arr[] = $image['image'];
-            }
-            foreach ($arr as $ar) {
-                if (isset($image)) {
-                    if ($request->hasFile($ar)) {
-                        $file_exctension = $ar->getclientoriginalextension();
-                        $file_name = time() . '.' . $file_exctension;
-                        $path = 'images/products';
-                        $imageq = $ar->move($path, $file_name);
-                    }
-                }
-            }
-            if ($request->has('images')) {
-
-                $product = $this->productModel->find($unTransProduct_id);
-                $product->ProductImage()->insert([
-                    'product_id' => $unTransProduct_id,
-                    'image' => $image['image'],
-                    'is_cover' => $image['is_cover'],
-                ]);
-            }
-
             DB::commit();
             return $this->returnData('Product', [$unTransProduct_id, $transProduct_arr], 'done');
         } catch (\Exception $ex) {
@@ -252,9 +225,9 @@ class ProductService
         try{
             $product= $this->productModel->find($id);
             if(!$product)
-                return $this->returnError('400', 'not found this Category');
+                return $this->returnError('400', 'not found this Product');
             $allproducts = collect($request->product)->all();
-            if (!($request->has('category.is_active')))
+            if (!($request->has('products.is_active')))
                 $request->request->add(['is_active'=>0]);
             else
                 $request->request->add(['is_active'=>1]);
@@ -346,4 +319,3 @@ class ProductService
         }
     }
 }
-

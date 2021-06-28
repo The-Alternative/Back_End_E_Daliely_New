@@ -21,7 +21,7 @@ class  StoreService
         $this->storeModel=$store;
         $this->storeTranslation=$storeTranslation;
     }
-    /****Get All Active category Or By ID  ****/
+    /****Get All Active Store Or By ID  ****/
     public function getAll()
     {
         try {
@@ -61,8 +61,8 @@ class  StoreService
         }
     }
     /*___________________________________________________________________________*/
-    /****  This Functions For Trashed category  ****/
-    /****  Get All Trashed Products Or By ID  ****/
+    /****  This Functions For Trashed Store  ****/
+    /****  Get All Trashed Stores Or By ID  ****/
     public function getTrashed()
     {
         try {
@@ -77,7 +77,7 @@ class  StoreService
         }
     }
     /*___________________________________________________________________________*/
-    /****Restore category Fore Active status  ****/
+    /****Restore Store Fore Active status  ****/
     public function restoreTrashed( $id)
     {
         try{
@@ -94,7 +94,7 @@ class  StoreService
         }
     }
     /*___________________________________________________________________________*/
-    /****   category's Soft Delete   ****/
+    /****   Store's Soft Delete   ****/
     public function trash( $id)
     {
         try{
@@ -111,7 +111,7 @@ class  StoreService
         }
     }
     /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
-    /****  Create category   ****/
+    /****  Create Store   ****/
     /*___________________________________________________________________________*/
     public function create(Request $request)
     {
@@ -171,7 +171,7 @@ class  StoreService
             }
     }
     /*___________________________________________________________________________*/
-    /****__________________  Update category   ___________________****/
+    /****__________________  Update Store   ___________________****/
     public function update(Request $request,$id)
     {
         try{
@@ -179,7 +179,7 @@ class  StoreService
             $store= $this->storeModel->find($id);
             if(!$store)
                 return $this->returnError('400', 'not found this Store');
-            if (!($request->has('category.is_active')))
+            if (!($request->has('stores.is_active')))
                 $request->request->add(['is_active'=>0]);
             else
                 $request->request->add(['is_active'=>1]);
@@ -225,7 +225,7 @@ class  StoreService
                 }
             }
             DB::commit();
-            return $this->returnData('Store', [$id,$dbdstores,$nStore],'Updated Done');
+            return $this->returnData('Store', [$nStore,$dbdstores],'Updated Done');
         }
         catch(\Exception $ex){
             DB::rollback();
@@ -233,7 +233,7 @@ class  StoreService
         }
     }
     /*___________________________________________________________________________*/
-    /****________________  ٍsearch for Product _________________****/
+    /****________________  ٍsearch for Store _________________****/
     public function search($title)
     {
         try{
@@ -253,7 +253,7 @@ class  StoreService
         }
     }
     /*___________________________________________________________________________*/
-    /****_______________  Delete Product   ________________****/
+    /****_______________  Delete Store   ________________****/
     public function delete($id)
     {
         try
