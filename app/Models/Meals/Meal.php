@@ -2,6 +2,7 @@
 
 namespace App\Models\Meals;
 
+use App\Models\Restaurant\restaurant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,5 +18,9 @@ class Meal extends Model
         return $this->hasMany(MealTranslation::class);
     }
 
+    public function restaurant()
+    {
+        return $this->belongsToMany(restaurant::class);
+    }
 
 }

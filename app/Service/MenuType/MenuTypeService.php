@@ -19,18 +19,17 @@ class MenuTypeService
     {
         $this->MenuTypeModel=$MenuType;
     }
+
     public function get()
     {
-
-        $MenuType= MenuType::get();
-//        try{
-//            $MenuType=$this->MenuTypeModel::all();
-            return $this->returnData('Menu Type ',$MenuType,'done');
-//        }
-//        catch(\Exception $ex)
-//        {
-//            return $this->returnError('400',$ex->getMessage());
-//        }
+        try{
+            $MenuType= $this->MenuTypeModel::paginate(5);
+            return $this->returnData('Menu type',$MenuType,'done');
+        }
+        catch(\Exception $ex)
+        {
+            return $this->returnError('400',$ex->getMessage());
+        }
     }
     public function getById($id)
     {

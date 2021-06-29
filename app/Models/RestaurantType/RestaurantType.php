@@ -2,6 +2,7 @@
 
 namespace App\Models\RestaurantType;
 
+use App\Models\Restaurant\restaurant;
 use App\Scopes\RestaurantTypeScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,5 +30,10 @@ class RestaurantType extends Model
     public function restaurantTypeTranslation()
     {
         return $this->hasMany(RestaurantTypeTranslation::class);
+    }
+
+    public function restaurant()
+    {
+        return $this->belongsToMany(restaurant::class);
     }
 }
