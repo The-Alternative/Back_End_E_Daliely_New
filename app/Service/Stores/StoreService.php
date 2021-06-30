@@ -48,9 +48,7 @@ class  StoreService
             },'StoreProduct'=>function($q) use ($store_id) {
                 return $q->where('store_id',$store_id)->get();
             }])->get();
-        },'Section'=>function($q){
-            return $q->with('Category')->get();
-        },'Brand','StoreImage'])->find($store_id);
+        },'Section','Brand','StoreImage'])->find($store_id);
             if (is_null($store) ){
                 return $response= $this->returnSuccessMessage('Store','This stores not found');
             }else{

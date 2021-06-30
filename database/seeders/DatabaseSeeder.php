@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             CustomField_CustomFieldValue::class,
             CategoriesImagesSeeder::class,
             ProductCategorySeeder::class,
+            ProductImageSeeder::class,
             ProductCustomFieldSeeder::class,
             ProductsSeeder::class,
             SectionSeeder::class,
@@ -47,7 +48,7 @@ class DatabaseSeeder extends Seeder
             CustomerSedeer::class,
             HospitalSedeer::class,
             MedicalDeviceSedeer::class,
-            MedicalFileSedeer::class,
+//            MedicalFileSedeer::class,
             SocialMediaSedeer::class,
             SpecialtySedeer::class,
 
