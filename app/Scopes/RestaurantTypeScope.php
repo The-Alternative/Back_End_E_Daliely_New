@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 
-class RestaurantTypeScope implements \Illuminate\Database\Eloquent\Scope
+class RestaurantTypeScope implements Scope
 {
 
     /**

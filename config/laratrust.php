@@ -88,9 +88,9 @@ return [
     */
     'models' => [
 
-        'role' => \App\Models\Role::class,
+        'role' => \App\Models\Admin\Role::class,
 
-        'permission' => \App\Models\Permission::class,
+        'permission' => \App\Models\Admin\Permission::class,
 
         /**
          * Will be used only if the teams functionality is enabled.
@@ -109,8 +109,10 @@ return [
     'tables' => [
 
         'roles' => 'roles',
+        'role_translation' => 'role_translation',
 
         'permissions' => 'permissions',
+        'permission_translation' => 'permission_translation',
 
         /**
          * Will be used only if the teams functionality is enabled.

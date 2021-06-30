@@ -10,7 +10,7 @@ class RoleTranslation extends Model
     use HasFactory;
 
     protected $table='role_translation';
-    protected $fillable=['id','role_id','name','description','display_name'];
+    protected $fillable=['id','role_id','local','name','description','display_name'];
 
     public function Role()
     {

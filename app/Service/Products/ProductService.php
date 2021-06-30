@@ -45,9 +45,7 @@ class ProductService
     {
         try {
             $products = $this->productModel
-                ->with(['Store', 'ProductImage' => function ($q) {
-                    return $q->where('is_cover', 1)->get();
-                }])->paginate(10);
+                ->with(['Store', 'ProductImage'])->paginate(10);
             if (count($products) > 0) {
                 return $response = $this->returnData('Products', $products, 'done');
             } else {
