@@ -198,7 +198,7 @@ class MealTypeService
             $MealType = $this->MealTypeModel::find($id);
             if ($MealType->is_active == 0) {
                 $MealType ->delete();
-                $MealType ->MenuTypeTranslation()->delete();
+                $MealType ->mealtypetranslation()->delete();
                 return $this->returnData('Meal Type', $MealType, 'This Meal Type is deleted Now');
 
             }

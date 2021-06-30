@@ -119,7 +119,7 @@ class OrderService
     public function getTrashed()
     {
         try {
-            $order= $this->OrderModel::NotActive()->get();
+            $order= $this->OrderModel::NotActive();
             return $this -> returnData('order',$order,'done');
         }
         catch (\Exception $ex)
