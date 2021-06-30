@@ -28,11 +28,11 @@ class MenuTypeRequest extends FormRequest
             'is_approved'    =>'required|in:0,1',
             'image'          =>'required',
 
-            'menuType'=>'required|array|min:1',
-            'menuType.*.title'=>'required|min:3|string',
-            'menuType.*.short_description'=>'required|min:10|max:255',
-            'menuType.*.long_description'=>'required|min:10|max:255',
-            'menuType.*.locale'=>'required',
+            'MenuType'=>'required|array|min:1',
+            'MenuType.*.title'=>'required|min:3|string',
+            'MenuType.*.short_description'=>'required|min:10|max:255',
+            'MenuType.*.long_description'=>'required|min:10|max:255',
+            'MenuType.*.locale'=>'required',
         ];
     }
     public function messages()
@@ -41,13 +41,13 @@ class MenuTypeRequest extends FormRequest
             'required'=>'this field is required',
             'in'=>'this field must be 0 (is not active) or 1 (is active)',
 
-            'menuType.*.title.min' => 'Your restaurantType\'s title  Is Too Short',
+            'MenuType.*.title.min' => 'Your restaurantType\'s title  Is Too Short',
 
-            'menuType.*.short_description.min' => 'Your menuType Description\'s Is Too Short',
-            'menuType.*.short_description.max' => 'Your menuType Description\'s Is Too Short',
+            'MenuType.*.short_description.min' => 'Your menuType Description\'s Is Too Short',
+            'MenuType.*.short_description.max' => 'Your menuType Description\'s Is Too Short',
 
-            'menuType.*.long_description.min' => 'Your menuType Description\'s Is Too Long',
-            'menuType.*.long_description.max' => 'Your menuType Description\'s Is Too Long',
+            'MenuType.*.long_description.min' => 'Your menuType Description\'s Is Too Long',
+            'MenuType.*.long_description.max' => 'Your menuType Description\'s Is Too Long',
 
 
 

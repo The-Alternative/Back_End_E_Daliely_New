@@ -193,14 +193,7 @@ class BrandsService
                 $request->request->add(['is_active' => 0]);
             else
                 $request->request->add(['is_active' => 1]);
-            //save image
-            // if($request->has('image')) {
-            //     $filePath = uploadImage('products', $request->photo);
-            //     Product::where('id', $pro_id)
-            //         ->update([
-            //             'image' => $filePath,
-            //         ]);
-            // }
+
             $unTransBrand = $this->BrandModel->where('brands.id', $id)
                 ->update([
                     'slug' => $request['slug'],

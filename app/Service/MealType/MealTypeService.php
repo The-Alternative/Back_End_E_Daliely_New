@@ -65,7 +65,7 @@ class MealTypeService
                         'short_description' => $allmealtypes ['short_description'],
                         'long_description' => $allmealtypes ['short_description'],
                         'locale' => $allmealtypes['locale'],
-                        'meal_id' => $unTransMealType_id,
+                        'meal_type_id' => $unTransMealType_id,
                     ];
                 }
                 MealTypeTranslation::insert( $transmealType);
@@ -108,10 +108,10 @@ class MealTypeService
                 ->get()
                 ->all());
             $dbmealType = array_values($db_mealType);
-            $request_mealType= array_values($request->Meal);
+            $request_mealType= array_values($request->MealType);
             foreach($dbmealType as $dbmealTypes){
                 foreach($request_mealType as $request_mealTypes){
-                    $values= MenuTypeTranslation::where('menu_type_translations.menu_type_id',$id)
+                    $values= MealTypeTranslation::where('meal_type_translations.meal_type_id',$id)
                         ->where('locale',$request_mealTypes['locale'])
                         ->update([
                             'title' => $request_mealTypes ['title'],
@@ -130,11 +130,11 @@ class MealTypeService
         }
     }
 //___________________________________________________________//
-    public function search($meal_name)
+    public function search($meal_type_name)
     {
         try {
-            $MealType = DB::table('meal_translations')
-                ->where("title", "like", "%" . $meal_name . "%")
+            $MealType = DB::table('meal_type_translations')
+                ->where("title", "like", "%" . $meal_type_name . "%")
                 ->get();
             if (!$MealType) {
                 return $this->returnError('400', 'not found this Meal Type');

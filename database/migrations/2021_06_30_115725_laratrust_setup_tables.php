@@ -21,9 +21,23 @@ class LaratrustSetupTables extends Migration
             $table->string('description')->nullable();
             $table->timestamps();
         });
+        Schema::create('role_translation', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name')->unique();
+            $table->string('display_name')->nullable();
+            $table->string('description')->nullable();
+            $table->timestamps();
+        });
 
         // Create table for storing permissions
         Schema::create('permissions', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name')->unique();
+            $table->string('display_name')->nullable();
+            $table->string('description')->nullable();
+            $table->timestamps();
+        });
+              Schema::create('permission_translation', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->string('display_name')->nullable();
@@ -79,7 +93,9 @@ class LaratrustSetupTables extends Migration
         Schema::dropIfExists('permission_user');
         Schema::dropIfExists('permission_role');
         Schema::dropIfExists('permissions');
+        Schema::dropIfExists('permission_translation');
         Schema::dropIfExists('role_user');
         Schema::dropIfExists('roles');
+        Schema::dropIfExists('role_translation');
     }
 }

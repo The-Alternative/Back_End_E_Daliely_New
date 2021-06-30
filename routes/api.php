@@ -343,7 +343,6 @@ Route::group(['prefix'=>'ActiveTime','namespace'=>'ActiveTime'],function () {
          Route::PUT('/restoreTrashed/{id}', 'MenuController@restoreTrashed');
          Route::delete('/delete/{id}', 'MenuController@delete');
      });
-
      //________________________Menu Type Route__________________//
      Route::group(['prefix'=>'MenuType','namespace'=>'MenuType'],function () {
          Route::get('/get', 'MenuTypeController@get');

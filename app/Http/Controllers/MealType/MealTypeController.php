@@ -36,9 +36,9 @@ class MealTypeController extends Controller
     {
         return $this->MealTypeService->update($request,$id);
     }
-    public function search($meal_type_title)
+    public function search($meal_type_name)
     {
-        return $this->MealTypeService->search($meal_type_title);
+        return $this->MealTypeService->search($meal_type_name);
     }
     public function trash($id)
     {

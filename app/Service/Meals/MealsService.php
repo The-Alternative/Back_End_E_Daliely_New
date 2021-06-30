@@ -65,7 +65,7 @@ class MealsService
                         'short_description' => $allMeals ['short_description'],
                         'long_description' => $allMeals ['short_description'],
                         'locale' => $allMeals['locale'],
-                        'menu_id' => $unTransMeal_id,
+                        'meal_id' => $unTransMeal_id,
                     ];
                 }
                 MealTranslation::insert( $transmeal);
@@ -199,7 +199,7 @@ class MealsService
             $Meal = $this->MealModel::find($id);
             if ($Meal->is_active == 0) {
                 $Meal ->delete();
-                $Meal ->MealTranslation()->delete();
+                $Meal ->MealTranslations()->delete();
                 return $this->returnData('Meal', $Meal, 'This Meal is deleted Now');
             }
             else {

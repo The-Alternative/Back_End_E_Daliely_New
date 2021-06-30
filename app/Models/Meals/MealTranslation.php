@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class MealTranslation extends Model
 {
     use HasFactory;
-    protected $table=['meal_translations'];
+    protected $table='meal_translations';
     protected $fillable=['id','meal_id','title','short_description','long_description','locale'];
     protected $hidden=['created_at','updated_at','meal_id'];
 
