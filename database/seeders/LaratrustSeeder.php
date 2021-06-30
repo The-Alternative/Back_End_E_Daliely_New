@@ -31,7 +31,7 @@ class LaratrustSeeder extends Seeder
         foreach ($config as $key => $modules) {
 
             // Create a new role
-            $role = \App\Models\Role::firstOrCreate([
+            $role = \App\Models\Admin\Role::firstOrCreate([
                 'name' => $key,
                 'display_name' => ucwords(str_replace('_', ' ', $key)),
                 'description' => ucwords(str_replace('_', ' ', $key))
@@ -47,7 +47,7 @@ class LaratrustSeeder extends Seeder
 
                     $permissionValue = $mapPermission->get($perm);
 
-                    $permissions[] = \App\Models\Permission::firstOrCreate([
+                    $permissions[] = \App\Models\Admin\Permission::firstOrCreate([
                         'name' => $module . '-' . $permissionValue,
                         'display_name' => ucfirst($permissionValue) . ' ' . ucfirst($module),
                         'description' => ucfirst($permissionValue) . ' ' . ucfirst($module),
@@ -91,7 +91,7 @@ class LaratrustSeeder extends Seeder
         if (Config::get('laratrust_seeder.truncate_tables')) {
             DB::table('roles')->truncate();
             DB::table('permissions')->truncate();
-            
+
             if (Config::get('laratrust_seeder.create_users')) {
                 $usersTable = (new \App\Models\User)->getTable();
                 DB::table($usersTable)->truncate();

@@ -15,14 +15,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+         \App\Models\User::factory(10)->create();
         $this->call([
-            BrandSectionSeeder::class,
             BrandSeeder::class,
+            ProductSectionSeeder::class,
+            BrandSectionSeeder::class,
             brandImagesSeeder::class,
             CategoriesSeeder::class,
             CustomFieldSeeder::class,
             CustomField_CustomFieldValue::class,
+            CustomFieldImagesSeeder::class,
             CategoriesImagesSeeder::class,
             ProductCategorySeeder::class,
             ProductImageSeeder::class,
@@ -53,7 +55,6 @@ class DatabaseSeeder extends Seeder
             SocialMediaSedeer::class,
             SpecialtySedeer::class,
 
-//restaurant
             RestaurantSeeder::class,
             RestaurantTypeSeeder::class,
             MenuSeeder::class,

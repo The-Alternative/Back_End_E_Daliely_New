@@ -53,7 +53,7 @@ class BrandsService
             }
             return $response = $this->returnData('Brand', $brand, 'done');
         } catch (\Exception $ex) {
-            return $this->returnError('400', 'Failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -70,7 +70,7 @@ class BrandsService
                 return $response = $this->returnSuccessMessage('Brand', 'Brands trashed doesnt exist yet');
             }
         } catch (\Exception $ex) {
-            return $this->returnError('400', 'Failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -90,7 +90,7 @@ class BrandsService
                 return $this->returnData('Brand', $brand, 'This Brand Is trashed Now');
             }
         } catch (\Exception $ex) {
-            return $this->returnError('400', 'Faild');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -111,7 +111,7 @@ class BrandsService
             }
 
         } catch (\Exception $ex) {
-            return $this->returnError('400', 'Faild');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -235,7 +235,7 @@ class BrandsService
             return $this->returnData('Brand', $dbdbrands, 'done');
         } catch (\Exception $ex) {
             DB::rollback();
-            return $this->returnError('400', 'saving Faild');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -249,7 +249,7 @@ class BrandsService
                 return $this->returnData('brands', $brand, 'done');
             }
         } catch (\Exception $ex) {
-            return $this->returnError('400', 'faild');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -259,15 +259,15 @@ class BrandsService
      */
     public function delete($id)
     {
-//        try {
+        try {
             $brand = $this->BrandModel->find($id);
 
                 $brand ->destroy($id);
                 return $this->returnData('Brand', $brand, 'This Brand Is deleted Now');
 
 
-//        } catch (\Exception $ex) {
-//            return $this->returnError('400', 'Faild');
-//        }
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
     }
 }
