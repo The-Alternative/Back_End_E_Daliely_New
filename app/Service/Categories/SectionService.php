@@ -5,6 +5,7 @@ use App\Models\Categories\Category;
 use App\Models\Categories\Section;
 use App\Models\Categories\SectionTranslation;
 use App\Traits\GeneralTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -27,7 +28,7 @@ class SectionService
         $this->SectionTranslation=$sectionTranslation;
     }
     /*___________________________________________________________________________*/
-    /****Get All Active category Or By ID  ****/
+    /****Get All Active section Or By ID  ****/
     public function getAll()
     {
         try{
@@ -69,7 +70,7 @@ class SectionService
     {
         $sec=$this->SectionModel->with('Category')->get();
         if (is_null($sec) ){
-            return $response= $this->returnSuccessMessage('This category not found','done');
+            return $response= $this->returnSuccessMessage('This section not found','done');
         }else{
             return $response= $this->returnData('Section',$sec,'done');
         }
@@ -84,14 +85,14 @@ class SectionService
             if (count($section) > 0){
                 return $this -> returnData('Section',$section,'done');
             }else{
-                return $response= $this->returnSuccessMessage('Product','Products trashed doesnt exist yet');
+                return $response= $this->returnSuccessMessage('section','sections trashed doesnt exist yet');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
-    /****Restore category Fore Active status  ****/
+    /****Restore section Fore Active status  ****/
     public function restoreTrashed( $id)
     {
         try{
@@ -104,11 +105,11 @@ class SectionService
                 return $this->returnData('Section', $section,'This Section Is trashed Now');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
-    /****   category's Soft Delete   ****/
+    /****   section's Soft Delete   ****/
     public function trash( $id)
     {
         try{
@@ -121,13 +122,13 @@ class SectionService
                 return $this->returnData('Section', $section,'This Section Is trashed Now');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
     /****  Create Section   ***
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
         public function create(Request $request)
         {
@@ -149,8 +150,7 @@ class SectionService
 
                     'slug' => $request['slug'],
                     'image' => $request['image'],
-                    'is_active' => $request['is_active'],
-//                    'categories_id' => $request['categories_id']
+                    'is_active' => $request['is_active']
                 ]);
                 //check the category and request
                 if(isset($allsections) && count($allsections))
@@ -168,7 +168,7 @@ class SectionService
                     $this->SectionTranslation->insert($transSection_arr);
                 }
                 DB::commit();
-                return $this->returnData('category', [$unTransSection_id,$transSection_arr],'done');
+                return $this->returnData('section', [$unTransSection_id,$transSection_arr],'done');
             }
             catch(\Exception $ex)
             {
@@ -177,10 +177,10 @@ class SectionService
             }
         }
     /*___________________________________________________________________________*/
-    /****  Update category   ***
+    /****  Update section   ***
      * @param Request $request
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function update(Request $request,$id)
     {
@@ -188,9 +188,9 @@ class SectionService
         try{
             $section= $this->SectionModel->find($id);
             if(!$section)
-                return $this->returnError('400', 'not found this Category');
+                return $this->returnError('400', 'not found this section');
            $allsections= collect($request->section)->all();
-            if (!($request->has('category.is_active')))
+            if (!($request->has('sections.is_active')))
                 $request->request->add(['is_active'=>0]);
             else
                 $request->request->add(['is_active'=>1]);
@@ -203,11 +203,10 @@ class SectionService
             //         ]);
             // }
 
-           $ncategory=$this->SectionModel->where('id',$id)->update([
+           $ncategory=$this->SectionModel->where('sections.id',$id)->update([
                'slug' => $request['slug'],
                'image' => $request['image'],
                'is_active' => $request['is_active'],
-               'categories_id' => $request['categories_id']
             ]);
             $ss=$this->SectionTranslation->where('section_id',$id);
             $collection1 = collect($allsections);
@@ -231,18 +230,18 @@ class SectionService
                     }
                 }
             DB::commit();
-            return $this->returnData('Category', $dbdsections,'done');
+            return $this->returnData('Section', $dbdsections,'done');
 
         }
         catch(\Exception $ex){
             Db::rollBack();
-            return $this->returnError('400', 'saving failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
-    /****  ٍsearch for Product   ***
+    /****  ٍsearch for section   ***
      * @param $name
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function search($name)
     {
@@ -256,14 +255,14 @@ class SectionService
         }
           else
             {
-                return $this->returnData('Category', $section,'done');
+                return $this->returnData('section', $section,'done');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
-    /****  Delete Product   ****/
+    /****  Delete section   ****/
     public function delete($id)
     {
         try{
@@ -274,7 +273,7 @@ class SectionService
                  return $this->returnData('Section', $section,'This Section Is deleted Now');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
 }

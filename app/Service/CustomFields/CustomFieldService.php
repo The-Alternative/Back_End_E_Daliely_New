@@ -18,7 +18,7 @@ class CustomFieldService
     private $Custom_Field_Translation;
 
     /**
-     * Category Service constructor.
+     * Custom_field Service constructor.
      * @param Custom_Field $CustomFieldModel
      * @param Custom_Field_Translation $Custom_Field_Translation
      */
@@ -28,7 +28,7 @@ class CustomFieldService
         $this->Custom_Field_Translation=$Custom_Field_Translation;
     }
     /*___________________________________________________________________________*/
-    /****Get All Active category Or By ID  ****/
+    /****Get All Active Custom_field Or By ID  ****/
     public function getAll()
     {
         try{
@@ -51,7 +51,7 @@ class CustomFieldService
         try{
             $custom_field =$this->CustomFieldModel->with('CustomFieldImages','Custom_Field_Value')->find($id);
             if (is_null($custom_field) ){
-                return $response= $this->returnSuccessMessage('This Category not found','done');
+                return $response= $this->returnSuccessMessage('not found this Custom_field','done');
             }else{
                 return $response= $this->returnData('Custom_field',$custom_field,'done');
             }
@@ -66,7 +66,7 @@ class CustomFieldService
         return $response= $this->returnData('Custom_field',$custom_field,'done');
     }
     /*___________________________________________________________________________*/
-    /****ــــــThis Functions For Trashed category  ****/
+    /****ــــــThis Functions For Trashed Custom_field  ****/
     /****Get All Trashed Products Or By ID  ****/
     public function getTrashed()
     {
@@ -78,7 +78,7 @@ class CustomFieldService
         }
     }
     /*___________________________________________________________________________*/
-    /****Restore category Fore Active status  ***
+    /****Restore Custom_field Fore Active status  ***
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
@@ -98,7 +98,7 @@ class CustomFieldService
         }
     }
     /*___________________________________________________________________________*/
-    /****   category's Soft Delete   ***
+    /****   Custom_field's Soft Delete   ***
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
@@ -118,7 +118,7 @@ class CustomFieldService
         }
     }
     /*___________________________________________________________________________*/
-    /****  Create category   ***
+    /****  Create Custom_field   ***
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -136,7 +136,7 @@ class CustomFieldService
              $unTransCustomField_id=$this->CustomFieldModel->insertGetId([
                 'is_active' =>$request['is_active'],
             ]);
-            //check the category and request
+            //check the Custom_field and request
             if(isset($allcustom_fields) && count($allcustom_fields)) {
                 //insert other traslations for custom field
                 foreach ($allcustom_fields as $allCustomField) {
@@ -199,8 +199,7 @@ class CustomFieldService
         }
     }
     /*___________________________________________________________________________*/
-    /****  Update category   ***
-     * @param CategoryRequest $request
+    /****  Update Custom_field   ***
      * @param $id
      * @return Exception|\Illuminate\Http\JsonResponse
      */
@@ -212,7 +211,7 @@ class CustomFieldService
             if(!$custom_field)
                 return $this->returnError('400', 'not found this custom_field');
             $allcustom_fields = collect($request->custom_field)->all();
-            if (!($request->has('category.is_active')))
+            if (!($request->has('custom_fields.is_active')))
                 $request->request->add(['is_active'=>0]);
             else
                 $request->request->add(['is_active'=>1]);
@@ -264,7 +263,7 @@ class CustomFieldService
         }
     }
     /*___________________________________________________________________________*/
-    /****  ٍsearch for Product   ***
+    /****  ٍsearch for Custom_field   ***
      * @param $name
      * @return \Illuminate\Http\JsonResponse
      */
@@ -287,7 +286,7 @@ class CustomFieldService
         }
     }
     /*___________________________________________________________________________*/
-    /****  Delete Product   ***
+    /****  Delete Custom_field   ***
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */

@@ -26,10 +26,8 @@ class BrandsService
     public function getAll()
     {
         try {
-            $brands = $this->BrandModel->with(['Product',
-                'BrandImages'=>function($q){
-                return $q->where('is_cover',1)->get();}])->get();
-            $brands = $this->BrandModel->with('Product')->paginate(10);
+            $brands = $this->BrandModel->with(['Product', 'BrandImages'=>function($q){
+                return $q->where('is_cover',1)->get();}])->paginate(10);
             if (count($brands) > 0) {
                 return $response = $this->returnData('Brand', $brands, 'done');
             } else {
@@ -47,7 +45,8 @@ class BrandsService
     public function getById($id)
     {
         try {
-            $brand = $this->BrandModel->with(['Product','BrandImages'])->find($id);
+            $brand = $this->BrandModel->with('Product','BrandImages')->find($id);
+//            return $brand->Product()->get();
 
             if (!isset($brand)) {
                 return $response = $this->returnSuccessMessage('This Brand not found', 'done');

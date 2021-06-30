@@ -10,7 +10,6 @@ class StoreProduct extends Pivot
 {
     use HasFactory;
     protected $table = 'stores_products';
-
     protected $primaryKey = 'id';
     protected $hidden =
         [
