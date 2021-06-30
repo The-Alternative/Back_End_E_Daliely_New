@@ -128,10 +128,11 @@ class Product extends Model
     }
     public function Brand()
     {
-        return $this->belongsTo(Brand::class);
+        return $this->belongsTo(Brand::class,'products.brand_id');
     }
     public function Custom_Field_Value(){
-        return $this->belongsToMany(Custom_Field_Value::class,
+        return $this->belongsToMany(
+            Custom_Field_Value::class,
             'products_custom_field_value',
             'product_id',
             'custom_field_value_id'

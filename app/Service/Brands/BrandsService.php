@@ -53,7 +53,7 @@ class BrandsService
             }
             return $response = $this->returnData('Brand', $brand, 'done');
         } catch (\Exception $ex) {
-            return $this->returnError('400', 'Failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -70,7 +70,7 @@ class BrandsService
                 return $response = $this->returnSuccessMessage('Brand', 'Brands trashed doesnt exist yet');
             }
         } catch (\Exception $ex) {
-            return $this->returnError('400', 'Failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -90,7 +90,7 @@ class BrandsService
                 return $this->returnData('Brand', $brand, 'This Brand Is trashed Now');
             }
         } catch (\Exception $ex) {
-            return $this->returnError('400', 'Faild');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -111,7 +111,7 @@ class BrandsService
             }
 
         } catch (\Exception $ex) {
-            return $this->returnError('400', 'Faild');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -193,14 +193,7 @@ class BrandsService
                 $request->request->add(['is_active' => 0]);
             else
                 $request->request->add(['is_active' => 1]);
-            //save image
-            // if($request->has('image')) {
-            //     $filePath = uploadImage('products', $request->photo);
-            //     Product::where('id', $pro_id)
-            //         ->update([
-            //             'image' => $filePath,
-            //         ]);
-            // }
+
             $unTransBrand = $this->BrandModel->where('brands.id', $id)
                 ->update([
                     'slug' => $request['slug'],
@@ -235,7 +228,7 @@ class BrandsService
             return $this->returnData('Brand', $dbdbrands, 'done');
         } catch (\Exception $ex) {
             DB::rollback();
-            return $this->returnError('400', 'saving Faild');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -249,7 +242,7 @@ class BrandsService
                 return $this->returnData('brands', $brand, 'done');
             }
         } catch (\Exception $ex) {
-            return $this->returnError('400', 'faild');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -259,15 +252,15 @@ class BrandsService
      */
     public function delete($id)
     {
-//        try {
+        try {
             $brand = $this->BrandModel->find($id);
 
                 $brand ->destroy($id);
                 return $this->returnData('Brand', $brand, 'This Brand Is deleted Now');
 
 
-//        } catch (\Exception $ex) {
-//            return $this->returnError('400', 'Faild');
-//        }
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
     }
 }
