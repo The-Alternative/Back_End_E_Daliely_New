@@ -65,7 +65,7 @@ class MenuTypeService
                         'short_description' => $allmenutypes ['short_description'],
                         'long_description' => $allmenutypes ['short_description'],
                         'locale' => $allmenutypes['locale'],
-                        'menu_id' => $unTransMenuType_id,
+                        'menu_type_id' => $unTransMenuType_id,
                     ];
                 }
                 MenuTypeTranslation::insert( $transmenuType);
@@ -104,11 +104,11 @@ class MenuTypeService
             $allmenuTypelength=$collection1->count();
             $collection2 = collect($ss);
 
-            $db_menuType= array_values(MenuTypeTranslation::where('menu_type_translations.menu_type_id',$id)
+            $db_menuType=array_values(MenuTypeTranslation::where('menu_type_translations.menu_type_id',$id)
                 ->get()
                 ->all());
             $dbmenuType = array_values($db_menuType);
-            $request_menuType= array_values($request->Menu);
+            $request_menuType= array_values($request->MenuType);
             foreach($dbmenuType as $dbmenuTypes){
                 foreach($request_menuType as $request_menuTypes){
                     $values= MenuTypeTranslation::where('menu_type_translations.menu_type_id',$id)
@@ -133,7 +133,7 @@ class MenuTypeService
     public function search($meal_type_title)
     {
         try {
-            $MenuType = DB::table('menu_translations')
+            $MenuType = DB::table('menu_type_translations')
                 ->where("title", "like", "%" . $meal_type_title . "%")
                 ->get();
             if (!$MenuType) {
@@ -203,7 +203,7 @@ class MenuTypeService
 
             }
             else {
-                return $this->returnData('Menu Type', $MenuType, 'This Menu Type is deleted Now');
+                return $this->returnData('Menu Type', $MenuType, 'This Menu Type can not deleted Now');
             }
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());

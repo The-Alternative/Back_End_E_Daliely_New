@@ -29,11 +29,11 @@ class MealsRequest extends FormRequest
             'image'          =>'required',
             'meal_type_id'   =>'required',
 
-            'meal'=>'required|array|min:1',
-            'meal.*.title'=>'required|min:3|string',
-            'meal.*.short_description'=>'required|min:10|max:255',
-            'meal.*.long_description'=>'required|min:10|max:255',
-            'meal.*.locale'=>'required',
+            'Meal'=>'required|array|min:1',
+            'Meal.*.title'=>'required|min:3|string',
+            'Meal.*.short_description'=>'required|min:10|max:255',
+            'Meal.*.long_description'=>'required|min:10|max:255',
+            'Meal.*.locale'=>'required',
         ];
     }
     public function messages()
