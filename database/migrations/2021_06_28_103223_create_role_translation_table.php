@@ -2,10 +2,9 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSectionsTable extends Migration
+class CreateRoleTranslationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,14 +13,13 @@ class CreateSectionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sections', function (Blueprint $table) {
+        Schema::create('role_translation', function (Blueprint $table) {
             $table->id();
-            $table->string('slug');
-            $table->boolean('is_active');
-            $table->string('image');
+            $table->string('name');
+            $table->string('description');
+            $table->string('display_name');
             $table->timestamps();
         });
-
     }
 
     /**
@@ -31,6 +29,6 @@ class CreateSectionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sections');
+        Schema::dropIfExists('role_translation');
     }
 }

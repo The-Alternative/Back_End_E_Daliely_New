@@ -69,8 +69,10 @@ class Section extends Model
         return $this->belongsToMany(
             Store::class,
             'stores_sections',
-        'section_id',
-        'store_id');
+            'section_id',
+            'store_id',
+            'id',
+            'id');
     }
     public function Product()
     {

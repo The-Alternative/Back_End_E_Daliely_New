@@ -5,6 +5,7 @@ use App\Models\Categories\CategoryTranslation;
 use App\Models\Categories\Category;
 use App\Http\Requests\CategoryRequest;
 use App\Traits\GeneralTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
@@ -62,11 +63,11 @@ class CategoryService
     }
     /*___________________________________________________________________________*/
         /****ــــــThis Functions For Trashed category  ****/
-    /****Get All Trashed Products Or By ID  ****/
+    /****Get All Trashed category Or By ID  ****/
     public function getTrashed()
     {
         try{
-        $category = $this->categoryModel->where('is_active',0)->get();
+        $category = $this->categoryModel->where('categories.is_active',0)->get();
           return $this -> returnData('Category',$category,'done');
         }catch(\Exception $ex){
             return $this->returnError('400', $ex->getMessage());
@@ -75,7 +76,7 @@ class CategoryService
     /*___________________________________________________________________________*/
     /****Restore category Fore Active status  ***
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function restoreTrashed( $id)
     {
@@ -95,7 +96,7 @@ class CategoryService
     /*___________________________________________________________________________*/
     /****   category's Soft Delete   ***
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function trash( $id)
     {
@@ -115,8 +116,8 @@ class CategoryService
     }
     /*___________________________________________________________________________*/
     /****  Create category   ***
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param CategoryRequest $request
+     * @return JsonResponse
      */
     /*___________________________________________________________________________*/
     public function create(CategoryRequest $request)
@@ -193,7 +194,7 @@ class CategoryService
     /****  Update category   ***
      * @param CategoryRequest $request
      * @param $id
-     * @return Exception|\Illuminate\Http\JsonResponse
+     * @return Exception|JsonResponse
      */
     public function update(CategoryRequest $request,$id)
     {
@@ -258,9 +259,9 @@ class CategoryService
         }
     }
     /*___________________________________________________________________________*/
-    /****  ٍsearch for Product   ***
+    /****  ٍsearch for category   ***
      * @param $name
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function search($name)
     {
@@ -281,9 +282,9 @@ class CategoryService
         }
     }
     /*___________________________________________________________________________*/
-    /****  Delete Product   ***
+    /****  Delete category   ***
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function delete($id)
     {

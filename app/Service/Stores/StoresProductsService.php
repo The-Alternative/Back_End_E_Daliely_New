@@ -37,7 +37,7 @@ class StoresProductsService
                 return $response= $this->returnData('Product in Store',$product,'done');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -66,7 +66,7 @@ class StoresProductsService
 
                return $response = $this->returnData('range Of Price in all Store', ['max', $max, 'min', $min], 'done');
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
         }
     /*__________________________________________________________________*/
@@ -87,7 +87,7 @@ class StoresProductsService
             $storeProduct->save();
         return $response= $this->returnData('Product in Store',$storeProduct,'done');
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
@@ -126,7 +126,7 @@ class StoresProductsService
                 return $this->returnData('product', $product,'This Product Is available Now');
             }
         }catch(\Exception $ex){
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
         }
     /*__________________________________________________________________*/

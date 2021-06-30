@@ -65,7 +65,10 @@ class Store extends Model
             Section::class,
             'stores_sections',
             'store_id',
-            'section_id');
+            'section_id',
+            'id',
+            'id'
+        );
     }
     public function StoreProduct()
     {
@@ -73,11 +76,17 @@ class Store extends Model
     }
     public function Brand()
     {
-        return $this->belongsToMany(Brand::class,'store_brand','store_id','brand_id','id','id');
+        return $this->belongsToMany(
+            Brand::class,
+            'store_brand',
+            'store_id',
+            'brand_id',
+            'id',
+            'id'
+        );
     }
     public function StoreImage()
     {
         return $this->hasMany(StoreImage::class);
     }
-
 }
