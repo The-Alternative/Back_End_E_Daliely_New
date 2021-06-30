@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder
             CustomerSedeer::class,
             HospitalSedeer::class,
             MedicalDeviceSedeer::class,
-//            MedicalFileSedeer::class,
+            MedicalFileSedeer::class,
             SocialMediaSedeer::class,
             SpecialtySedeer::class,
 
