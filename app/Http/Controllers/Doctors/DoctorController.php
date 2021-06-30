@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Doctors;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Doctors\DoctorRequest;
-use App\Service\Doctors\DoctorCustomerService;
+use App\Service\Doctors\CustomerDoctorService;
 use App\Service\Doctors\DoctorService;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
@@ -14,11 +14,11 @@ class DoctorController extends Controller
 {
     use GeneralTrait;
     private $DoctorService;
-    private $DoctorCustomerService;
 
-    public function __construct(DoctorService $DoctorService,DoctorCustomerService $doctorCustomerService,Response $response )
+
+    public function __construct(DoctorService $DoctorService,CustomerDoctorService $CustomerDoctorService,Response $response )
     {
-        $this->DoctorCustomerService=$doctorCustomerService;
+        $this->CustomerDoctorService=$CustomerDoctorService;
         $this->DoctorService=$DoctorService;
         $this->response=$response;
     }
@@ -67,50 +67,46 @@ class DoctorController extends Controller
         return $this->DoctorService->delete($id);
     }
 
-    public function SocialMedia($doctor_name)
+    public function SocialMedia($id)
     {
-        return $this->DoctorService->SocialMedia($doctor_name);
+        return $this->DoctorService->SocialMedia($id);
     }
 
-    public function doctormedicaldevice($doctor_name)
+    public function doctormedicaldevice($id)
     {
-        return $this->DoctorService->doctormedicaldevice($doctor_name);
+        return $this->DoctorService->doctormedicaldevice($id);
     }
-    public function getalldetails($doctor_name)
+    public function getalldetails($id)
     {
-        return $this->DoctorService->getalldetails($doctor_name);
-    }
-
-    public function hospital($doctor_name)
-    {
-        return $this->DoctorService->hospital($doctor_name);
+        return $this->DoctorService->getalldetails($id);
     }
 
-    public function appointment($doctor_name)
+    public function hospital($id)
     {
-        return $this->DoctorService->appointment($doctor_name);
+        return $this->DoctorService->hospital($id);
     }
 
-    public function clinic($doctor_name)
+    public function appointment($id)
     {
-        return $this->DoctorService->clinic($doctor_name);
+        return $this->DoctorService->appointment($id);
     }
 
-    public function customer($doctor_name)
+    public function clinic($id)
     {
-        return $this->DoctorService->customer($doctor_name);
+        return $this->DoctorService->clinic($id);
     }
 
-    public function createcustomer(Request $request,$doctorid,$fileId)
+    public function customer($id)
     {
-        return $this->DoctorCustomerService->create( $request,$doctorid,$fileId );
+        return $this->DoctorService->customer($id);
     }
-    public function DoctorRate($doctor_name)
+    public function DoctorRate($id)
     {
-        return $this->DoctorService->DoctorRate($doctor_name);
+        return $this->DoctorService->DoctorRate($id);
     }
-    public function DoctorSpecialty($doctor_name)
+    public function DoctorSpecialty($id)
     {
-        return $this->DoctorService->DoctorSpecialty($doctor_name);
+        return $this->DoctorService->DoctorSpecialty($id);
     }
+
 }

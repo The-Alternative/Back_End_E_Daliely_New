@@ -23,10 +23,10 @@ class CustomerDoctorSeeder extends Seeder
                'blood_type' => $faker->bloodType(),
                'social_status' => $faker->sentence(1),
                'gender' =>$faker->sentence(1),
-               'age' =>$faker->numberBetween(1,90),
-               'medical_file_id' => $faker->numberBetween(1,200),
-               'customer_id' => $faker->numberBetween(1,200),
-               'doctor_id' => $faker->numberBetween(1,200)
+               'age' =>$faker->numberBetween(1,50),
+               'medical_file_id' => $faker->numberBetween(1,10),
+               'customer_id' => $faker->numberBetween(1,10),
+               'doctor_id' => $faker->numberBetween(1,10)
            ]);
 
        }

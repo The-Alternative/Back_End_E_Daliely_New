@@ -16,11 +16,14 @@ class DoctorRateSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-            for ($i = 0; $i <= 5; $i++) {
-                DB::table('doctor_rates')->insert([
-                    'doctor_id' => $faker->numberBetween(1, 200),
-                    'rate' => $faker->numberBetween(1, 5)
-                ]);
+
+        for ($i = 0; $i <= 5; $i++) {
+            DB::table('doctor_rates')->insert([
+                'doctor_id' => $faker->numberBetween(1, 10),
+                'rate' => $faker->numberBetween(1, 5),
+                'is_active' => $faker->boolean
+            ]);
+
             }
         }
 }

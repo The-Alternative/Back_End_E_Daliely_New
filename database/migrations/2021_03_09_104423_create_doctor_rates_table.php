@@ -17,6 +17,7 @@ class CreateDoctorRatesTable extends Migration
             $table->id();
             $table->integer('doctor_id')->unsigned();
             $table->integer('rate');
+            $table->boolean('is_active');
             $table->timestamps();
         });
     }

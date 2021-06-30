@@ -16,16 +16,29 @@ class HospitalSedeer extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        for ($i = 0; $i <= 200; $i++) {
-            DB::table('hospitals')->insert([
+
+        for ($i = 0; $i <= 5; $i++) {
+            $s = DB::table('hospitals')->insertGetId([
                 'is_active' => 1,
                 'is_approved' => 1,
-                'name' => $faker->sentence(3),
-                'medical_center' => $faker->sentence(2),
                 'general_hospital' => 0,
                 'private_hospital' => 1,
                 'location_id' => 1,
                 'doctor_id' => 1,]);
+
         }
+        DB::table('hospital_translations')->insert([[
+            'name' => $faker->sentence(5),
+            'description' => $faker->sentence(5),
+            'hospital_id' => $s,
+              'locale' => 'en',
+        ],
+            [
+                'name' => $faker->sentence(5),
+                'description' => $faker->sentence(5),
+                'hospital_id' => $s,
+                'locale' => 'ar',
+            ]]);
+
     }
 }

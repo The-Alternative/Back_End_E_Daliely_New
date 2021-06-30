@@ -32,12 +32,14 @@ class RestaurantRequest extends FormRequest
             'customer_id'   =>'required',
             'location_id'    =>'required',
             'type_of_restaurant_id'  =>'required',
-            'food_id'              =>'required',
+            'user_id'              =>'required',
+            'rate_id'              =>'required',
             'active_time_id'      =>'required',
 
             'restaurant'=>'required|array|min:1',
             'restaurant.*.title'=>'required|min:3|string',
-            'restaurant.*.description'=>'required|min:10|max:255',
+            'restaurant.*.short_description'=>'required|min:10|max:255',
+            'restaurant.*.long_description'=>'required|min:10|max:255',
             'restaurant.*.locale'=>'required',
         ];
     }
@@ -47,10 +49,15 @@ class RestaurantRequest extends FormRequest
             'required'=>'this field is required',
             'in'=>'this field must be 0 (is not active) or 1 (is active)',
 
-            'restaurant.*.title.min' => 'Your Doctor\'s First Name Is Too Short',
+            'restaurant.*.title.min' => 'Your restaurant\'s title  Is Too Short',
 
-            'restaurant.*.Description.min' => 'Your Doctor Description\'s Is Too Short',
-            'restaurant.*.description.max' => 'Your Doctor Description\'s Is Too Long',
+            'restaurant.*.short_description.min' => 'Your restaurant Description\'s Is Too Short',
+            'restaurant.*.short_description.max' => 'Your restaurant Description\'s Is Too Short',
+
+            'restaurant.*.long_description.min' => 'Your restaurant Description\'s Is Too Long',
+            'restaurant.*.long_description.max' => 'Your restaurant Description\'s Is Too Long',
+
+
 
         ];
     }

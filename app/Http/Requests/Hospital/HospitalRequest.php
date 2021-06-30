@@ -27,15 +27,17 @@ class HospitalRequest extends FormRequest
         return [
              'is_active'       =>'required|in:0,1',
              'is_approved'    =>'required|in:0,1',
-             'medical_center'  =>'required',
-             'general_hospital'=>'required',
-             'private_hospital'=>'required',
+             'general_hospital'=>'required|in:0,1',
+             'private_hospital'=>'required|in:0,1',
              'location_id'     =>'required',
              'doctor_id'       =>'required',
 
 
-            'name'=> 'required|min:5|max:255|unique:hospitals,name'
-        ];
+            'hospital'=>'required|array|min:1',
+            'hospital.*.name'=>'required|min:3|string',
+            'hospital.*.description'=>'required|min:10|max:255',
+            'hospital.*.locale'=>'required',
+            ];
 
     }
 
@@ -47,9 +49,7 @@ class HospitalRequest extends FormRequest
 
             'name.min' => 'Your Hospital\'s Name Is Too Short',
             'name.max' => 'Your Hospital\'s Name Is Too Long',
-//            'name.regex' => 'Your Hospital\'s Name Have Number',
             'name.unique' => 'This Name\'s Is Used By Another Hospital',
-
         ];
     }
 }

@@ -15,28 +15,29 @@ class SpecialtySedeer extends Seeder
      */
     public function run()
     {
-//        $faker=Faker::create();
-//        for ($i = 0; $i <= 200; $i++) {
-//            $s = DB::table('specialties')->insertGetId([
-//                'is_active' => 1,]);
-//        for ($i = 0; $i <= 5; $i++) {
-//            $s = DB::table('specialties')->insertGetId([
-//                'is_active' =>  $faker->boolean,
-//                'graduation_year' => $faker->year,
-//
-//            ]);
-//            DB::table('specialty_translation')->insert([[
-//                'specialty_id'   => $s,
-//                'name'  => $faker->sentence(3),
-//                'locale'      => 'en',
-//            ],
-//                [
-//                    'specialty_id'   => $s,
-//                    'name'  => $faker->sentence(3),
-//                    'locale' => 'ar',
-//                ]]);
-//
-//        }
-//    }
+
+        $faker=Faker::create();
+        for ($i = 0; $i <= 5; $i++) {
+            $s = DB::table('specialties')->insertGetId([
+                'is_active' =>  $faker->boolean,
+                'graduation_year' => $faker->year,
+
+            ]);
+            DB::table('specialty_translation')->insert([[
+                'specialty_id'   => $s,
+                'name'  => $faker->sentence(3),
+                'description'  => $faker->sentence(8),
+                'locale'      => 'en',
+            ],
+                [
+                    'specialty_id'   => $s,
+                    'name'  => $faker->sentence(3),
+                    'description'  => $faker->sentence(8),
+
+                    'locale' => 'ar',
+                ]]);
+
+        }
+
     }
 }

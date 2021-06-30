@@ -6,14 +6,11 @@ namespace App\Service\Doctors;
 use App\Models\Customer\Customer;
 use App\Models\DoctorRate\DoctorRate;
 use App\Models\Doctors\doctor;
-use App\Models\Doctors\DoctorCustomer;
 use App\Models\Doctors\DoctorTranslation;
-use App\Service\Brands\BrandsService;
+use App\Models\MedicalFile\MedicalFile;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\Doctors\DoctorRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -32,7 +29,7 @@ class DoctorService
     public function get()
     {
         try{
-        $doctor= $this->doctorModel::Active()->withTrans();
+        $doctor= $this->doctorModel::paginate(5);
         return $this->returnData('doctor',$doctor,'done');
         }
         catch(\Exception $ex)
@@ -43,49 +40,21 @@ class DoctorService
 
     public function getById($id)
     {
-
-//        try{
-//            $doctor= $this->doctorModel->find($id);
-//            if (is_null($doctor)){
-//                return $this->returnSuccessMessage('this doctor not found','done');
-//            }
-//            else {
-////
-//                return $this->returnData('doctor', $doctor, 'done');
-//            }
-//
-//        }
-//        catch(\Exception $ex)
-//        {
-//            return $this->returnError('400',$ex->getMessage());
-//        }
-
         try{
-            $doctor=$this->doctorModel->getbyId()->find($id);
-//            $doctor= $this->doctorModel->with('medicalDevice','medicalDevice','clinic','hospital','Specialty')
-//            ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
-//            ->where('doctors.id','=',$id)
-//                ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name','doctor_translation.description')
-//             ->get();
-
-
-//            if (is_null($doctor)){
-//                return $this->returnSuccessMessage('this doctor not found','done');
-//            }
-//            else {
-////
+            $doctor= $this->doctorModel->find($id);
+            if (is_null($doctor)){
+                return $this->returnSuccessMessage('this doctor not found','done');
+            }
+            else {
                 return $this->returnData('doctor', $doctor, 'done');
-//            }
-
+            }
         }
         catch(\Exception $ex)
         {
             return $this->returnError('400',$ex->getMessage());
         }
     }
-
-//__________________________________________________________________________//
-
+////__________________________________________________________________________//
     public function create( DoctorRequest $request )
     {
         try {
@@ -114,7 +83,7 @@ class DoctorService
                 DoctorTranslation::insert( $transdoctor);
             }
             DB::commit();
-            return $this->returnData('doctor', [$unTransdoctor_id,  $transdoctor], 'done');
+            return $this->returnData('doctor', [$unTransdoctor_id, $transdoctor], 'done');
         }
         catch(\Exception $ex)
         {
@@ -135,7 +104,7 @@ class DoctorService
             else
                 $request->request->add(['is_active'=>1]);
 
-            $newdoctor=doctor::where('id',$id)
+            $newdoctor=doctor::where('doctors.id',$id)
                 ->update([
                     'image' => $request['image'],
                     'social_media_id' => $request['social_media_id'],
@@ -147,19 +116,19 @@ class DoctorService
                     'is_active' => $request['is_active'],
                 ]);
 
-            $ss=DoctorTranslation::where('doctor_id',$id);
+            $ss=DoctorTranslation::where('doctor_translation.doctor_id',$id);
             $collection1 = collect($alldoctor);
             $alldoctorlength=$collection1->count();
             $collection2 = collect($ss);
 
-            $db_doctor= array_values(DoctorTranslation::where('doctor_id',$id)
+            $db_doctor= array_values(DoctorTranslation::where('doctor_translation.doctor_id',$id)
                 ->get()
                 ->all());
             $dbdoctor = array_values($db_doctor);
             $request_doctor= array_values($request->doctor);
             foreach($dbdoctor as $dbdoctors){
                 foreach($request_doctor as $request_doctors){
-                    $values= DoctorTranslation::where('doctor_id',$id)
+                    $values= DoctorTranslation::where('doctor_translation.doctor_id',$id)
                         ->where('locale',$request_doctors['locale'])
                         ->update([
                             'first_name' => $request_doctors ['first_name'],
@@ -172,10 +141,9 @@ class DoctorService
             }
             DB::commit();
             return $this->returnData('doctor', $dbdoctor,'done');
-
         }
         catch(\Exception $ex){
-                        return $this->returnError('400', $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 //___________________________________________________________//
@@ -204,7 +172,7 @@ class DoctorService
         if(is_null($doctor)){
             return $this->returnSuccessMessage('This doctor not found', 'done');}
         else{
-        $doctor->is_active = false;
+        $doctor->is_active =0;
         $doctor->save();
         return $this->returnData('doctor', $doctor, 'This doctor is trashed Now');
     }
@@ -218,7 +186,7 @@ class DoctorService
     public function getTrashed()
     {
         try {
-            $doctor = $this->doctorModel::NotActive()->WithTrans()->all();
+            $doctor = $this->doctorModel::NotActive();
             return $this->returnData('doctor', $doctor, 'done');
         }
         catch(\Exception $ex)
@@ -234,7 +202,7 @@ class DoctorService
             if (is_null($doctor)) {
                 return $this->returnSuccessMessage('This doctor not found', 'done');
             } else {
-                $doctor->is_active = true;
+                $doctor->is_active =1;
                 $doctor->save();
                 return $this->returnData('doctor', $doctor, 'This doctor is trashed Now');
             }
@@ -250,52 +218,48 @@ class DoctorService
         try{
         $doctor = $this->doctorModel::find($id);
             if ($doctor->is_active == 0) {
-                $doctor = $this->doctorModel->destroy($id);
-            }
-            return $this->returnData('doctor', $doctor, 'This doctor is deleted Now');
+                $doctor->delete();
+                $doctor->doctortranslation()->delete();
+                return $this->returnData('doctor', $doctor, 'This doctor is deleted Now');
 
+            }
+            else {
+                return $this->returnData('doctor', $doctor, 'This doctor can not deleted Now');
+            }
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }
 
     }
 
-//    get all doctor's social media by doctor's name
-    public function SocialMedia($doctor_name)
+//    get all doctor's social media by doctor's id
+    public function SocialMedia($id)
     {
         try {
-            return doctor::with('socialMedia')->join('doctor_translation', 'doctor_translation.doctor_id', '=', 'doctor_id')
-                ->where('doctor_translation.first_name', 'like', '%' . $doctor_name . '%')
-                ->select('doctors.*', 'doctor_translation.first_name','doctor_translation.last_name')->get();
+           return doctor::with('socialMedia')->find($id);
         }
         catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }
-
     }
 
 
-    //get  doctor's medical devices by doctor's name
-    public function doctormedicaldevice($doctor_name)
+    //get  doctor's medical devices by doctor's id
+    public function doctormedicaldevice($id)
     {
         try{
-        return doctor::with('medicalDevice')
-            ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
-            ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
-            ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name')->get();
+            return doctor::with('medicalDevice')->find($id);
         }
         catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }
     }
 
-    //get hospital by doctor's name
-    public function hospital($doctor_name)
+    //get hospital by doctor's id
+    public function hospital($id)
     {
       try{
-         return doctor::with('hospital')->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
-            ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
-            ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name')->get();
+          return doctor::with('hospital')->find($id);
       }
       catch (\Exception $ex) {
            return $this->returnError('400', $ex->getMessage());
@@ -303,90 +267,67 @@ class DoctorService
     }
 
     //get doctor's appopintment
-    public function appointment($doctor_name)
+    public function appointment($id)
     {
         try{
-        return doctor::with('appointment')
-            ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
-            ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
-            ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name')->get();
+            return doctor::with('appointment')->find($id);
         }
         catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }
     }
 
-    //get clinic by doctor's name
-    public function clinic($doctor_name)
+    //get clinic by doctor's id
+    public function clinic($id)
     {
         try{
-        return doctor::with('clinic')->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
-            ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
-            ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name')->get();
+            return doctor::with('clinic')->find($id);
         }
         catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }
     }
 
-    //get all doctor's details by doctor's name
-    public function getalldetails($doctor_name)
+    //get all doctor's details by doctor's id
+    public function getalldetails($id)
     {
-
         try{
-        return  doctor::with('medicalDevice','socialMedia','clinic','hospital','Specialty')
-            ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
-            ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
-//            ->where ( 'doctor_translation.locale','=', Config::get('app.locale'))
-            ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name','doctor_translation.description')
-            ->get();
+        return  doctor::with('Specialty','clinic','medicalDevice','socialMedia','hospital')->find($id);
         }
         catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }
     }
 
-    //get paitent by doctor's name
-    public function customer($doctor_name)
+    //get paitent by doctor's id
+    public function customer($id)
     {
         try{
-        return  doctor::with('customer')
-             ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
-             ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
-             ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name')->get();
+        return  doctor::with('customer')->find($id);
         }
         catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }
     }
 
-    //get doctor rate by doctor's name
-    public function DoctorRate($doctor_name)
+    //get doctor rate by doctor's id
+    public function DoctorRate($id)
     {
         try{
-      return doctor::with('DoctorRate')
-          ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
-          ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
-          ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name')->get();
+      return doctor::with('DoctorRate')->find($id);
         }
         catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }
     }
-    //get specialty by doctor name
-    public function DoctorSpecialty($doctor_name)
+    //get specialty by doctor id
+    public function DoctorSpecialty($id)
     {
         try {
-            return doctor::with('Specialty')
-                ->join('doctor_translation','doctor_translation.doctor_id','=','doctor_id')
-                ->where('doctor_translation.first_name','like','%'.$doctor_name.'%')
-                ->select('doctors.*','doctor_translation.first_name','doctor_translation.last_name')->get();
+            return doctor::with('Specialty')->find($id);
+
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }
     }
-
-
-
-
 }

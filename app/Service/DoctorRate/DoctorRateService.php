@@ -27,7 +27,7 @@ class DoctorRateService
         }
         catch(\Exception $ex)
         {
-            return $this->returnError('400','faild');
+            return $this->returnError('400',$ex->getMessage());
         }
     }
 
@@ -44,7 +44,7 @@ class DoctorRateService
       }
       catch(\Exception $ex)
       {
-          return $this->returnError('400','faild');
+          return $this->returnError('400',$ex->getMessage());
       }
     }
 
@@ -64,7 +64,7 @@ class DoctorRateService
         }
         catch(\Exception $ex)
         {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 
@@ -87,7 +87,7 @@ class DoctorRateService
     }
     catch(\Exception $ex)
         {
-           return $this->returnError('400', 'failed');
+           return $this->returnError('400', $ex->getMessage());
          }
 
     }
@@ -101,14 +101,14 @@ class DoctorRateService
             }
             else
             {
-              $doctorRate->is_active=false;
+              $doctorRate->is_active=0;
               $doctorRate->save();
               return $this->returnData('DoctorRate', $doctorRate,'This DoctorRate is trashed Now');
             }
         }
         catch (\Exception $ex)
         {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function getTrashed()
@@ -118,7 +118,7 @@ class DoctorRateService
             return $this->returnData('brand', $doctorRate, 'done');
         }
         catch(\Exception $ex){
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 //
@@ -136,7 +136,7 @@ class DoctorRateService
         }
             catch(\Exception $ex)
             {
-                return $this->returnError('400', 'failed');
+                return $this->returnError('400', $ex->getMessage());
             }
     }
 
@@ -149,7 +149,7 @@ class DoctorRateService
                 return $this->returnData('DoctorRate', $doctorRate, 'This DoctorRate is deleted Now');
             }
         } catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 

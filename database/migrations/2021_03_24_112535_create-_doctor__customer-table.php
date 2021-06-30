@@ -15,9 +15,9 @@ class CreateDoctorCustomerTable extends Migration
     {
         Schema::create('Doctor_Customer', function (Blueprint $table) {
             $table->id();
-            $table->integer('doctor_id');
-            $table->integer('customer_id');
-            $table->integer('medical_file_id');
+            $table->integer('doctor_id')->unsigned();
+            $table->integer('customer_id')->unsigned();
+            $table->integer('medical_file_id')->unsigned();
             $table->integer('age');
             $table->string('gender');
             $table->string('social_status');

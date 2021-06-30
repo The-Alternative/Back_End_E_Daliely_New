@@ -15,9 +15,10 @@ class CreateSpecialtyTranslationTable extends Migration
     {
         Schema::create('specialty_translation', function (Blueprint $table) {
             $table->id();
-            $table->integer('specialty_id');
+            $table->integer('specialty_id')->unsigned();
             $table->string('locale');
             $table->string('name');
+            $table->string('description');
 
 
             $table->timestamps();

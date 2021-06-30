@@ -57,8 +57,8 @@ class HospitalController extends Controller
         return $this->HospitalService->delete($id);
     }
     //get all the doctors who work in the hospital according to her name
-    public function hospitalsDoctor($hospital_name)
+    public function hospitalsDoctor($id)
     {
-        return $this->HospitalService->hospitalsDoctor($hospital_name);
+        return $this->HospitalService->hospitalsDoctor($id);
     }
 }

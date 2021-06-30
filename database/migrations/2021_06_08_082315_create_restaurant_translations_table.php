@@ -15,10 +15,11 @@ class CreateRestaurantTranslationsTable extends Migration
     {
         Schema::create('restaurant_translations', function (Blueprint $table) {
             $table->id();
-            $table->integer('restaurant_id');
-            $table->string('title');
-            $table->string('description');
+            $table->integer('restaurant_id')->unsigned();
             $table->string('locale');
+            $table->string('title');
+            $table->string('short_description');
+            $table->string('long_description');
             $table->timestamps();
         });
     }

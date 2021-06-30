@@ -32,7 +32,7 @@ class ClinicController extends Controller
 
     public function create(ClinicRequest $request)
     {
-        return $response=$this->ClinicService->create($request);
+        return $this->ClinicService->create($request);
     }
 
     public function update(ClinicRequest $request,$id)

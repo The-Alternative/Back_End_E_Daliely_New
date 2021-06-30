@@ -57,9 +57,9 @@ class MedicalDeviceController extends Controller
     {
         return  $this->MedicalDeviceService->delete($id);
     }
-    public function getdoctor($medical_device_name)
+    public function getdoctor($id)
     {
-        return  $this->MedicalDeviceService->doctormedicaldevice($medical_device_name);
+        return  $this->MedicalDeviceService->doctormedicaldevice($id);
     }
 
 }

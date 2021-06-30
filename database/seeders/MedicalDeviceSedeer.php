@@ -18,18 +18,22 @@ class MedicalDeviceSedeer extends Seeder
         $faker=Faker::create();
         for ($i = 0; $i <= 5; $i++) {
             $s = DB::table('medical_devices')->insertGetId([
-                'is_active' => 1,
-                'is_approved' =>1,
-                'doctor_id' => 1,
-                'hospital_id' => 1]);
+                'is_active' => $faker->boolean,
+                'is_approved' =>$faker->boolean,
+                'doctor_id' => $faker->numberBetween(1,10),
+                'hospital_id' => $faker->numberBetween(1,10),
+
+            ]);
             DB::table('medical_device_translation')->insert([[
                 'medical_device_id'   => $s,
                 'name'  => $faker->sentence(3),
+                'description'  => $faker->sentence(8),
                 'locale'      => 'en',
             ],
                 [
                     'medical_device_id'   => $s,
                     'name'  => $faker->sentence(3),
+                    'description'  => $faker->sentence(8),
                     'locale' => 'ar',
                 ]]);
         }

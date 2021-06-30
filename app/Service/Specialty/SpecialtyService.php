@@ -27,18 +27,18 @@ class SpecialtyService
     public function get()
     {
         try {
-            $Specialty = $this->SpecialtyModel::IsActive()->WithTrans()->get();
+            $Specialty = $this->SpecialtyModel::paginate(5);
             return $this->returnData(' Specialty', $Specialty, 'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
 
     }
     public function getById($id)
     {
         try{
-        $Specialty= $this->SpecialtyModel::WithTrans()->find($id);
+        $Specialty= $this->SpecialtyModel::find($id);
             if (is_null($Specialty)){
                 return $this->returnSuccessMessage('this Social Media not found','done');
             }
@@ -47,7 +47,7 @@ class SpecialtyService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 
@@ -65,6 +65,7 @@ class SpecialtyService
                 foreach ($allspecialty as $allspecialties) {
                     $transspecialty[] = [
                         'name' => $allspecialties ['name'],
+                        'description' => $allspecialties ['description'],
                         'locale' => $allspecialties['locale'],
                         'specialty_id' => $unTransspecialty_id,
                     ];
@@ -77,7 +78,7 @@ class SpecialtyService
         catch(\Exception $ex)
         {
             DB::rollback();
-            return $this->returnError('Specialty', 'faild');
+            return $this->returnError('Specialty', $ex->getMessage());
         }
     }
 //_________________________________________________________//
@@ -93,43 +94,44 @@ class SpecialtyService
             else
                 $request->request->add(['is_active'=>1]);
 
-            $newspecialty=Specialty::where('id',$id)
+            $newspecialty=Specialty::where('specialties.id',$id)
                 ->update([
                     'graduation_year' => $request['graduation_year'],
                     'is_active' => $request['is_active'],
                 ]);
-            $ss=SpecialtyTranslation::where('specialty_id',$id);
+            $ss=SpecialtyTranslation::where('specialty_translation.specialty_id',$id);
             $collection1 = collect($allspecialty);
-            $alldoctorlength=$collection1->count();
+            $allspecialtylength=$collection1->count();
             $collection2 = collect($ss);
-            $db_specialty= array_values(SpecialtyTranslation::where('specialty_id',$id)
+            $db_specialty= array_values(SpecialtyTranslation::where('specialty_translation.specialty_id',$id)
                 ->get()
                 ->all());
             $dbspecialty = array_values($db_specialty);
             $request_specialty= array_values($request->specialty);
             foreach($dbspecialty as $dbspecialties){
                 foreach($request_specialty as $request_specialties){
-                    $values= SpecialtyTranslation::where('specialty_id',$id)
+                    $values= SpecialtyTranslation::where('specialty_translation.specialty_id',$id)
                         ->where('locale',$request_specialties['locale'])
                         ->update([
                             'name' => $request_specialties ['name'],
+                            'description' => $request_specialties ['description'],
                             'locale' => $request_specialties['locale'],
                             'specialty_id' => $id,
                         ]);
                 }
             }
             DB::commit();
-            return $this->returnData('Specialty', $dbspecialty,'done');
+            return $this->returnData('Specialty', [$dbspecialty,$values],'done');
         }
         catch(\Exception $ex){
-            return $this->returnError('400', 'saving failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 //__________________________________________________________________________//
     public function search($name)
     {
         try{
-        $Specialty = DB::table('specialties')
+        $Specialty = DB::table('specialty_translation')
             ->where("name","like","%".$name."%")
             ->get();
         if (! $Specialty)
@@ -139,11 +141,10 @@ class SpecialtyService
         else
         {
             return $this->returnData('Specialty',  $Specialty,'done');
-
         }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function trash( $id)
@@ -155,41 +156,42 @@ class SpecialtyService
             }
             else
             {
-                $Specialty->is_active=false;
+                $Specialty->is_active=0;
                 $Specialty->save();
                 return $this->returnData('Specialty',  $Specialty,'This Specialty is trashed Now');
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function getTrashed()
     {
         try{
-        $Specialty= $this->SpecialtyModel::NotActive()->all();
+        $Specialty= $this->SpecialtyModel::NotActive();
         return $this -> returnData('Specialty', $Specialty,'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
+
     public function restoreTrashed( $id)
     {
         try{
         $Specialty=Specialty::find($id);
             if (is_null($Specialty)) {
-                return $this->returnSuccessMessage('This Social Media not found', 'done');
+                return $this->returnSuccessMessage('This Specialty not found', 'done');
             }
             else
             {
-                $Specialty->is_active=true;
+                $Specialty->is_active=1;
                 $Specialty->save();
                 return $this->returnData('Specialty',  $Specialty,'This Specialty is trashed Now');
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     public function delete($id)
@@ -197,24 +199,26 @@ class SpecialtyService
         try{
         $Specialty = Specialty::find($id);
             if ($Specialty->is_active == 0) {
-                $Specialty = $this->SpecialtyModel->destroy($id);
+               $Specialty->delete();
+               $Specialty->SpecialtyTranslation()->delete();
+                return $this->returnData('Specialty',  $id, 'This Specialty is deleted Now');
+
             }
-        return $this->returnData('Specialty',  $Specialty, 'This Specialty is deleted Now');
+            else{
+                return $this->returnData('Specialty',  $id, 'This Specialty can not deleted Now');
+            }
     }
     catch (\Exception $ex) {
-     return $this->returnError('400', 'failed');
+     return $this->returnError('400', $ex->getMessage());
      }
     }
 
-    public function DoctorSpecialty($specialty_name)
+    public function DoctorSpecialty($id)
     {
         try {
-            return Specialty::with('doctor')
-                ->join('specialty_translation','specialty_translation.specialty_id','=','specialty_id')
-                ->where('specialty_translation.name','like','%'.$specialty_name.'%')
-                ->select('specialties.*','specialty_translation.name')->get();
+            return Specialty::with('doctor')->find($id);
         } catch (\Exception $ex) {
-            return $this->returnError('400', 'failed');
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 }

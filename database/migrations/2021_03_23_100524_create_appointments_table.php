@@ -15,12 +15,12 @@ class CreateAppointmentsTable extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->integer('active_times_id');
-            $table->string('description');
-            $table->string('short_description');
+            $table->integer('active_times_id')->unsigned();
+            $table->integer('doctor_id')->unsigned();
+            $table->integer('customer_id')->unsigned();
+            $table->boolean('morning_evening');
             $table->boolean('is_active');
             $table->boolean('is_approved');
-            $table->boolean('morning_evening');
             $table->timestamps();
         });
     }

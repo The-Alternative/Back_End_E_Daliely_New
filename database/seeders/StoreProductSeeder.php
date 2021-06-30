@@ -18,16 +18,14 @@ class StoreProductSeeder extends Seeder
         //
         $faker=Faker::create();
         for ($i = 1; $i <= 5; $i++) {
-        for ($k = 1; $k <= 5; $k++) {
-            DB::table('stores_products')->insertGetId([
-                'store_id' => $i,
-                'product_id' => $k,
-                'price' => $faker->numberBetween(200, 1000),
-                'quantity' => $faker->numberBetween(1, 200),
+           DB::table('stores_products')->insertGetId([
+                'store_id' => $faker->numberBetween(1, 10),
+                'product_id' => $faker->numberBetween(1, 10),
+                'price' => $faker->numberBetween(200, 10000),
+                'quantity' => $faker->numberBetween(1, 20),
                 'is_active' => $faker->boolean,
                 'is_appear' => $faker->boolean,
             ]);
-           }
         }
     }
 }
