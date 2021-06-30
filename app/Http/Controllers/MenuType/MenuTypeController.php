@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\MenuType;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MenuType\MenuTypeRequest;
 use App\Service\MenuType\MenuTypeService;
+use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 
 class MenuTypeController extends Controller
 {
+    use GeneralTrait;
     private $MenuTypeService;
-
 
     public function __construct(MenuTypeService $MenuTypeService)
     {
@@ -17,7 +19,7 @@ class MenuTypeController extends Controller
     }
     public function get()
     {
-        return $this->MenuTypeService->get();
+       return $this->MenuTypeService->get();
     }
     public function  getById($id)
     {
@@ -27,11 +29,11 @@ class MenuTypeController extends Controller
     {
         return$this->MenuTypeService->getTrashed();
     }
-    public function create(MenuRequest $request)
+    public function create(MenuTypeRequest $request)
     {
         return $this->MenuTypeService->create($request);
     }
-    public function update(MenuRequest $request,$id)
+    public function update(MenuTypeRequest $request,$id)
     {
         return $this->MenuTypeService->update($request,$id);
     }

@@ -54,7 +54,7 @@ class MenuService
             DB::beginTransaction();
             $unTransMenu_id =Menu::insertGetId([
                 'image' => $request['image'],
-                'type_menu_id' => $request['user_id'],
+                'menu_type_id' => $request['menu_type_id'],
                 'restaurant_id' => $request['restaurant_id'],
                 'is_approved' => $request['is_approved'],
                 'is_active' => $request['is_active'],
@@ -96,7 +96,7 @@ class MenuService
             $newmenu=Menu::where('menus.id',$id)
                 ->update([
                     'image' => $request['image'],
-                    'type_menu_id' => $request['user_id'],
+                    'menu_type_id' => $request['menu_type_id'],
                     'restaurant_id' => $request['restaurant_id'],
                     'is_approved' => $request['is_approved'],
                     'is_active' => $request['is_active'],

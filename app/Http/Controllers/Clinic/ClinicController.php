@@ -14,10 +14,9 @@ class ClinicController extends Controller
     use GeneralTrait;
     private $ClinicService;
 
-    public function __construct(ClinicService $ClinicService,Response $response )
+    public function __construct(ClinicService $ClinicService)
     {
         $this->ClinicService=$ClinicService;
-        $this->response=$response;
     }
 
     public function get()
@@ -37,16 +36,16 @@ class ClinicController extends Controller
 
     public function update(ClinicRequest $request,$id)
     {
-        return  $response=$this->ClinicService->update($request,$id);
+        return $this->ClinicService->update($request,$id);
     }
     public function search($name)
     {
-        return $response= $this->ClinicService->search($name);
+        return  $this->ClinicService->search($name);
     }
 
     public function trash($id)
     {
-        return  $response= $this->ClinicService->trash($id);
+        return  $this->ClinicService->trash($id);
     }
     public function getTrashed()
     {
@@ -55,11 +54,11 @@ class ClinicController extends Controller
 
     public function restoreTrashed($id)
     {
-        return $response= $this->ClinicService->restoreTrashed($id);
+        return  $this->ClinicService->restoreTrashed($id);
     }
 
     public function delete($id)
     {
-        return $response=$this->ClinicService->delete($id);
+        return $this->ClinicService->delete($id);
     }
 }

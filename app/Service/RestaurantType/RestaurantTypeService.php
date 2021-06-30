@@ -53,7 +53,7 @@ class RestaurantTypeService
     public function create( RestaurantTypeRequest $request )
     {
         try {
-            $allrestauranttype = collect($request->restauranttype)->all();
+            $allrestauranttype = collect($request->restaurantType)->all();
             DB::beginTransaction();
             $unTransrestauranttype_id =RestaurantType::insertGetId([
                 'image' => $request['image'],
@@ -67,7 +67,7 @@ class RestaurantTypeService
                         'short_description' => $allrestauranttypes ['short_description'],
                         'long_description' => $allrestauranttypes ['short_description'],
                         'locale' => $allrestauranttypes['locale'],
-                        'restaurant_id' => $unTransrestauranttype_id,
+                        'restaurant_type_id' => $unTransrestauranttype_id,
                     ];
                 }
                 RestaurantTypeTranslation::insert($transrestauranttype);
@@ -88,7 +88,7 @@ class RestaurantTypeService
             $RestaurantType= RestaurantType::find($id);
             if(!$RestaurantType)
                 return $this->returnError('400', 'not found this restaurant');
-            $allrestauranttype = collect($request->restauranttype)->all();
+            $allrestauranttype = collect($request->restaurantType)->all();
             if (!($request->has('restaurant_types.is_active')))
                 $request->request->add(['is_active'=>0]);
             else
@@ -110,7 +110,7 @@ class RestaurantTypeService
                 ->get()
                 ->all());
             $dbrestaruranttype = array_values($db_restaruranttype);
-            $request_restaruranttype= array_values($request->restaruranttype);
+            $request_restaruranttype= array_values($request->restaurantType);
             foreach($dbrestaruranttype as $dbrestaruranttypes){
                 foreach($request_restaruranttype as $request_restaruranttypes){
                     $values= RestaurantTypeTranslation::where('restaurant_type_translations.restaurant_type_id',$id)
@@ -120,7 +120,7 @@ class RestaurantTypeService
                             'short_description' => $dbrestaruranttypes ['short_description'],
                             'long_description' => $dbrestaruranttypes ['short_description'],
                             'locale' => $dbrestaruranttypes['locale'],
-                            'type_of_restaurant_id' => $id,
+                            'restaurant_type_id' => $id,
                         ]);
                 }
             }
@@ -200,7 +200,7 @@ class RestaurantTypeService
         try{
             $RestaurantType = $this->RestaurantTypeModel::find($id);
             if ($RestaurantType->is_active == 0) {
-                $RestaurantType->RestaurantTypeModel->delete();
+                $RestaurantType->delete();
                 $RestaurantType->restaurantTypeTranslation()->delete();
                 return $this->returnData('restaurant type', $RestaurantType, 'This restaurant type is deleted Now');
             }

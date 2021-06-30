@@ -24,7 +24,7 @@ class RestaurantService
     public function get()
     {
         try{
-            $restaurant= $this->RestaurantModel::withTrans()->get();
+            $restaurant= $this->RestaurantModel::paginate(5);
             return $this->returnData('restaurant',$restaurant,'done');
         }
         catch(\Exception $ex)
@@ -36,7 +36,7 @@ class RestaurantService
     public function getById($id)
     {
         try{
-            $restaurant= $this->RestaurantModel->withTrans()->find($id);
+            $restaurant= $this->RestaurantModel->find($id);
             if (is_null($restaurant)){
                 return $this->returnSuccessMessage('this Restaurant not found','done');
             }

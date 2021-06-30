@@ -11,6 +11,8 @@ class RestaurantTypeTranslation extends Model
     protected $table='restaurant_type_translations';
     protected $fillable =['Id','locale','title','short_description','long_description','restaurant_type_id'];
     public $timestamps=false;
+    protected $hidden=['created_at','updated_at'];
+
 
     public function restaurantType()
     {

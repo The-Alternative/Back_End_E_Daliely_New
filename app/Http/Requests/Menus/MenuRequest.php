@@ -30,11 +30,11 @@ class MenuRequest extends FormRequest
             'menu_type_id'   =>'required',
             'restaurant_id'   =>'required',
 
-            'menu'=>'required|array|min:1',
-            'menu.*.title'=>'required|min:3|string',
-            'menu.*.short_description'=>'required|min:10|max:255',
-            'menu.*.long_description'=>'required|min:10|max:255',
-            'menu.*.locale'=>'required',
+            'Menu'=>'required|array|min:1',
+            'Menu.*.title'=>'required|min:3|string',
+            'Menu.*.short_description'=>'required|min:10|max:255',
+            'Menu.*.long_description'=>'required|min:10|max:255',
+            'Menu.*.locale'=>'required',
         ];
     }
     public function messages()
