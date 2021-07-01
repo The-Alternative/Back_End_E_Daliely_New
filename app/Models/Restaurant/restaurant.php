@@ -3,6 +3,7 @@
 namespace App\Models\Restaurant;
 
 use App\Models\Meals\Meal;
+use App\Models\Menu\Menu;
 use App\Models\RestaurantType\RestaurantType;
 use App\Scopes\RestaurantScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -45,5 +46,11 @@ class restaurant extends Model
     {
         return $this->hasMany(Meal::class);
     }
+
+    public function Menu()
+    {
+        return $this->hasOne(Menu::class);
+    }
+
 
 }

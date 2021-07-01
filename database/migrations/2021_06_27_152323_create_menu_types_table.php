@@ -15,6 +15,7 @@ class CreateMenuTypesTable extends Migration
     {
         Schema::create('menu_types', function (Blueprint $table) {
             $table->id();
+            $table->integer('menu_id')->unsigned();
             $table->string('image');
             $table->boolean('is_active');
             $table->boolean('is_approved');

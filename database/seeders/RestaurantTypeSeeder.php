@@ -21,6 +21,8 @@ class RestaurantTypeSeeder extends Seeder
                 'image' => $faker->sentence(5),
                 'is_active' => $faker->boolean,
                 'is_approved' =>$faker->boolean,
+                'restaurant_id' =>  $faker->numberBetween(1,10),
+
             ]);
             DB::table('restaurant_type_translations')->insert([[
                 'title' => $faker->sentence(2),

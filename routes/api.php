@@ -318,6 +318,9 @@ Route::group(['prefix'=>'ActiveTime','namespace'=>'ActiveTime'],function () {
          Route::get('/getTrashed', 'RestaurantController@getTrashed');
          Route::PUT('/restoreTrashed/{id}', 'RestaurantController@restoreTrashed');
          Route::delete('/delete/{id}', 'RestaurantController@delete');
+
+         Route::get('/get-type/{restaurant_id}', 'RestaurantController@getType');
+
      });
      //________________________ Restaurant Type Route__________________//
      Route::group(['prefix'=>'RestaurantType','namespace'=>'RestaurantType'],function () {

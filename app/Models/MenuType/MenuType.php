@@ -2,6 +2,7 @@
 
 namespace App\Models\MenuType;
 
+use App\Models\Menu\Menu;
 use App\Scopes\MenuTypeScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,4 +29,9 @@ class MenuType extends Model
     {
         return $this->hasMany(MenuTypeTranslation::class);
     }
+    public function Menu()
+    {
+        return $this->hasMany(Menu::class);
+    }
+
 }

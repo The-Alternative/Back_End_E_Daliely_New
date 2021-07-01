@@ -15,7 +15,9 @@ class CreateMealsTable extends Migration
     {
         Schema::create('meals', function (Blueprint $table) {
             $table->id();
-            $table->integer('meal_type_id');
+            $table->integer('meal_type_id')->unsigned();
+            $table->integer('order_id')->unsigned();
+            $table->integer('restaurant_id')->unsigned();
             $table->string('image');
             $table->boolean('is_active');
             $table->boolean('is_approved');

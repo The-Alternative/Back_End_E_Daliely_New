@@ -13,6 +13,10 @@ class Order extends Model
     protected $fillable =['Id','customer_id','date','total','is_active','is_approved'];
     protected $hidden   =['customer_id','created_at','updated_at'];
 
+    public function scopeNotActive($query)
+    {
+        return $query->where('is_active',0)->get();
+    }
     public function meal()
     {
         return $this->belongsTo(Meal::class);

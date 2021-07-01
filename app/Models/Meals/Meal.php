@@ -2,6 +2,8 @@
 
 namespace App\Models\Meals;
 
+use App\Models\MealType\MealType;
+use App\Models\Order\Order;
 use App\Models\Restaurant\restaurant;
 use App\Scopes\MealScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -33,5 +35,13 @@ class Meal extends Model
     {
         return $this->belongsToMany(restaurant::class);
     }
+    public function MealType()
+    {
+        return $this->belongsToMany(MealType::class);
+    }
 
+    public function Order()
+    {
+        return $this->belongsToMany(Order::class);
+    }
 }

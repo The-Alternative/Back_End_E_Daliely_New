@@ -21,6 +21,8 @@ class MealTypeSeeder extends Seeder
                 'image' => $faker->sentence(5),
                 'is_active' => $faker->boolean,
                 'is_approved' =>$faker->boolean,
+                'meal_id' =>$faker->numberBetween(1,10),
+
             ]);
             DB::table('meal_type_translations')->insert([[
                 'title' => $faker->sentence(2),

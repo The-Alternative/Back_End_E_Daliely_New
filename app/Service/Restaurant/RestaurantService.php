@@ -237,4 +237,14 @@ class RestaurantService
 
     }
 
+    public function getType($id)
+     {
+          try{
+              return restaurant::with('restaurantType')->find($id);
+
+          } catch (\Exception $ex) {
+              return $this->returnError('400', $ex->getMessage());
+          }
+     }
+
 }

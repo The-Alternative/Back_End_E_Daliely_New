@@ -15,6 +15,7 @@ class CreateMealTypesTable extends Migration
     {
         Schema::create('meal_types', function (Blueprint $table) {
             $table->id();
+            $table->integer('meal_id')->unsigned();
             $table->string('image');
             $table->boolean('is_active');
             $table->boolean('is_approved');
