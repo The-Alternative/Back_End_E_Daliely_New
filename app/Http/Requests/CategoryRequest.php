@@ -26,7 +26,7 @@ class CategoryRequest extends FormRequest
     {
         return [
             'is_active'=>'required|in:0,1',
-            'image'=>'required',
+            'images'=>'array|min:1',
             'slug'=>'required',
 
             'category'=>'required|array|min:1',

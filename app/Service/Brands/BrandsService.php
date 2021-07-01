@@ -26,8 +26,7 @@ class BrandsService
     public function getAll()
     {
         try {
-            $brands = $this->BrandModel->with(['Product', 'BrandImages'=>function($q){
-                return $q->where('is_cover',1)->get();}])->paginate(10);
+            $brands = $this->BrandModel->with(['BrandImages','Product'])->paginate(10);
             if (count($brands) > 0) {
                 return $response = $this->returnData('Brand', $brands, 'done');
             } else {
@@ -46,8 +45,6 @@ class BrandsService
     {
         try {
             $brand = $this->BrandModel->with('Product','BrandImages')->find($id);
-//            return $brand->Product()->get();
-
             if (!isset($brand)) {
                 return $response = $this->returnSuccessMessage('This Brand not found', 'done');
             }
@@ -187,7 +184,7 @@ class BrandsService
         try {
             $brand = $this->BrandModel->find($id);
             if (!$brand)
-                return $this->returnError('400', 'not found this Category');
+                return $this->returnError('400', 'not found this Brand');
             $allbrands = collect($request->brands)->all();
             if (!($request->has('brand.is_active')))
                 $request->request->add(['is_active' => 0]);
@@ -197,7 +194,6 @@ class BrandsService
             $unTransBrand = $this->BrandModel->where('brands.id', $id)
                 ->update([
                     'slug' => $request['slug'],
-                    'image' => $request['image'],
                     'is_active' => $request['is_active'],
                 ]);
             $ss = $this->brandTranslation->where('brand_id', $id);
@@ -224,7 +220,32 @@ class BrandsService
                         ]);
                 }
             }
-//            DB::commit();
+            $images = $request->images;
+            foreach ($images as $image) {
+                $arr[] = $image['image'];
+            }
+            foreach ($arr as $ar) {
+                if (isset($image)) {
+                    if ($request->hasFile($ar)) {
+                        //save
+                        $file_extension = $ar->getClientOriginalExtension();
+                        $file_name = time() . $file_extension;
+                        $path = 'images/brands';
+                        $ar->move($path, $file_name);
+                    }
+                }
+            }
+            if ($request->has('images')) {
+                foreach ($images as $image) {
+                    $brandImages = $this->BrandModel->find($id);
+                    $brandImages->BrandImages()->updateOrCreate([
+                        'brand_id' => $id,
+                        'image' => $image['image'],
+                        'is_cover' => $image['is_cover'],
+                    ]);
+                }
+            }
+            DB::commit();
             return $this->returnData('Brand', $dbdbrands, 'done');
         } catch (\Exception $ex) {
             DB::rollback();
