@@ -20,6 +20,8 @@ class CreateRestaurantsTable extends Migration
             $table->integer('active_time_id')->unsigned();
             $table->integer('location_id')->unsigned();
             $table->integer('customer_id')->unsigned();
+            $table->integer('meal_id')->unsigned();
+            $table->integer('menu_id')->unsigned();
             $table->integer('type_of_restaurant_id')->unsigned();
             $table->integer('rate_id')->unsigned();
             $table->integer('user_id')->unsigned();

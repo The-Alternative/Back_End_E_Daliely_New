@@ -22,7 +22,9 @@ class OrderSeeder extends Seeder
                 'is_approved' => $faker->boolean,
                 'total' => $faker->numberBetween(10,20),
                 'date'=>$faker->date('2021-8-20'),
-                'customer_id' => $faker->numberBetween(1,10)
+                'customer_id' => $faker->numberBetween(1,10),
+                'meal_id' => $faker->numberBetween(1,10),
+
             ]);
         }
     }

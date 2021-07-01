@@ -14,8 +14,8 @@ class MealTypeMealSeeder extends Seeder
      */
     public function run()
     {
-        for ($meal_id = 1; $meal_id < 12; $meal_id++) {
-            for ($meal_type_id = 1; $meal_type_id < 12; $meal_type_id++) {
+        for ($meal_id = 1; $meal_id < 5; $meal_id++) {
+            for ($meal_type_id = 1; $meal_type_id < 5; $meal_type_id++) {
                 DB::table('meal_type_meal')->insert(
                     [
                         'meal_type_id' => $meal_type_id,

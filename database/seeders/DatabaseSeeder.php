@@ -54,7 +54,6 @@ class DatabaseSeeder extends Seeder
             MedicalFileSedeer::class,
             SocialMediaSedeer::class,
             SpecialtySedeer::class,
-
             RestaurantSeeder::class,
             RestaurantTypeSeeder::class,
             MenuSeeder::class,

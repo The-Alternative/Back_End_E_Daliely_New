@@ -14,8 +14,8 @@ class ProductSectionSeeder extends Seeder
      */
     public function run()
     {
-        for ($section_id = 1; $section_id < 12; $section_id++) {
-            for ($product_id = 1; $product_id < 12; $product_id++) {
+        for ($section_id = 1; $section_id < 5; $section_id++) {
+            for ($product_id = 1; $product_id < 5; $product_id++) {
                         DB::table('products_sections')->insert(
                             [
                                 'section_id' => $section_id,

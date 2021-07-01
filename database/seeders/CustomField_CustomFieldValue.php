@@ -16,7 +16,7 @@ class CustomField_CustomFieldValue extends Seeder
     public function run()
     {
         $faker=Faker::create();
-        for($customFiled=1;$customFiled<12;$customFiled++){
+        for($customFiled=1;$customFiled<5;$customFiled++){
             for($value=1;$value<5;$value++) {
                 DB::table('custom_field_value')->insert(
                     [

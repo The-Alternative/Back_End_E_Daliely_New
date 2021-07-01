@@ -2,6 +2,7 @@
 
 namespace App\Models\MealType;
 
+use App\Models\Meals\Meal;
 use App\Scopes\MealTypeScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,5 +28,10 @@ class MealType extends Model
     public function mealtypetranslation()
     {
         return $this->hasMany(MealTypeTranslation::class);
+    }
+
+    public function Meal()
+    {
+        return $this->hasMany(Meal::class);
     }
 }
