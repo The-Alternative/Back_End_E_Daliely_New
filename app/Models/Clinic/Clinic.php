@@ -2,7 +2,7 @@
 
 namespace App\Models\Clinic;
 
-use App\Models\Doctors\doctor;
+use App\Models\Doctors\Doctor;
 use App\Scopes\ClinicScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,6 +27,6 @@ class Clinic extends Model
     }
     public function doctor()
     {
-        return $this->hasOne(doctor::class);
+        return $this->hasOne(Doctor::class);
     }
 }

@@ -14,8 +14,8 @@ class StoreBrandSeeder extends Seeder
      */
     public function run()
     {
-        for ($store_id = 1; $store_id < 12; $store_id++) {
-            for ($brand_id = 1; $brand_id < 12; $brand_id++) {
+        for ($store_id = 1; $store_id < 6; $store_id++) {
+            for ($brand_id = 1; $brand_id < 6; $brand_id++) {
                 DB::table('store_brand')->insert(
                     [
                         'brand_id' => $brand_id,

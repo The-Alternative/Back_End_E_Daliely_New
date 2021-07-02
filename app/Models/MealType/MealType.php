@@ -2,6 +2,7 @@
 
 namespace App\Models\MealType;
 
+use App\Models\Meals\Meal;
 use App\Scopes\MealTypeScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,8 +20,18 @@ class MealType extends Model
         static::addGlobalScope(new MealTypeScope());
     }
 
+    public function scopeNotActive($query)
+    {
+        return $query->where('is_active',0)->get();
+    }
+
     public function mealtypetranslation()
     {
         return $this->hasMany(MealTypeTranslation::class);
+    }
+
+    public function Meal()
+    {
+        return $this->hasMany(Meal::class);
     }
 }

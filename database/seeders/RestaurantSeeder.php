@@ -26,6 +26,8 @@ class RestaurantSeeder extends Seeder
                 'active_time_id' =>  $faker->numberBetween(1,10),
                 'user_id' =>  $faker->numberBetween(1,10),
                 'rate_id' =>  $faker->numberBetween(1,10),
+                'meal_id' =>  $faker->numberBetween(1,10),
+                'menu_id' =>  $faker->numberBetween(1,10),
                 'customer_id' =>  $faker->numberBetween(1,10),
                 'type_of_restaurant_id' =>  $faker->numberBetween(1,10),
                 'location_id' =>  $faker->numberBetween(1,10),

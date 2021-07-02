@@ -5,7 +5,7 @@ namespace App\Service\Restaurant;
 
 
 use App\Http\Requests\Restaurant\RestaurantRequest;
-use App\Models\Restaurant\restaurant;
+use App\Models\Restaurant\Restaurant;
 use App\Models\Restaurant\RestaurantTranslation;
 use App\Traits\GeneralTrait;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +16,7 @@ class RestaurantService
     use GeneralTrait;
 
 
-    public function __construct(restaurant $restaurant)
+    public function __construct(Restaurant  $restaurant)
     {
         $this->RestaurantModel=$restaurant;
 
@@ -57,7 +57,7 @@ class RestaurantService
         try {
             $allrestaurant = collect($request->restaurant)->all();
             DB::beginTransaction();
-            $unTransrestaurant_id =restaurant::insertGetId([
+            $unTransrestaurant_id =Restaurant::insertGetId([
                 'image' => $request['image'],
                 'social_media_id' => $request['social_media_id'],
                 'appointment_id' => $request['appointment_id'],
@@ -66,6 +66,8 @@ class RestaurantService
                 'location_id' => $request['location_id'],
                 'user_id' => $request['user_id'],
                 'rate_id' => $request['rate_id'],
+                'meal_id' => $request['meal_id'],
+                'menu_id' => $request['menu_id'],
                 'type_of_restaurant_id' => $request['type_of_restaurant_id'],
                 'is_approved' => $request['is_approved'],
                 'is_active' => $request['is_active'],
@@ -95,7 +97,7 @@ class RestaurantService
     public function update(RestaurantRequest $request,$id)
     {
         try{
-            $restaurant= restaurant::find($id);
+            $restaurant= Restaurant::find($id);
             if(!$restaurant)
                 return $this->returnError('400', 'not found this restaurant');
             $allrestaurant = collect($request->restaurant)->all();
@@ -104,7 +106,7 @@ class RestaurantService
             else
                 $request->request->add(['is_active'=>1]);
 
-            $newrestaurant=restaurant::where('restaurants.id',$id)
+            $newrestaurant=Restaurant::where('restaurants.id',$id)
                 ->update([
                     'image' => $request['image'],
                     'social_media_id' => $request['social_media_id'],
@@ -114,6 +116,8 @@ class RestaurantService
                     'location_id' => $request['location_id'],
                     'user_id' => $request['user_id'],
                     'rate_id' => $request['rate_id'],
+                    'meal_id' => $request['meal_id'],
+                    'menu_id' => $request['menu_id'],
                     'type_of_restaurant_id' => $request['type_of_restaurant_id'],
                     'is_approved' => $request['is_approved'],
                     'is_active' => $request['is_active'],
@@ -236,5 +240,15 @@ class RestaurantService
         }
 
     }
+
+    public function getType($id)
+     {
+          try{
+              return Restaurant::with('restaurantType')->find($id);
+
+          } catch (\Exception $ex) {
+              return $this->returnError('400', $ex->getMessage());
+          }
+     }
 
 }

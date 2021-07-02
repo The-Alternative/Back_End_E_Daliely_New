@@ -16,7 +16,7 @@ class CustomFieldImagesSeeder extends Seeder
     public function run()
     {
         $faker=Faker::create();
-        for($customFiled=1;$customFiled<12;$customFiled++){
+        for($customFiled=1;$customFiled<5;$customFiled++){
             for($image=1;$image<5;$image++) {
                 DB::table('custom_field_images')->insert(
                     [

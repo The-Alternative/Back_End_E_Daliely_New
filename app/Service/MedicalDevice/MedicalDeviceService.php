@@ -17,7 +17,7 @@ class MedicalDeviceService
     private $MedicalDeviceModel;
     use GeneralTrait;
 
-    public function __construct(medicalDevice $MedicalDevice)
+    public function __construct(MedicalDevice $MedicalDevice)
     {
         $this->MedicalDeviceModel=$MedicalDevice;
     }
@@ -83,7 +83,7 @@ class MedicalDeviceService
     public function update(MedicalDeviceRequest $request,$id)
     {
         try{
-            $medicaldevice= medicalDevice::find($id);
+            $medicaldevice= MedicalDevice::find($id);
             if(!$medicaldevice)
                 return $this->returnError('400', 'not found this medical Device');
             $allmedicaldevice = collect($request->medicaldevice)->all();
@@ -92,7 +92,7 @@ class MedicalDeviceService
             else
                 $request->request->add(['is_active'=>1]);
 
-            $newmedicaldevice=medicalDevice::where('medical_devices.id',$id)
+            $newmedicaldevice=MedicalDevice::where('medical_devices.id',$id)
                 ->update([
                     'doctor_id' => $request['doctor_id'],
                     'hospital_id' => $request['hospital_id'],
@@ -181,7 +181,7 @@ class MedicalDeviceService
     public function restoreTrashed( $id)
     {
         try{
-              $MedicalDevice=medicalDevice::find($id);
+              $MedicalDevice=MedicalDevice::find($id);
               if (is_null($MedicalDevice)) {
                   return $this->returnSuccessMessage('This MedicalDevice not found', 'done');
               }
@@ -199,14 +199,14 @@ class MedicalDeviceService
     public function delete($id)
     {
         try{
-        $MedicalDevice = medicalDevice::find($id);
+        $MedicalDevice = MedicalDevice::find($id);
             if ($MedicalDevice->is_active ==0) {
                 $MedicalDevice->delete();
             $MedicalDevice->MedicalDeviceTranslation()->delete();
-                return $this->returnData('MedicalDevice', $id, 'This MedicalDevice is deleted Now');
+                return $this->returnData('MedicalDevice', $MedicalDevice, 'This MedicalDevice is deleted Now');
             }
             else{
-                return $this->returnData( 'MedicalDevice', $id,'this medical device can not delete');
+                return $this->returnData( 'MedicalDevice', $MedicalDevice,'this medical device can not delete');
             }
         }
         catch (\Exception $ex) {

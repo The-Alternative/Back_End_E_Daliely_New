@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Pagination\Paginator;
 
 
-class doctor extends Model
+class Doctor extends Model
 {
     use HasFactory;
 
@@ -60,7 +60,7 @@ class doctor extends Model
 
     public  function medicalDevice()
     {
-        return $this->belongsToMany(medicalDevice::class);
+        return $this->belongsToMany(MedicalDevice::class);
     }
 
     public function DoctorRate()

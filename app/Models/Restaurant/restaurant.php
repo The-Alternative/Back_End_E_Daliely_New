@@ -3,18 +3,20 @@
 namespace App\Models\Restaurant;
 
 use App\Models\Meals\Meal;
+use App\Models\Menu\Menu;
 use App\Models\RestaurantType\RestaurantType;
 use App\Scopes\RestaurantScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 
-class restaurant extends Model
+class Restaurant extends Model
 {
     use HasFactory;
 
     protected $table='restaurants';
-    protected $fillable =['Id','image','appointment_id','location_id','active_time_id','customer_id','social_media_id','type_of_restaurant_id','rate_id','user_id','is_active','is_approved'];
+    protected $fillable =['Id','image','appointment_id','location_id','active_time_id','customer_id',
+        'social_media_id','type_of_restaurant_id','rate_id','user_id','meal_id','menu_id','is_active','is_approved'];
     public $timestamps=false;
     protected $hidden=['appointment_id','location_id','active_time_id','customer_id','social_media_id',
         'type_of_restaurant_id','rate_id','user_id','created_at','updated_at'];
@@ -45,5 +47,11 @@ class restaurant extends Model
     {
         return $this->hasMany(Meal::class);
     }
+
+    public function Menu()
+    {
+        return $this->hasOne(Menu::class);
+    }
+
 
 }

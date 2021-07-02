@@ -153,7 +153,7 @@ class ActiveTimeService
         try {
             $ActiveTime = $this->ActiveTimeModel->find($id);
             if ($ActiveTime->is_active == 0) {
-                $ActiveTime = $this->ActiveTimeModel->destroy($id);
+                $ActiveTime = $this->ActiveTimeModel->delete();
 
             return $this->returnData('Active Time', $ActiveTime, 'This Active Time Is deleted Now');
             }

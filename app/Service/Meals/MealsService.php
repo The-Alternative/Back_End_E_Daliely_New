@@ -55,6 +55,8 @@ class MealsService
             $unTransMeal_id =Meal::insertGetId([
                 'image' => $request['image'],
                 'meal_type_id' => $request['meal_type_id'],
+                'order_id' => $request['order_id'],
+                'restaurant_id' => $request['restaurant_id'],
                 'is_approved' => $request['is_approved'],
                 'is_active' => $request['is_active'],
             ]);
@@ -96,6 +98,8 @@ class MealsService
                 ->update([
                     'image' => $request['image'],
                     'meal_type_id' => $request['meal_type_id'],
+                    'order_id' => $request['order_id'],
+                    'restaurant_id' => $request['restaurant_id'],
                     'is_approved' => $request['is_approved'],
                     'is_active' => $request['is_active'],
                 ]);

@@ -3,7 +3,7 @@
 namespace App\Models\Customer;
 
 use App\Models\Doctors\CustomerDoctor;
-use App\Models\Doctors\doctor;
+use App\Models\Doctors\Doctor;
 use App\Models\Customer\CustomerTranslation;
 use App\Scopes\CustomerScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -35,6 +35,6 @@ class Customer extends Model
 
     public function doctor()
     {
-        return $this -> belongsToMany('App\Models\Doctors\doctor','Customer_Doctor','customer_id','doctor_id','id','id');
+        return $this -> belongsToMany('App\Models\Doctors\Doctor','Customer_Doctor','customer_id','doctor_id','id','id');
     }
 }

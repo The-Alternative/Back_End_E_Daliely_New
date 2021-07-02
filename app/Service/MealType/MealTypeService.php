@@ -57,6 +57,7 @@ class MealTypeService
                 'image' => $request['image'],
                 'is_approved' => $request['is_approved'],
                 'is_active' => $request['is_active'],
+                'meal_id' => $request['meal_id'],
             ]);
             if (isset($allmealtype)) {
                 foreach ($allmealtype as $allmealtypes) {
@@ -97,6 +98,8 @@ class MealTypeService
                     'image' => $request['image'],
                     'is_approved' => $request['is_approved'],
                     'is_active' => $request['is_active'],
+                    'meal_id' => $request['meal_id'],
+
                 ]);
 
             $ss=MealTypeTranslation::where('meal_type_translations.meal_type_id',$id);
@@ -198,7 +201,7 @@ class MealTypeService
             $MealType = $this->MealTypeModel::find($id);
             if ($MealType->is_active == 0) {
                 $MealType ->delete();
-                $MealType ->MenuTypeTranslation()->delete();
+                $MealType ->mealtypetranslation()->delete();
                 return $this->returnData('Meal Type', $MealType, 'This Meal Type is deleted Now');
 
             }

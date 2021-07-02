@@ -2,6 +2,8 @@
 
 namespace App\Models\Menu;
 
+use App\Models\MenuType\MenuType;
+use App\Models\Restaurant\restaurant;
 use App\Scopes\MenuScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,4 +30,15 @@ class Menu extends Model
     {
         return $this->hasMany(MenuTranslation::class);
     }
+
+    public function restaurant()
+    {
+        return $this->belongsTo(restaurant::class);
+    }
+    public function MenuType()
+    {
+        return $this->belongsToMany(MenuType::class);
+    }
+
+
 }
