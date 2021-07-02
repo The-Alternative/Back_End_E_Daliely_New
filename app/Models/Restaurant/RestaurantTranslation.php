@@ -15,6 +15,6 @@ class RestaurantTranslation extends Model
 
     public function restaurant()
     {
-        return$this->belongsTo(restaurant::class);
+        return$this->belongsTo(Restaurant::class);
     }
 }

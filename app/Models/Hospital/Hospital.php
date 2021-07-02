@@ -5,7 +5,7 @@ namespace App\Models\Hospital;
 use App\Scopes\HospitalScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Doctors\doctor;
+use App\Models\Doctors\Doctor;
 
 class Hospital extends Model
 {
@@ -34,7 +34,7 @@ class Hospital extends Model
     }
     public function doctor()
     {
-        return $this->hasMany(doctor::class);
+        return $this->hasMany(Doctor::class);
     }
 
 }

@@ -2,7 +2,7 @@
 
 namespace App\Models\medicalDevice;
 
-use App\Models\medicalDevice\medicalDevice;
+use App\Models\medicalDevice\MedicalDevice;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,6 +15,6 @@ class MedicalDeviceTranslation extends Model
     protected $hidden=['medical_device_id','id','name','created_at','updated_at'];
     public function medicaldevice()
     {
-        return $this->belongsTo(medicalDevice::class);
+        return $this->belongsTo(MedicalDevice::class);
     }
 }
