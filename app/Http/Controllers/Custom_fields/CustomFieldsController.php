@@ -54,6 +54,7 @@ class CustomFieldsController extends Controller
     public function update(Request $request,$id)
     {
         $response = $this->customfieldService->update($request, $id);
+        return $response;
     }
     public function search($title)
     {

@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Config;
 class Product extends Model
 {
     use HasFactory;
-
     protected $primaryKey = 'id';
     protected $table ='products';
     protected $fillable = [
@@ -128,7 +127,7 @@ class Product extends Model
     }
     public function Brand()
     {
-        return $this->belongsTo(Brand::class,'products.brand_id');
+        return $this->belongsTo(Brand::class);
     }
     public function Custom_Field_Value(){
         return $this->belongsToMany(

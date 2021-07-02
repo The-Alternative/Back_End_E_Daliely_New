@@ -250,22 +250,22 @@ class ProductService
                     'offer_id' =>$request['offer_id'],
 //                    'category_id'=>$request['category_id']
                 ]);
-            $ss=$this->productTranslation->where('product_id',$id);
+            $ss=$this->productTranslation->where('product_translations.product_id',$id);
             $collection1 = collect($allproducts);
             $allcategorieslength=$collection1->count();
             $collection2 = collect($ss);
 
             $db_product= array_values(
                 $this->productTranslation
-                    ->where('product_id',$id)
+                    ->where('product_translations.product_id',$id)
                     ->get()
                     ->all());
             $dbdproducts = array_values($db_product);
             $request_products = array_values($request->product);
             foreach($dbdproducts as $dbdproduct){
                 foreach($request_products as $request_product){
-                    $values= $this->productTranslation->where('product_id',$id)
-                        ->where('local',$request_product['local'])
+                    $values= $this->productTranslation->where('product_translations.product_id',$id)
+                        ->where('product_translations.local',$request_product['local'])
                         ->update([
                             'name' => $request_product ['name'],
                             'short_des' => $request_product['short_des'],
@@ -277,7 +277,7 @@ class ProductService
                 }
             }
             DB::commit();
-            return $this->returnData('Product', $dbdproducts,'done');
+            return $this->returnData('Product',[ ['old data', $dbdproducts],['new data',$request_products]],'done');
         }
         catch(\Exception $ex){
             DB::rollback();

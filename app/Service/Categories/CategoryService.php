@@ -156,7 +156,7 @@ class CategoryService
                 }
                 $this->categoryTranslation->insert($transCategory_arr);
             }
-            $images = $request->images;
+             $images = $request->images;
             foreach ($images as $image) {
                 $arr[] = $image['image'];
             }
@@ -177,7 +177,7 @@ class CategoryService
                     $categoryImages->CategoryImages()->insert([
                         'category_id' => $unTransCategory_id,
                         'image' => $image['image'],
-                        'is_cover' => $image['is_cover'],
+                        'is_cover' => $image['is_cover']
                     ]);
                 }
             }
@@ -219,7 +219,6 @@ class CategoryService
 
            $ncategory=$this->categoryModel->where('categories.id',$id)
                ->update([
-                   'image'     =>$request['image'],
                    'slug'      =>$request['slug'],
                    'lang_id'   =>$request['lang_id'],
                    'is_active' =>$request['is_active'],
@@ -249,12 +248,39 @@ class CategoryService
                             'category_id'=>$id
                         ]);
                     }
-                    return $this->returnData('Category', $dbdcategory,'done');
 
                 }
+            $images = $request->images;
+            foreach ($images as $image) {
+                $arr[] = $image['image'];
+            }
+            foreach ($arr as $ar) {
+                if (isset($image)) {
+                    if ($request->hasFile($ar)) {
+                        //save
+                        $file_extension = $ar->getClientOriginalExtension();
+                        $file_name = time() . $file_extension;
+                        $path = 'images/categories';
+                        $ar->move($path, $file_name);
+                    }
+                }
+            }
+            if ($request->has('images')) {
+                foreach ($images as $image) {
+                    $categoryImages = $this->categoryModel->find($id);
+//                    return $categoryImages->CategoryImages()->get();
+                    $categoryImages->CategoryImages()->update([
+                        'category_id' => $id,
+                        'image' => $image['image'],
+                        'is_cover' => $image['is_cover']
+                    ]);
+                }
+            }
             DB::commit();
+            return $this->returnData('Category', $dbdcategory,'done');
         }
         catch(\Exception $ex){
+            DB::rollBack();
             return $this->returnError('400', $ex->getMessage());
         }
     }

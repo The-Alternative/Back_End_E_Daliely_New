@@ -215,25 +215,16 @@ class CustomFieldService
                 $request->request->add(['is_active'=>0]);
             else
                 $request->request->add(['is_active'=>1]);
-            //save image
-            // if($request->has('image')) {
-            //     $filePath = uploadImage('products', $request->photo);
-            //     Product::where('id', $pro_id)
-            //         ->update([
-            //             'image' => $filePath,
-            //         ]);
-            // }
+
             DB::beginTransaction();
             $ncustom_field=$this->CustomFieldModel->where('custom_fields.id',$id)
                 ->update([
-                    'image' =>$request['image'],
                     'is_active' =>$request['is_active']
                 ]);
             $ss=$this->Custom_Field_Translation->where('custom__fields__translations.custom_field_id',$id);
             $collection1 = collect($allcustom_fields);
             $allcustom_fieldlength=$collection1->count();
             $collection2 = collect($ss);
-
             $db_custom_fields= array_values(
                 $this->Custom_Field_Translation
                     ->where('custom__fields__translations.custom_field_id',$id)
@@ -253,9 +244,50 @@ class CustomFieldService
                         ]);
                 }
             }
+
+            if ($request->has('CustomFieldValues')) {
+                  $dbCustomFields = $custom_field->Custom_Field_Value()->get();
+                $customFieldValues = $request->CustomFieldValues;
+                 $collect=collect($dbCustomFields);
+                foreach ($dbCustomFields as $dbCustomField) {
+                    foreach ($customFieldValues as $customFieldValue) {
+                        //Custom Field Value
+                         $arr=[
+                             'value'=> $customFieldValue['value'],
+                             'custom_field_id'=> $id
+                        ];
+                    }
+                }
+                $dbCustomField->update($arr);
+
+            }
+            $images = $request->images;
+            foreach ($images as $image) {
+                $arr[] = $image['image'];
+            }
+            foreach ($arr as $ar) {
+                if (isset($image)) {
+                    if ($request->hasFile($ar)) {
+                        //save
+                        $file_extension = $ar->getClientOriginalExtension();
+                        $file_name = time() . $file_extension;
+                        $path = 'images/custom_fieldes';
+                        $ar->move($path, $file_name);
+                    }
+                }
+            }
+            if ($request->has('images')) {
+                foreach ($images as $image) {
+                    $customFieldImages = $this->CustomFieldModel->find($id);
+                    $customFieldImages->CustomFieldImages()->update([
+                        'custom_field_id' => $id,
+                        'image' => $image['image'],
+                        'is_cover' => $image['is_cover'],
+                    ]);
+                }
+            }
             DB::commit();
             return $this->returnData('custom_field', $dbdcustom_fields,'done');
-
         }
         catch(\Exception $ex){
             DB::rollBack();
