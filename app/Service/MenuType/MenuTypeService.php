@@ -57,6 +57,7 @@ class MenuTypeService
                 'image' => $request['image'],
                 'is_approved' => $request['is_approved'],
                 'is_active' => $request['is_active'],
+                'menu_id' => $request['menu_id'],
             ]);
             if (isset($allmenutype)) {
                 foreach ($allmenutype as $allmenutypes) {
@@ -97,6 +98,8 @@ class MenuTypeService
                     'image' => $request['image'],
                     'is_approved' => $request['is_approved'],
                     'is_active' => $request['is_active'],
+                    'menu_id' => $request['menu_id'],
+
                 ]);
 
             $ss=MenuTypeTranslation::where('menu_type_translations.menu_type_id',$id);

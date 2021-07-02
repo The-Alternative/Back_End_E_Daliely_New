@@ -15,7 +15,7 @@ class medicalDevice extends Model
 
     protected $table='medical_devices';
     protected $fillable=['id','hospital_id','doctor_id','is_active','is_approved'];
-//    protected $hidden=['pivot','created_at','updated_at','hospital_id','doctor_id'];
+    protected $hidden=['pivot','created_at','updated_at','hospital_id','doctor_id'];
 
 
     protected static function booted()

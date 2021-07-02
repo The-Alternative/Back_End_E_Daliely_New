@@ -54,6 +54,7 @@ class DoctorRateService
             $doctorRate = new DoctorRate();
             $doctorRate->doctor_id = $request->doctor_id;
             $doctorRate->rate = $request->rate;
+            $doctorRate->is_active = $request->is_active;
 
             $result = $doctorRate->save();
             if ($result) {
@@ -74,8 +75,10 @@ class DoctorRateService
                $doctorRate= $this->DoctorRateModel::find($id);
                $doctorRate->doctor_id                =$request->doctor_id;
                $doctorRate->rate                     =$request->rate;
+               $doctorRate->is_active = $request->is_active;
 
-              $result=$doctorRate->save();
+
+          $result=$doctorRate->save();
           if ($result)
           {
               return $this->returnData('doctorRate', $doctorRate,'done');

@@ -155,7 +155,7 @@ class MedicalFileService
             if ($medicalFile->is_active == 0) {
                 $medicalFile->destroy($id);
 
-            return $this->returnSuccessMessage('medical File', 'This medical File is deleted Now');
+            return $this->returnData('medical File',$medicalFile, 'This medical File is deleted Now');
             }
             else{
                 return $this->returnData('medical File', $medicalFile, 'This medical File can not deleted');
