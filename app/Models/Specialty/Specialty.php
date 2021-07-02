@@ -2,7 +2,7 @@
 
 namespace App\Models\Specialty;
 
-use App\Models\Doctors\doctor;
+use App\Models\Doctors\Doctor;
 use App\Models\medicalDevice\medicalDevice;
 use App\Models\medicalDevice\MedicalDeviceTranslation;
 use App\Scopes\SpecialtyScope;
@@ -42,7 +42,7 @@ class Specialty extends Model
 
     public function doctor()
     {
-        return $this->belongsToMany(doctor::class);
+        return $this->belongsToMany(Doctor::class);
     }
 
 }
