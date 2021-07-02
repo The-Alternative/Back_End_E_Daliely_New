@@ -201,11 +201,11 @@ class SpecialtyService
             if ($Specialty->is_active == 0) {
                $Specialty->delete();
                $Specialty->SpecialtyTranslation()->delete();
-                return $this->returnData('Specialty',  $id, 'This Specialty is deleted Now');
+                return $this->returnData('Specialty',  $Specialty, 'This Specialty is deleted Now');
 
             }
             else{
-                return $this->returnData('Specialty',  $id, 'This Specialty can not deleted Now');
+                return $this->returnData('Specialty',  $Specialty, 'This Specialty can not deleted Now');
             }
     }
     catch (\Exception $ex) {

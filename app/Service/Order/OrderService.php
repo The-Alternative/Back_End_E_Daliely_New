@@ -55,6 +55,7 @@ class OrderService
             $order->customer_id   = $request->customer_id;
             $order->total         = $request->total;
             $order->date          = $request->date;
+            $order->meal_id          = $request->meal_id;
             $order->is_approved  = $request->is_approved;
             $order->is_active    = $request->is_active;
 
@@ -82,6 +83,7 @@ class OrderService
             $order->customer_id   = $request->customer_id;
             $order->total         = $request->total;
             $order->date          = $request->date;
+            $order->meal_id          = $request->meal_id;
             $order->is_approved  = $request->is_approved;
             $order->is_active    = $request->is_active;
             $result=$order->save();

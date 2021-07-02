@@ -13,7 +13,7 @@ class SpecialtyTranslation extends Model
     protected $table='specialty_translation';
     protected $fillable=['id','specialty_id','name','locale','description'];
 
-    protected $hidden=['specialty_id'];
+    protected $hidden=['specialty_id','created_at','updated_at'];
 
     public function specialty()
     {

@@ -203,10 +203,10 @@ class MedicalDeviceService
             if ($MedicalDevice->is_active ==0) {
                 $MedicalDevice->delete();
             $MedicalDevice->MedicalDeviceTranslation()->delete();
-                return $this->returnData('MedicalDevice', $id, 'This MedicalDevice is deleted Now');
+                return $this->returnData('MedicalDevice', $MedicalDevice, 'This MedicalDevice is deleted Now');
             }
             else{
-                return $this->returnData( 'MedicalDevice', $id,'this medical device can not delete');
+                return $this->returnData( 'MedicalDevice', $MedicalDevice,'this medical device can not delete');
             }
         }
         catch (\Exception $ex) {
