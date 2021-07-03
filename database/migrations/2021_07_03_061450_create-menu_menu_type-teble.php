@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMenuTypeMenuTable extends Migration
+class CreateMenuMenuTypeTeble extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateMenuTypeMenuTable extends Migration
      */
     public function up()
     {
-        Schema::create('menu_type_menu', function (Blueprint $table) {
+        Schema::create('menu_menu_type', function (Blueprint $table) {
             $table->id();
             $table->integer('menu_id');
             $table->integer('menu_type_id');
@@ -28,6 +28,6 @@ class CreateMenuTypeMenuTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menu_type_menu');
+        Schema::dropIfExists('menu_menu_type');
     }
 }

@@ -53,4 +53,13 @@ class MenuController extends Controller
     {
         return $this->MenuService->delete($id);
     }
+    public function getType($id)
+    {
+        return $this->MenuService->getType($id);
+    }
+    public function getRestaurant($id)
+    {
+        return $this->MenuService->getRestaurant($id);
+    }
+
 }

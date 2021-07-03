@@ -7,6 +7,7 @@ namespace App\Service\Menus;
 use App\Http\Requests\Menus\MenuRequest;
 use App\Models\Menu\Menu;
 use App\Models\Menu\MenuTranslation;
+use App\Models\Restaurant\Restaurant;
 use App\Traits\GeneralTrait;
 use Illuminate\Support\Facades\DB;
 
@@ -212,5 +213,23 @@ class MenuService
             return $this->returnError('400', $ex->getMessage());
         }
 
+    }
+    public function getType($id)
+    {
+        try{
+            return Menu::with('MenuType')->find($id);
+
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
+    }
+    public function getRestaurant($id)
+    {
+        try{
+            return Menu::with('restaurant')->find($id);
+
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
     }
 }

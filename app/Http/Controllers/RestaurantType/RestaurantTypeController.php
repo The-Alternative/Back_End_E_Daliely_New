@@ -53,4 +53,9 @@ class RestaurantTypeController extends Controller
     {
         return $this->RestaurantTypeService->delete($id);
     }
+
+    public function getRestaurant($id)
+    {
+        return $this->RestaurantTypeService->getRestaurant($id);
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Service\MenuType;
 
 
 use App\Http\Requests\MenuType\MenuTypeRequest;
+use App\Models\Menu\Menu;
 use App\Models\MenuType\MenuType;
 use App\Models\MenuType\MenuTypeTranslation;
 use App\Traits\GeneralTrait;
@@ -212,5 +213,14 @@ class MenuTypeService
             return $this->returnError('400', $ex->getMessage());
         }
 
+    }
+    public function getMenu($id)
+    {
+        try{
+            return MenuType::with('Menu')->find($id);
+
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
     }
 }

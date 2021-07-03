@@ -5,6 +5,7 @@ namespace App\Service\RestaurantType;
 
 
 use App\Http\Requests\RestaurantType\RestaurantTypeRequest;
+use App\Models\Restaurant\Restaurant;
 use App\Models\RestaurantType\RestaurantType;
 use App\Models\RestaurantType\RestaurantTypeTranslation;
 use App\Traits\GeneralTrait;
@@ -214,4 +215,14 @@ class RestaurantTypeService
             return $this->returnError('400', $ex->getMessage());
         }
     }
+    public function getRestaurant($id)
+    {
+        try{
+            $s= RestaurantType::with('restaurant')->find($id);
+            return$s;
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
+    }
+
 }

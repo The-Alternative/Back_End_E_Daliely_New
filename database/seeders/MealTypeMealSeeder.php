@@ -16,7 +16,7 @@ class MealTypeMealSeeder extends Seeder
     {
         for ($meal_id = 1; $meal_id < 5; $meal_id++) {
             for ($meal_type_id = 1; $meal_type_id < 5; $meal_type_id++) {
-                DB::table('meal_type_meal')->insert(
+                DB::table('meal_meal_type')->insert(
                     [
                         'meal_type_id' => $meal_type_id,
                         'meal_id' => $meal_id

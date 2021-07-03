@@ -16,7 +16,7 @@ class MenuTypeMenuSeeder extends Seeder
     {
         for ($menu_id = 1; $menu_id < 5; $menu_id++) {
             for ($menu_type_id = 1; $menu_type_id < 5; $menu_type_id++) {
-                DB::table('menu_type_menu')->insert(
+                DB::table('menu_menu_type')->insert(
                     [
                         'menu_type_id' => $menu_type_id,
                         'menu_id' => $menu_id
