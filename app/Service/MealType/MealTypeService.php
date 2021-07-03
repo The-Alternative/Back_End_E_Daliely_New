@@ -213,4 +213,13 @@ class MealTypeService
         }
 
     }
+    public function getMeal($id)
+    {
+        try{
+            return MealType::with('Meal')->find($id);
+
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
+    }
 }

@@ -16,7 +16,7 @@ class RestaurantTypeRestaurantSeeder extends Seeder
     {
         for ($restaurant_id = 1; $restaurant_id < 5; $restaurant_id++) {
             for ($restaurant_type_id = 1; $restaurant_type_id < 5; $restaurant_type_id++) {
-                DB::table('restaurant_type_restaurant')->insert(
+                DB::table('restaurant_restaurant_type')->insert(
                     [
                         'restaurant_type_id' => $restaurant_type_id,
                         'restaurant_id' => $restaurant_id

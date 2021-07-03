@@ -43,7 +43,7 @@ class Restaurant extends Model
         return $this->hasMany(RestaurantType::class);
     }
 
-    public function Meale()
+    public function Meal()
     {
         return $this->hasMany(Meal::class);
     }

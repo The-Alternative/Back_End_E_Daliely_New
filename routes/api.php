@@ -320,6 +320,8 @@ Route::group(['prefix'=>'ActiveTime','namespace'=>'ActiveTime'],function () {
          Route::delete('/delete/{id}', 'RestaurantController@delete');
 
          Route::get('/get-type/{restaurant_id}', 'RestaurantController@getType');
+         Route::get('/get-Menu/{restaurant_id}', 'RestaurantController@getMenu');
+         Route::get('/get-Meal/{restaurant_id}', 'RestaurantController@getMeal');
 
      });
      //________________________ Restaurant Type Route__________________//
@@ -333,6 +335,9 @@ Route::group(['prefix'=>'ActiveTime','namespace'=>'ActiveTime'],function () {
          Route::get('/getTrashed', 'RestaurantTypeController@getTrashed');
          Route::PUT('/restoreTrashed/{id}', 'RestaurantTypeController@restoreTrashed');
          Route::delete('/delete/{id}', 'RestaurantTypeController@delete');
+
+         Route::get('/get-restaurant/{restaurantType_id}', 'RestaurantTypeController@getRestaurant');
+
      });
      //________________________menu Route__________________//
      Route::group(['prefix'=>'Menu','namespace'=>'Menus'],function () {
@@ -345,6 +350,9 @@ Route::group(['prefix'=>'ActiveTime','namespace'=>'ActiveTime'],function () {
          Route::get('/getTrashed', 'MenuController@getTrashed');
          Route::PUT('/restoreTrashed/{id}', 'MenuController@restoreTrashed');
          Route::delete('/delete/{id}', 'MenuController@delete');
+
+         Route::get('/get-type/{menu_id}', 'MenuController@getType');
+         Route::get('/get-restaurant/{menu_id}', 'MenuController@getRestaurant');
      });
      //________________________Menu Type Route__________________//
      Route::group(['prefix'=>'MenuType','namespace'=>'MenuType'],function () {
@@ -358,6 +366,7 @@ Route::group(['prefix'=>'ActiveTime','namespace'=>'ActiveTime'],function () {
          Route::PUT('/restoreTrashed/{id}', 'MenuTypeController@restoreTrashed');
          Route::delete('/delete/{id}', 'MenuTypeController@delete');
 
+         Route::get('/get-menu/{menu_type_id}','MenuTypeController@getMenu');
      });
      //________________________Meals Route__________________//
      Route::group(['prefix'=>'Meal','namespace'=>'Meals'],function () {
@@ -371,6 +380,8 @@ Route::group(['prefix'=>'ActiveTime','namespace'=>'ActiveTime'],function () {
          Route::PUT('/restoreTrashed/{id}', 'MealsController@restoreTrashed');
          Route::delete('/delete/{id}', 'MealsController@delete');
 
+         Route::get('/get-type/{meal_id}', 'MealsController@getType');
+         Route::get('/get-restaurant/{meal_id}', 'MealsController@getRestaurant');
      });
      //________________________Meal Type Route__________________//
      Route::group(['prefix'=>'MealType','namespace'=>'MealType'],function () {
@@ -383,7 +394,10 @@ Route::group(['prefix'=>'ActiveTime','namespace'=>'ActiveTime'],function () {
          Route::get('/getTrashed', 'MealTypeController@getTrashed');
          Route::PUT('/restoreTrashed/{id}', 'MealTypeController@restoreTrashed');
          Route::delete('/delete/{id}', 'MealTypeController@delete');
- });
+
+         Route::get('/get-meal/{meal_type_id}','MealTypeController@getMeal');
+
+     });
      //________________________Order Route__________________//
      Route::group(['prefix'=>'Order','namespace'=>'Order'],function () {
          Route::get('/get', 'OrderController@get');

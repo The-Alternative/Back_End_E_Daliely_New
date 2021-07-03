@@ -214,4 +214,23 @@ class MealsService
         }
 
     }
+
+    public function getType($id)
+    {
+        try{
+            return Meal::with('MealType')->find($id);
+
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
+    }
+    public function getRestaurant($id)
+    {
+        try{
+            return Meal::with('restaurant')->find($id);
+
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
+    }
 }

@@ -52,4 +52,8 @@ class MealTypeController extends Controller
     {
         return $this->MealTypeService->delete($id);
     }
+    public function getMeal($id)
+    {
+        return $this->MealTypeService->getMeal($id);
+    }
 }

@@ -17,7 +17,7 @@ class RestaurantHasMealSeeder extends Seeder
     {
         $faker = Faker::create();
         for ($i = 0; $i <= 5; $i++) {
-            DB::table('restaurant_has_meal')->insert([
+            DB::table('meal_restaurant')->insert([
                 'restaurant_id' => $faker->numberBetween(1,10),
                 'meal_id' => $faker->numberBetween(1,10),
                 'menu_id' => $faker->numberBetween(1,10),
