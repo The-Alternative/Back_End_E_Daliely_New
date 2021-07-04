@@ -22,7 +22,12 @@ return [
             'profile' => 'r,u'
         ],
         'user' => [
-            'profile' => 'r,u',
+            'product' => 'r',
+            'category' => 'r',
+            'section' => 'r',
+            'store' => 'r',
+            'custom_field' => 'r',
+            'brand' => 'r',
         ],
         'role_name' => [
             'module_1_name' => 'c,r,u,d',
