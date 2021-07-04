@@ -382,6 +382,8 @@ Route::group(['prefix'=>'ActiveTime','namespace'=>'ActiveTime'],function () {
 
          Route::get('/get-type/{meal_id}', 'MealsController@getType');
          Route::get('/get-restaurant/{meal_id}', 'MealsController@getRestaurant');
+         Route::get('/get-Order/{meal_id}', 'MealsController@getOrder');
+
      });
      //________________________Meal Type Route__________________//
      Route::group(['prefix'=>'MealType','namespace'=>'MealType'],function () {
