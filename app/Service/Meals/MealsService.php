@@ -233,4 +233,13 @@ class MealsService
             return $this->returnError('400', $ex->getMessage());
         }
     }
+    public function getOrder($id)
+    {
+        try{
+            return Meal::with('Order')->find($id);
+
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
+    }
 }

@@ -17,7 +17,7 @@ class OrderHasMealSeeder extends Seeder
     {
         $faker = Faker::create();
         for ($i = 0; $i <= 5; $i++) {
-            DB::table('order_has_meal')->insert([
+            DB::table('meal_order')->insert([
                 'order_id' => $faker->numberBetween(1,10),
                 'meal_id' => $faker->numberBetween(1,10),
                 'price' => $faker->numberBetween(100,200),

@@ -60,4 +60,8 @@ class MealsController extends Controller
     {
         return $this->MealsService->getRestaurant($id);
     }
+    public function getOrder($id)
+    {
+        return $this->MealsService->getOrder($id);
+    }
 }
