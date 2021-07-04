@@ -12,7 +12,7 @@ class LaratrustSeeder extends Seeder
     /**
      * Run the database seeds.
      *
-     * @return void
+     * @return false
      */
     public function run()
     {
@@ -32,31 +32,57 @@ class LaratrustSeeder extends Seeder
 
             // Create a new role
             $role = \App\Models\Admin\Role::firstOrCreate([
-                'name' => $key,
-                'display_name' => ucwords(str_replace('_', ' ', $key)),
-                'description' => ucwords(str_replace('_', ' ', $key))
+                'is_active' =>rand(0,1),
+                'slug' => ucwords(str_replace('_', ' ', $key)),
             ]);
+            $roleid=$role->id;
+            $roleTrans = DB::table('role_translation')->insert([
+                [
+                    'name' => $key,
+                'display_name' => ucwords(str_replace('_', ' ', $key)),
+                'description' => ucwords(str_replace('_', ' ', $key)),
+                'local'=>'ar',
+                'role_id'=>$roleid
+            ],
+                [
+                'name' => $key,
+                'display_name' => ucwords(str_replace('-', ' ', $key)),
+                'description' => ucwords(str_replace('-', ' ', $key)),
+                'local'=>'en',
+                'role_id'=>$roleid
+            ]]);
             $permissions = [];
 
             $this->command->info('Creating Role '. strtoupper($key));
-
             // Reading role permission modules
             foreach ($modules as $module => $value) {
 
                 foreach (explode(',', $value) as $p => $perm) {
 
                     $permissionValue = $mapPermission->get($perm);
+                        $permissions = \App\Models\Admin\Permission::firstOrCreate([
+                            'is_active' => rand(0, 1),
+                            'slug' => ucfirst($permissionValue) . ' ' . ucfirst($module)
+                        ])->id;
+                        $permissionsTrans =  DB::table('permission_translation')->insert([
+                            [
+                                'name' => $module . '-' . $permissionValue.'Ar',
+                                'display_name' => ucfirst($permissionValue) . ' ' . ucfirst($module),
+                                'description' => ucfirst($permissionValue) . ' ' . ucfirst($module),
+                                'local' => 'ar',
+                                'permission_id' => $permissions
+                            ],
+                            [
+                                'name' => $module . '_' . $permissionValue.'En',
+                                'display_name' => ucfirst($permissionValue) . ' ' . ucfirst($module),
+                                'description' => ucfirst($permissionValue) . ' ' . ucfirst($module),
+                                'local' => 'en',
+                                'permission_id' => $permissions
+                            ]]);
 
-                    $permissions[] = \App\Models\Admin\Permission::firstOrCreate([
-                        'name' => $module . '-' . $permissionValue,
-                        'display_name' => ucfirst($permissionValue) . ' ' . ucfirst($module),
-                        'description' => ucfirst($permissionValue) . ' ' . ucfirst($module),
-                    ])->id;
-
-                    $this->command->info('Creating Permission to '.$permissionValue.' for '. $module);
+                        $this->command->info('Creating Permission to ' . $permissionValue . ' for ' . $module);
+                    }
                 }
-            }
-
             // Attach all permissions to the role
             $role->permissions()->sync($permissions);
 

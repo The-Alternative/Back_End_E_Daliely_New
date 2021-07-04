@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Admin\Permission;
+use App\Models\Admin\Role;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -57,5 +59,27 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(
+            Role::class,
+            'role_user',
+            'user_id',
+            'role_id',
+            'id',
+            'id')->withPivot('user_type');
+    }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(
+            Permission::class,
+            'permission_user',
+            'user_id',
+            'permission_id',
+            'id',
+            'id');
     }
 }

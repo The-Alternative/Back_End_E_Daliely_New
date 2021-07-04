@@ -2,6 +2,7 @@
 
 namespace App\Models\Admin;
 
+use App\Models\User;
 use App\Scopes\PermissionScope;
 use Laratrust\Models\LaratrustPermission;
 
@@ -27,5 +28,25 @@ class Permission extends LaratrustPermission
     public function PermissionTranslation()
     {
         return $this->hasMany(PermissionTranslation::class);
+    }
+    public function roles()
+    {
+        return $this->belongsToMany(
+            Role::class,
+            'permission_role',
+            'permission_id',
+            'role_id',
+            'id',
+            'id');
+    }
+    public function users()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'permission_user',
+            'permission_id',
+            'user_id',
+            'id',
+            'id');
     }
 }
