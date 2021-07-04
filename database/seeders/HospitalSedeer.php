@@ -19,12 +19,13 @@ class HospitalSedeer extends Seeder
 
         for ($i = 0; $i <= 5; $i++) {
             $s = DB::table('hospitals')->insertGetId([
-                'is_active' => 1,
-                'is_approved' => 1,
-                'general_hospital' => 0,
-                'private_hospital' => 1,
-                'location_id' => 1,
-                'doctor_id' => 1,]);
+                'is_active' => $faker->boolean,
+                'is_approved' => $faker->boolean,
+                'general_hospital' => $faker->boolean,
+                'private_hospital' => $faker->boolean,
+                'location_id' => $faker->numberBetween(1,6),
+                'doctor_id' => $faker->numberBetween(1,6),
+                ]);
 
         }
         DB::table('hospital_translations')->insert([[
