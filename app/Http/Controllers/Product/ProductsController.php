@@ -19,6 +19,8 @@ class ProductsController extends Controller
     {
         $this->ProductService=$ProductService;
         $this->response=$response;
+        $this->middleware(['role:superadministrator']);
+
     }
         public function getAll()
         {

@@ -69,7 +69,7 @@ class User extends Authenticatable implements JWTSubject
             'user_id',
             'role_id',
             'id',
-            'id')->withPivot('user_type');
+            'id');
     }
 
     public function permissions()

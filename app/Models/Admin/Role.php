@@ -48,6 +48,6 @@ class Role extends LaratrustRole
             'role_id',
             'user_id',
             'id',
-            'id')->withPivot('user_type');
+            'id');
     }
 }
