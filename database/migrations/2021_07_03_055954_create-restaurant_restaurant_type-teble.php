@@ -15,8 +15,8 @@ class CreateRestaurantRestaurantTypeTeble extends Migration
     {
         Schema::create('restaurant_restaurant_type', function (Blueprint $table) {
             $table->id();
-            $table->integer('restaurant_id');
-            $table->integer('restaurant_type_id');
+            $table->integer('restaurant_id')->unsigned();
+            $table->integer('restaurant_type_id')->unsigned();
             $table->timestamps();
         });
     }
