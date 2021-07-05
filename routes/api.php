@@ -337,6 +337,45 @@ Route::group(['prefix'=>'ActiveTime','namespace'=>'ActiveTime'],function () {
          Route::get('/get-restaurant/{restaurantType_id}', 'RestaurantTypeController@getRestaurant');
 
      });
+     //________________________ Restaurant Category Route__________________//
+     Route::group(['prefix'=>'RestaurantCategory','namespace'=>'RestaurantCategory'],function () {
+         Route::get('/get', 'RestaurantCategoyrController@get');
+         Route::get('/getById/{id}', 'RestaurantCategoyrController@getById');
+         Route::post('/create', 'RestaurantCategoyrController@create');
+         Route::put('/update/{id}', 'RestaurantCategoyrController@update');
+         Route::GET('/search/{name}','RestaurantCategoyrController@search');
+         Route::PUT('/trash/{id}', 'RestaurantCategoyrController@trash');
+         Route::get('/getTrashed', 'RestaurantCategoyrController@getTrashed');
+         Route::PUT('/restoreTrashed/{id}', 'RestaurantCategoyrController@restoreTrashed');
+         Route::delete('/delete/{id}', 'RestaurantCategoyrController@delete');
+
+         Route::get('/get-restaurant/{restaurantType_id}', 'RestaurantCategoyrController@getRestaurant');
+
+     });
+     //________________________ Restaurant Product Route__________________//
+     Route::group(['prefix'=>'RestaurantProduct','namespace'=>'RestaurantProduct'],function () {
+         Route::get('/get', 'RestaurantProductController@get');
+         Route::get('/getById/{id}', 'RestaurantProductController@getById');
+         Route::post('/create', 'RestaurantProductController@create');
+         Route::put('/update/{id}', 'RestaurantProductController@update');
+         Route::GET('/search/{name}','RestaurantProductController@search');
+         Route::PUT('/trash/{id}', 'RestaurantProductController@trash');
+         Route::get('/getTrashed', 'RestaurantProductController@getTrashed');
+         Route::PUT('/restoreTrashed/{id}', 'RestaurantProductController@restoreTrashed');
+         Route::delete('/delete/{id}', 'RestaurantProductController@delete');
+     });
+     //________________________ Item Route__________________//
+     Route::group(['prefix'=>'Item','namespace'=>'Item'],function () {
+         Route::get('/get', 'ItemController@get');
+         Route::get('/getById/{id}', 'ItemController@getById');
+         Route::post('/create', 'ItemController@create');
+         Route::put('/update/{id}', 'ItemController@update');
+         Route::GET('/search/{name}','ItemController@search');
+         Route::PUT('/trash/{id}', 'ItemController@trash');
+         Route::get('/getTrashed', 'ItemController@getTrashed');
+         Route::PUT('/restoreTrashed/{id}', 'ItemController@restoreTrashed');
+         Route::delete('/delete/{id}', 'ItemController@delete');
+     });
 
  });
 
