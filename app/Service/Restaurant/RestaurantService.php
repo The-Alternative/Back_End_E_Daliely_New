@@ -62,13 +62,7 @@ class RestaurantService
                 'social_media_id' => $request['social_media_id'],
                 'appointment_id' => $request['appointment_id'],
                 'active_time_id' => $request['active_time_id'],
-                'customer_id' => $request['customer_id'],
                 'location_id' => $request['location_id'],
-                'user_id' => $request['user_id'],
-                'rate_id' => $request['rate_id'],
-                'meal_id' => $request['meal_id'],
-                'menu_id' => $request['menu_id'],
-                'type_of_restaurant_id' => $request['type_of_restaurant_id'],
                 'is_approved' => $request['is_approved'],
                 'is_active' => $request['is_active'],
             ]);
@@ -112,13 +106,7 @@ class RestaurantService
                     'social_media_id' => $request['social_media_id'],
                     'appointment_id' => $request['appointment_id'],
                     'active_time_id' => $request['active_time_id'],
-                    'customer_id' => $request['customer_id'],
                     'location_id' => $request['location_id'],
-                    'user_id' => $request['user_id'],
-                    'rate_id' => $request['rate_id'],
-                    'meal_id' => $request['meal_id'],
-                    'menu_id' => $request['menu_id'],
-                    'type_of_restaurant_id' => $request['type_of_restaurant_id'],
                     'is_approved' => $request['is_approved'],
                     'is_active' => $request['is_active'],
                 ]);
@@ -246,23 +234,6 @@ class RestaurantService
           try{
               return Restaurant::with('restaurantType')->find($id);
 
-          } catch (\Exception $ex) {
-              return $this->returnError('400', $ex->getMessage());
-          }
-     }
-     public function getMenu($id)
-     {
-          try{
-              return Restaurant::with('Menu')->find($id);
-          } catch (\Exception $ex) {
-              return $this->returnError('400', $ex->getMessage());
-          }
-     }
-     public function getMeal($id)
-     {
-          try{
-             $s= Restaurant::with('Meal')->find($id);
-              return$s;
           } catch (\Exception $ex) {
               return $this->returnError('400', $ex->getMessage());
           }

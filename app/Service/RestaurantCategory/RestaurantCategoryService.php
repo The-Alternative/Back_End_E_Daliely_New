@@ -200,7 +200,7 @@ class RestaurantCategoryService
             if ($Category->is_active == 0) {
 
                 $Category->delete();
-                $Category->hospitalTranslation()->delete();
+                $Category->restaurantCategoryTranslation()->delete();
                 return $this->returnData('Restaurant Category', $Category, 'This Restaurant Category is deleted Now');
             }
             else{

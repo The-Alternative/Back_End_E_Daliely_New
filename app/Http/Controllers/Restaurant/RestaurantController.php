@@ -60,12 +60,5 @@ class RestaurantController extends Controller
     {
         return $this->RestaurantService->getType($id);
     }
-    public function getMenu($id)
-    {
-        return $this->RestaurantService->getMenu($id);
-    }
-    public function getMeal($id)
-    {
-        return $this->RestaurantService->getMeal($id);
-    }
+
 }

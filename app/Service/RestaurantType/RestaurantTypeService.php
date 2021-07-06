@@ -102,7 +102,6 @@ class RestaurantTypeService
                     'is_approved' => $request['is_approved'],
                     'is_active' => $request['is_active'],
                     'restaurant_id' => $request['restaurant_id'],
-
                 ]);
 
             $ss=RestaurantTypeTranslation::where('restaurant_type_translations.restaurant_type_id',$id);

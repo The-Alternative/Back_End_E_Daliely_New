@@ -11,4 +11,8 @@ class RestaurantCategoryTranslation extends Model
     protected $table='restaurant_category_translations';
     protected $fillable=['id','restaurant_category_id','locale','name','short_description','long_description'];
 
+    public function restaurantCategory()
+    {
+        return $this->belongsTo(RestaurantCategory::class,'restaurant_category_id');
+    }
 }

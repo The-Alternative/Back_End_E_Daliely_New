@@ -27,7 +27,7 @@ class RestaurantProductRequest extends FormRequest
             'is_active'      =>'required|in:0,1',
             'is_approved'    =>'required|in:0,1',
             'image'          =>'required',
-            'item_id'        =>'requored',
+            'item_id'        =>'required',
 
             'RestaurantProduct'=>'required|array|min:1',
             'RestaurantProduct.*.name'=>'required|min:3|string',

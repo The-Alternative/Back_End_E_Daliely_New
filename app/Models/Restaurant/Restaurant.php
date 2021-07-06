@@ -2,6 +2,9 @@
 
 namespace App\Models\Restaurant;
 
+use App\Models\Item\Item;
+use App\Models\RestaurantCategory\RestaurantCategory;
+use App\Models\RestaurantProduct\RestaurantProduct;
 use App\Models\RestaurantType\RestaurantType;
 use App\Scopes\RestaurantScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,7 +16,7 @@ class Restaurant extends Model
     protected $table='restaurants';
     protected $fillable =['Id','image','appointment_id','location_id','active_time_id',
         'social_media_id','restaurant_type_id','is_active','is_approved'];
-    public $timestamps=false;
+
     protected $hidden=['appointment_id','location_id','active_time_id','social_media_id',
         'restaurant_type_id','created_at','updated_at'];
 
@@ -39,5 +42,16 @@ class Restaurant extends Model
         return $this->hasMany(RestaurantType::class);
     }
 
-
+    public function RestaurantCategory()
+    {
+        return $this->hasMany(RestaurantCategory::class);
+    }
+    public function RestaurantProduct()
+    {
+        return $this->hasMany(RestaurantProduct::class);
+    }
+    public function Item()
+    {
+        return $this->hasMany(Item::class);
+    }
 }

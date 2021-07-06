@@ -11,7 +11,7 @@ class RestaurantType extends Model
 {
     use HasFactory;
     protected $table='restaurant_types';
-    protected $fillable =['Id','image','is_active','is_approved'];
+    protected $fillable =['Id','image','is_active','is_approved','restaurant_id'];
     public $timestamps=false;
     protected $hidden=['created_at','updated_at'];
 
