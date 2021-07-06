@@ -24,16 +24,12 @@ class CalendarRequest extends FormRequest
     public function rules()
     {
         return [
-<<<<<<< HEAD:app/Http/Requests/Brands/BrandRequest.php
             'name'=> 'require|min:5|max:255|unique:brands,name',
             'slug'=>'required',
             'description'=>'required|min:20|max:255',
             'image'=>'required',
             'is_active'=>'required',
 
-=======
-            //
->>>>>>> 20784ace59a0fa123bce43f442228652a4184064:app/Http/Requests/Calendar/CalendarRequest.php
-        ];
+            ];
     }
 }

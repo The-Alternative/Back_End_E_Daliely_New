@@ -112,9 +112,8 @@ class permissionService
     public function create(Request $request)
     {
         try {
-            $validated = $request->validated();
+//            $validated = $request->validated();
             $request->is_active ? $is_active = true : $is_active = false;
-            $request->is_appear ? $is_appear = true : $is_appear = false;
             //transformation to collection
             $allpermissions = collect($request->permission)->all();
 
@@ -153,7 +152,7 @@ class permissionService
     public function update(Request $request,$id)
     {
         try{
-            $validated = $request->validated();
+//            $validated = $request->validated();
             $permission= $this->permissionModel->find($id);
             if(!$permission)
                 return $this->returnError('400', 'not found this Permission');
@@ -184,10 +183,11 @@ class permissionService
                     $values= $this->permissionTranslation->where('permission_translation.permission_id',$id)
                         ->where('local',$request_permission['local'])
                         ->update([
+                            'local' => $request_permission ['local'],
                             'name'=>$request_permission['name'],
                             'display_name'=>$request_permission['display_name'],
                             'description'=>$request_permission['description'],
-                            'category_id'=>$id
+                            'permission_id'=>$id
                         ]);
                 }
                 return $this->returnData('Permission', $dbdpermissions,'done');

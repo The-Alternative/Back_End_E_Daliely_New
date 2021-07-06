@@ -66,14 +66,14 @@ class LaratrustSeeder extends Seeder
                         ])->id;
                         $permissionsTrans =  DB::table('permission_translation')->insert([
                             [
-                                'name' => $module . '-' . $permissionValue.'Ar',
+                                'name' => $module . '-' . $permissionValue,
                                 'display_name' => ucfirst($permissionValue) . ' ' . ucfirst($module),
                                 'description' => ucfirst($permissionValue) . ' ' . ucfirst($module),
                                 'local' => 'ar',
                                 'permission_id' => $permissions
                             ],
                             [
-                                'name' => $module . '_' . $permissionValue.'En',
+                                'name' => $module . '_' . $permissionValue,
                                 'display_name' => ucfirst($permissionValue) . ' ' . ucfirst($module),
                                 'description' => ucfirst($permissionValue) . ' ' . ucfirst($module),
                                 'local' => 'en',

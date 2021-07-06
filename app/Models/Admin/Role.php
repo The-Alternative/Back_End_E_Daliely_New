@@ -29,7 +29,7 @@ class Role extends LaratrustRole
     {
         return $this->hasMany(RoleTranslation::class);
     }
-    public function permissions()
+    public function Permission()
     {
         return $this->belongsToMany(
             Permission::class,
