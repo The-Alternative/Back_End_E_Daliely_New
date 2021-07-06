@@ -13,7 +13,7 @@ return [
 
     'roles_structure' => [
         'superadministrator' => [
-            'users' => 'c,r,u,d',
+            'user' => 'c,r,u,d',
             'product' => 'c,r,u,d',
             'category' => 'c,r,u,d',
             'section' => 'c,r,u,d',
@@ -22,8 +22,7 @@ return [
             'brand' => 'c,r,u,d',
         ],
         'administrator' => [
-            'users' => 'c,r,u,d',
-            'profile' => 'r,u',
+            'user' => 'c,r,u,d',
             'product' => 'r,u',
             'category' => 'r,u',
             'section' => 'r,u',
