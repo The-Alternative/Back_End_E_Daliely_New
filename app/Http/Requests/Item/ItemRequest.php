@@ -30,7 +30,7 @@ class ItemRequest extends FormRequest
             'product_id'      =>'required',
 
             'Item'=>'required|array|min:1',
-            'Item.*.title'=>'required|min:3|string',
+            'Item.*.name'=>'required|min:3|string',
             'Item.*.short_description'=>'required|min:10|max:255',
             'Item.*.long_description'=>'required|min:10|max:255',
             'Item.*.locale'=>'required',
@@ -42,7 +42,7 @@ class ItemRequest extends FormRequest
             'required'=>'this field is required',
             'in'=>'this field must be 0 (is not active) or 1 (is active)',
 
-            'Item.*.title.min' => 'Your Item\'s title  Is Too Short',
+            'Item.*.name.min' => 'Your Item\'s name  Is Too Short',
 
             'Item.*.short_description.min' => 'Your Item Description\'s Is Too Short',
             'Item.*.short_description.max' => 'Your Item Description\'s Is Too Short',

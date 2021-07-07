@@ -31,16 +31,21 @@ class RestaurantCategory extends Model
         return $this->hasMany(RestaurantCategoryTranslation::class);
     }
 
+    public function category()
+    {
+        return $this->belongsToMany(RestaurantCategory::class);
+    }
+
     public function Restaurant()
     {
-        return $this->belongsToMany(Restaurant::class);
+        return $this->belongsToMany(Restaurant::class,'restaurant_restaurant_category','restaurant_category_id','restaurant_id','id','id');
     }
     public function RestaurantProduct()
     {
-        return $this->hasMany(RestaurantProduct::class);
+        return $this->belongsToMany(RestaurantProduct::class,'restaurant_category_restaurant_product','restaurant_category_id','restaurant_product_id','id','id');
     }
     public function Item()
     {
-        return $this->hasMany(Item::class);
+        return $this->belongsToMany(Item::class,'restaurant_category_item','restaurant_category_id','item_id','id','id');
     }
 }

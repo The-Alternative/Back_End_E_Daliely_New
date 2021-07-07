@@ -11,7 +11,7 @@ class RestaurantType extends Model
 {
     use HasFactory;
     protected $table='restaurant_types';
-    protected $fillable =['Id','image','is_active','is_approved','restaurant_id'];
+    protected $fillable =['Id','image','is_active','is_approved'];
     public $timestamps=false;
     protected $hidden=['created_at','updated_at'];
 
@@ -34,6 +34,6 @@ class RestaurantType extends Model
 
     public function restaurant()
     {
-        return $this->belongsToMany(Restaurant::class);
+        return $this->belongsToMany(Restaurant::class,'restaurant_restaurant_type','restaurant_type_id','restaurant_id','id','id');
     }
 }

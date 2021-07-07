@@ -20,7 +20,7 @@ class ItemScope implements \Illuminate\Database\Eloquent\Scope
         $builder->join('item_translations','items.id','=','item_translations.item_id')
             ->where('item_translations.locale','=',config::get('app.locale'))
             ->select('items.id', 'items.is_active', 'items.is_approved', 'items.image',
-                'item_translations.title','item_translations.short_description',
+                'item_translations.name','item_translations.short_description',
                 'item_translations.long_description','item_translations.locale');
 
     }

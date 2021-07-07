@@ -32,11 +32,11 @@ class RestaurantProduct extends Model
 
     public function Restaurant()
     {
-        return $this->belongsToMany(Restaurant::class);
+        return $this->belongsToMany(Restaurant::class,'restaurant_restaurant_product','restaurant_product_id','restaurant_id','id','id');
     }
     public function RestaurantCategory()
     {
-        return $this->belongsToMany(RestaurantCategory::class);
+        return $this->belongsToMany(RestaurantCategory::class,'restaurant_category_restaurant_product','restaurant_product_id','restaurant_category_id','id','id');
     }
     public function Item()
     {

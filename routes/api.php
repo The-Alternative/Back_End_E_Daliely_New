@@ -320,6 +320,8 @@ Route::group(['prefix'=>'ActiveTime','namespace'=>'ActiveTime'],function () {
          Route::delete('/delete/{id}', 'RestaurantController@delete');
 
          Route::get('/get-type/{restaurant_id}', 'RestaurantController@getType');
+         Route::get('/get-category/{restaurant_id}', 'RestaurantController@getCategory');
+         Route::get('/get-product/{restaurant_id}', 'RestaurantController@getProduct');
 
      });
      //________________________ Restaurant Type Route__________________//
@@ -349,7 +351,8 @@ Route::group(['prefix'=>'ActiveTime','namespace'=>'ActiveTime'],function () {
          Route::PUT('/restoreTrashed/{id}', 'RestaurantCategoyrController@restoreTrashed');
          Route::delete('/delete/{id}', 'RestaurantCategoyrController@delete');
 
-         Route::get('/get-restaurant/{restaurantType_id}', 'RestaurantCategoyrController@getRestaurant');
+         Route::get('/get-restaurant/{restaurantCategory_id}', 'RestaurantCategoyrController@getRestaurant');
+         Route::get('/get-product/{restaurantCategory_id}', 'RestaurantCategoyrController@getProduct');
 
      });
      //________________________ Restaurant Product Route__________________//
@@ -363,6 +366,10 @@ Route::group(['prefix'=>'ActiveTime','namespace'=>'ActiveTime'],function () {
          Route::get('/getTrashed', 'RestaurantProductController@getTrashed');
          Route::PUT('/restoreTrashed/{id}', 'RestaurantProductController@restoreTrashed');
          Route::delete('/delete/{id}', 'RestaurantProductController@delete');
+
+         Route::get('/get-restaurant/{restaurantproduct_id}', 'RestaurantProductController@getRestaurant');
+         Route::get('/get-category/{restaurantProduct_id}', 'RestaurantProductController@getCategory');
+
      });
      //________________________ Item Route__________________//
      Route::group(['prefix'=>'Item','namespace'=>'Item'],function () {
@@ -375,6 +382,11 @@ Route::group(['prefix'=>'ActiveTime','namespace'=>'ActiveTime'],function () {
          Route::get('/getTrashed', 'ItemController@getTrashed');
          Route::PUT('/restoreTrashed/{id}', 'ItemController@restoreTrashed');
          Route::delete('/delete/{id}', 'ItemController@delete');
+
+         Route::get('/get-restaurant/{item_id}', 'ItemController@getRestaurant');
+         Route::get('/get-category/{item_id}', 'ItemController@getCategory');
+         Route::get('/get-product/{item_id}', 'ItemController@getProduct');
+
      });
 
  });

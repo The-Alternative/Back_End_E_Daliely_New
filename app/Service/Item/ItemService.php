@@ -169,7 +169,7 @@ class ItemService
     public function getTrashed()
     {
         try{
-            $Item= $this->ItemModel::NotActive()->all();
+            $Item= $this->ItemModel::NotActive();
             return $this -> returnData('Item',$Item,'done');
         }
         catch (\Exception $ex) {
@@ -201,7 +201,7 @@ class ItemService
             if ($Item->is_active == 0) {
 
                 $Item->delete();
-                $Item->hospitalTranslation()->delete();
+                $Item->ItemTranslation()->delete();
                 return $this->returnData('Item', $Item, 'This Item is deleted Now');
             }
             else{
@@ -209,6 +209,36 @@ class ItemService
             }
         }
         catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
+    }
+    public function getRestaurant($id)
+    {
+        try{
+            return Item::with('Restaurant')->find($id);
+
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
+    }
+
+    public function getProduct($id)
+    {
+        try{
+            return Item::with('RestaurantProduct')->find($id);
+
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
+    }
+
+
+    public function getCategory($id)
+    {
+        try{
+            return Item::with('RestaurantCategory')->find($id);
+
+        } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }
     }

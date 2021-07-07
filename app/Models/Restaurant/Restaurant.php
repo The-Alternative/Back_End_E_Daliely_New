@@ -39,19 +39,19 @@ class Restaurant extends Model
 
     public function restaurantType()
     {
-        return $this->hasMany(RestaurantType::class);
+        return $this->belongsToMany(RestaurantType::class,'restaurant_restaurant_type','restaurant_id','restaurant_type_id','id','id');
     }
 
     public function RestaurantCategory()
     {
-        return $this->hasMany(RestaurantCategory::class);
+        return $this->belongsToMany(RestaurantCategory::class,'restaurant_restaurant_category','restaurant_id','restaurant_category_id','id','id');
     }
     public function RestaurantProduct()
     {
-        return $this->hasMany(RestaurantProduct::class);
+        return $this->belongsToMany(RestaurantProduct::class,'restaurant_restaurant_product','restaurant_id','restaurant_product_id','id','id');
     }
     public function Item()
     {
-        return $this->hasMany(Item::class);
+        return $this->belongsToMany(Item::class,'restaurant_item','restaurant_id','item_id','id','id');
     }
 }

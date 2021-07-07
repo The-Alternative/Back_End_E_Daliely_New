@@ -19,7 +19,6 @@ class RestaurantTypeSeeder extends Seeder
         for ($i = 0; $i <= 5; $i++) {
             $s = DB::table('restaurant_types')->insertGetId([
                 'image' => $faker->sentence(5),
-                'restaurant_id' => $faker->numberBetween(1,5),
                 'is_active' => $faker->boolean,
                 'is_approved' =>$faker->boolean,
 

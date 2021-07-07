@@ -17,43 +17,51 @@ class RestaurantCategoyrController extends Controller
 
     public function __construct(RestaurantCategoryService $RestaurantCategory,Response $response )
     {
-        $this->RestaurantCategorySrevice=$RestaurantCategory;
+        $this->RestaurantCategoryService=$RestaurantCategory;
         $this->response=$response;
     }
     public function get()
     {
-        return $this->RestaurantCategorySrevice->get();
+        return $this->RestaurantCategoryService->get();
     }
     public function  getById($id)
     {
-        return $this->RestaurantCategorySrevice->getById($id);
+        return $this->RestaurantCategoryService->getById($id);
     }
     public function getTrashed()
     {
-        return$this->RestaurantCategorySrevice->getTrashed();
+        return$this->RestaurantCategoryService->getTrashed();
     }
     public function create(RestaurantCategoryRequest $request)
     {
-        return $this->RestaurantCategorySrevice->create($request);
+        return $this->RestaurantCategoryService->create($request);
     }
     public function update(RestaurantCategoryRequest $request,$id)
     {
-        return $this->RestaurantCategorySrevice->update($request,$id);
+        return $this->RestaurantCategoryService->update($request,$id);
     }
     public function search($name)
     {
-        return $this->RestaurantCategorySrevice->search($name);
+        return $this->RestaurantCategoryService->search($name);
     }
     public function trash($id)
     {
-        return $this->RestaurantCategorySrevice->trash($id);
+        return $this->RestaurantCategoryService->trash($id);
     }
     public function restoreTrashed($id)
     {
-        return $this->RestaurantCategorySrevice->restoreTrashed($id);
+        return $this->RestaurantCategoryService->restoreTrashed($id);
     }
     public function delete($id)
     {
-        return $this->RestaurantCategorySrevice->delete($id);
+        return $this->RestaurantCategoryService->delete($id);
+    }
+    public function getRestaurant($id)
+    {
+        return $this->RestaurantCategoryService->getRestaurant($id);
+    }
+    public function getProduct($id)
+    {
+        return $this->RestaurantCategoryService->getProduct($id);
     }
 }

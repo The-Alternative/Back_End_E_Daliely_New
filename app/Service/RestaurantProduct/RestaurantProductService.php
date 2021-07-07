@@ -212,4 +212,22 @@ class RestaurantProductService
             return $this->returnError('400', $ex->getMessage());
         }
     }
+    public function getRestaurant($id)
+    {
+        try{
+            return RestaurantProduct::with('Restaurant')->find($id);
+
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
+    }
+    public function getCategory($id)
+    {
+        try{
+            return RestaurantProduct::with('RestaurantCategory')->find($id);
+
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
+    }
 }
