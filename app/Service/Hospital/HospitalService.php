@@ -57,7 +57,6 @@ class HospitalService
                 'is_approved' => $request['is_approved'],
                 'is_active'   => $request['is_active'],
                 'location_id'=>$request['location_id'],
-                'doctor_id'=>$request['doctor_id'],
             ]);
             if (isset($allhospital)) {
                 foreach ($allhospital as $allhospitals) {
@@ -100,7 +99,6 @@ class HospitalService
                     'is_approved' => $request['is_approved'],
                     'is_active'   => $request['is_active'],
                     'location_id'=>$request['location_id'],
-                    'doctor_id'=>$request['doctor_id'],
                 ]);
 
             $ss=HospitalTranslation::where('hospital_translations.hospital_id',$id);

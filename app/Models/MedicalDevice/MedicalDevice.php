@@ -13,8 +13,8 @@ class MedicalDevice extends Model
     use HasFactory;
 
     protected $table='medical_devices';
-    protected $fillable=['id','hospital_id','doctor_id','is_active','is_approved'];
-    protected $hidden=['pivot','created_at','updated_at','hospital_id','doctor_id'];
+    protected $fillable=['id','image','is_active','is_approved'];
+    protected $hidden=['pivot','created_at','updated_at'];
 
 
     protected static function booted()

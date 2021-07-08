@@ -56,10 +56,7 @@ class DoctorService
             $unTransdoctor_id =doctor::insertGetId([
                 'image' => $request['image'],
                 'social_media_id' => $request['social_media_id'],
-                'appointments_id' => $request['appointments_id'],
-                'hospital_id' => $request['hospital_id'],
                 'clinic_id' => $request['clinic_id'],
-                'specialty_id' => $request['specialty_id'],
                 'is_approved' => $request['is_approved'],
                 'is_active' => $request['is_active'],
             ]);
@@ -101,10 +98,7 @@ class DoctorService
                 ->update([
                     'image' => $request['image'],
                     'social_media_id' => $request['social_media_id'],
-                    'appointments_id' => $request['appointments_id'],
-                    'hospital_id' => $request['hospital_id'],
                     'clinic_id' => $request['clinic_id'],
-                    'specialty_id' => $request['specialty_id'],
                     'is_approved' => $request['is_approved'],
                     'is_active' => $request['is_active'],
                 ]);

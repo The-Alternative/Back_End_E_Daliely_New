@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\medicalDevice;
+namespace App\Models\MedicalDevice;
 
 use App\Models\medicalDevice\MedicalDevice;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

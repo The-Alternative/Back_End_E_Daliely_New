@@ -17,8 +17,8 @@ class Doctor extends Model
 {
     use HasFactory;
     protected $table='doctors';
-    protected $fillable =['Id','image','appointments_id','specialty_id','hospital_id','clinic_id','social_media_id','is_active','is_approved'];
-    protected $hidden   =['social_media_id','specialty_id','hospital_id','work_places_id','created_at','updated_at','clinic_id','appointments_id','pivot'];
+    protected $fillable =['Id','image','clinic_id','social_media_id','is_active','is_approved'];
+    protected $hidden   =['social_media_id','created_at','updated_at','clinic_id','pivot'];
 
     protected static function boot()
     {
