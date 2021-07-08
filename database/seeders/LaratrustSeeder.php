@@ -124,6 +124,8 @@ class LaratrustSeeder extends Seeder
             }
         }
 
+
+
         Schema::disableForeignKeyConstraints();
     }
 }

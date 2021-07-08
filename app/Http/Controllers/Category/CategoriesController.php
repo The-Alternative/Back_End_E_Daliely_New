@@ -19,11 +19,15 @@ class CategoriesController extends Controller
     {
         $this->CategoryService=$CategoryService;
         $this->response=$response;
+        $this->middleware(['role:superadministrator|administrator|user']);
+        $this->middleware(['permission:category-read'])->only('getAll','GetById');
+        $this->middleware(['permission:category-create'])->only('create');
+        $this->middleware(['permission:category-update'])->only('update');
+        $this->middleware(['permission:category-delete'])->only(['trash','restoreTrashed','getTrashed']);
     }
     public function getAll()
     {
-     $response= $this->CategoryService->getAll();
-     return $response;
+        return $this->CategoryService->getAll();
     }
     public function getById($id )
     {

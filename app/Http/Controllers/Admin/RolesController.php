@@ -14,6 +14,11 @@ class RolesController extends Controller
     public function __construct(RoleService $roleService)
     {
         $this->roleService=$roleService;
+        $this->middleware(['role:superadministrator']);
+        $this->middleware(['permission:role-read'])->only('getAll','GetById');
+        $this->middleware(['permission:role-create'])->only('create');
+        $this->middleware(['permission:role-update'])->only('update');
+        $this->middleware(['permission:role-delete'])->only(['trash','restoreTrashed','getTrashed']);
     }
     public function getAll()
     {

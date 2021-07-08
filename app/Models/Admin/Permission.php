@@ -12,7 +12,7 @@ class Permission extends LaratrustPermission
     protected $primaryKey = 'id';
     protected $table='permissions';
     protected $hidden = [
-        'created_at', 'updated_at'
+        'created_at', 'updated_at',
     ];
     protected $casts = [
         'is_active' => 'boolean'

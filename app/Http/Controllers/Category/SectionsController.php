@@ -15,12 +15,18 @@ class SectionsController extends Controller
     private $sectionService;
     private $response;
 
+
     /* ProductsController constructor.
     */
     public function __construct(SectionService $SectionService,Response  $response)
     {
         $this->sectionService=$SectionService;
         $this->response=$response;
+        $this->middleware(['role:superadministrator|administrator|user']);
+        $this->middleware(['permission:section-read'])->only('getAll','GetById');
+        $this->middleware(['permission:section-create'])->only('create');
+        $this->middleware(['permission:section-update'])->only('update');
+        $this->middleware(['permission:section-delete'])->only(['trash','restoreTrashed','getTrashed']);
     }
     public function getAll()
     {

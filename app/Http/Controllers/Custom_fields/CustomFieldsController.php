@@ -25,6 +25,11 @@ class CustomFieldsController extends Controller
     {
         $this->customfieldService=$CustomFieldService;
         $this->response=$response;
+        $this->middleware(['role:superadministrator|administrator|user']);
+        $this->middleware(['permission:custom_field-read'])->only('getAll','GetById');
+        $this->middleware(['permission:custom_field-create'])->only('create');
+        $this->middleware(['permission:custom_field-update'])->only('update');
+        $this->middleware(['permission:custom_field-delete'])->only(['trash','restoreTrashed','getTrashed']);
     }
     public function getAll()
     {
