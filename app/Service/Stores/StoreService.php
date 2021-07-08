@@ -117,16 +117,10 @@ class  StoreService
 //        validated = $request->validated();
         $request->is_active?$is_active=true:$is_active=false;
         $request->is_appear?$is_appear=true:$is_appear=false;
-        //transformation to collection
+      /***  //transformation to collection*////
         $stores = collect($request->store)->all();
-        ///select folder to save the image
-        // $fileBath = "" ;
-        //     if($request->has('image'))
-        //     {
-        //         $fileBath=uploadImage('images/products',$request->image);
-        //     }
         DB::beginTransaction();
-        // //create the default language's product
+        /**** // //create the default language's product****/
         $unTransStore_id=$this->storeModel->insertGetId([
             //                'section_id' =>$request['section_id'],
             'loc_id' =>$request['loc_id'],
@@ -159,6 +153,10 @@ class  StoreService
             }
             $this->storeTranslation->insert($transstore_arr);
         }
+            if ($request->has('section')) {
+                $store = $this->storeModel->find($unTransStore_id);
+                $store->Section()->syncWithoutDetaching($request->get('section'));
+            }
         DB::commit();
         return $this->returnData('Store', [$unTransStore_id,$transstore_arr],'done');
         }
