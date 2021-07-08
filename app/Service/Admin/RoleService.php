@@ -223,7 +223,6 @@ class RoleService
     }
     /*___________________________________________________________________________*/
     /****  Delete category   ***/
-
     public function delete($id)
     {
         try{

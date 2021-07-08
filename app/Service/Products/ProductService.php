@@ -85,7 +85,6 @@ class ProductService
 //        }
 //        return $models;
     }
-
     public function getProductByCategory($id)
     {
         try {
@@ -215,7 +214,7 @@ class ProductService
             }
             if ($request->has('Sections')) {
                 $product = $this->productModel->find($unTransProduct_id);
-                $product->Custom_Field_Value()->syncWithoutDetaching($request->get('Sections'));
+                $product->Section()->syncWithoutDetaching($request->get('Sections'));
             }
             $images = $request->images;
             foreach ($images as $image) {
@@ -263,14 +262,6 @@ class ProductService
                 $request->request->add(['is_active' => 0]);
             else
                 $request->request->add(['is_active' => 1]);
-            //save image
-            // if($request->has('image')) {
-            //     $filePath = uploadImage('products', $request->photo);
-            //     Product::where('id', $pro_id)
-            //         ->update([
-            //             'image' => $filePath,
-            //         ]);
-            // }
             DB::beginTransaction();
             $unTransProduct = $this->productModel->where('products.id', $id)
                 ->update([
@@ -278,11 +269,9 @@ class ProductService
                     'barcode' => $request['barcode'],
                     'is_active' => $request['is_active'],
                     'is_appear' => $request['is_appear'],
-//                    'custom_feild_id' =>$request['custom_feild_id'],
                     'rating_id' => $request['rating_id'],
                     'brand_id' => $request['brand_id'],
                     'offer_id' => $request['offer_id'],
-//                    'category_id'=>$request['category_id']
                 ]);
             $ss = $this->productTranslation->where('product_translations.product_id', $id);
             $collection1 = collect($allproducts);
@@ -319,7 +308,7 @@ class ProductService
                 }
                 if ($request->has('Sections')) {
                     $product = $this->productModel->find($id);
-                    $product->Custom_Field_Value()->syncWithoutDetaching($request->get('Sections'));
+                    $product->Section()->syncWithoutDetaching($request->get('Sections'));
                 }
                 $images = $request->images;
                 foreach ($images as $image) {
@@ -388,5 +377,4 @@ class ProductService
             return $this->returnError('400',$ex->getMessage());
         }
     }
-
 }
