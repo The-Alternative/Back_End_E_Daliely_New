@@ -18,6 +18,11 @@ class StoreController extends Controller
 
     public function __construct(StoreService $StoreService,Response  $response)
     {
+        $this->middleware(['role:superadministrator|administrator|user']);
+        $this->middleware(['permission:store-read'])->only('getAll','GetById');
+        $this->middleware(['permission:store-create'])->only('create');
+        $this->middleware(['permission:store-update'])->only('update');
+        $this->middleware(['permission:store-delete'])->only(['trash','restoreTrashed','getTrashed']);
         $this->StoreService=$StoreService;
         $this->response=$response;
     }

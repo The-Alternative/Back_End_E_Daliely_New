@@ -44,6 +44,17 @@ Route::group(
                 Route::DELETE('/delete/{id}','PermissionsController@delete');
             });
         });
+        Route::group(['prefix' => 'users', 'namespace' => 'Admin'], function () {
+            Route::GET('/getAll','UsersController@getAll');
+            Route::GET('/getById/{id}','UsersController@getById');
+            Route::POST('/create','UsersController@create');
+            Route::PUT('/update/{id}','UsersController@update');
+            Route::GET('/search/{title}','UsersController@search');
+            Route::PUT('/trash/{id}','UsersController@trash');
+            Route::PUT('/restoreTrashed/{id}','UsersController@restoreTrashed');
+            Route::GET('/getTrashed','UsersController@getTrashed');
+            Route::DELETE('/delete/{id}','UsersController@delete');
+        });
 
     });
 

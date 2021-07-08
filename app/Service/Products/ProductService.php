@@ -10,8 +10,11 @@ use App\Models\Stores\StoreProduct;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\ProductRequest;
 use App\Models\Products\Product;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Laratrust\Laratrust;
 
 class ProductService
 {
@@ -24,11 +27,12 @@ class ProductService
     private $SectionModel;
     private $storeModel;
     private $storeProductModel;
+    private $laraturst;
 
     public function __construct(
         Product $product, ProductTranslation $productTranslation,
         Category $category, Section $sectionModel, Store $storeModel,
-        StoreProduct $storeProduct, Custom_Field $CustomField
+        StoreProduct $storeProduct, Custom_Field $CustomField ,Laratrust $laraturst
     )
     {
         $this->productModel = $product;
@@ -38,6 +42,7 @@ class ProductService
         $this->storeModel = $storeModel;
         $this->storeProductModel = $storeProduct;
         $this->customFieldModel = $CustomField;
+        $this->laratrustClass=$laraturst;
     }
     /*__________________________________________________________________*/
     /****Get All Active Products  ****/
@@ -54,6 +59,31 @@ class ProductService
         } catch (\Exception $e) {
             return $this->returnError('400', $e->getMessage());
         }
+
+
+//        $composer = json_decode(file_get_contents(base_path('composer.json')), true);
+//        $models = [];
+//        foreach ((array)data_get($composer, 'autoload.psr-4') as $name => $path) {
+//            $models = array_merge(collect(File::allFiles(base_path($path)))
+//                ->map(function ($item) use ($name) {
+//                    $path = $item->getRelativePathName();
+//                    return sprintf('\%s%s',
+//                        $name,
+//                        strtr(substr($path, 0, strrpos($path, '.')), '/', '\\'));
+//                })
+//                ->filter(function ($class) {
+//                    $valid = false;
+//                    if (class_exists($class)) {
+//                        $reflection = new \ReflectionClass($class);
+//                        $valid = $reflection->isSubclassOf(\Illuminate\Database\Eloquent\Model::class) &&
+//                            !$reflection->isAbstract();
+//                    }
+//                    return $valid;
+//                })
+//                ->values()
+//                ->toArray(), $models);
+//        }
+//        return $models;
     }
 
     public function getProductByCategory($id)
@@ -183,6 +213,10 @@ class ProductService
                 $product = $this->productModel->find($unTransProduct_id);
                 $product->Custom_Field_Value()->syncWithoutDetaching($request->get('CustomFieldValue'));
             }
+            if ($request->has('Sections')) {
+                $product = $this->productModel->find($unTransProduct_id);
+                $product->Custom_Field_Value()->syncWithoutDetaching($request->get('Sections'));
+            }
             $images = $request->images;
             foreach ($images as $image) {
                 $arr[] = $image['image'];
@@ -220,15 +254,15 @@ class ProductService
     public function update(ProductRequest $request,$id)
     {
         $validated = $request->validated();
-        try{
-            $product= $this->productModel->find($id);
-            if(!$product)
+        try {
+            $product = $this->productModel->find($id);
+            if (!$product)
                 return $this->returnError('400', 'not found this Product');
             $allproducts = collect($request->product)->all();
             if (!($request->has('products.is_active')))
-                $request->request->add(['is_active'=>0]);
+                $request->request->add(['is_active' => 0]);
             else
-                $request->request->add(['is_active'=>1]);
+                $request->request->add(['is_active' => 1]);
             //save image
             // if($request->has('image')) {
             //     $filePath = uploadImage('products', $request->photo);
@@ -238,34 +272,34 @@ class ProductService
             //         ]);
             // }
             DB::beginTransaction();
-            $unTransProduct=$this->productModel->where('products.id',$id)
+            $unTransProduct = $this->productModel->where('products.id', $id)
                 ->update([
-                    'slug' =>$request['slug'],
-                    'barcode' =>$request['barcode'],
-                    'is_active' =>$request['is_active'],
-                    'is_appear' =>$request['is_appear'],
+                    'slug' => $request['slug'],
+                    'barcode' => $request['barcode'],
+                    'is_active' => $request['is_active'],
+                    'is_appear' => $request['is_appear'],
 //                    'custom_feild_id' =>$request['custom_feild_id'],
-                    'rating_id' =>$request['rating_id'],
-                    'brand_id' =>$request['brand_id'],
-                    'offer_id' =>$request['offer_id'],
+                    'rating_id' => $request['rating_id'],
+                    'brand_id' => $request['brand_id'],
+                    'offer_id' => $request['offer_id'],
 //                    'category_id'=>$request['category_id']
                 ]);
-            $ss=$this->productTranslation->where('product_translations.product_id',$id);
+            $ss = $this->productTranslation->where('product_translations.product_id', $id);
             $collection1 = collect($allproducts);
-            $allcategorieslength=$collection1->count();
+            $allcategorieslength = $collection1->count();
             $collection2 = collect($ss);
 
-            $db_product= array_values(
+            $db_product = array_values(
                 $this->productTranslation
-                    ->where('product_translations.product_id',$id)
+                    ->where('product_translations.product_id', $id)
                     ->get()
                     ->all());
             $dbdproducts = array_values($db_product);
             $request_products = array_values($request->product);
-            foreach($dbdproducts as $dbdproduct){
-                foreach($request_products as $request_product){
-                    $values= $this->productTranslation->where('product_translations.product_id',$id)
-                        ->where('product_translations.local',$request_product['local'])
+            foreach ($dbdproducts as $dbdproduct) {
+                foreach ($request_products as $request_product) {
+                    $values = $this->productTranslation->where('product_translations.product_id', $id)
+                        ->where('product_translations.local', $request_product['local'])
                         ->update([
                             'name' => $request_product ['name'],
                             'short_des' => $request_product['short_des'],
@@ -275,9 +309,47 @@ class ProductService
                             'product_id' => $id
                         ]);
                 }
+                if ($request->has('category')) {
+                    $product = $this->productModel->find($id);
+                    $product->Category()->syncWithoutDetaching($request->get('category'));
+                }
+                if ($request->has('CustomFieldValue')) {
+                    $product = $this->productModel->find($id);
+                    $product->Custom_Field_Value()->syncWithoutDetaching($request->get('CustomFieldValue'));
+                }
+                if ($request->has('Sections')) {
+                    $product = $this->productModel->find($id);
+                    $product->Custom_Field_Value()->syncWithoutDetaching($request->get('Sections'));
+                }
+                $images = $request->images;
+                foreach ($images as $image) {
+                    $arr[] = $image['image'];
+                }
+                foreach ($arr as $ar) {
+                    if (isset($image)) {
+                        if ($request->hasFile($ar)) {
+                            //save
+                            $file_extension = $ar->getClientOriginalExtension();
+                            $file_name = time() . $file_extension;
+                            $path = 'images/products';
+                            $ar->move($path, $file_name);
+                        }
+                    }
+                }
+                if ($request->has('images')) {
+                    foreach ($images as $image) {
+                        $product = $this->productModel->find($id);
+                        $product->ProductImage()->insert([
+                            'product_id' => $id,
+                            'image' => $image['image'],
+                            'is_cover' => $image['is_cover'],
+                        ]);
+                    }
+
+                }
+                DB::commit();
+                return $this->returnData('Product', [['old data', $dbdproducts], ['new data', $request_products]], 'done');
             }
-            DB::commit();
-            return $this->returnData('Product',[ ['old data', $dbdproducts],['new data',$request_products]],'done');
         }
         catch(\Exception $ex){
             DB::rollback();
@@ -316,4 +388,5 @@ class ProductService
             return $this->returnError('400',$ex->getMessage());
         }
     }
+
 }

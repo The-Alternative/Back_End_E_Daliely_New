@@ -41,7 +41,7 @@ class RoleService
     public function getById($id)
     {
         try{
-            $role =$this->roleModel->find($id);
+            $role =$this->roleModel->with('Permission')->find($id);
             if (is_null($role) ){
                 return $response= $this->returnSuccessMessage('This Role not found','done');
             }else{
@@ -50,12 +50,6 @@ class RoleService
         }catch(\Exception $ex){
             return $this->returnError('400', $ex->getMessage());
         }
-    }
-    /*___________________________________________________________________________*/
-    public function getCategoryBySelf($id)
-    {
-        $role=$this->roleModel->get();
-        return $response= $this->returnData('Role',$role,'done');
     }
     /*___________________________________________________________________________*/
     /****ــــــThis Functions For Trashed Role  ****/
@@ -195,6 +189,10 @@ class RoleService
                 }
                 return $this->returnData('Role', $dbdroles,'done');
 
+            }
+            if ($request->has('permissions')) {
+                $role = $this->roleModel->find($id);
+                $role->Permission()->syncWithoutDetaching($request->get('permissions'));
             }
             DB::commit();
         }

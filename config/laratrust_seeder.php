@@ -14,6 +14,7 @@ return [
     'roles_structure' => [
         'superadministrator' => [
             'user' => 'c,r,u,d',
+            'role' => 'c,r,u,d',
             'product' => 'c,r,u,d',
             'category' => 'c,r,u,d',
             'section' => 'c,r,u,d',

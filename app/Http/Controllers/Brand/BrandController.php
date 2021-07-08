@@ -14,6 +14,11 @@ class BrandController extends Controller
     public function __construct(BrandsService $BrandsService)
     {
         $this->BrandsService=$BrandsService;
+        $this->middleware(['role:superadministrator|administrator|user']);
+        $this->middleware(['permission:brand-read'])->only('getAll','GetById');
+        $this->middleware(['permission:brand-create'])->only('create');
+        $this->middleware(['permission:brand-update'])->only('update');
+        $this->middleware(['permission:brand-delete'])->only(['trash','restoreTrashed','getTrashed']);
     }
     public function getAll()
     {

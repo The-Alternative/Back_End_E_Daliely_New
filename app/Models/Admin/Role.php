@@ -12,7 +12,7 @@ class Role extends LaratrustRole
     protected $primaryKey = 'id';
     protected $table='roles';
     protected $hidden = [
-        'created_at', 'updated_at'
+        'created_at', 'updated_at',
     ];
     protected $casts = [
         'is_active' => 'boolean'

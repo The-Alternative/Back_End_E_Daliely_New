@@ -8,34 +8,32 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+use Laratrust\Laratrust;
+use Laratrust\Traits\LaratrustUserTrait;
 
 class ProductsController extends Controller
 {
     use GeneralTrait;
+    use LaratrustUserTrait;
     private $ProductService;
     private $response;
+    private $laraturst;
 
-    public function __construct(ProductService $ProductService,Response  $response)
+    public function __construct(ProductService $ProductService,Response  $response,Laratrust $laraturst)
     {
         $this->ProductService=$ProductService;
         $this->response=$response;
-        $this->middleware('role:superadministrator|user');
-//        $this->middleware('role:user', ['except' => ['creat','update','delete']]);
-//        $this->middleware(['permission:product_read'])->only(['getAll','getById']);
-//        $this->middleware(['permission:product_create'])->only('create');
-        $this->middleware(['permission:product_update'])->only('update');
-        $this->middleware(['permission:product_delete'])->only(['trash','restoreTrashed','getTrashed']);
-
+        $this->laratrustClass=$laraturst;
+        $this->middleware(['role:superadministrator|administrator|user']);
+        $this->middleware(['permission:product-read'])->only('getAll','GetById');
+        $this->middleware(['permission:product-create'])->only('create');
+        $this->middleware(['permission:product-update'])->only('update');
+        $this->middleware(['permission:product-delete'])->only(['trash','restoreTrashed','getTrashed']);
     }
         public function getAll()
         {
-//            if (Auth::user()->hasPermission('product_read')){
             $response = $this->ProductService->getAll();
             return $response;
-//        }else{
-//            return response();
-//            }
         }
         public function getProductByCategory($id)
         {
