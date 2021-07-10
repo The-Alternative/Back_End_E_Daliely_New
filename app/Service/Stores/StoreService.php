@@ -122,7 +122,6 @@ class  StoreService
         DB::beginTransaction();
         /**** // //create the default language's product****/
         $unTransStore_id=$this->storeModel->insertGetId([
-            //                'section_id' =>$request['section_id'],
             'loc_id' =>$request['loc_id'],
             'country_id' =>$request['country_id'],
             'gov_id' =>$request['gov_id'],
@@ -157,6 +156,31 @@ class  StoreService
                 $store = $this->storeModel->find($unTransStore_id);
                 $store->Section()->syncWithoutDetaching($request->get('section'));
             }
+            $images = $request->images;
+            foreach ($images as $image) {
+                $arr[] = $image['image'];
+            }
+            foreach ($arr as $ar) {
+                if (isset($image)) {
+                    if ($request->hasFile($ar)) {
+                        //save
+                        $file_extension = $ar->getClientOriginalExtension();
+                        $file_name = time() . $file_extension;
+                        $path = 'images/stores';
+                        $ar->move($path, $file_name);
+                    }
+                }
+            }
+            if ($request->has('images')) {
+                foreach ($images as $image) {
+                    $storeImages = $this->storeModel->find($unTransStore_id);
+                    $storeImages->StoreImage()->insert([
+                        'store_id' => $unTransStore_id,
+                        'image' => $image['image'],
+                        'is_cover' => $image['is_cover']
+                    ]);
+                }
+            }
         DB::commit();
         return $this->returnData('Store', [$unTransStore_id,$transstore_arr],'done');
         }
@@ -179,14 +203,7 @@ class  StoreService
                 $request->request->add(['is_active'=>0]);
             else
                 $request->request->add(['is_active'=>1]);
-            //save image
-            // if($request->has('image')) {
-            //     $filePath = uploadImage('products', $request->photo);
-            //     Product::where('id', $pro_id)
-            //         ->update([
-            //             'image' => $filePath,
-            //         ]);
-            // }
+
             DB::beginTransaction();
             $nStore=$this->storeModel->where('stores.id',$id)
                 ->update([
@@ -218,6 +235,35 @@ class  StoreService
                             'local'=>$store['local'],
                             'store_id'=>$id
                         ]);
+                }
+            }
+            if ($request->has('section')) {
+                $store = $this->storeModel->find($id);
+                $store->Section()->syncWithoutDetaching($request->get('section'));
+            }
+            $images = $request->images;
+            foreach ($images as $image) {
+                $arr[] = $image['image'];
+            }
+            foreach ($arr as $ar) {
+                if (isset($image)) {
+                    if ($request->hasFile($ar)) {
+                        //save
+                        $file_extension = $ar->getClientOriginalExtension();
+                        $file_name = time() . $file_extension;
+                        $path = 'images/stores';
+                        $ar->move($path, $file_name);
+                    }
+                }
+            }
+            if ($request->has('images')) {
+                foreach ($images as $image) {
+                    $storeImages = $this->storeModel->find($id);
+                    $storeImages->StoreImage()->insert([
+                        'store_id' => $id,
+                        'image' => $image['image'],
+                        'is_cover' => $image['is_cover']
+                    ]);
                 }
             }
             DB::commit();

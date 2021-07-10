@@ -68,7 +68,7 @@ class Category extends Model
     }
     public function CategoryImages()
     {
-        return $this->hasMany(CategoryImages::class);
+        return $this->hasMany(CategoryImages::class,'category_id');
     }
 ////    public function products(){
 ////        return $this->belongsToMany(product::class)->withTimestamps()->withPivot(['']);
