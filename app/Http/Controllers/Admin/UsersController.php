@@ -15,7 +15,7 @@ class UsersController extends Controller
     public function __construct(UserService $userService)
     {
         $this->middleware(['role:superadministrator']);
-        $this->middleware(['permission:user-read'])->only('getAll','GetById');
+        $this->middleware(['permission:user-read'])->only('getAll','getById');
         $this->middleware(['permission:user-create'])->only('create');
         $this->middleware(['permission:user-update'])->only('update');
         $this->middleware(['permission:user-delete'])->only(['trash','restoreTrashed','getTrashed']);
@@ -23,47 +23,38 @@ class UsersController extends Controller
     }
     public function getAll()
     {
-        $response= $this->userService->getAll();
-        return $response;
+        return $this->userService->getAll();
     }
     public function getById($id)
     {
-        $response= $this->userService->getById($id);
-        return $response;
+        return $this->userService->getById($id);
     }
     public function getTrashed()
     {
-        $response= $this->userService->getTrashed();
-        return $response;
+        return $this->userService->getTrashed();
     }
     public function create(Request $request)
     {
-        $response= $this->userService->create($request);
-        return $response;
+        return $this->userService->create($request);
     }
     public function update(Request $request,$id)
     {
-        $response= $this->userService->update($request,$id);
-        return $response;
+        return $this->userService->update($request,$id);
     }
     public function search($title)
     {
-        $response= $this->userService->search($title);
-        return $response;
+        return $this->userService->search($title);
     }
     public function trash($id)
     {
-        $response= $this->userService->trash($id);
-        return $response;
+        return $this->userService->trash($id);
     }
     public function restoreTrashed($id)
     {
-        $response= $this->userService->restoreTrashed($id);
-        return $response;
+        return $this->userService->restoreTrashed($id);
     }
     public function delete($id)
     {
-        $response= $this->userService->delete($id);
-        return $response;
+        return $this->userService->delete($id);
     }
 }

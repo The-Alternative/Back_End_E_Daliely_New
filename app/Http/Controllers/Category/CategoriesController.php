@@ -20,7 +20,7 @@ class CategoriesController extends Controller
         $this->CategoryService=$CategoryService;
         $this->response=$response;
         $this->middleware(['role:superadministrator|administrator|user']);
-        $this->middleware(['permission:category-read'])->only('getAll','GetById');
+        $this->middleware(['permission:category-read'])->only('getAll','getById');
         $this->middleware(['permission:category-create'])->only('create');
         $this->middleware(['permission:category-update'])->only('update');
         $this->middleware(['permission:category-delete'])->only(['trash','restoreTrashed','getTrashed']);
@@ -31,47 +31,38 @@ class CategoriesController extends Controller
     }
     public function getById($id )
     {
-        $response= $this->CategoryService->getById($id);
-        return $response;    }
+        return $this->CategoryService->getById($id);
+    }
     public function getCategoryBySelf($id )
     {
-        $response= $this->CategoryService->getCategoryBySelf($id);
-        return $response;
+        return $this->CategoryService->getCategoryBySelf($id);
     }
     public function getTrashed()
     {
-     $response= $this->CategoryService->getTrashed();
-        return $response;
+     return $this->CategoryService->getTrashed();
     }
-        public function create(CategoryRequest $request)
-        {
-            $response= $this->CategoryService->create($request);
-            return $response;
-        }
-        public function update(CategoryRequest $request,$id)
-        {
-            $response= $this->CategoryService->update( $request,$id);
-            return $response;
-        }
-        public function search($name)
-        {
-            $response= $this->CategoryService->search($name);
-            return $response;
-        }
-        public function trash($id)
-        {
-            $response= $this->CategoryService->trash($id);
-            return $response;
-        }
-        public function restoreTrashed($id)
-        {
-            $response= $this->CategoryService->restoreTrashed($id);
-            return $response;
-        }
-        public function delete($id)
-        {
-            $response= $this->CategoryService->delete($id);
-            return $response;
-        }
-
+    public function create(CategoryRequest $request)
+    {
+        return $this->CategoryService->create($request);
+    }
+    public function update(CategoryRequest $request,$id)
+    {
+        return $this->CategoryService->update( $request,$id);
+    }
+    public function search($name)
+    {
+        return $this->CategoryService->search($name);
+    }
+    public function trash($id)
+    {
+        return $this->CategoryService->trash($id);
+    }
+    public function restoreTrashed($id)
+    {
+        return $this->CategoryService->restoreTrashed($id);
+    }
+    public function delete($id)
+    {
+        return $this->CategoryService->delete($id);
+    }
 }

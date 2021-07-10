@@ -13,70 +13,57 @@ class SectionsController extends Controller
 {
     use GeneralTrait;
     private $sectionService;
-    private $response;
-
 
     /* ProductsController constructor.
     */
-    public function __construct(SectionService $SectionService,Response  $response)
+    public function __construct(SectionService $SectionService)
     {
         $this->sectionService=$SectionService;
-        $this->response=$response;
         $this->middleware(['role:superadministrator|administrator|user']);
-        $this->middleware(['permission:section-read'])->only('getAll','GetById');
+        $this->middleware(['permission:section-read'])->only('getAll','getById');
         $this->middleware(['permission:section-create'])->only('create');
         $this->middleware(['permission:section-update'])->only('update');
         $this->middleware(['permission:section-delete'])->only(['trash','restoreTrashed','getTrashed']);
     }
     public function getAll()
     {
-        $response= $this->sectionService->getAll();
-        return $response;
+        return $this->sectionService->getAll();
     }
     public function getById($id )
     {
-        $response= $this->sectionService->getById($id);
-        return $response;
+        return $this->sectionService->getById($id);
     }
     public function getCategoryBySection()
     {
-        $response= $this->sectionService->getCategoryBySection();
-        return $response;
+        return $this->sectionService->getCategoryBySection();
     }
     public function getTrashed()
     {
-        $response= $this->sectionService->getTrashed();
-        return $response;
+        return $this->sectionService->getTrashed();
     }
     public function create(Request $request)
     {
-        $response= $this->sectionService->create($request);
-        return $response;
+        return $this->sectionService->create($request);
     }
     public function update(Request $request,$id)
     {
-        $response= $this->sectionService->update($request,$id);
-        return $response;
+        return $this->sectionService->update($request,$id);
     }
     public function search($name)
     {
-        $response= $this->sectionService->search($name);
-        return $response;
+        return $this->sectionService->search($name);
     }
     public function trash($id)
     {
-        $response= $this->sectionService->trash($id);
-        return $response;
+        return $this->sectionService->trash($id);
     }
     public function restoreTrashed($id)
     {
-        $response= $this->sectionService->restoreTrashed($id);
-        return $response;
+        return $this->sectionService->restoreTrashed($id);
     }
     public function delete($id)
     {
-        $response= $this->sectionService->delete($id);
-        return $response;
+        return $this->sectionService->delete($id);
     }
 
 }

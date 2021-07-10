@@ -18,7 +18,7 @@ class StoreController extends Controller
     public function __construct(StoreService $StoreService  )
     {
         $this->middleware(['role:superadministrator|administrator|user']);
-        $this->middleware(['permission:store-read'])->only('getAll','GetById');
+        $this->middleware(['permission:store-read'])->only('getAll','getById');
         $this->middleware(['permission:store-create'])->only('create');
         $this->middleware(['permission:store-update'])->only('update');
         $this->middleware(['permission:store-delete'])->only(['trash','restoreTrashed','getTrashed']);
@@ -47,7 +47,6 @@ class StoreController extends Controller
     public function search($name)
     {
         return $this->StoreService->search($name);
-
     }
     public function trash($id)
     {

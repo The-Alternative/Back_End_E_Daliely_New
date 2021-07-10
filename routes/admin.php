@@ -55,6 +55,5 @@ Route::group(
             Route::GET('/getTrashed','UsersController@getTrashed');
             Route::DELETE('/delete/{id}','UsersController@delete');
         });
-
     });
 
