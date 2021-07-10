@@ -121,7 +121,7 @@ class MedicalDeviceService
                 }
             }
             DB::commit();
-            return $this->returnData('Medical Device', [$dbmedicaldevice,$values],'done');
+            return $this->returnData('MedicalDevice', [$dbmedicaldevice,$values],'done');
         }
         catch(\Exception $ex){
             return $this->returnError('400', $ex->getMessage());

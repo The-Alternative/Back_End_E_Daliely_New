@@ -148,8 +148,14 @@ class DoctorRateService
         try {
             $doctorRate = DoctorRate::find($id);
             if ($doctorRate->is_active == 0) {
-                $doctorRate = $this->DoctorRateModel->destroy($id);
-                return $this->returnData('DoctorRate', $doctorRate, 'This DoctorRate is deleted Now');
+
+                $doctorRate->delete();
+                return $this->returnData('DoctorRate', $doctorRate, 'This Doctor Rate is deleted Now');
+            }
+            else
+            {
+                return $this->returnData('DoctorRate', $doctorRate, 'This Doctor Rate can not deleted Now');
+
             }
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());

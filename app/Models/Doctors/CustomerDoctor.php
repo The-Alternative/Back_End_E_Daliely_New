@@ -4,26 +4,30 @@ namespace App\Models\Doctors;
 
 use App\Models\Customer\Customer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class CustomerDoctor extends Model
+class CustomerDoctor extends Pivot
 {
     use HasFactory;
     protected $table='customer_doctor';
-    protected $fillable =['id','doctor_id','customer_id','medical_file_id','age','gender',
-        'social_status','blood_type','note','is_active','is_approved'];
+    protected $fillable =['id','doctor_id','customer_id','age','gender',
+        'social_status','blood_type','note','medical_file_number','medical_file_date','review_date'
+        ,'PDF','is_active','is_approved'];
 
-    protected $hidden=['created_at','updated_at','doctor_id','customer_id','medical_file_id',];
+    protected $hidden=['created_at','updated_at','doctor_id','customer_id'];
 
     public function scopeNotActive($query)
     {
         return $query->where('is_active',0)->get();
     }
 //
-//    public function doctor(){
-//        return $this->belongsTo(doctor::class);
+//    function doctor()
+//    {
+//        return $this->belongsTo(Doctor::class);
 //    }
-//    public function customer(){
-//        return $this->belongsTo(customer::class);
+//
+//    function customer()
+//    {
+//        return $this->belongsTo(Customer::class);
 //    }
 }

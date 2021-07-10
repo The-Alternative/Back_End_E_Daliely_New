@@ -3,6 +3,7 @@
 
 namespace App\Service\Doctors;
 
+use App\Http\Requests\CustomerDoctor\CusromerDoctorRequest;
 use App\Models\Customer\Customer;
 use App\Models\DoctorRate\DoctorRate;
 use App\Models\Doctors\Doctor;
@@ -306,4 +307,6 @@ class DoctorService
             return $this->returnError('400', $ex->getMessage());
         }
     }
+
+
 }

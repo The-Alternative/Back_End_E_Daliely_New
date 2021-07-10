@@ -153,7 +153,7 @@ class SocialMediaService
         try{
         $SocialMedia = SocialMedia::find($id);
             if ($SocialMedia->is_active == 0) {
-                $SocialMedia = $this->SocialMediaModel->destroy($id);
+                $SocialMedia->delete();
                 return $this->returnData('Social Media', $SocialMedia, 'This Social Media is deleted Now');
             }
             else{
