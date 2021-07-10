@@ -36,7 +36,7 @@ Route::group(
         /*_____________Category routes_____________*/
         Route::group(['prefix'=>'categories','namespace'=>'Category'],function()
             {
-                Route::GET('/getAll','CategoriesController@getAll')->name('categories/');
+                Route::GET('/getAll','CategoriesController@getAll');
                 Route::GET('/getById/{id}','CategoriesController@getById');
                 Route::GET('/getCategoryBySelf/{id}','CategoriesController@getCategoryBySelf');
                 Route::POST('/create','CategoriesController@create');
@@ -90,7 +90,7 @@ Route::group(
              });
         /*_____________ Language routes_____________*/
         Route::group(['prefix'=>'languages','namespace'=>'Language'],function(){
-            Route::POST('/getAll','LanguageController@getAll')->name('languages/');
+            Route::POST('/getAll','LanguageController@getAll');
             Route::POST('/getById/{id}','LanguageController@getById');
             Route::POST('/create','LanguageController@create');
             Route::post('/update/{id}','LanguageController@update');

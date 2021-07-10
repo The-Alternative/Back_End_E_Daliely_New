@@ -33,52 +33,42 @@ class CustomFieldsController extends Controller
     }
     public function getAll()
     {
-        $response= $this->customfieldService->getAll();
-        return $response;
+        return $this->customfieldService->getAll();
     }
     public function getCustomFieldsByProduct($id)
     {
-        $response= $this->customfieldService->getCustomFieldsByProduct($id);
-        return $response;
+        return $this->customfieldService->getCustomFieldsByProduct($id);
     }
     public function getById($id)
     {
-        $response= $this->customfieldService->getById($id);
-        return $response;
+        return $this->customfieldService->getById($id);
     }
     public function getTrashed()
     {
-        $response= $this->customfieldService->getTrashed();
-        return $response;
+        return $this->customfieldService->getTrashed();
     }
     public function create(Request $request)
     {
-        $response= $this->customfieldService->create($request);
-        return $response;
+        return $this->customfieldService->create($request);
     }
     public function update(Request $request,$id)
     {
-        $response = $this->customfieldService->update($request, $id);
-        return $response;
+        return $this->customfieldService->update($request, $id);
     }
     public function search($title)
     {
-        $response= $this->customfieldService->search($title);
-        return $response;
+        return $this->customfieldService->search($title);
     }
     public function trash($id)
     {
-        $response= $this->customfieldService->trash($id);
-        return $response;
+        return $this->customfieldService->trash($id);
     }
     public function restoreTrashed($id)
     {
-        $response= $this->customfieldService->restoreTrashed($id);
-        return $response;
+        return $this->customfieldService->restoreTrashed($id);
     }
     public function delete($id)
     {
-        $response= $this->customfieldService->delete($id);
-        return $response;
+        return $this->customfieldService->delete($id);
     }
 }
