@@ -215,7 +215,9 @@ class ItemService
     public function getRestaurant($id)
     {
         try{
-            return Item::with('Restaurant')->find($id);
+            $Item= Item::with('Restaurant')->find($id);
+            return $this->returnData('Item', $Item, 'done');
+
 
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
@@ -225,7 +227,8 @@ class ItemService
     public function getProduct($id)
     {
         try{
-            return Item::with('RestaurantProduct')->find($id);
+            $Item= Item::with('RestaurantProduct')->find($id);
+            return $this->returnData('Item', $Item, 'done');
 
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
@@ -236,7 +239,8 @@ class ItemService
     public function getCategory($id)
     {
         try{
-            return Item::with('RestaurantCategory')->find($id);
+            $Item= Item::with('RestaurantCategory')->find($id);
+            return $this->returnData('Item', $Item, 'done');
 
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());

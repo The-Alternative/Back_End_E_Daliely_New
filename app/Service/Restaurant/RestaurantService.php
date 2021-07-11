@@ -200,7 +200,7 @@ class RestaurantService
             } else {
                 $restaurant->is_active =1;
                 $restaurant->save();
-                return $this->returnData('restaurant', $restaurant, 'This restaurant is trashed Now');
+                return $this->returnData('restaurant', $restaurant, 'This restaurant is restore trashed Now');
             }
         }
         catch(\Exception $ex)
@@ -232,8 +232,8 @@ class RestaurantService
     public function getType($id)
      {
           try{
-              return Restaurant::with('restaurantType')->find($id);
-
+              $restaurant= Restaurant::with('restaurantType')->find($id);
+              return $this->returnData('restaurant',$restaurant,'done');
           } catch (\Exception $ex) {
               return $this->returnError('400', $ex->getMessage());
           }
@@ -241,8 +241,8 @@ class RestaurantService
      public function getCategory($id)
      {
           try{
-              return Restaurant::with('RestaurantCategory')->find($id);
-
+              $restaurant= Restaurant::with('RestaurantCategory')->find($id);
+              return $this->returnData('restaurant',$restaurant,'done');
           } catch (\Exception $ex) {
               return $this->returnError('400', $ex->getMessage());
           }
@@ -250,7 +250,9 @@ class RestaurantService
      public function getProduct($id)
      {
           try{
-              return Restaurant::with('RestaurantProduct')->find($id);
+              $restaurant= Restaurant::with('RestaurantProduct')->find($id);
+              return $this->returnData('restaurant',$restaurant,'done');
+
 
           } catch (\Exception $ex) {
               return $this->returnError('400', $ex->getMessage());

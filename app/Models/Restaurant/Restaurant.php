@@ -15,10 +15,10 @@ class Restaurant extends Model
     use HasFactory;
     protected $table='restaurants';
     protected $fillable =['Id','image','appointment_id','location_id','active_time_id',
-        'social_media_id','restaurant_type_id','is_active','is_approved'];
+        'social_media_id','is_active','is_approved'];
 
     protected $hidden=['appointment_id','location_id','active_time_id','social_media_id',
-        'restaurant_type_id','created_at','updated_at'];
+        'created_at','updated_at'];
 
 
     protected static function boot()

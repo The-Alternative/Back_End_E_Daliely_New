@@ -215,7 +215,9 @@ class RestaurantProductService
     public function getRestaurant($id)
     {
         try{
-            return RestaurantProduct::with('Restaurant')->find($id);
+            $Product= RestaurantProduct::with('Restaurant')->find($id);
+            return $this->returnData('Restaurant Product', $Product, 'done');
+
 
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
@@ -224,7 +226,8 @@ class RestaurantProductService
     public function getCategory($id)
     {
         try{
-            return RestaurantProduct::with('RestaurantCategory')->find($id);
+            $Product=   RestaurantProduct::with('RestaurantCategory')->find($id);
+            return $this->returnData('Restaurant Product', $Product, 'done');
 
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
