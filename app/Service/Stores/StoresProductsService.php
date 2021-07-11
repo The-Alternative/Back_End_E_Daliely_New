@@ -5,12 +5,8 @@ namespace App\Service\Stores;
 use App\Models\Stores\Store;
 use App\Models\Products\Product;
 use App\Models\Stores\StoreProduct;
-use App\Models\Stores\StoreTranslation;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Exception;
-use LaravelLocalization;
 
 class StoresProductsService
 {
@@ -85,7 +81,7 @@ class StoresProductsService
             $storeProduct->is_active =$request->is_active;
             $storeProduct->is_appear =$request->is_appear;
             $storeProduct->save();
-        return $response= $this->returnData('Product in Store',$storeProduct,'done');
+        return  $this->returnData('Product in Store',$storeProduct,'done');
         }catch(\Exception $ex){
             return $this->returnError('400',$ex->getMessage());
         }
@@ -130,6 +126,23 @@ class StoresProductsService
         }
         }
     /*__________________________________________________________________*/
+    public function updateMultyProductsPricesInStore(Request $request,$store_id)
+    {
+         $ids=$request->ids;
+        foreach ($ids as $id) {
+            $arrs[] = $id['Product_id'];
+        }
+        foreach($arrs as $arr) {
+            $storeProduct=$this->storeProductModel
+                ->where('stores_products.Product_id',$arr)
+                ->where('stores_products.store_id',$store_id)
+                ->update([
+                'price'=>$request->newPrice
+            ]);
+        }
+        return $response= $this->returnData('Product in Store',$storeProduct,'done');
+    }
+
 }
 
 

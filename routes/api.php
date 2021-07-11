@@ -18,8 +18,7 @@ Route::group(
     ],
  function()
     {
-
-        /*_____________ Product routes _____________*/
+        /**__________________________ Product routes  __________________________**/
         Route::group(['prefix'=>'products','namespace'=>'Product'],function()
             {
                 Route::GET('/getAll','ProductsController@getAll');
@@ -33,7 +32,7 @@ Route::group(
                 Route::GET('/getTrashed','ProductsController@getTrashed');
                 Route::DELETE('/delete/{id}','ProductsController@delete');
             });
-        /*_____________Category routes_____________*/
+        /**__________________________ Category routes __________________________**/
         Route::group(['prefix'=>'categories','namespace'=>'Category'],function()
             {
                 Route::GET('/getAll','CategoriesController@getAll');
@@ -47,7 +46,7 @@ Route::group(
                 Route::GET('/getTrashed','CategoriesController@getTrashed');
                 Route::DELETE('/delete/{id}','CategoriesController@delete');
             });
-        /*_____________ Section routes_____________*/
+        /**__________________________ Section routes  __________________________**/
         Route::group(['prefix'=>'sections','namespace'=>'Category'],function()
         {
             Route::GET('/getAll','SectionsController@getAll');
@@ -61,46 +60,47 @@ Route::group(
             Route::GET('/getTrashed','SectionsController@getTrashed');
             Route::DELETE('/delete/{id}','SectionsController@delete');
         });
-        /*_____________Category routes_____________*/
+        /**__________________________ Category routes __________________________**/
         Route::group(['prefix'=>'customfields','namespace'=>'Custom_fields'],function()
-        {
-            Route::GET('/getAll','CustomFieldsController@getAll');
-            Route::GET('/getById/{id}','CustomFieldsController@getById');
-            Route::GET('/getCategoryBySelf/{id}','CustomFieldsController@getCategoryBySelf');
-            Route::POST('/create','CustomFieldsController@create');
-            Route::PUT('/update/{id}','CustomFieldsController@update');
-            Route::PUT('/trash/{id}','CustomFieldsController@trash');
-            Route::PUT('/restoreTrashed/{id}','CustomFieldsController@restoreTrashed');
-            Route::GET('/search/{name}','CustomFieldsController@search');
-            Route::GET('/getTrashed','CustomFieldsController@getTrashed');
-            Route::DELETE('/delete/{id}','CustomFieldsController@delete');
-        });
-        /*_____________ Brand routes_____________*/
-                 Route::group(['prefix'=>'brands','namespace'=>'Brand'],function()
-             {
-                    Route::GET('/getAll','BrandController@getAll');
-                        Route::GET('/getById/{id}','BrandController@getById');
-                        Route::POST('/create','BrandController@create');
-                        Route::PUT('/update/{id}','BrandController@update');
-                        Route::GET('/search/{title}','BrandController@search');
-                        Route::PUT('/trash/{id}','BrandController@trash');
-                        Route::PUT('/restoreTrashed/{id}','BrandController@restoreTrashed');
-                        Route::GET('/getTrashed','BrandController@getTrashed');
-                        Route::DELETE('/delete/{id}','BrandController@delete');
-             });
-        /*_____________ Language routes_____________*/
-        Route::group(['prefix'=>'languages','namespace'=>'Language'],function(){
-            Route::POST('/getAll','LanguageController@getAll');
-            Route::POST('/getById/{id}','LanguageController@getById');
-            Route::POST('/create','LanguageController@create');
-            Route::post('/update/{id}','LanguageController@update');
-            Route::POST('/search/{title}','LanguageController@search');
-            Route::PUT('/trash/{id}','LanguageController@trash');
-            Route::PUT('/restoreTrashed/{id}','LanguageController@restoreTrashed');
-            Route::POST('/getTrashed','LanguageController@getTrashed');
-            Route::DELETE('/delete/{id}','LanguageController@delete');
-        });
-        /*_____________ Store routes_____________*/
+            {
+                Route::GET('/getAll','CustomFieldsController@getAll');
+                Route::GET('/getById/{id}','CustomFieldsController@getById');
+                Route::GET('/getCategoryBySelf/{id}','CustomFieldsController@getCategoryBySelf');
+                Route::POST('/create','CustomFieldsController@create');
+                Route::PUT('/update/{id}','CustomFieldsController@update');
+                Route::PUT('/trash/{id}','CustomFieldsController@trash');
+                Route::PUT('/restoreTrashed/{id}','CustomFieldsController@restoreTrashed');
+                Route::GET('/search/{name}','CustomFieldsController@search');
+                Route::GET('/getTrashed','CustomFieldsController@getTrashed');
+                Route::DELETE('/delete/{id}','CustomFieldsController@delete');
+            });
+        /**__________________________ Brand routes    __________________________**/
+        Route::group(['prefix'=>'brands','namespace'=>'Brand'],function()
+            {
+                Route::GET('/getAll','BrandController@getAll');
+                Route::GET('/getById/{id}','BrandController@getById');
+                Route::POST('/create','BrandController@create');
+                Route::PUT('/update/{id}','BrandController@update');
+                Route::GET('/search/{title}','BrandController@search');
+                Route::PUT('/trash/{id}','BrandController@trash');
+                Route::PUT('/restoreTrashed/{id}','BrandController@restoreTrashed');
+                Route::GET('/getTrashed','BrandController@getTrashed');
+                Route::DELETE('/delete/{id}','BrandController@delete');
+            });
+        /**__________________________ Language routes __________________________**/
+        Route::group(['prefix'=>'languages','namespace'=>'Language'],function()
+            {
+                Route::POST('/getAll','LanguageController@getAll');
+                Route::POST('/getById/{id}','LanguageController@getById');
+                Route::POST('/create','LanguageController@create');
+                Route::post('/update/{id}','LanguageController@update');
+                Route::POST('/search/{title}','LanguageController@search');
+                Route::PUT('/trash/{id}','LanguageController@trash');
+                Route::PUT('/restoreTrashed/{id}','LanguageController@restoreTrashed');
+                Route::POST('/getTrashed','LanguageController@getTrashed');
+                Route::DELETE('/delete/{id}','LanguageController@delete');
+            });
+        /**__________________________ Store routes    __________________________**/
          Route::group(['prefix'=>'stores','namespace'=>'Store'],function ()
             {
                 Route::GET('/getAll','StoreController@getAll');
@@ -120,6 +120,10 @@ Route::group(
                 Route::GET('/viewStoresHasProduct/{id}','StoresProductsController@viewStoresHasProduct');
                 Route::GET('/viewProductsInStore/{id}','StoresProductsController@viewProductsInStore');
                 Route::GET('/rangeOfPrice/{id}','StoresProductsController@rangeOfPrice');
+
+                Route::PUT('/prices/{store_id}','StoresProductsController@updateMultyProductsPricesInStore');
+
+
 
             });
 ########################## DOCTOR ROUTE #########################################

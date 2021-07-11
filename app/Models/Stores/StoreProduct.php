@@ -23,19 +23,23 @@ class StoreProduct extends Pivot
         [
         'price','quantity','is_active','is_approve','store_id','product_id'
         ];
-    public function Store(){
+    public function Store()
+    {
         return $this->belongsTo(Store::class);
-}
-    public function Product(){
+    }
+    public function Product()
+    {
         return $this->belongsTo(Product::class);
     }
     public function products(){
-        return $this->hasManyThrough(
+        return $this->hasManyThrough
+        (
             Product::class,
             StoreProduct::class,
-        'store_id',
-        'id',
-        'id',
-        'id');
+            'store_id',
+            'id',
+            'id',
+            'id'
+        );
     }
 }
