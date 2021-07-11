@@ -12,7 +12,7 @@ class Role extends LaratrustRole
     protected $primaryKey = 'id';
     protected $table='roles';
     protected $hidden = [
-        'created_at', 'updated_at'
+        'created_at', 'updated_at',
     ];
     protected $casts = [
         'is_active' => 'boolean'
@@ -29,7 +29,7 @@ class Role extends LaratrustRole
     {
         return $this->hasMany(RoleTranslation::class);
     }
-    public function permissions()
+    public function Permission()
     {
         return $this->belongsToMany(
             Permission::class,
@@ -48,6 +48,6 @@ class Role extends LaratrustRole
             'role_id',
             'user_id',
             'id',
-            'id')->withPivot('user_type');
+            'id');
     }
 }

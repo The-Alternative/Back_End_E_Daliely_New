@@ -277,9 +277,8 @@ trait GeneralTrait
             'status' => false,
             'stateNum' => $stateNum,
             'msg' => $msg
-        ]);
-//            ->header('Access-Control-Allow-Origin', '*')
-//            ->header('Access-Control-Allow-Methods', '*');
+        ])->header('Access-Control-Allow-Origin', '*')
+            ->header('Access-Control-Allow-Methods', '*');
     }
     public function returnSuccessMessage($msg, $stateNum )
     {
@@ -287,9 +286,8 @@ trait GeneralTrait
             ['status' => true,
             'stateNum' => $stateNum,
             'msg' => $msg
-        ]);
-//            ->header('Access-Control-Allow-Origin', '*')
-//            ->header('Access-Control-Allow-Methods', '*');
+        ])->header('Access-Control-Allow-Origin', '*')
+            ->header('Access-Control-Allow-Methods', '*');
     }
     public function returnData( $key,$value, $msg )
     {
@@ -300,9 +298,8 @@ trait GeneralTrait
                 'stateNum' => '201',
                 'msg' => $msg
             ]
-        );
-//            ->header('Access-Control-Allow-Origin', '*')
-//            ->header('Access-Control-Allow-Methods', '*');
+        )->header('Access-Control-Allow-Origin', '*')
+            ->header('Access-Control-Allow-Methods', '*');
         }
 
     public function insert1($model1, $Arr1 )

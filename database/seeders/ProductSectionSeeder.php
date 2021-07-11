@@ -24,5 +24,15 @@ class ProductSectionSeeder extends Seeder
                         );
                     }
                 }
+        for ($section_id = 1; $section_id < 6; $section_id=$section_id+2) {
+            for ($product_id = 1; $product_id < 5; $product_id++) {
+                DB::table('products_sections')->insert(
+                    [
+                        'section_id' => $section_id,
+                        'product_id' => $product_id
+                    ]
+                );
+            }
+        }
             }
 }

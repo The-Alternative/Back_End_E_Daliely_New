@@ -14,62 +14,54 @@ class StoreController extends Controller
 {
     use GeneralTrait;
     private $StoreService;
-    private $response;
 
-    public function __construct(StoreService $StoreService,Response  $response)
+    public function __construct(StoreService $StoreService  )
     {
+        $this->middleware(['role:superadministrator|administrator|user']);
+        $this->middleware(['permission:store-read'])->only('getAll','getById');
+        $this->middleware(['permission:store-create'])->only('create');
+        $this->middleware(['permission:store-update'])->only('update');
+        $this->middleware(['permission:store-delete'])->only(['trash','restoreTrashed','getTrashed']);
         $this->StoreService=$StoreService;
-        $this->response=$response;
     }
     public function getAll()
     {
-        $response= $this->StoreService->getAll();
-//        return response($response, 200);
-        return $response;
+        return $this->StoreService->getAll();
     }
     public function getById($id)
     {
-        $response= $this->StoreService->getById($id);
-        return $response;
+        return $this->StoreService->getById($id);
     }
     public function getTrashed()
     {
-        $response= $this->StoreService->getTrashed();
-        return $response;
+        return $this->StoreService->getTrashed();
     }
-    public function create(StoreRequest $request)
+    public function create(Request $request)
     {
-        $response= $this->StoreService->create($request);
-        return $response;
+        return $this->StoreService->create($request);
     }
     public function update(Request $request,$id)
     {
-        $response= $this->StoreService->update( $request,$id);
-        return $response;
+        return  $this->StoreService->update( $request,$id);
     }
     public function search($name)
     {
-        $response= $this->StoreService->search($name);
-        return $response;
+        return $this->StoreService->search($name);
     }
     public function trash($id)
     {
-        $response= $this->StoreService->trash($id);
-        return $response;
+        return $this->StoreService->trash($id);
     }
     public function restoreTrashed($id)
     {
-        $response= $this->StoreService->restoreTrashed($id);
-        return $response;
+        return $this->StoreService->restoreTrashed($id);
     }
     public function delete($id)
     {
-        $response= $this->StoreService->delete($id);
-        return $response;
+        return $this->StoreService->delete($id);
     }
     public function getSectionInStore($id)
     {
-        $response= $this->StoreService->getSectionInStore($id);
-        return $response;
+        return  $this->StoreService->getSectionInStore($id);
     }
 }
