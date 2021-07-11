@@ -3,7 +3,7 @@
 
 namespace App\Service\Doctors;
 
-use App\Http\Requests\CustomerDoctor\CusromerDoctorRequest;
+use App\Http\Requests\CustomerDoctor\CustomerDoctorRequest;
 use App\Models\Customer\Customer;
 use App\Models\DoctorRate\DoctorRate;
 use App\Models\Doctors\Doctor;
