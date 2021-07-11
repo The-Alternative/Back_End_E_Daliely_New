@@ -216,7 +216,9 @@ class HospitalService
     public function hospitalsDoctor($id)
     {
         try{
-               return  Hospital::with('doctor')->find($id);
+            $hospital=  Hospital::with('doctor')->find($id);
+            return $this->returnData('Hospital',  $hospital, 'done');
+
         }
         catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());

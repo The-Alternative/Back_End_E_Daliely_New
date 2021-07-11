@@ -215,7 +215,8 @@ class MedicalDeviceService
     public function doctormedicaldevice($id)
     {
         try {
-            return MedicalDevice::with('doctor')->find($id);
+            $MedicalDevice= MedicalDevice::with('doctor')->find($id);
+            return $this->returnData('MedicalDevice', $MedicalDevice, 'This MedicalDevice is deleted Now');
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }

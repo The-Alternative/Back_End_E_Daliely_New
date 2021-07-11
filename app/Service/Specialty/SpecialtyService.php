@@ -216,7 +216,8 @@ class SpecialtyService
     public function DoctorSpecialty($id)
     {
         try {
-            return Specialty::with('doctor')->find($id);
+            $Specialty= Specialty::with('doctor')->find($id);
+            return $this->returnData('Specialty',  $Specialty, 'done');
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }
