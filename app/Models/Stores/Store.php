@@ -6,6 +6,7 @@ use App\Models\Brands\Brand;
 use App\Models\Categories\Section;
 use App\Models\Images\StoreImage;
 use App\Models\Products\Product;
+use App\Models\Stores_Orders\Stores_Order;
 use App\Scopes\StoreScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -88,5 +89,9 @@ class Store extends Model
     public function StoreImage()
     {
         return $this->hasMany(StoreImage::class);
+    }
+    public function Stores_Order()
+    {
+        return $this->hasMany(Stores_Order::class);
     }
 }

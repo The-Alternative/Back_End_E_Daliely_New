@@ -140,9 +140,30 @@ class StoresProductsService
                 'price'=>$request->newPrice
             ]);
         }
-        return $response= $this->returnData('Product in Store',$storeProduct,'done');
+        return $this->returnData('Product in Store',$storeProduct,'done');
     }
-
+    /*__________________________________________________________________*/
+    public function updatePricesPyRatio(Request $request,$store_id)
+    {
+         $ids=$request->ids;
+        foreach ($ids as $id) {
+            $arrs[] = $id['Product_id'];
+        }
+        foreach ($ids as $id1) {
+            $arrs1[] = (($id1['price']*$request->ratio)/100)+$id1['price'];
+        }
+        foreach($arrs as $arr) {
+            foreach ($arrs1 as $arr1) {
+                $storeProduct = $this->storeProductModel
+                    ->where('stores_products.Product_id', $arr)
+                    ->where('stores_products.store_id', $store_id)
+                    ->update([
+                        'price' => $arr1
+                    ]);
+            }
+        }
+        return $this->returnData('Product in Store',$storeProduct,'done');
+    }
 }
 
 

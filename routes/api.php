@@ -14,7 +14,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request)
 Route::group(
     [
         'prefix'     => LaravelLocalization::setLocale(),
-        'middleware' => ['api','ChangeLanguage','localize','localizationRedirect','localeViewPath','role:superadministrator|administrator|user']
+        'middleware' => ['api','ChangeLanguage','localize','localizationRedirect','localeViewPath'
+//            ,'role:superadministrator|administrator|user'
+        ]
     ],
  function()
     {
@@ -31,6 +33,11 @@ Route::group(
                 Route::PUT('/restoreTrashed/{id}','ProductsController@restoreTrashed');
                 Route::GET('/getTrashed','ProductsController@getTrashed');
                 Route::DELETE('/delete/{id}','ProductsController@delete');
+            });
+
+            Route::group(['prefix'=>'payment','namespace'=>'Stores_Orders'],function()
+            {
+                Route::Post('/getcheckout','StoresOrderController@getChekOutId');
             });
         /**__________________________ Category routes __________________________**/
         Route::group(['prefix'=>'categories','namespace'=>'Category'],function()
@@ -122,6 +129,7 @@ Route::group(
                 Route::GET('/rangeOfPrice/{id}','StoresProductsController@rangeOfPrice');
 
                 Route::PUT('/prices/{store_id}','StoresProductsController@updateMultyProductsPricesInStore');
+                Route::PUT('/ratio/{store_id}','StoresProductsController@updatePricesPyRatio');
 
 
 

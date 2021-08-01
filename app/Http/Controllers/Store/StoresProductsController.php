@@ -47,4 +47,8 @@ class StoresProductsController extends Controller
     {
         return $this->StoresProductsService->updateMultyProductsPricesInStore($request,$store_id);
     }
+    public function updatePricesPyRatio(Request $request,$store_id)
+    {
+        return $this->StoresProductsService->updatePricesPyRatio($request,$store_id);
+    }
 }
