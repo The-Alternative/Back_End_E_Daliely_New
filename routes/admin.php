@@ -20,7 +20,7 @@ Route::group(
             Route::post('refresh', 'AuthController@refresh');
             Route::post('me', 'AuthController@me');
         });
-        route::group(['middleware'=>'role:superadministrator'],function() {
+        Route::group(['middleware'=>'role:superadministrator'],function() {
             Route::group(['prefix' => 'roles', 'namespace' => 'Admin'], function () {
                 Route::GET('/getAll','RolesController@getAll');
                 Route::GET('/getById/{id}','RolesController@getById');

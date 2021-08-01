@@ -19,8 +19,6 @@ class SectionService
     private $SectionTranslation;
     private $categoryModel;
 
-
-
     public function __construct(Section $sectionModel,SectionTranslation $sectionTranslation,Category $categoryModel)
     {
         $this->SectionModel=$sectionModel;
@@ -138,12 +136,6 @@ class SectionService
 //                $request->is_appear?$is_appear=true:$is_appear=false;
                 //transformation to collection
                 $allsections = collect($request->section)->all();
-                ///select folder to save the image
-                // $fileBath = "" ;
-                //     if($request->has('image'))
-                //     {
-                //         $fileBath=uploadImage('images/products',$request->image);
-                //     }
                 DB::beginTransaction();
                 // //create the default language's product
                 $unTransSection_id=$this->SectionModel->insertGetId([
@@ -194,15 +186,6 @@ class SectionService
                 $request->request->add(['is_active'=>0]);
             else
                 $request->request->add(['is_active'=>1]);
-            //save image
-            // if($request->has('image')) {
-            //     $filePath = uploadImage('products', $request->photo);
-            //     Product::where('id', $pro_id)
-            //         ->update([
-            //             'image' => $filePath,
-            //         ]);
-            // }
-
            $ncategory=$this->SectionModel->where('sections.id',$id)->update([
                'slug' => $request['slug'],
                'image' => $request['image'],

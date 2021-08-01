@@ -6,46 +6,49 @@ use Illuminate\Http\Request;
 use App\Traits\GeneralTrait;
 use App\Http\Controllers\Controller;
 use App\Service\Stores\StoresProductsService;
-use Illuminate\Http\Response;
 
 class StoresProductsController extends Controller
 {
     use GeneralTrait;
-    private $response;
     private $StoresProductsService;
-    public function __construct(StoresProductsService  $StoresProducts,Response  $response)
+    public function __construct(StoresProductsService  $StoresProducts)
     {
         $this->StoresProductsService=$StoresProducts;
-        $this->response=$response;
     }
     public function insertProductToStore(Request $request)
     {
-        $response= $this->StoresProductsService->insertProductToStore($request);
-        return $response;
+        return $this->StoresProductsService->insertProductToStore($request);
     }
     public function updateProductInStore(Request $request,$id)
     {
-        $response= $this->StoresProductsService->updateProductInStore($request,$id);
-        return $response;
+        return $this->StoresProductsService->updateProductInStore($request,$id);
     }
     public function viewStoresHasProduct($id)
     {
-        $response= $this->StoresProductsService->viewStoresHasProduct($id);
-        return $response;
+        return $this->StoresProductsService->viewStoresHasProduct($id);
     }
     public function viewProductsInStore($id)
     {
-        $response= $this->StoresProductsService->viewProductsInStore($id);
-        return $response;
+        return $this->StoresProductsService->viewProductsInStore($id);
     }
     public function hiddenProductByQuantity($id)
     {
-        $response= $this->StoresProductsService->hiddenProductByQuantity($id);
-        return $response;
+        return $this->StoresProductsService->hiddenProductByQuantity($id);
     }
     public function rangeOfPrice($id)
     {
-        $response= $this->StoresProductsService->rangeOfPrice($id);
-        return $response;
+        return $this->StoresProductsService->rangeOfPrice($id);
+    }
+    public function getAllProductInStore($id)
+    {
+        return $this->StoresProductsService->getAllProductInStore($id);
+    }
+    public function updateMultyProductsPricesInStore(Request $request,$store_id)
+    {
+        return $this->StoresProductsService->updateMultyProductsPricesInStore($request,$store_id);
+    }
+    public function updatePricesPyRatio(Request $request,$store_id)
+    {
+        return $this->StoresProductsService->updatePricesPyRatio($request,$store_id);
     }
 }
