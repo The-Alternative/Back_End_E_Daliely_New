@@ -60,7 +60,6 @@ class RestaurantTypeService
                 'image' => $request['image'],
                 'is_approved' => $request['is_approved'],
                 'is_active' => $request['is_active'],
-                'restaurant_id' => $request['restaurant_id'],
             ]);
             if (isset($allrestauranttype)) {
                 foreach ($allrestauranttype as $allrestauranttypes) {
@@ -101,8 +100,6 @@ class RestaurantTypeService
                     'image' => $request['image'],
                     'is_approved' => $request['is_approved'],
                     'is_active' => $request['is_active'],
-                    'restaurant_id' => $request['restaurant_id'],
-
                 ]);
 
             $ss=RestaurantTypeTranslation::where('restaurant_type_translations.restaurant_type_id',$id);
@@ -174,7 +171,7 @@ class RestaurantTypeService
     public function getTrashed()
     {
         try {
-            $RestaurantType = $this->RestaurantTypeModel::NotActive();
+            $RestaurantType = $this->RestaurantTypeModel::NotActive()->get();
             return $this->returnData('restaurant type', $RestaurantType, 'done');
         }
         catch(\Exception $ex)
@@ -218,8 +215,8 @@ class RestaurantTypeService
     public function getRestaurant($id)
     {
         try{
-            $s= RestaurantType::with('restaurant')->find($id);
-            return$s;
+            $RestaurantType = RestaurantType::with('restaurant')->find($id);
+            return $this->returnData('restaurant type', $RestaurantType, 'done');
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }

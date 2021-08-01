@@ -2,6 +2,9 @@
 
 namespace App\Models\Restaurant;
 
+use App\Models\Item\Item;
+use App\Models\RestaurantCategory\RestaurantCategory;
+use App\Models\RestaurantProduct\RestaurantProduct;
 use App\Models\RestaurantType\RestaurantType;
 use App\Scopes\RestaurantScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,10 +15,10 @@ class Restaurant extends Model
     use HasFactory;
     protected $table='restaurants';
     protected $fillable =['Id','image','appointment_id','location_id','active_time_id',
-        'social_media_id','restaurant_type_id','is_active','is_approved'];
-    public $timestamps=false;
+        'social_media_id','is_active','is_approved'];
+
     protected $hidden=['appointment_id','location_id','active_time_id','social_media_id',
-        'restaurant_type_id','created_at','updated_at'];
+        'created_at','updated_at'];
 
 
     protected static function boot()
@@ -36,8 +39,19 @@ class Restaurant extends Model
 
     public function restaurantType()
     {
-        return $this->hasMany(RestaurantType::class);
+        return $this->belongsToMany(RestaurantType::class,'restaurant_restaurant_type','restaurant_id','restaurant_type_id','id','id');
     }
 
-
+    public function RestaurantCategory()
+    {
+        return $this->belongsToMany(RestaurantCategory::class,'restaurant_restaurant_category','restaurant_id','restaurant_category_id','id','id');
+    }
+    public function RestaurantProduct()
+    {
+        return $this->belongsToMany(RestaurantProduct::class,'restaurant_restaurant_product','restaurant_id','restaurant_product_id','id','id');
+    }
+    public function Item()
+    {
+        return $this->belongsToMany(Item::class,'restaurant_item','restaurant_id','item_id','id','id');
+    }
 }

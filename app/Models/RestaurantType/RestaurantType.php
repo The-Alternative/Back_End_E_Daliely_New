@@ -23,7 +23,7 @@ class RestaurantType extends Model
 
     public function scopeNotActive($query)
     {
-        return $query->where('is_active',0)->get();
+        return $query->where('is_active',0);
     }
 
 
@@ -34,6 +34,6 @@ class RestaurantType extends Model
 
     public function restaurant()
     {
-        return $this->belongsToMany(Restaurant::class);
+        return $this->belongsToMany(Restaurant::class,'restaurant_restaurant_type','restaurant_type_id','restaurant_id','id','id');
     }
 }

@@ -29,11 +29,7 @@ class RestaurantRequest extends FormRequest
             'image'          =>'required',
             'social_media_id'=>'required',
             'appointment_id' =>'required',
-            'customer_id'   =>'required',
             'location_id'    =>'required',
-            'type_of_restaurant_id'  =>'required',
-            'user_id'              =>'required',
-            'rate_id'              =>'required',
             'active_time_id'      =>'required',
 
             'restaurant'=>'required|array|min:1',

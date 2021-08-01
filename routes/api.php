@@ -303,109 +303,87 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
 });
 ########################## RESTAURANT ROUTE #########################################
 //________________________Restaurant Route__________________//
-     Route::group(['prefix'=>'Restaurant','namespace'=>'Restaurant'],function () {
-         Route::get('/get', 'RestaurantController@get');
-         Route::get('/getById/{id}', 'RestaurantController@getById');
-         Route::post('/create', 'RestaurantController@create');
-         Route::put('/update/{id}', 'RestaurantController@update');
-         Route::GET('/search/{name}','RestaurantController@search');
-         Route::PUT('/trash/{id}', 'RestaurantController@trash');
-         Route::get('/getTrashed', 'RestaurantController@getTrashed');
-         Route::PUT('/restoreTrashed/{id}', 'RestaurantController@restoreTrashed');
-         Route::delete('/delete/{id}', 'RestaurantController@delete');
+     Route::group(['prefix'=>'restaurants','namespace'=>'Restaurant'],function () {
+         Route::get('/', 'RestaurantController@get');
+         Route::get('/{id}', 'RestaurantController@getById');
+         Route::get('/gettrashed', 'RestaurantController@getTrashed');
+         Route::GET('search/{name}','RestaurantController@search');
+         Route::post('/', 'RestaurantController@create');
+         Route::put('/{id}', 'RestaurantController@update');
+         Route::PUT('trash/{id}', 'RestaurantController@trash');
+         Route::PUT('restortrashed/{id}', 'RestaurantController@restoreTrashed');
+         Route::delete('/{id}', 'RestaurantController@delete');
 
          Route::get('/get-type/{restaurant_id}', 'RestaurantController@getType');
-         Route::get('/get-Menu/{restaurant_id}', 'RestaurantController@getMenu');
-         Route::get('/get-Meal/{restaurant_id}', 'RestaurantController@getMeal');
+         Route::get('/get-category/{restaurant_id}', 'RestaurantController@getCategory');
+         Route::get('/get-product/{restaurant_id}', 'RestaurantController@getProduct');
 
      });
      //________________________ Restaurant Type Route__________________//
-     Route::group(['prefix'=>'RestaurantType','namespace'=>'RestaurantType'],function () {
-         Route::get('/get', 'RestaurantTypeController@get');
-         Route::get('/getById/{id}', 'RestaurantTypeController@getById');
-         Route::post('/create', 'RestaurantTypeController@create');
-         Route::put('/update/{id}', 'RestaurantTypeController@update');
+     Route::group(['prefix'=>'restauranttypes','namespace'=>'RestaurantType'],function () {
+         Route::get('/', 'RestaurantTypeController@get');
+         Route::get('/{id}', 'RestaurantTypeController@getById');
+         Route::post('/', 'RestaurantTypeController@create');
+         Route::put('/{id}', 'RestaurantTypeController@update');
          Route::GET('/search/{name}','RestaurantTypeController@search');
          Route::PUT('/trash/{id}', 'RestaurantTypeController@trash');
-         Route::get('/getTrashed', 'RestaurantTypeController@getTrashed');
-         Route::PUT('/restoreTrashed/{id}', 'RestaurantTypeController@restoreTrashed');
-         Route::delete('/delete/{id}', 'RestaurantTypeController@delete');
+         Route::get('/gettrashed', 'RestaurantTypeController@getTrashed');
+         Route::PUT('/restoretrashed/{id}', 'RestaurantTypeController@restoreTrashed');
+         Route::delete('/{id}', 'RestaurantTypeController@delete');
 
          Route::get('/get-restaurant/{restaurantType_id}', 'RestaurantTypeController@getRestaurant');
 
      });
-     //________________________menu Route__________________//
-     Route::group(['prefix'=>'Menu','namespace'=>'Menus'],function () {
-         Route::get('/get', 'MenuController@get');
-         Route::get('/getById/{id}', 'MenuController@getById');
-         Route::post('/create', 'MenuController@create');
-         Route::put('/update/{id}', 'MenuController@update');
-         Route::GET('/search/{name}','MenuController@search');
-         Route::PUT('/trash/{id}', 'MenuController@trash');
-         Route::get('/getTrashed', 'MenuController@getTrashed');
-         Route::PUT('/restoreTrashed/{id}', 'MenuController@restoreTrashed');
-         Route::delete('/delete/{id}', 'MenuController@delete');
+     //________________________ Restaurant Category Route__________________//
+     Route::group(['prefix'=>'restaurantcategories','namespace'=>'RestaurantCategory'],function () {
+         Route::get('/', 'RestaurantCategoyrController@get');
+         Route::get('/{id}', 'RestaurantCategoyrController@getById');
+         Route::post('/', 'RestaurantCategoyrController@create');
+         Route::put('/{id}', 'RestaurantCategoyrController@update');
+         Route::GET('/search/{name}','RestaurantCategoyrController@search');
+         Route::PUT('/trash/{id}', 'RestaurantCategoyrController@trash');
+         Route::get('/gettrashed', 'RestaurantCategoyrController@getTrashed');
+         Route::PUT('/restoretrashed/{id}', 'RestaurantCategoyrController@restoreTrashed');
+         Route::delete('/{id}', 'RestaurantCategoyrController@delete');
 
-         Route::get('/get-type/{menu_id}', 'MenuController@getType');
-         Route::get('/get-restaurant/{menu_id}', 'MenuController@getRestaurant');
-     });
-     //________________________Menu Type Route__________________//
-     Route::group(['prefix'=>'MenuType','namespace'=>'MenuType'],function () {
-         Route::get('/get', 'MenuTypeController@get');
-         Route::get('/getById/{id}', 'MenuTypeController@getById');
-         Route::post('/create', 'MenuTypeController@create');
-         Route::put('/update/{id}', 'MenuTypeController@update');
-         Route::GET('/search/{name}','MenuTypeController@search');
-         Route::PUT('/trash/{id}', 'MenuTypeController@trash');
-         Route::get('/getTrashed', 'MenuTypeController@getTrashed');
-         Route::PUT('/restoreTrashed/{id}', 'MenuTypeController@restoreTrashed');
-         Route::delete('/delete/{id}', 'MenuTypeController@delete');
-
-         Route::get('/get-menu/{menu_type_id}','MenuTypeController@getMenu');
-     });
-     //________________________Meals Route__________________//
-     Route::group(['prefix'=>'Meal','namespace'=>'Meals'],function () {
-         Route::get('/get', 'MealsController@get');
-         Route::get('/getById/{id}', 'MealsController@getById');
-         Route::post('/create', 'MealsController@create');
-         Route::put('/update/{id}', 'MealsController@update');
-         Route::GET('/search/{name}','MealsController@search');
-         Route::PUT('/trash/{id}', 'MealsController@trash');
-         Route::get('/getTrashed', 'MealsController@getTrashed');
-         Route::PUT('/restoreTrashed/{id}', 'MealsController@restoreTrashed');
-         Route::delete('/delete/{id}', 'MealsController@delete');
-
-         Route::get('/get-type/{meal_id}', 'MealsController@getType');
-         Route::get('/get-restaurant/{meal_id}', 'MealsController@getRestaurant');
-         Route::get('/get-Order/{meal_id}', 'MealsController@getOrder');
+         Route::get('/get-restaurant/{restaurantCategory_id}', 'RestaurantCategoyrController@getRestaurant');
+         Route::get('/get-product/{restaurantCategory_id}', 'RestaurantCategoyrController@getProduct');
 
      });
-     //________________________Meal Type Route__________________//
-     Route::group(['prefix'=>'MealType','namespace'=>'MealType'],function () {
-         Route::get('/get', 'MealTypeController@get');
-         Route::get('/getById/{id}', 'MealTypeController@getById');
-         Route::post('/create', 'MealTypeController@create');
-         Route::put('/update/{id}', 'MealTypeController@update');
-         Route::GET('/search/{name}','MealTypeController@search');
-         Route::PUT('/trash/{id}', 'MealTypeController@trash');
-         Route::get('/getTrashed', 'MealTypeController@getTrashed');
-         Route::PUT('/restoreTrashed/{id}', 'MealTypeController@restoreTrashed');
-         Route::delete('/delete/{id}', 'MealTypeController@delete');
+     //________________________ Restaurant Product Route__________________//
+     Route::group(['prefix'=>'restaurantproducts','namespace'=>'RestaurantProduct'],function () {
+         Route::get('/', 'RestaurantProductController@get');
+         Route::get('/{id}', 'RestaurantProductController@getById');
+         Route::post('/', 'RestaurantProductController@create');
+         Route::put('/{id}', 'RestaurantProductController@update');
+         Route::GET('/search/{name}','RestaurantProductController@search');
+         Route::PUT('/trash/{id}', 'RestaurantProductController@trash');
+         Route::get('/getTrashed', 'RestaurantProductController@getTrashed');
+         Route::PUT('/restoreTrashed/{id}', 'RestaurantProductController@restoreTrashed');
+         Route::delete('/{id}', 'RestaurantProductController@delete');
 
-         Route::get('/get-meal/{meal_type_id}','MealTypeController@getMeal');
+         Route::get('/get-restaurant/{restaurantproduct_id}', 'RestaurantProductController@getRestaurant');
+         Route::get('/get-category/{restaurantProduct_id}', 'RestaurantProductController@getCategory');
 
      });
-     //________________________Order Route__________________//
-     Route::group(['prefix'=>'Order','namespace'=>'Order'],function () {
-         Route::get('/get', 'OrderController@get');
-         Route::get('/getById/{id}', 'OrderController@getById');
-         Route::post('/create', 'OrderController@create');
-         Route::put('/update/{id}', 'OrderController@update');
-         Route::PUT('/trash/{id}', 'OrderController@trash');
-         Route::get('/getTrashed', 'OrderController@getTrashed');
-         Route::PUT('/restoreTrashed/{id}', 'OrderController@restoreTrashed');
-         Route::delete('/delete/{id}', 'OrderController@delete');
+     //________________________ Item Route__________________//
+     Route::group(['prefix'=>'items','namespace'=>'Item'],function () {
+         Route::get('/', 'ItemController@get');
+         Route::get('/{id}', 'ItemController@getById');
+         Route::post('/', 'ItemController@create');
+         Route::put('/{id}', 'ItemController@update');
+         Route::GET('/search/{name}','ItemController@search');
+         Route::PUT('/trash/{id}', 'ItemController@trash');
+         Route::get('/gettrashed', 'ItemController@getTrashed');
+         Route::PUT('/restoretrashed/{id}', 'ItemController@restoreTrashed');
+         Route::delete('/{id}', 'ItemController@delete');
+
+         Route::get('/get-restaurant/{item_id}', 'ItemController@getRestaurant');
+         Route::get('/get-category/{item_id}', 'ItemController@getCategory');
+         Route::get('/get-product/{item_id}', 'ItemController@getProduct');
+
      });
+
  });
 
 
