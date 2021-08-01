@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Doctors;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CustomerDoctor\CusromerDoctorRequest;
+use App\Http\Requests\CustomerDoctor\CustomerDoctorRequest;
 use App\Http\Requests\Doctors\DoctorRequest;
 use App\Service\Doctors\CustomerDoctorService;
 use App\Service\Doctors\DoctorService;

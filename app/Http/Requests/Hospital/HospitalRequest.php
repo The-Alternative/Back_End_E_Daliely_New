@@ -30,7 +30,6 @@ class HospitalRequest extends FormRequest
              'general_hospital'=>'required|in:0,1',
              'private_hospital'=>'required|in:0,1',
              'location_id'     =>'required',
-             'doctor_id'       =>'required',
 
 
             'hospital'=>'required|array|min:1',

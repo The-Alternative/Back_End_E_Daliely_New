@@ -21,12 +21,8 @@ class Clinic extends Model
         return $query->where('is_active',0);
     }
 
-    public function clinic()
-    {
-        return $this->belongsToMany(Clinic::class);
-    }
     public function doctor()
     {
-        return $this->hasOne(Doctor::class);
+        return $this->belongsTo(Doctor::class);
     }
 }

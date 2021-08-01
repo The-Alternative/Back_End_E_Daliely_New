@@ -43,7 +43,7 @@ class SpecialtyService
                 return $this->returnSuccessMessage('this Social Media not found','done');
             }
             else{
-                return $this->returnData(' Specialty', $Specialty,'done');
+                return $this->returnData('Specialty', $Specialty,'done');
             }
         }
         catch (\Exception $ex) {
@@ -78,7 +78,7 @@ class SpecialtyService
         catch(\Exception $ex)
         {
             DB::rollback();
-            return $this->returnError('Specialty', $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 //_________________________________________________________//
@@ -216,7 +216,8 @@ class SpecialtyService
     public function DoctorSpecialty($id)
     {
         try {
-            return Specialty::with('doctor')->find($id);
+            $Specialty= Specialty::with('doctor')->find($id);
+            return $this->returnData('Specialty',  $Specialty, 'done');
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }

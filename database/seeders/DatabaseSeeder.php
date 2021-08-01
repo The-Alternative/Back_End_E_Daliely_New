@@ -52,22 +52,16 @@ class DatabaseSeeder extends Seeder
             ClinicSedeer::class,
             CustomerSedeer::class,
             HospitalSedeer::class,
+            HospitalMedicalDeviceSeeder::class,
             MedicalDeviceSedeer::class,
             MedicalFileSedeer::class,
             SocialMediaSedeer::class,
             SpecialtySedeer::class,
+
             RestaurantSeeder::class,
             RestaurantTypeSeeder::class,
-            MenuSeeder::class,
-            MenuTypeSeeder::class,
-            MealSeeder::class,
-            MealTypeSeeder::class,
-            OrderSeeder::class,
             RestaurantTypeRestaurantSeeder::class,
-            RestaurantHasMealSeeder::class,
-            MealTypeMealSeeder::class,
-            MenuTypeMenuSeeder::class,
-            OrderHasMealSeeder::class,
+
         ]);
 
     }

@@ -54,8 +54,7 @@ class MedicalDeviceService
             $allmedicaldevice = collect($request->medicaldevice)->all();
             DB::beginTransaction();
             $unTransmedicaldevice_id = medicalDevice::insertGetId([
-                'doctor_id' => $request['doctor_id'],
-                'hospital_id' => $request['hospital_id'],
+                'image' => $request['image'],
                 'is_approved' => $request['is_approved'],
                 'is_active' => $request['is_active'],
             ]);
@@ -94,8 +93,7 @@ class MedicalDeviceService
 
             $newmedicaldevice=MedicalDevice::where('medical_devices.id',$id)
                 ->update([
-                    'doctor_id' => $request['doctor_id'],
-                    'hospital_id' => $request['hospital_id'],
+                    'image' => $request['image'],
                     'is_approved' => $request['is_approved'],
                     'is_active' => $request['is_active'],
                 ]);
@@ -123,7 +121,7 @@ class MedicalDeviceService
                 }
             }
             DB::commit();
-            return $this->returnData('Medical Device', [$dbmedicaldevice,$values],'done');
+            return $this->returnData('MedicalDevice', [$dbmedicaldevice,$values],'done');
         }
         catch(\Exception $ex){
             return $this->returnError('400', $ex->getMessage());
@@ -217,7 +215,8 @@ class MedicalDeviceService
     public function doctormedicaldevice($id)
     {
         try {
-            return MedicalDevice::with('doctor')->find($id);
+            $MedicalDevice= MedicalDevice::with('doctor')->find($id);
+            return $this->returnData('MedicalDevice', $MedicalDevice, 'This MedicalDevice is deleted Now');
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }

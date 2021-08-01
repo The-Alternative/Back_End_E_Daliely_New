@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMenuTypeTranslationsTable extends Migration
+class CreateHospitalMedicalDeviceTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateMenuTypeTranslationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('menu_type_translations', function (Blueprint $table) {
+        Schema::create('hospital_medical_device', function (Blueprint $table) {
             $table->id();
-            $table->integer('menu_type_id');
-            $table->string('locale');
-            $table->string('title');
-            $table->string('short_description');
-            $table->string('long_description');
+            $table->integer('hospital_id');
+            $table->integer('medical_device_id');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateMenuTypeTranslationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menu_type_translations');
+        Schema::dropIfExists('hospital_medical_device');
     }
 }

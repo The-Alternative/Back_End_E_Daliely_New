@@ -24,7 +24,10 @@ class CustomerDoctorSeeder extends Seeder
                'social_status' => $faker->sentence(1),
                'gender' =>$faker->sentence(1),
                'age' =>$faker->numberBetween(1,50),
-               'medical_file_id' => $faker->numberBetween(1,10),
+               'medical_file_number' => $faker->numberBetween(1,10),
+               'medical_file_date' => $faker->date('2021-05-19'),
+               'review_date' => $faker->date('2021-05-25'),
+               'PDF' => $faker->sentence(5),
                'customer_id' => $faker->numberBetween(1,10),
                'doctor_id' => $faker->numberBetween(1,10)
            ]);

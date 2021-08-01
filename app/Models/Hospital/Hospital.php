@@ -2,6 +2,7 @@
 
 namespace App\Models\Hospital;
 
+use App\Models\MedicalDevice\MedicalDevice;
 use App\Scopes\HospitalScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ class Hospital extends Model
 {
     use HasFactory;
     protected $table='hospitals';
-    protected $fillable=['id','name','medical_center','doctor_id','general_hospital','private_hospital','location_id','is_active','is_approved'];
+    protected $fillable=['id','medical_center','general_hospital','private_hospital','location_id','is_active','is_approved'];
     protected $hidden=['created_at','updated_at','location_id','doctor_id'];
     public $timestamps=false;
 
@@ -34,7 +35,11 @@ class Hospital extends Model
     }
     public function doctor()
     {
-        return $this->hasMany(Doctor::class);
+        return $this->belongsToMany(Doctor::class,'doctor_hospital','hospital_id','doctor_id','id','id');
+    }
+    public function MedicalDevice()
+    {
+        return $this->belongsToMany(MedicalDevice::class,'hospital_medical_device','hospital_id','medical_device_id','id','id');
     }
 
 }

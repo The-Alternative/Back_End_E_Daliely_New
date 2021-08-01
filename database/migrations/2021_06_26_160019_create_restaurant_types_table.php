@@ -15,7 +15,6 @@ class CreateRestaurantTypesTable extends Migration
     {
         Schema::create('restaurant_types', function (Blueprint $table) {
             $table->id();
-            $table->integer('restaurant_id')->unsigned();
             $table->string('image');
             $table->boolean('is_active');
             $table->boolean('is_approved');

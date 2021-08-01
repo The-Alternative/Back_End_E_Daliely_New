@@ -2,8 +2,9 @@
 
 namespace App\Models\MedicalFile;
 
+use App\Models\Customer\Customer;
 use App\Models\Doctors\doctor;
-use App\Models\Doctors\DoctorCustomer;
+use App\Models\Doctors\CustomerDoctor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,5 +23,13 @@ class MedicalFile extends Model
     public function ScopeNotActive($query)
     {
         return $query->where('is_active',0);
+    }
+    public function Doctor()
+    {
+        return $this->belongsTo(Doctor::class);
+    }
+    public function Customer()
+    {
+        return $this->belongsTo(Customer::class);
     }
 }
