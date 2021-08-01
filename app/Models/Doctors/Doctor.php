@@ -4,9 +4,11 @@ namespace App\Models\Doctors;
 
 use App\Models\Appointment\Appointment;
 use App\Models\Clinic\Clinic;
+use App\Models\Customer\Customer;
 use App\Models\DoctorRate\DoctorRate;
 use App\Models\Hospital\Hospital;
 use App\Models\MedicalDevice\MedicalDevice;
+use App\Models\MedicalFile\MedicalFile;
 use App\Models\SocialMedia\SocialMedia;
 use App\Models\Specialty\Specialty;
 use App\Scopes\DoctorScope;
@@ -17,8 +19,8 @@ class Doctor extends Model
 {
     use HasFactory;
     protected $table='doctors';
-    protected $fillable =['Id','image','appointments_id','specialty_id','hospital_id','clinic_id','social_media_id','is_active','is_approved'];
-    protected $hidden   =['social_media_id','specialty_id','hospital_id','work_places_id','created_at','updated_at','clinic_id','appointments_id','pivot'];
+    protected $fillable =['Id','image','clinic_id','social_media_id','is_active','is_approved'];
+    protected $hidden   =['social_media_id','created_at','updated_at','clinic_id','pivot'];
 
     protected static function boot()
     {
@@ -40,19 +42,16 @@ class Doctor extends Model
     {
         return $this->hasMany(SocialMedia::class);
     }
-//    public  function workPlace()
-//    {
-//        return $this->belongsToMany(workPlace::class);
-//    }
+
 
     public  function Specialty()
     {
-        return $this->belongsToMany(Specialty::class);
+        return $this->belongsToMany(Specialty::class,'doctor_specialty','doctor_id','specialty_id','id','id');
     }
 
     public  function medicalDevice()
     {
-        return $this->belongsToMany(MedicalDevice::class);
+        return $this->belongsToMany(MedicalDevice::class,'doctor_medical_device','doctor_id','medical_device_id','id','id');
     }
 
     public function DoctorRate()
@@ -66,16 +65,20 @@ class Doctor extends Model
     }
     public function hospital()
     {
-        return $this->belongsToMany(Hospital::class);
+        return $this->belongsToMany(Hospital::class,'doctor_hospital','doctor_id','hospital_id','id','id');
     }
 
     public function customer()
     {
-        return $this -> belongsToMany('App\Models\Customer\Customer','Customer_Doctor','doctor_id','customer_id','id','id');
+        return $this -> belongsToMany(Customer::class,'Customer_Doctor','doctor_id','customer_id','id','id');
     }
 
     public function appointment()
     {
         return $this->hasMany(Appointment::class);
+    }
+    public function MedicalFile()
+    {
+        return $this->hasMany(MedicalFile::class);
     }
 }

@@ -42,7 +42,7 @@ class Specialty extends Model
 
     public function doctor()
     {
-        return $this->belongsToMany(Doctor::class);
+        return $this->belongsToMany(Doctor::class,'doctor_specialty','specialty_id','doctor_id','id','id');
     }
 
 }

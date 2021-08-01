@@ -41,7 +41,7 @@ class RoleService
     public function getById($id)
     {
         try{
-            $role =$this->roleModel->find($id);
+            $role =$this->roleModel->with('Permission')->find($id);
             if (is_null($role) ){
                 return $response= $this->returnSuccessMessage('This Role not found','done');
             }else{
@@ -50,12 +50,6 @@ class RoleService
         }catch(\Exception $ex){
             return $this->returnError('400', $ex->getMessage());
         }
-    }
-    /*___________________________________________________________________________*/
-    public function getCategoryBySelf($id)
-    {
-        $role=$this->roleModel->get();
-        return $response= $this->returnData('Role',$role,'done');
     }
     /*___________________________________________________________________________*/
     /****ــــــThis Functions For Trashed Role  ****/
@@ -113,39 +107,36 @@ class RoleService
     public function create(Request $request)
     {
         try {
-            $validated = $request->validated();
+//            $validated = $request->validated();
             $request->is_active ? $is_active = true : $is_active = false;
-            $request->is_appear ? $is_appear = true : $is_appear = false;
-            //transformation to collection
+            /****transformation to collection***/
             $allroles = collect($request->role)->all();
-            ///select folder to save the image
-            // $fileBath = "" ;
-            //     if($request->has('image'))
-            //     {
-            //         $fileBath=uploadImage('images/products',$request->image);
-            //     }
             DB::beginTransaction();
-            // //create the default language's product
+            /***create the default language's product***/
             $unTransRole_id = $this->roleModel->insertGetId([
                 'slug' => $request['slug'],
                 'is_active' => $request['is_active']
             ]);
-            //check the category and request
+            /***check the category and request**/
             if (isset($allroles) && count($allroles)) {
-                //insert other traslations for products
+                /***insert other traslations for products**/
                 foreach ($allroles as $allrole) {
                     $transRoles_arr[] = [
                         'name' => $allrole ['name'],
                         'display_name' => $allrole['display_name'],
                         'role_id' => $unTransRole_id,
-                        'description' => $allrole['description']
+                        'description' => $allrole['description'],
+                        'local' => $allrole['local'],
                     ];
                 }
                 $this->roleTranslation->insert($transRoles_arr);
             }
-
             DB::commit();
-            return $this->returnData('Role', [$unTransRole_id,$transRoles_arr],'done');
+            if ($request->has('permissions')) {
+                $role = $this->roleModel->find($unTransRole_id);
+                $role->Permission()->syncWithoutDetaching($request->get('permissions'));
+            }
+            return $this->returnData('Role', [$unTransRole_id],'done');
         }
         catch(\Exception $ex)
         {
@@ -158,7 +149,7 @@ class RoleService
     public function update(Request $request,$id)
     {
         try{
-            $validated = $request->validated();
+//            $validated = $request->validated();
             $role= $this->roleModel->find($id);
             if(!$role)
                 return $this->returnError('400', 'not found this Role');
@@ -167,7 +158,7 @@ class RoleService
                 $request->request->add(['is_active'=>0]);
             else
                 $request->request->add(['is_active'=>1]);
-            $nrole=$this->roleModel->where('categories.id',$id)
+            $nrole=$this->roleModel->where('roles.id',$id)
                 ->update([
                     'slug'      =>$request['slug'],
                     'is_active' =>$request['is_active']
@@ -186,17 +177,22 @@ class RoleService
             $request_roles = array_values($request->role);
             foreach($dbdroles as $dbdrole){
                 foreach($request_roles as $request_role){
-                    $values= $this->roleTranslation->where('category_translations.category_id',$id)
+                    $values= $this->roleTranslation->where('role_translation.role_id',$id)
                         ->where('local',$request_role['local'])
                         ->update([
                             'name'=>$request_role['name'],
                             'display_name'=>$request_role['display_name'],
                             'description'=>$request_role['description'],
-                            'category_id'=>$id
+                            'role_id'=>$id,
+                            'local'=>$request_role['local']
                         ]);
                 }
                 return $this->returnData('Role', $dbdroles,'done');
 
+            }
+            if ($request->has('permissions')) {
+                $role = $this->roleModel->find($id);
+                $role->Permission()->syncWithoutDetaching($request->get('permissions'));
             }
             DB::commit();
         }
@@ -227,7 +223,6 @@ class RoleService
     }
     /*___________________________________________________________________________*/
     /****  Delete category   ***/
-
     public function delete($id)
     {
         try{

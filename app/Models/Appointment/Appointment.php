@@ -2,6 +2,7 @@
 
 namespace App\Models\Appointment;
 
+use App\Models\ActiveTime\ActiveTime;
 use App\Models\Doctors\doctor;
 use App\Scopes\AppointmentScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
-class Appointment extends Model
+class  Appointment extends Model
 {
     use HasFactory;
 
@@ -35,6 +36,15 @@ class Appointment extends Model
     public function appointmenttranslation()
     {
         return $this->hasmany(AppointmentTranslation::class);
+    }
+
+    public function calendar()
+    {
+        return $this->belongsTo(doctor::class);
+    }
+    public function ActiveTime()
+    {
+        return $this->belongsTo(ActiveTime::class);
     }
 
 }

@@ -21,9 +21,7 @@ class SpecialtyScope implements \Illuminate\Database\Eloquent\Scope
         // TODO: Implement apply() method.
          $builder->join('specialty_translation','specialty_translation.specialty_id','=','specialties.id')
              ->where('specialty_translation.locale','=',config::get('app.locale'))
-             ->select('specialties.id','specialties.is_active',
+             ->select('specialties.id','specialties.is_active','specialties.graduation_year',
             'specialty_translation.name','specialty_translation.description','specialty_translation.locale');
-
-//        $builder->where('is_active',1);
     }
 }

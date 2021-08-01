@@ -26,9 +26,7 @@ class MedicalDeviceRequest extends FormRequest
         return [
             'is_active'  =>'required|in:1,0',
             'is_approved'=>'required|in:1,0',
-            'doctor_id'=>'required',
-            'hospital_id'=>'required',
-
+            'image'=>'required',
 
             'medicaldevice'=>'required|array|min:1',
             'medicaldevice.*.name'=> 'required|min:5|max:255',

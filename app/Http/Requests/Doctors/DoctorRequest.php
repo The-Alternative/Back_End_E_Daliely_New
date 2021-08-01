@@ -28,9 +28,6 @@ class DoctorRequest extends FormRequest
             'is_approved'    =>'required|in:0,1',
             'image'          =>'required',
             'social_media_id'=>'required',
-            'appointments_id'=>'required',
-            'specialty_id'   =>'required',
-            'hospital_id'    =>'required',
             'clinic_id'      =>'required',
 
 

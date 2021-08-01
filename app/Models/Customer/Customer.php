@@ -5,6 +5,7 @@ namespace App\Models\Customer;
 use App\Models\Doctors\CustomerDoctor;
 use App\Models\Doctors\Doctor;
 use App\Models\Customer\CustomerTranslation;
+use App\Models\MedicalFile\MedicalFile;
 use App\Scopes\CustomerScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,6 +36,10 @@ class Customer extends Model
 
     public function doctor()
     {
-        return $this -> belongsToMany('App\Models\Doctors\Doctor','Customer_Doctor','customer_id','doctor_id','id','id');
+        return $this -> belongsToMany(Doctor::class,'Customer_Doctor','customer_id','doctor_id','id','id');
+    }
+    public function MedicalFile()
+    {
+        return $this->hasMany(MedicalFile::class);
     }
 }

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class
-CreatePropertiesTable extends Migration
+class CreateHospitalMedicalDeviceTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +13,10 @@ CreatePropertiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('properties', function (Blueprint $table) {
+        Schema::create('hospital_medical_device', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('custom_field_id');
-            $table->string('value');
+            $table->integer('hospital_id');
+            $table->integer('medical_device_id');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ CreatePropertiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('properties');
+        Schema::dropIfExists('hospital_medical_device');
     }
 }

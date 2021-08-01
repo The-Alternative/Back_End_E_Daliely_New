@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Doctors;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CustomerDoctor\CusromerDoctorRequest;
+use App\Http\Requests\CustomerDoctor\CustomerDoctorRequest;
 use App\Service\Doctors\CustomerDoctorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -23,11 +23,11 @@ class CustomerDoctorController extends Controller
     {
         return $this->CustomerDoctorService->getById($id);
     }
-    public function create(CusromerDoctorRequest $request)
+    public function create(CustomerDoctorRequest $request)
     {
         return $this->CustomerDoctorService->create($request);
     }
-    public function update(CusromerDoctorRequest $request,$id)
+    public function update(CustomerDoctorRequest $request,$id)
     {
         return $this->CustomerDoctorService->update($request,$id);
     }

@@ -3,6 +3,7 @@
 namespace App\Models\MedicalDevice;
 
 use App\Models\Doctors\Doctor;
+use App\Models\Hospital\Hospital;
 use App\Scopes\MedicalDeviceScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,8 +14,8 @@ class MedicalDevice extends Model
     use HasFactory;
 
     protected $table='medical_devices';
-    protected $fillable=['id','hospital_id','doctor_id','is_active','is_approved'];
-    protected $hidden=['pivot','created_at','updated_at','hospital_id','doctor_id'];
+    protected $fillable=['id','image','is_active','is_approved'];
+    protected $hidden=['pivot','created_at','updated_at'];
 
 
     protected static function booted()
@@ -39,6 +40,11 @@ class MedicalDevice extends Model
     public function doctor()
 
     {
-        return $this->belongsToMany(Doctor::class);
+        return $this->belongsToMany(Doctor::class,'doctor_medical_device','medical_device_id','doctor_id','id','id');
+    }
+    public function Hospital()
+
+    {
+        return $this->belongsToMany(Hospital::class,'hospital_medical_device','medical_device_id','hospital_id','id','id');
     }
 }
