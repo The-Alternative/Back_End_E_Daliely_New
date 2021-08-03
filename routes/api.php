@@ -395,7 +395,20 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::get('/get-product/{item_id}', 'ItemController@getProduct');
 
      });
+################ OFFERS ROUTE ##################################
 
+     Route::group(['prefix'=>'posts','namespace'=>'Post'],function () {
+         Route::get('/', 'PostController@get');
+         Route::get('/{id}', 'PostController@getById');
+         Route::post('/', 'PostController@create');
+         Route::put('/{id}', 'PostController@update');
+         Route::GET('/search/{name}','PostController@search');
+         Route::PUT('/trash/{id}', 'PostController@trash');
+         Route::get('/gettrashed', 'PostController@getTrashed');
+         Route::PUT('/restoretrashed/{id}', 'PostController@restoreTrashed');
+         Route::delete('/{id}', 'PostController@delete');
+
+     });
  });
 
 
