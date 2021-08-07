@@ -5,8 +5,10 @@ namespace App\Service\Post;
 
 
 use App\Http\Requests\Post\PostRequest;
+use App\Models\Doctors\Doctor;
 use App\Models\Post\Post;
 use App\Models\Post\PostTranslation;
+use App\Models\Stores\Store;
 use App\Traits\GeneralTrait;
 use Illuminate\Support\Facades\DB;
 
@@ -103,7 +105,7 @@ class PostService
             $allPostlength=$collection1->count();
             $collection2 = collect($ss);
 
-            $db_Post= array_values(PostTranslation::where('Posts_translations.post_id',$id)
+            $db_Post= array_values(PostTranslation::where('Post_translations.post_id',$id)
                 ->get()
                 ->all());
             $dbPost= array_values($db_Post);
@@ -167,12 +169,14 @@ class PostService
     public function getTrashed()
     {
         try{
-            $Post= $this->PostModel::NotActive();
-            return $this -> returnData('Post',$Post,'done');
+            $post=$this->PostModel::NotActive();
+            return $this->returnData('post',$post,'done');
         }
-        catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
-        }    }
+        catch (\Exception $ex){
+            return $this->returnError('400',$ex->getMessage());
+        }
+    }
+
     public function restoreTrashed( $id)
     {
         try{
@@ -197,14 +201,33 @@ class PostService
         try{
             $Post = Post::find($id);
             if ($Post->is_active == 0) {
-
                 $Post->delete();
-                $Post->ItemTranslation()->delete();
+                $Post->PostTranslation()->delete();
                 return $this->returnData('Post', $Post, 'This Post is deleted Now');
             }
             else{
                 return $this->returnData('Post', $Post, 'This Post can not deleted Now');
             }
+        }
+        catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
+    }
+    public function getOffers($store_Id)
+    {
+        try {
+            $Post= Store::with('Post')->find($store_Id);
+            return $this->returnData('Store', $Post, 'done');
+        }
+        catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
+    }
+    public function getInteractions($post_Id)
+    {
+        try {
+            $Post= Post::with('Customer')->find($post_Id);
+            return $this->returnData('Post', $Post, 'done');
         }
         catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());

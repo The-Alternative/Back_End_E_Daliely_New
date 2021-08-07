@@ -1,13 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\Post;
-
+use app\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\PostRequest;
 use App\Service\Post\PostService;
 use App\Traits\GeneralTrait;
-
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class PostController extends Controller
@@ -29,10 +27,7 @@ class PostController extends Controller
     {
         return $this->PostService->getById($id);
     }
-    public function getTrashed()
-    {
-        return$this->PostService->getTrashed();
-    }
+
     public function create(PostRequest $request)
     {
         return $this->PostService->create($request);
@@ -58,4 +53,20 @@ class PostController extends Controller
         return $this->PostService->delete($id);
     }
 
+    public function getOffers($store_Id)
+    {
+        return $this->PostService->getOffers($store_Id);
+
+    }
+  public function getInteractions($post_Id)
+    {
+        return $this->PostService->getInteractions($post_Id);
+
+    }
+
+    public function getTrashed()
+    {
+//        return $this->PostService->getTrashed();
+         echo "ok";
+    }
 }

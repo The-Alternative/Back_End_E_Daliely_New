@@ -13,7 +13,7 @@ class PostStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,21 @@ class PostStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'post_id' =>'required',
+            'store_id'   =>'required',
+            'start_date_time' =>'required',
+            'end_date_time'   =>'required',
+            'price'   =>'required',
+            'new_price'   =>'required',
+            'is_active'  =>'required|in:0,1',
+            'is_approved'=>'required|in:0,1',
+        ];
+    }
+    public function messages()
+    {
+        return[
+            'required'=>'this field is required',
+            'in'=>'this field must be 0 (is not active) or 1 (is active)',
         ];
     }
 }

@@ -397,6 +397,7 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
      });
 ################ OFFERS ROUTE ##################################
 
+///////////////////////Post Route //////////////////////
      Route::group(['prefix'=>'posts','namespace'=>'Post'],function () {
          Route::get('/', 'PostController@get');
          Route::get('/{id}', 'PostController@getById');
@@ -404,11 +405,40 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::put('/{id}', 'PostController@update');
          Route::GET('/search/{name}','PostController@search');
          Route::PUT('/trash/{id}', 'PostController@trash');
-         Route::get('/gettrashed', 'PostController@getTrashed');
          Route::PUT('/restoretrashed/{id}', 'PostController@restoreTrashed');
          Route::delete('/{id}', 'PostController@delete');
 
+         Route::get('/gettrashed', 'PostController@getTrashed');
+
+         Route::get('/storesoffers/{store_id}','PostController@getOffers');
+         Route::get('/interactionbypostId/{post_id}','PostController@getInteractions');
+     });
+////////////////Post Customer Route (Interactions) ////////////////////////////
+
+     Route::group(['prefix'=>'interactions','namespace'=>'Post'],function () {
+         Route::get('/', 'PostCustomerController@get');
+         Route::get('/{id}', 'PostCustomerController@getById');
+         Route::post('/', 'PostCustomerController@create');
+         Route::put('/{id}', 'PostCustomerController@update');
+         Route::PUT('/trash/{id}', 'PostCustomerController@trash');
+         Route::get('/gettrashed', 'PostCustomerController@getTrashed');
+         Route::PUT('/restoretrashed/{id}', 'PostCustomerController@restoreTrashed');
+         Route::delete('/{id}', 'PostCustomerController@delete');
+
+     });
+
+     ////////////////Post Store Route (offers)////////////////////////////
+
+     Route::group(['prefix'=>'offers','namespace'=>'Post'],function () {
+         Route::get('/', 'PostStoreController@get');
+         Route::get('/{id}', 'PostStoreController@getById');
+         Route::post('/', 'PostStoreController@create');
+         Route::put('/{id}', 'PostStoreController@update');
+         Route::PUT('/trash/{id}', 'PostStoreController@trash');
+         Route::get('/gettrashed', 'PostStoreController@getTrashed');
+         Route::PUT('/restoretrashed/{id}', 'PostStoreController@restoreTrashed');
+         Route::delete('/{id}', 'PostStoreController@delete');
+
      });
  });
-
 

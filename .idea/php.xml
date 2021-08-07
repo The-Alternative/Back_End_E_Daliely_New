@@ -117,6 +117,10 @@
       <path value="$PROJECT_DIR$/vendor/symfony/routing" />
       <path value="$PROJECT_DIR$/vendor/symfony/finder" />
       <path value="$PROJECT_DIR$/vendor/psr/http-factory" />
+      <path value="" />
+      <path value="" />
+      <path value="$PROJECT_DIR$/../../../php/php.exe" />
+      <path value="" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3" />
