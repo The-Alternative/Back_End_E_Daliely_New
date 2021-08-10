@@ -233,4 +233,15 @@ class PostService
             return $this->returnError('400', $ex->getMessage());
         }
     }
+
+    public function getAd()
+    {
+        try{
+            $post=$this->PostModel::GetAD();
+            return $this->returnData('post',$post,'done');
+        }
+        catch (\Exception $ex){
+            return $this->returnError('400',$ex->getMessage());
+        }
+    }
 }

@@ -10,14 +10,11 @@ use Illuminate\Http\Response;
 
 class PostController extends Controller
 {
-    use GeneralTrait;
     private $PostService;
-    private $response;
 
-    public function __construct(PostService $PostService,Response $response )
+    public function __construct(PostService $PostService)
     {
         $this->PostService=$PostService;
-        $this->response=$response;
     }
     public function get()
     {
@@ -61,12 +58,15 @@ class PostController extends Controller
   public function getInteractions($post_Id)
     {
         return $this->PostService->getInteractions($post_Id);
-
     }
 
     public function getTrashed()
     {
 //        return $this->PostService->getTrashed();
          echo "ok";
+    }
+    public function getAd()
+    {
+        return "ok";
     }
 }

@@ -412,6 +412,8 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
 
          Route::get('/storesoffers/{store_id}','PostController@getOffers');
          Route::get('/interactionbypostId/{post_id}','PostController@getInteractions');
+
+         Route::get('/get_ad','PostController@getAd');
      });
 ////////////////Post Customer Route (Interactions) ////////////////////////////
 
