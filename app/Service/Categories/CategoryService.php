@@ -45,7 +45,7 @@ class CategoryService
     public function getById($id)
     {
         try{
-        $category =$this->categoryModel->with('CategoryImages')->find($id);
+        $category =$this->categoryModel->with(['CategoryImages','Category'])->find($id);
             if (is_null($category) ){
                 return $response= $this->returnSuccessMessage('This Category not found','done');
             }else{
@@ -138,7 +138,6 @@ class CategoryService
             // //create the default language's product
             $unTransCategory_id = $this->categoryModel->insertGetId([
                 'slug' => $request['slug'],
-                'lang_id' => $request['lang_id'],
                 'is_active' => $request['is_active'],
                 'section_id' => $request['section_id'],
                 'parent_id' => $request['parent_id']
@@ -220,7 +219,6 @@ class CategoryService
            $ncategory=$this->categoryModel->where('categories.id',$id)
                ->update([
                    'slug'      =>$request['slug'],
-                   'lang_id'   =>$request['lang_id'],
                    'is_active' =>$request['is_active'],
                    'section_id' =>$request['section_id'],
                    'parent_id' =>$request['parent_id']
@@ -244,7 +242,6 @@ class CategoryService
                             ->update([
                             'name'=>$request_categor['name'],
                             'local'=>$request_categor['local'],
-                            'language_id'=>$request_categor['language_id'],
                             'category_id'=>$id
                         ]);
                     }
@@ -268,7 +265,6 @@ class CategoryService
             if ($request->has('images')) {
                 foreach ($images as $image) {
                     $categoryImages = $this->categoryModel->find($id);
-//                    return $categoryImages->CategoryImages()->get();
                     $categoryImages->CategoryImages()->update([
                         'category_id' => $id,
                         'image' => $image['image'],

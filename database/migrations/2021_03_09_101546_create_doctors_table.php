@@ -15,7 +15,6 @@ class CreateDoctorsTable extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
-
             $table->integer('social_media_id')->unsigned();
             $table->integer('appointments_id')->unsigned();
             $table->integer('specialty_id')->unsigned();
@@ -27,7 +26,6 @@ class CreateDoctorsTable extends Migration
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *

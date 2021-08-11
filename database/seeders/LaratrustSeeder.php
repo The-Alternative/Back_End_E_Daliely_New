@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Faker\Factory as Faker;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,7 @@ class LaratrustSeeder extends Seeder
     public function run()
     {
         $this->truncateLaratrustTables();
+        $faker=Faker::create();
 
         $config = Config::get('laratrust_seeder.roles_structure');
 
@@ -32,57 +34,57 @@ class LaratrustSeeder extends Seeder
 
             // Create a new role
             $role = \App\Models\Admin\Role::firstOrCreate([
-                'is_active' =>rand(0,1),
+                'is_active' => rand(0, 1),
                 'slug' => ucwords(str_replace('_', ' ', $key)),
             ]);
-            $roleid=$role->id;
+            $roleid = $role->id;
             $roleTrans = DB::table('role_translation')->insert([
                 [
                     'name' => $key,
-                'display_name' => ucwords(str_replace('_', ' ', $key)),
-                'description' => ucwords(str_replace('_', ' ', $key)),
-                'local'=>'ar',
-                'role_id'=>$roleid
-            ],
+                    'display_name' => ucwords(str_replace('_', ' ', $key)),
+                    'description' => ucwords(str_replace('_', ' ', $key)),
+                    'local' => 'ar',
+                    'role_id' => $roleid
+                ],
                 [
-                'name' => $key,
-                'display_name' => ucwords(str_replace('-', ' ', $key)),
-                'description' => ucwords(str_replace('-', ' ', $key)),
-                'local'=>'en',
-                'role_id'=>$roleid
-            ]]);
+                    'name' => $key,
+                    'display_name' => ucwords(str_replace('-', ' ', $key)),
+                    'description' => ucwords(str_replace('-', ' ', $key)),
+                    'local' => 'en',
+                    'role_id' => $roleid
+                ]]);
             $permissions = [];
 
-            $this->command->info('Creating Role '. strtoupper($key));
+            $this->command->info('Creating Role ' . strtoupper($key));
             // Reading role permission modules
             foreach ($modules as $module => $value) {
 
                 foreach (explode(',', $value) as $p => $perm) {
 
                     $permissionValue = $mapPermission->get($perm);
-                        $permissions = \App\Models\Admin\Permission::firstOrCreate([
-                            'is_active' => rand(0, 1),
-                            'slug' => ucfirst($permissionValue) . ' ' . ucfirst($module)
-                        ])->id;
-                        $permissionsTrans =  DB::table('permission_translation')->insert([
-                            [
-                                'name' => $module . '-' . $permissionValue,
-                                'display_name' => ucfirst($permissionValue) . ' ' . ucfirst($module),
-                                'description' => ucfirst($permissionValue) . ' ' . ucfirst($module),
-                                'local' => 'ar',
-                                'permission_id' => $permissions
-                            ],
-                            [
-                                'name' => $module . '_' . $permissionValue,
-                                'display_name' => ucfirst($permissionValue) . ' ' . ucfirst($module),
-                                'description' => ucfirst($permissionValue) . ' ' . ucfirst($module),
-                                'local' => 'en',
-                                'permission_id' => $permissions
-                            ]]);
+                    $permissions = \App\Models\Admin\Permission::firstOrCreate([
+                        'is_active' => rand(0, 1),
+                        'slug' => ucfirst($permissionValue) . ' ' . ucfirst($module)
+                    ])->id;
+                    $permissionsTrans = DB::table('permission_translation')->insert([
+                        [
+                            'name' => $module . '-' . $permissionValue,
+                            'display_name' => ucfirst($permissionValue) . ' ' . ucfirst($module),
+                            'description' => ucfirst($permissionValue) . ' ' . ucfirst($module),
+                            'local' => 'ar',
+                            'permission_id' => $permissions
+                        ],
+                        [
+                            'name' => $module . '_' . $permissionValue,
+                            'display_name' => ucfirst($permissionValue) . ' ' . ucfirst($module),
+                            'description' => ucfirst($permissionValue) . ' ' . ucfirst($module),
+                            'local' => 'en',
+                            'permission_id' => $permissions
+                        ]]);
 
-                        $this->command->info('Creating Permission to ' . $permissionValue . ' for ' . $module);
-                    }
+                    $this->command->info('Creating Permission to ' . $permissionValue . ' for ' . $module);
                 }
+            }
             // Attach all permissions to the role
             $role->permissions()->sync($permissions);
 
@@ -90,13 +92,38 @@ class LaratrustSeeder extends Seeder
                 $this->command->info("Creating '{$key}' user");
                 // Create default user for each role
                 $user = \App\Models\User::create([
-                    'name' => ucwords(str_replace('_', ' ', $key)),
-                    'email' => $key.'@app.com',
+                    'first_name' => ucwords(str_replace('_', ' ', $key)),
+                    'last_name' => ucwords(str_replace('_', ' ', $key)),
+                    'age' => rand(20, 50),
+                    'location_id' => rand(20, 50),
+                    'social_media_id' => rand(20, 50),
+                    'is_active' => rand(0, 1),
+                    'image' => $faker->sentence(3),
+                    'email' => $key . '@app.com',
                     'password' => bcrypt('password')
                 ]);
                 $user->attachRole($role);
-            }
+                if (Config::get('laratrust_seeder.create_employees')) {
 
+                    $this->command->info("Creating '{$key}' employee");
+                    // Create default employee for each role
+                    $employee = \App\Models\Admin\Employee::create([
+                        'first_name' => ucwords(str_replace('_', ' ', $key)),
+                        'last_name' => ucwords(str_replace('_', ' ', $key)),
+                        'age' => rand(20, 50),
+                        'location_id' => rand(20, 50),
+                        'social_media_id' => rand(20, 50),
+                        'is_active' => rand(0, 1),
+                        'image' => $faker->sentence(3),
+                        'email' => $key . '@app.com',
+                        'password' => bcrypt('password'),
+                        'salary' => rand(25000, 50000),
+                        'certificate' => $faker->sentence(3),
+                        'start_date' => $faker->date('Y-m-d'),
+                    ]);
+                    $employee->attachRole($role);
+                }
+            }
         }
     }
 
@@ -107,12 +134,14 @@ class LaratrustSeeder extends Seeder
      */
     public function truncateLaratrustTables()
     {
-        $this->command->info('Truncating User, Role and Permission tables');
+        $this->command->info('Truncating User,Employee Role and Permission tables');
         Schema::disableForeignKeyConstraints();
 
         DB::table('permission_role')->truncate();
         DB::table('permission_user')->truncate();
         DB::table('role_user')->truncate();
+        DB::table('role_employee')->truncate();
+        DB::table('permission_employee')->truncate();
 
         if (Config::get('laratrust_seeder.truncate_tables')) {
             DB::table('roles')->truncate();
@@ -120,7 +149,9 @@ class LaratrustSeeder extends Seeder
 
             if (Config::get('laratrust_seeder.create_users')) {
                 $usersTable = (new \App\Models\User)->getTable();
+                $employeesTable = (new \App\Models\Admin\Employee)->getTable();
                 DB::table($usersTable)->truncate();
+                DB::table($employeesTable)->truncate();
             }
         }
 

@@ -27,7 +27,7 @@ class  StoreService
         try {
             $store =collect($this->storeModel->with(['Section','Product','Brand','StoreImage'=>function($q){
                 return $q->where('is_cover',1)->get();}])->get());
-            $store =$this->storeModel->with(['Section','Product','Brand'])->paginate(10);
+//            $store =$this->storeModel->with(['Section','Product','Brand'])->paginate(10);
             if (count($store) > 0){
                 return $this->returnData('Stores',$store,'done');
             }else{

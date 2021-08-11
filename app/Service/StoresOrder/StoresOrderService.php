@@ -43,7 +43,6 @@ class StoresOrderService
             return curl_error($ch);
         }
         curl_close($ch);
-//        return $responseData;
          return $res =json_decode($responseData,true);
 //        return $res['id'];
 //        return $response = $this->returnData('Products', $responseData, 'done');
