@@ -19,7 +19,6 @@ class CreateCategoriesTable extends Migration
             $table->string('slug')->index();
             $table->boolean('is_active');
             $table->unsignedInteger('parent_id');
-            $table->integer('lang_id')->unsigned();
             $table->integer('section_id')->unsigned();
            $table->timestamps();
 

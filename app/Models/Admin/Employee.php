@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Admin;
 
 use App\Models\Admin\Permission;
 use App\Models\Admin\Role;
@@ -12,25 +12,23 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laratrust\Traits\LaratrustUserTrait;
 
-class User extends Authenticatable implements JWTSubject
+class Employee extends Authenticatable implements JWTSubject
 {
     use LaratrustUserTrait;
     use HasFactory, Notifiable;
+    public $guarded = [];
+    protected $primaryKey = 'id';
+    protected $table='employees';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'first_name',
-        'last_name',
-        'age',
-        'location_id',
-        'social_media_id',
-        'is_active',
-        'image',
-        'email',
-        'password',
+        'first_name','last_name','age',
+        'email','email_verified_at','password','location_id',
+        'social_media_id','image','is_active','salary',
+        'certificate','start_date'
     ];
     /**
      * The attributes that should be hidden for arrays.
@@ -49,7 +47,7 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-     /**
+    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
@@ -71,8 +69,8 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsToMany(
             Role::class,
-            'role_user',
-            'user_id',
+            'role_employee',
+            'employee_id',
             'role_id',
             'id',
             'id');
@@ -81,8 +79,8 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsToMany(
             Permission::class,
-            'permission_user',
-            'user_id',
+            'permission_employee',
+            'employee_id',
             'permission_id',
             'id',
             'id');
