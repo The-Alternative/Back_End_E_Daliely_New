@@ -24,10 +24,7 @@ class CreateProductTranslationsTable extends Migration
             $table->unsignedInteger('product_id');
             $table->timestamps();
         });
-
-
     }
-
     /**
      * Reverse the migrations.
      *

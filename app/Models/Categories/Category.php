@@ -52,7 +52,7 @@ class Category extends Model
     }
     function Category()
     {
-        return $this->hasMany($this,'parent_id');
+        return $this->hasMany(Category::class,'parent_id');
     }
     public function Product()
     {

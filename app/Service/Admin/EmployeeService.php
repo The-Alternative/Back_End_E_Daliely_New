@@ -2,6 +2,7 @@
 
 namespace App\Service\Admin;
 
+use App\Models\Admin\Employee;
 use App\Models\Admin\Role;
 use App\Models\Order\Order;
 use App\Models\User;
@@ -10,16 +11,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class UserService
+class EmployeeService
 {
 
     use GeneralTrait;
-    private $userModel;
+    private $employeeModel;
     private $roleModel;
 
-    public function __construct(User $userModel , Role $roleModel)
+    public function __construct(Employee $employeeModel , Role $roleModel)
     {
-        $this->userModel=$userModel;
+        $this->employeeModel=$employeeModel;
         $this->roleModel=$roleModel;
     }
     /*___________________________________________________________________________*/
@@ -27,11 +28,11 @@ class UserService
     public function getAll()
     {
         try{
-            $user = $this->userModel->get();
-            if (count($user) > 0){
-                return $response= $this->returnData('User',$user,'done');
+            $employee = $this->employeeModel->get();
+            if (count($employee) > 0){
+                return $response= $this->returnData('Employee',$employee,'done');
             }else{
-                return $response= $this->returnSuccessMessage('User','User doesnt exist yet');
+                return $response= $this->returnSuccessMessage('Employee','Employee doesnt exist yet');
             }
         }catch(\Exception $ex){
             return $this->returnError('400', $ex->getMessage());
@@ -41,12 +42,12 @@ class UserService
     public function getById($id)
     {
         try{
-            $user =$this->userModel->with(['roles'=>function($q){
+            $employee =$this->employeeModel->with(['roles'=>function($q){
                 return $q->with('Permission')->get();}])->find($id);
-            if (is_null($user) ){
-                return $response= $this->returnSuccessMessage('This User not found','done');
+            if (is_null($employee) ){
+                return $response= $this->returnSuccessMessage('This Employee not found','done');
             }else{
-                return $response= $this->returnData('User',$user,'done');
+                return $response= $this->returnData('Employee',$employee,'done');
             }
         }catch(\Exception $ex){
             return $this->returnError('400', $ex->getMessage());
@@ -58,8 +59,8 @@ class UserService
     public function getTrashed()
     {
         try{
-            $user = $this->userModel->where('user.is_active',0)->get();
-            return $this -> returnData('User',$user,'done');
+            $employee = $this->employeeModel->where('employees.is_active',0)->get();
+            return $this -> returnData('Employee',$employee,'done');
         }catch(\Exception $ex){
             return $this->returnError('400', $ex->getMessage());
         }
@@ -71,13 +72,13 @@ class UserService
     public function restoreTrashed( $id)
     {
         try{
-            $user=$this->userModel->find($id);
-            if (is_null($user) ){
-                return $response= $this->returnSuccessMessage('This User not found','done');
+            $employee=$this->employeeModel->find($id);
+            if (is_null($employee) ){
+                return $response= $this->returnSuccessMessage('This Employee not found','done');
             }else{
-                $user->is_active=true;
-                $user->save();
-                return $this->returnData('User', $user,'This User Is trashed Now');
+                $employee->is_active=true;
+                $employee->save();
+                return $this->returnData('Employee', $employee,'This Employee Is trashed Now');
             }
         }catch(\Exception $ex){
             return $this->returnError('400', $ex->getMessage());
@@ -90,13 +91,13 @@ class UserService
     public function trash( $id)
     {
         try{
-            $user=$this->userModel->find($id);
-            if (is_null($user) ){
+            $employee=$this->employeeModel->find($id);
+            if (is_null($employee) ){
                 return $response= $this->returnSuccessMessage('This User not found','done');
             }else{
-                $user->is_active=false;
-                $user->save();
-                return $this->returnData('User', $user,'This User Is trashed Now');
+                $employee->is_active=false;
+                $employee->save();
+                return $this->returnData('Employee', $employee,'This Employee Is trashed Now');
             }
         }catch(\Exception $ex){
             return $this->returnError('400', $ex->getMessage());
@@ -109,37 +110,40 @@ class UserService
     {
         try {
 //            $validated = $request->validated();
-//            $request->is_active ? $is_active = true : $is_active = false;
+            $request->is_active ? $is_active = true : $is_active = false;
             DB::beginTransaction();
 
-            $user=$this->userModel->create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'age' => $request->age,
-                'location_id' => $request->location_id,
-                'social_media_id' => $request->social_media_id,
-                'is_active' => $request->is_active,
-                'image' => $request->image,
-                'email' => $request->email,
-                'password' =>bcrypt($request->password)
+            $employee=$this->employeeModel->create([
+               'first_name' => $request->first_name,
+               'last_name' => $request->last_name,
+               'age' => $request->age,
+               'location_id' => $request->location_id,
+               'social_media_id' => $request->social_media_id,
+               'image' => $request->image,
+               'email' => $request->email,
+               'is_active' => $request->is_active,
+               'salary' => $request->salary,
+               'certificate' => $request->certificate,
+               'start_date' => $request->start_date,
+               'password' =>bcrypt($request->password)
             ]);
-            $token = JWTAuth::fromUser($user);
+            $token = JWTAuth::fromUser($employee);
             if ($request->has('roles')) {
-                $role = $this->userModel->find($user->id);
+                $role = $this->employeeModel->find($employee->id);
                 $role->roles()->syncWithoutDetaching($request->get('roles'));
             }
             if ($request->has('permissions')) {
-                $permissions = $this->userModel->find($user->id);
+                $permissions = $this->employeeModel->find($employee->id);
                 $permissions->permissions()->syncWithoutDetaching($request->get('permissions'));
             }
             DB::commit();
-            return $this->returnData('User', [$token,$user],'Done');
+            return $this->returnData('Employee', [$token,$employee],'Done');
 
         }
         catch(\Exception $ex)
         {
             DB::rollback();
-            return $this->returnError('User', $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*___________________________________________________________________________*/
@@ -148,29 +152,32 @@ class UserService
     {
         try{
 //            $validated = $request->validated();
-            $user=$this->userModel->find($id);
-            $user->update([
+            $employee=$this->employeeModel->find($id);
+            $employee->update([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'age' => $request->age,
                 'location_id' => $request->location_id,
                 'social_media_id' => $request->social_media_id,
-                'is_active' => $request->is_active,
                 'image' => $request->image,
                 'email' => $request->email,
+                'is_active' => $request->is_active,
+                'salary' => $request->salary,
+                'certificate' => $request->certificate,
+                'start_date' => $request->start_date,
                 'password' =>bcrypt($request->password)
             ]);
-            $token = JWTAuth::fromUser($user);
+            $token = JWTAuth::fromUser($employee);
             if ($request->has('roles')) {
-                $role = $this->userModel->find($user->id);
+                $role = $this->employeeModel->find($employee->id);
                 $role->roles()->syncWithoutDetaching($request->get('roles'));
             }
             if ($request->has('permissions')) {
-                $permissions = $this->userModel->find($user->id);
+                $permissions = $this->employeeModel->find($employee->id);
                 $permissions->permissions()->syncWithoutDetaching($request->get('permissions'));
             }
             DB::commit();
-            return $this->returnData('User', [$token,$user],'Done');
+            return $this->returnData('Employee', [$token,$employee],'Done');
 
         }
         catch(\Exception $ex){
@@ -182,16 +189,16 @@ class UserService
     public function search($name)
     {
         try {
-            $user = DB::table('users')
+            $employee = DB::table('employees')
                 ->where("name","like","%".$name."%")
                 ->get();
-            if (!$user)
+            if (!$employee)
             {
-                return $this->returnError('400', 'not found this user');
+                return $this->returnError('400', 'not found this Employee');
             }
             else
             {
-                return $this->returnData('user', $user,'done');
+                return $this->returnData('Employee', $employee,'done');
             }
         }catch(\Exception $ex){
             return $this->returnError('400', $ex->getMessage());
@@ -202,11 +209,11 @@ class UserService
     public function delete($id)
     {
         try{
-            $user=$this->userModel->find($id);
-            if ($user->is_active=0)
+            $employee=$this->employeeModel->find($id);
+            if ($employee->is_active=0)
             {
-                $roles=$this->userModel->destroy($id);
-                return $this->returnData('User', $user,'This User Is deleted Now');
+                $roles=$this->employeeModel->destroy($id);
+                return $this->returnData('Employee', $employee,'This Employee Is deleted Now');
             }
         }catch(\Exception $ex){
             return $this->returnError('400', $ex->getMessage());
@@ -217,20 +224,20 @@ class UserService
     public function profile($id)
     {
         try{
-            $user=$this->userModel->with([
+            $employee=$this->employeeModel->with([
                 'roles'=>function($q){
                 return $q->with('Permission')->get();
                 },
                 'Stores_Order'
             ])->find($id);
-            if (is_null($user) ){
-                return $response= $this->returnSuccessMessage('This User not found','done');
+            if (is_null($employee) ){
+                return $response= $this->returnSuccessMessage('This Employee not found','done');
             }else{
-                return $response= $this->returnData('User',$user,'done');
+                return $response= $this->returnData('Employee',$employee,'done');
             }
         }
         catch(\Exception $ex){
-return $this->returnError('400', $ex->getMessage());
-}
+            return $this->returnError('400', $ex->getMessage());
+        }
     }
 }

@@ -17,14 +17,13 @@ class Role extends LaratrustRole
     protected $casts = [
         'is_active' => 'boolean'
     ];
-    protected $fillable=['id','slug','is_active'];
+    protected $fillable= ['id','slug','is_active'];
 
     protected static function booted()
     {
         parent::booted();
         static::addGlobalScope(new RoleScope);
     }
-
     public function RoleTranslation()
     {
         return $this->hasMany(RoleTranslation::class);
@@ -39,7 +38,6 @@ class Role extends LaratrustRole
             'id',
             'id');
     }
-
     public function users()
     {
         return $this->belongsToMany(
@@ -47,6 +45,16 @@ class Role extends LaratrustRole
             'role_user',
             'role_id',
             'user_id',
+            'id',
+            'id');
+    }
+    public function employees()
+    {
+        return $this->belongsToMany(
+            Employee::class,
+            'role_employee',
+            'role_id',
+            'employee_id',
             'id',
             'id');
     }
