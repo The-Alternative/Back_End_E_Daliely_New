@@ -62,11 +62,10 @@ class PostController extends Controller
 
     public function getTrashed()
     {
-//        return $this->PostService->getTrashed();
-         echo "ok";
+        return $this->PostService->getTrashed();
     }
     public function getAd()
     {
-        return "ok";
+         return $this->PostService->getAd();
     }
 }
