@@ -26,7 +26,7 @@ class SocialMediaRequest extends FormRequest
         return [
             'instagram_account'=>'required|string',
             'email'=>'required',
-            'doctor_id'=>'required',
+            'user_id'=>'required',
             'is_active'=>'required|in:1,0',
             'phone_number'      =>'required|regex:/[0-9]/',
             'whatsapp_number'   =>'required|regex:/[0-9]/',

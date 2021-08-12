@@ -10,8 +10,8 @@ class SocialMedia extends Model
 {
     use HasFactory;
     protected $table='social_media';
-    protected $fillable=['id','phone_number','whatsapp_number','facebook_account','telegram_number','email','doctor_id','instagram_account','is_active'];
-    protected $hidden=['created_at','updated_at','doctor_id'];
+    protected $fillable=['id','phone_number','whatsapp_number','facebook_account','telegram_number','email','user_id','instagram_account','is_active'];
+    protected $hidden=['created_at','updated_at','user_id'];
     public $timestamps =true;
 
     //scope

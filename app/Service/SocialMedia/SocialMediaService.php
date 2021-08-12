@@ -55,7 +55,7 @@ class SocialMediaService
                    $SocialMedia->instagram_account                  =$request->instagram_account;
                    $SocialMedia->telegram_number                    =$request->telegram_number ;
                    $SocialMedia->email                              =$request->email  ;
-                   $SocialMedia->doctor_id                          =$request->doctor_id   ;
+                   $SocialMedia->user_id                          =$request->user_id   ;
                    $SocialMedia->is_active                          =$request->is_active   ;
 
                    $result=$SocialMedia->save();
