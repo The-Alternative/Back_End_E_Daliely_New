@@ -20,8 +20,8 @@ class DoctorScope implements Scope
     {
       $builder->join('doctor_translation','doctors.id','=','doctor_translation.doctor_id')
           ->where('doctor_translation.locale','=',config::get('app.locale'))
-          ->select(['doctors.id','doctors.is_active','doctors.is_approved','doctors.image',
-              'doctor_translation.first_name', 'doctor_translation.last_name', 'doctor_translation.description']);
+          ->select(['doctors.id','doctors.is_active','doctors.is_approved',
+              'doctor_translation.description']);
 
     }
 }

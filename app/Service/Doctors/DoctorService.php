@@ -3,17 +3,12 @@
 
 namespace App\Service\Doctors;
 
-use App\Http\Requests\CustomerDoctor\CustomerDoctorRequest;
 use App\Models\Customer\Customer;
-use App\Models\DoctorRate\DoctorRate;
 use App\Models\Doctors\Doctor;
 use App\Models\Doctors\DoctorTranslation;
-use App\Models\MedicalFile\MedicalFile;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\Doctors\DoctorRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 
 class DoctorService
 {
@@ -21,12 +16,12 @@ class DoctorService
     private $customerModel;
     use GeneralTrait;
 
-
     public function __construct(Doctor $doctor,customer $customer)
     {
-        $this->DoctorModel=$doctor;
-        $this->customerModel=$customer;
+        $this->DoctorModel = $doctor;
+        $this->customerModel = $customer;
     }
+        //get all doctors
     public function get()
     {
         try{
@@ -38,7 +33,7 @@ class DoctorService
             return $this->returnError('400',$ex->getMessage());
         }
     }
-
+//get doctors details by doctor id
     public function getById($id)
     {
         try{
@@ -48,7 +43,7 @@ class DoctorService
             return $this->returnError('400', $ex->getMessage());
         }
     }
-//___________________________________________________________//
+//create new doctor
     public function create( DoctorRequest $request )
     {
         try {
@@ -56,6 +51,7 @@ class DoctorService
             DB::beginTransaction();
             $unTransdoctor_id =doctor::insertGetId([
                 'clinic_id' => $request['clinic_id'],
+                'is_active' => $request['is_active'],
                 'is_approved' => $request['is_approved'],
             ]);
             if (isset($alldoctor)) {
@@ -77,7 +73,7 @@ class DoctorService
             return $this->returnError('doctor', $ex->getMessage());
         }
     }
-//___________________________________________________________//
+//update doctor by doctor's id
     public function update(DoctorRequest $request,$id)
     {
         try{
@@ -93,6 +89,7 @@ class DoctorService
             $newdoctor=Doctor::where('doctors.id',$id)
                 ->update([
                     'clinic_id' => $request['clinic_id'],
+                    'is_active' => $request['is_active'],
                     'is_approved' => $request['is_approved'],
                 ]);
 
@@ -124,12 +121,12 @@ class DoctorService
             return $this->returnError('400', $ex->getMessage());
         }
     }
-//___________________________________________________________//
+//Search for a doctor by his name
     public function search($name)
     {
         try {
-            $doctor = DB::table('doctor_translation')
-                ->where("first_name", "like", "%" . $name . "%")
+            $doctor = DB::table('users')
+                ->where("name", "like", "%" . $name . "%")
                 ->get();
             if (!$doctor) {
                 return $this->returnError('400', 'not found this doctor');
@@ -142,7 +139,7 @@ class DoctorService
                 return $this->returnError('400',$ex->getMessage());
             }
     }
-
+//Change the is_active value to zero
     public function trash( $id)
     {
         try{
@@ -160,7 +157,7 @@ class DoctorService
             return $this->returnError('400',$ex->getMessage());
         }
     }
-
+//get doctor where is_active value zero
     public function getTrashed()
     {
         try {
@@ -172,7 +169,7 @@ class DoctorService
             return $this->returnError('400',$ex->getMessage());
         }
     }
-
+//Change the is_active value to one
     public function restoreTrashed( $id)
     {
         try {
@@ -190,7 +187,7 @@ class DoctorService
             return $this->returnError('400',$ex->getMessage());
         }
     }
-
+    //Permanently delete the doctor from the database
     public function delete($id)
     {
         try{
@@ -209,7 +206,7 @@ class DoctorService
     }
 
 //    get all doctor's social media by doctor's id
-    public function SocialMedia($id)
+    public function DoctorSocialMedia($id)
     {
         try {
            $doctor= Doctor::with('socialMedia')->find($id);
@@ -232,7 +229,7 @@ class DoctorService
     }
 
     //get hospital by doctor's id
-    public function hospital($id)
+    public function doctorhospital($id)
     {
       try{
           $doctor= Doctor::with('hospital')->find($id);
@@ -243,8 +240,8 @@ class DoctorService
        }
     }
 
-    //get doctor's appopintment
-    public function appointment($id)
+    //get doctor's appopintment by doctor's id
+    public function doctorappointment($id)
     {
         try{
             $doctor= Doctor::with('appointment')->find($id);
@@ -255,8 +252,8 @@ class DoctorService
         }
     }
 
-    //get clinic by doctor's id
-    public function clinic($id)
+    //get doctor clinic by doctor's id
+    public function doctorclinic($id)
     {
         try{
             $doctor= Doctor::with('clinic')->find($id);
@@ -268,16 +265,16 @@ class DoctorService
     }
 
     //get paitent by doctor's id
-    public function customer($id)
-    {
-        try{
-            $doctor=  Doctor::with('customer')->find($id);
-            return $this->returnData('doctor', $doctor, 'done');
-        }
-        catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
-        }
-    }
+//    public function customer($id)
+//    {
+//        try{
+//            $doctor=  Doctor::with('customer')->find($id);
+//            return $this->returnData('doctor', $doctor, 'done');
+//        }
+//        catch (\Exception $ex) {
+//            return $this->returnError('400', $ex->getMessage());
+//        }
+//    }
 
     //get doctor rate by doctor's id
     public function DoctorRate($id)
@@ -290,7 +287,7 @@ class DoctorService
             return $this->returnError('400', $ex->getMessage());
         }
     }
-    //get specialty by doctor id
+    //get doctor specialty by doctor's id
     public function DoctorSpecialty($id)
     {
         try {

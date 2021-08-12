@@ -25,6 +25,7 @@ class DoctorSeeder extends Seeder
             for ($i = 0; $i <= 5; $i++) {
                 $s = DB::table('doctors')->insertGetId([
                     'is_approved' => $faker->boolean,
+                    'is_active' => $faker->boolean,
                     'clinic_id' => $faker->numberBetween(1, 10),
                 ]);
                 DB::table('doctor_translation')->insert([[

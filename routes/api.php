@@ -14,11 +14,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request)
 Route::group(
     [
         'prefix'     => LaravelLocalization::setLocale(),
-        'middleware' => ['api','ChangeLanguage','localize','localizationRedirect','localeViewPath','role:superadministrator|administrator|user']
+        'middleware' => ['api','ChangeLanguage','localize','localizationRedirect','localeViewPath']
+//        ,'role:superadministrator|administrator|user'
     ],
  function()
     {
-
         /*_____________ Product routes _____________*/
         Route::group(['prefix'=>'products','namespace'=>'Product'],function()
             {
@@ -136,12 +136,12 @@ Route::group(['prefix'=>'doctors','namespace'=>'Doctors'],function () {
     Route::delete('/delete/{id}', 'DoctorController@delete');
     Route::PUT('/restoretrashed/{id}', 'DoctorController@restoreTrashed');
 
-    Route::GET('/doctor-social-media/{doctor_id}', 'DoctorController@SocialMedia');
+    Route::GET('/doctor-social-media/{doctor_id}', 'DoctorController@DoctorSocialMedia');
     Route::GET('/doctor-medical-device/{doctor_id}', 'DoctorController@doctormedicaldevice');
-    Route::GET('/hospital-doctor/{doctor_id}', 'DoctorController@hospital');
-    Route::GET('/appointment-doctor/{doctor_id}', 'DoctorController@appointment');
-    Route::GET('/clinic-doctor/{doctor_id}', 'DoctorController@clinic');
-    Route::get('/view-customer/{doctor_id}','DoctorController@customer');
+    Route::GET('/hospital-doctor/{doctor_id}', 'DoctorController@doctorhospital');
+    Route::GET('/appointment-doctor/{doctor_id}', 'DoctorController@doctorappointment');
+    Route::GET('/clinic-doctor/{doctor_id}', 'DoctorController@doctorclinic');
+//    Route::get('/view-customer/{doctor_id}','DoctorController@customer');
     Route::get('/doctor-rate/{doctor_id}','DoctorController@DoctorRate');
     Route::get('/doctor-specialty/{doctor_id}','DoctorController@DoctorSpecialty');
 

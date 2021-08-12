@@ -69,39 +69,35 @@ class DoctorController extends Controller
         return $this->DoctorService->delete($id);
     }
 
-    public function SocialMedia($id)
+    public function DoctorSocialMedia($id)
     {
-        return $this->DoctorService->SocialMedia($id);
+        return $this->DoctorService->DoctorSocialMedia($id);
     }
 
     public function doctormedicaldevice($id)
     {
         return $this->DoctorService->doctormedicaldevice($id);
     }
-    public function getalldetails($id)
+
+    public function doctorhospital($id)
     {
-        return $this->DoctorService->getalldetails($id);
+        return $this->DoctorService->doctorhospital($id);
     }
 
-    public function hospital($id)
+    public function doctorappointment($id)
     {
-        return $this->DoctorService->hospital($id);
+        return $this->DoctorService->doctorappointment($id);
     }
 
-    public function appointment($id)
+    public function doctorclinic($id)
     {
-        return $this->DoctorService->appointment($id);
+        return $this->DoctorService->doctorclinic($id);
     }
 
-    public function clinic($id)
-    {
-        return $this->DoctorService->clinic($id);
-    }
-
-    public function customer($id)
-    {
-        return $this->DoctorService->customer($id);
-    }
+//    public function customer($id)
+//    {
+//        return $this->DoctorService->customer($id);
+//    }
     public function DoctorRate($id)
     {
         return $this->DoctorService->DoctorRate($id);

@@ -16,6 +16,7 @@ class CreateDoctorsTable extends Migration
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
             $table->integer('clinic_id')->unsigned();
+            $table->boolean('is_active');
             $table->boolean('is_approved');
             $table->timestamps();
         });
