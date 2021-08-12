@@ -48,24 +48,19 @@ class DoctorService
             return $this->returnError('400', $ex->getMessage());
         }
     }
-////__________________________________________________________________________//
+//___________________________________________________________//
     public function create( DoctorRequest $request )
     {
         try {
             $alldoctor = collect($request->doctor)->all();
             DB::beginTransaction();
             $unTransdoctor_id =doctor::insertGetId([
-                'image' => $request['image'],
-                'social_media_id' => $request['social_media_id'],
                 'clinic_id' => $request['clinic_id'],
                 'is_approved' => $request['is_approved'],
-                'is_active' => $request['is_active'],
             ]);
             if (isset($alldoctor)) {
                 foreach ($alldoctor as $alldoctors) {
                     $transdoctor[] = [
-                        'first_name' => $alldoctors ['first_name'],
-                        'last_name' => $alldoctors ['last_name'],
                         'description' => $alldoctors ['description'],
                         'locale' => $alldoctors['locale'],
                         'doctor_id' => $unTransdoctor_id,
@@ -82,7 +77,7 @@ class DoctorService
             return $this->returnError('doctor', $ex->getMessage());
         }
     }
-//_________________________________________________________//
+//___________________________________________________________//
     public function update(DoctorRequest $request,$id)
     {
         try{
@@ -97,11 +92,8 @@ class DoctorService
 
             $newdoctor=Doctor::where('doctors.id',$id)
                 ->update([
-                    'image' => $request['image'],
-                    'social_media_id' => $request['social_media_id'],
                     'clinic_id' => $request['clinic_id'],
                     'is_approved' => $request['is_approved'],
-                    'is_active' => $request['is_active'],
                 ]);
 
             $ss=DoctorTranslation::where('doctor_translation.doctor_id',$id);
@@ -119,8 +111,6 @@ class DoctorService
                     $values= DoctorTranslation::where('doctor_translation.doctor_id',$id)
                         ->where('locale',$request_doctors['locale'])
                         ->update([
-                            'first_name' => $request_doctors ['first_name'],
-                            'last_name' => $request_doctors ['last_name'],
                             'description' => $request_doctors ['description'],
                             'locale' => $request_doctors['locale'],
                             'doctor_id' => $id,
@@ -209,7 +199,6 @@ class DoctorService
                 $doctor->delete();
                 $doctor->doctortranslation()->delete();
                 return $this->returnData('doctor', $doctor, 'This doctor is deleted Now');
-
             }
             else {
                 return $this->returnData('doctor', $doctor, 'This doctor can not deleted Now');
@@ -217,7 +206,6 @@ class DoctorService
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }
-
     }
 
 //    get all doctor's social media by doctor's id
@@ -231,8 +219,6 @@ class DoctorService
             return $this->returnError('400', $ex->getMessage());
         }
     }
-
-
     //get  doctor's medical devices by doctor's id
     public function doctormedicaldevice($id)
     {

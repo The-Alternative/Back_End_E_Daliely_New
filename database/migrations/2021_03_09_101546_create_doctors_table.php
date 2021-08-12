@@ -15,11 +15,7 @@ class CreateDoctorsTable extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
-
-            $table->integer('social_media_id')->unsigned();
             $table->integer('clinic_id')->unsigned();
-            $table->string( 'image');
-            $table->boolean('is_active');
             $table->boolean('is_approved');
             $table->timestamps();
         });
