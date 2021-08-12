@@ -19,7 +19,6 @@ class CreateRestaurantsTable extends Migration
             $table->integer('social_media_id')->unsigned();
             $table->integer('active_time_id')->unsigned();
             $table->integer('location_id')->unsigned();
-            $table->integer('restaurant_type_id')->unsigned();
             $table->string('image');
             $table->boolean('is_active');
             $table->boolean('is_approved');

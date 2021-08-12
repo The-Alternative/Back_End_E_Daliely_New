@@ -14,11 +14,11 @@ class UsersController extends Controller
     private $userService;
     public function __construct(UserService $userService)
     {
-        $this->middleware(['role:superadministrator']);
-        $this->middleware(['permission:user-read'])->only('getAll','getById');
-        $this->middleware(['permission:user-create'])->only('create');
-        $this->middleware(['permission:user-update'])->only('update');
-        $this->middleware(['permission:user-delete'])->only(['trash','restoreTrashed','getTrashed']);
+//        $this->middleware(['role:superadministrator']);
+//        $this->middleware(['permission:user-read'])->only('getAll','getById');
+//        $this->middleware(['permission:user-create'])->only('create');
+//        $this->middleware(['permission:user-update'])->only('update');
+//        $this->middleware(['permission:user-delete'])->only(['trash','restoreTrashed','getTrashed']);
         $this->userService=$userService;
     }
     public function getAll()
@@ -56,5 +56,9 @@ class UsersController extends Controller
     public function delete($id)
     {
         return $this->userService->delete($id);
+    }
+    public function profile($id)
+    {
+        return $this->userService->profile($id);
     }
 }

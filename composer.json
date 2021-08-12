@@ -18,7 +18,8 @@
         "mcamara/laravel-localization": "^1.6",
         "santigarcor/laratrust": "^6.3",
         "tymon/jwt-auth": "^1.0",
-      "ext-json": "*"
+      "ext-json": "*",
+      "ext-curl": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

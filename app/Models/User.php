@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Admin\Permission;
 use App\Models\Admin\Role;
+use App\Models\Stores_Orders\Stores_Order;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,7 +22,13 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'age',
+        'location_id',
+        'social_media_id',
+        'is_active',
+        'image',
         'email',
         'password',
     ];
@@ -60,7 +67,6 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
-
     public function roles()
     {
         return $this->belongsToMany(
@@ -71,7 +77,6 @@ class User extends Authenticatable implements JWTSubject
             'id',
             'id');
     }
-
     public function permissions()
     {
         return $this->belongsToMany(
@@ -81,5 +86,9 @@ class User extends Authenticatable implements JWTSubject
             'permission_id',
             'id',
             'id');
+    }
+    public function Stores_Order()
+    {
+        return $this->hasMany(Stores_Order::class);
     }
 }

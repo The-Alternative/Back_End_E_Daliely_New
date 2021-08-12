@@ -49,4 +49,14 @@ class Permission extends LaratrustPermission
             'id',
             'id');
     }
+    public function employees()
+    {
+        return $this->belongsToMany(
+            Employee::class,
+            'permission_employee',
+            'permission_id',
+            'employee_id',
+            'id',
+            'id');
+    }
 }

@@ -8,7 +8,7 @@ use App\Models\Stores\StoreTranslation;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use LaravelLocalization;
+
 class  StoreService
 {
     use GeneralTrait;
@@ -21,13 +21,13 @@ class  StoreService
         $this->storeModel=$store;
         $this->storeTranslation=$storeTranslation;
     }
-    /****Get All Active Store Or By ID  ****/
+    /****________________ Get All Active Store Or By ID  ________________****/
     public function getAll()
     {
         try {
             $store =collect($this->storeModel->with(['Section','Product','Brand','StoreImage'=>function($q){
                 return $q->where('is_cover',1)->get();}])->get());
-            $store =$this->storeModel->with(['Section','Product','Brand'])->paginate(10);
+//            $store =$this->storeModel->with(['Section','Product','Brand'])->paginate(10);
             if (count($store) > 0){
                 return $this->returnData('Stores',$store,'done');
             }else{
@@ -59,8 +59,8 @@ class  StoreService
         }
     }
     /*___________________________________________________________________________*/
-    /****  This Functions For Trashed Store  ****/
-    /****  Get All Trashed Stores Or By ID  ****/
+    /****________________  This Functions For Trashed Store  ________________****/
+    /****________________  Get All Trashed Stores Or By ID   ________________****/
     public function getTrashed()
     {
         try {
@@ -74,8 +74,8 @@ class  StoreService
             return $this->returnError('400',$ex->getMessage());
         }
     }
-    /*___________________________________________________________________________*/
-    /****Restore Store Fore Active status  ****/
+    /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
+    /****________________Restore Store Fore Active status  ________________****/
     public function restoreTrashed( $id)
     {
         try{
@@ -91,8 +91,8 @@ class  StoreService
         return $this->returnError('400',$ex->getMessage());
         }
     }
-    /*___________________________________________________________________________*/
-    /****   Store's Soft Delete   ****/
+    /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
+    /****________________   Store's Soft Delete   ________________****/
     public function trash( $id)
     {
         try{
@@ -109,8 +109,8 @@ class  StoreService
         }
     }
     /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
-    /****  Create Store   ****/
-    /*___________________________________________________________________________*/
+    /****________________  Create Store   ________________****/
+    /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
     public function create(Request $request)
     {
         try {
@@ -190,7 +190,7 @@ class  StoreService
                 return $this->returnError('store',$ex->getMessage());
             }
     }
-    /*___________________________________________________________________________*/
+    /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
     /****__________________  Update Store   ___________________****/
     public function update(Request $request,$id)
     {
@@ -274,7 +274,7 @@ class  StoreService
             return $this->returnError('400', $ex->getMessage());
         }
     }
-    /*___________________________________________________________________________*/
+    /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
     /****________________  ٍsearch for Store _________________****/
     public function search($title)
     {
@@ -294,7 +294,7 @@ class  StoreService
         return $this->returnError('400',$ex->getMessage());
         }
     }
-    /*___________________________________________________________________________*/
+    /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
     /****_______________  Delete Store   ________________****/
     public function delete($id)
     {
@@ -311,6 +311,7 @@ class  StoreService
            return $this->returnError('400',$ex->getMessage());
         }
     }
+    /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
     public function getSectionInStore($id)
     {
         try {

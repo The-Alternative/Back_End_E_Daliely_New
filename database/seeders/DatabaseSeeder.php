@@ -61,6 +61,15 @@ class DatabaseSeeder extends Seeder
             RestaurantSeeder::class,
             RestaurantTypeSeeder::class,
             RestaurantTypeRestaurantSeeder::class,
+            RestaurantCategorySeeder::class,
+            RestaurantProductSeeder::class,
+            ItemSeeder::class,
+            RestauranCategoryItemSeeder::class,
+            RestauranCategoryProductSeeder::class,
+            RestaurantItemSeeder::class,
+            RestaurantRestauranCategorySeeder::class,
+            RestaurantRestauranProductSeeder::class,
+
 
         ]);
 

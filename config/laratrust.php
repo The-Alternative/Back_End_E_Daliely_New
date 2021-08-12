@@ -74,6 +74,7 @@ return [
     */
     'user_models' => [
         'users' => \App\Models\User::class,
+        'employees'=>\App\Models\Admin\Employee::class
     ],
 
     /*
@@ -124,6 +125,8 @@ return [
         'permission_user' => 'permission_user',
 
         'permission_role' => 'permission_role',
+        'role_employee' => 'role_employee',
+        'permission_employee' => 'permission_employee',
     ],
 
     /*
@@ -139,6 +142,10 @@ return [
          * User foreign key on Laratrust's role_user and permission_user tables.
          */
         'user' => 'user_id',
+ /**
+         * Employee foreign key on Laratrust's role_employee and permission_employee tables.
+         */
+        'employee' => 'employee_id',
 
         /**
          * Role foreign key on Laratrust's role_user and permission_role tables.

@@ -24,7 +24,6 @@ class RestaurantSeeder extends Seeder
                 'social_media_id' => $faker->numberBetween(1,10),
                 'appointment_id' =>  $faker->numberBetween(1,10),
                 'active_time_id' =>  $faker->numberBetween(1,10),
-                'restaurant_type_id' =>  $faker->numberBetween(1,10),
                 'location_id' =>  $faker->numberBetween(1,10),
             ]);
 
@@ -40,7 +39,6 @@ class RestaurantSeeder extends Seeder
                     'long_description' =>$faker->sentence(10),
                     'restaurant_id' => $s,
                     'title' => $faker->sentence(2),
-
                     'locale' => 'ar',
                 ]]);
 

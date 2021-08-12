@@ -20,7 +20,7 @@ Route::group(
             Route::post('refresh', 'AuthController@refresh');
             Route::post('me', 'AuthController@me');
         });
-        route::group(['middleware'=>'role:superadministrator'],function() {
+//        Route::group(['middleware'=>'role:superadministrator'],function() {
             Route::group(['prefix' => 'roles', 'namespace' => 'Admin'], function () {
                 Route::GET('/getAll','RolesController@getAll');
                 Route::GET('/getById/{id}','RolesController@getById');
@@ -42,7 +42,7 @@ Route::group(
                 Route::PUT('/restoreTrashed/{id}','PermissionsController@restoreTrashed');
                 Route::GET('/getTrashed','PermissionsController@getTrashed');
                 Route::DELETE('/delete/{id}','PermissionsController@delete');
-            });
+//            });
         });
         Route::group(['prefix' => 'users', 'namespace' => 'Admin'], function () {
             Route::GET('/getAll','UsersController@getAll');
@@ -54,6 +54,19 @@ Route::group(
             Route::PUT('/restoreTrashed/{id}','UsersController@restoreTrashed');
             Route::GET('/getTrashed','UsersController@getTrashed');
             Route::DELETE('/delete/{id}','UsersController@delete');
+            Route::GET('/profile/{id}','UsersController@profile');
+        });
+        Route::group(['prefix' => 'employee', 'namespace' => 'Admin'], function () {
+            Route::GET('/getAll','EmployeesController@getAll');
+            Route::GET('/getById/{id}','EmployeesController@getById');
+            Route::POST('/create','EmployeesController@create');
+            Route::PUT('/update/{id}','EmployeesController@update');
+            Route::GET('/search/{title}','EmployeesController@search');
+            Route::PUT('/trash/{id}','EmployeesController@trash');
+            Route::PUT('/restoreTrashed/{id}','EmployeesController@restoreTrashed');
+            Route::GET('/getTrashed','EmployeesController@getTrashed');
+            Route::DELETE('/delete/{id}','EmployeesController@delete');
+            Route::GET('/profile/{id}','EmployeesController@profile');
         });
     });
 

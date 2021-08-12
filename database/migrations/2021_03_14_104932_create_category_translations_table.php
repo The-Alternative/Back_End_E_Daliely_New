@@ -15,23 +15,11 @@ class CreateCategoryTranslationsTable extends Migration
     public function up()
     {
         Schema::create('category_translations', function (Blueprint $table) {
-            $table->bigIncrements('id'); // Laravel 5.8+ use bigIncrements() instead of increments()
-//            $table->foreignId('categories_id');
-            $table->string('name')->index();
-            $table->string('local')->index();
-//            $table->unsignedInteger('language_id')->index();
-
-            // Foreign key to the main model
-//            $table->integer('category_id');
-//            $table->unique(['category_id', 'locale']);
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->string('local');
             $table->integer('category_id')->references('id')->on('categories')->onDelete('cascade');
-//            $table->integer('language_id');
-//            $table->unique(['language_id', 'lang_id']);
-            $table->integer('language_id')->references('id')->on('languages')->onDelete('cascade');
 
-            // Actual fields you want to translate
-//            $table->string('title');
-//            $table->longText('full_text');
         });
 
     }

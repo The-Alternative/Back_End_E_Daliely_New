@@ -2,6 +2,8 @@
 
 namespace App\Service\Admin;
 
+use App\Models\Admin\Role;
+use App\Models\Order\Order;
 use App\Models\User;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
@@ -13,10 +15,12 @@ class UserService
 
     use GeneralTrait;
     private $userModel;
+    private $roleModel;
 
-    public function __construct(User $userModel)
+    public function __construct(User $userModel , Role $roleModel)
     {
         $this->userModel=$userModel;
+        $this->roleModel=$roleModel;
     }
     /*___________________________________________________________________________*/
     /****  Get All Active User Or By ID  ****/
@@ -37,7 +41,8 @@ class UserService
     public function getById($id)
     {
         try{
-            $user =$this->userModel->find($id);
+            $user =$this->userModel->with(['roles'=>function($q){
+                return $q->with('Permission')->get();}])->find($id);
             if (is_null($user) ){
                 return $response= $this->returnSuccessMessage('This User not found','done');
             }else{
@@ -108,9 +113,15 @@ class UserService
             DB::beginTransaction();
 
             $user=$this->userModel->create([
-               'name' => $request->name,
-               'email' => $request->email,
-               'password' =>bcrypt($request->password)
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'age' => $request->age,
+                'location_id' => $request->location_id,
+                'social_media_id' => $request->social_media_id,
+                'is_active' => $request->is_active,
+                'image' => $request->image,
+                'email' => $request->email,
+                'password' =>bcrypt($request->password)
             ]);
             $token = JWTAuth::fromUser($user);
             if ($request->has('roles')) {
@@ -139,7 +150,13 @@ class UserService
 //            $validated = $request->validated();
             $user=$this->userModel->find($id);
             $user->update([
-                'name' => $request->name,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'age' => $request->age,
+                'location_id' => $request->location_id,
+                'social_media_id' => $request->social_media_id,
+                'is_active' => $request->is_active,
+                'image' => $request->image,
                 'email' => $request->email,
                 'password' =>bcrypt($request->password)
             ]);
@@ -161,8 +178,7 @@ class UserService
         }
     }
     /*___________________________________________________________________________*/
-    /****  ٍsearch for role   ***
-     */
+    /****  Search For User  ****/
     public function search($name)
     {
         try {
@@ -195,5 +211,26 @@ class UserService
         }catch(\Exception $ex){
             return $this->returnError('400', $ex->getMessage());
         }
+    }
+    /*___________________________________________________________________________*/
+    /****  User Profile   ***/
+    public function profile($id)
+    {
+        try{
+            $user=$this->userModel->with([
+                'roles'=>function($q){
+                return $q->with('Permission')->get();
+                },
+                'Stores_Order'
+            ])->find($id);
+            if (is_null($user) ){
+                return $response= $this->returnSuccessMessage('This User not found','done');
+            }else{
+                return $response= $this->returnData('User',$user,'done');
+            }
+        }
+        catch(\Exception $ex){
+return $this->returnError('400', $ex->getMessage());
+}
     }
 }
