@@ -14,22 +14,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request)
 Route::group(
     [
         'prefix'     => LaravelLocalization::setLocale(),
-<<<<<<< HEAD
-        'middleware' => ['api','ChangeLanguage','localize','localizationRedirect','localeViewPath']
-//        ,'role:superadministrator|administrator|user'
-    ],
- function()
-    {
-        /*_____________ Product routes _____________*/
-=======
+
         'middleware' => ['api','ChangeLanguage','localize','localizationRedirect','localeViewPath'
-//            ,'role:superadministrator|administrator|user'
-        ]
+        ,'role:superadministrator|administrator|user']
     ],
  function()
     {
         /**__________________________ Product routes  __________________________**/
->>>>>>> 62a02217c662fb014b0341871acad38f3a079865
+
         Route::group(['prefix'=>'products','namespace'=>'Product'],function()
             {
                 Route::GET('/getAll','ProductsController@getAll');
