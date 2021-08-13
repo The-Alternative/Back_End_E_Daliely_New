@@ -15,8 +15,8 @@ Route::group(
     [
         'prefix'     => LaravelLocalization::setLocale(),
 
-        'middleware' => ['api','ChangeLanguage','localize','localizationRedirect','localeViewPath'
-        ,'role:superadministrator|administrator|user']
+        'middleware' => ['api','ChangeLanguage','localize','localizationRedirect','localeViewPath']
+//        /,'role:superadministrator|administrator|user']
     ],
  function()
     {
@@ -159,8 +159,8 @@ Route::group(['prefix'=>'doctors','namespace'=>'Doctors'],function () {
     Route::get('/doctor-specialty/{doctor_id}','DoctorController@DoctorSpecialty');
 
 });
-///___________Create Patient By Doctor Route ______________//
-Route::group(['prefix'=>'patients','namespace'=>'Patient'],function () {
+     /*-------------Patient Route------------------*/
+   Route::group(['prefix'=>'patients','namespace'=>'Patient'],function () {
     Route::get('/','PatientController@getAll');
     Route::get('/{id}','PatientController@getById');
     Route::post('/', 'PatientController@create');
@@ -170,7 +170,7 @@ Route::group(['prefix'=>'patients','namespace'=>'Patient'],function () {
     Route::get('/gettrashed', 'PatientController@getTrashed');
     Route::PUT('/restoretrashed/{id}', 'PatientController@restoreTrashed');
 });
-/*---------------Doctor Rate Route--------*/
+        /*---------------Doctor Rate Route--------*/
 Route::group(['prefix'=>'doctorrate','namespace'=>'DoctorRate'],function () {
     Route::get('/', 'DoctorRateController@get');
     Route::get('/{id}', 'DoctorRateController@getById');
@@ -181,7 +181,7 @@ Route::group(['prefix'=>'doctorrate','namespace'=>'DoctorRate'],function () {
     Route::delete('/{id}', 'DoctorRateController@delete');
     Route::PUT('/restoretrashed/{id}', 'DoctorRateController@restoreTrashed');
 });
-/*--------------Social Media Route-------*/
+         /*--------------Social Media Route-------*/
 Route::group(['prefix'=>'socialmedia','namespace'=>'SocialMedia'],function () {
     Route::get('/', 'SocialMediaController@get');
     Route::get('/{id}', 'SocialMediaController@getById');
@@ -192,7 +192,7 @@ Route::group(['prefix'=>'socialmedia','namespace'=>'SocialMedia'],function () {
     Route::delete('/{id}', 'SocialMediaController@delete');
     Route::PUT('/restoretrashed/{id}', 'SocialMediaController@restoreTrashed');
 });
-///*------------Hospital Route------------*/
+           /*------------Hospital Route------------*/
 Route::group(['prefix'=>'hospitals','namespace'=>'Hospital'],function () {
     Route::get('/', 'HospitalController@get');
     Route::get('/{id}', 'HospitalController@getById');
@@ -208,7 +208,7 @@ Route::group(['prefix'=>'hospitals','namespace'=>'Hospital'],function () {
     Route::GET('/doctor-work-in-this-hospital/{id}', 'HospitalController@hospitalsDoctor');
 });
 
-///*---------------Clinic Route-------------*/
+        /*---------------Clinic Route-------------*/
 Route::group(['prefix'=>'clinic','namespace'=>'Clinic'],function () {
     Route::get('/',          'ClinicController@get');
     Route::get('/{id}', 'ClinicController@getById');
@@ -221,7 +221,7 @@ Route::group(['prefix'=>'clinic','namespace'=>'Clinic'],function () {
     Route::PUT('/restoretrashed/{id}', 'ClinicController@restoreTrashed');
 });
 
-///*---------------Medical Device Route-------------*/
+       /*---------------Medical Device Route-------------*/
 Route::group(['prefix'=>'medicaldevices','namespace'=>'MedicalDevice'],function () {
     Route::get('/', 'MedicalDeviceController@get');
     Route::get('/{id}', 'MedicalDeviceController@getById');
@@ -235,7 +235,7 @@ Route::group(['prefix'=>'medicaldevices','namespace'=>'MedicalDevice'],function 
 
     Route::GET('/get-doctor-by-medical-device/{id}','MedicalDeviceController@getdoctor');
 });
-/*---------------Specialty Route-------------*/
+        /*---------------Specialty Route-------------*/
 Route::group(['prefix'=>'specialties','namespace'=>'Specialty'],function () {
     Route::get('/', 'SpecialtyController@get');
     Route::get('/{id}', 'SpecialtyController@getById');
@@ -249,17 +249,17 @@ Route::group(['prefix'=>'specialties','namespace'=>'Specialty'],function () {
 
     Route::get('/specialty-doctor/{speciatlty_id}', 'SpecialtyController@DoctorSpecialty');
 });
-///*--------------- Calendar Route-------------*/
-Route::group(['prefix'=>'Calendar','namespace'=>'Calendar'],function () {
-    Route::get('/get',          'CalendarController@get');
-    Route::get('/getById/{id}', 'CalendarController@getById');
-    Route::post('/create',      'CalendarController@create');
-    Route::put('/update/{id}',  'CalendarController@update');
-    Route::PUT('/trash/{id}',   'CalendarController@trash');
-    Route::delete('/delete/{id}','CalendarController@delete');
-    Route::PUT('/restoreTrashed/{id}', 'CalendarController@restoreTrashed');
-});
-///*---------------Appointment Route-------------*/
+       /*--------------- Calendar Route-------------*/
+//Route::group(['prefix'=>'Calendar','namespace'=>'Calendar'],function () {
+//    Route::get('/',          'CalendarController@get');
+//    Route::get('/{id}', 'CalendarController@getById');
+//    Route::post('/create',      'CalendarController@create');
+//    Route::put('/{id}',  'CalendarController@update');
+//    Route::PUT('/trash/{id}',   'CalendarController@trash');
+//    Route::delete('/{id}','CalendarController@delete');
+//    Route::PUT('/restoreTrashed/{id}', 'CalendarController@restoreTrashed');
+//});
+      /*---------------Appointment Route-------------*/
 Route::group(['prefix'=>'appointments','namespace'=>'Appointment'],function () {
     Route::get('/', 'AppointmentController@get');
     Route::get('/{id}', 'AppointmentController@getById');
@@ -271,19 +271,20 @@ Route::group(['prefix'=>'appointments','namespace'=>'Appointment'],function () {
     Route::PUT('/restoretrashed/{id}', 'AppointmentController@restoreTrashed');
 });
 
-///*---------------Active Time Route-------------*/
+    /*---------------Active Time Route-------------*/
 Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
-    Route::get('/get', 'ActiveTimeController@get');
-    Route::get('/getbyid/{id}', 'ActiveTimeController@getById');
+    Route::get('/', 'ActiveTimeController@get');
+    Route::get('/{id}', 'ActiveTimeController@getById');
     Route::get('/gettrashed', 'ActiveTimeController@getTrashed');
-    Route::post('/create', 'ActiveTimeController@create');
-    Route::put('/update/{id}', 'ActiveTimeController@update');
+    Route::post('/', 'ActiveTimeController@create');
+    Route::put('/{id}', 'ActiveTimeController@update');
     Route::PUT('/trash/{id}', 'ActiveTimeController@trash');
-    Route::delete('/delete/{id}', 'ActiveTimeController@delete');
+    Route::delete('/{id}', 'ActiveTimeController@delete');
     Route::PUT('/restoretrashed/{id}', 'ActiveTimeController@restoreTrashed');
 });
+
 ########################## RESTAURANT ROUTE #########################################
-//________________________Restaurant Route__________________//
+     /*-------------Restaurant  Route------------------*/
      Route::group(['prefix'=>'restaurants','namespace'=>'Restaurant'],function () {
          Route::get('/', 'RestaurantController@get');
          Route::get('/{id}', 'RestaurantController@getById');
@@ -300,7 +301,7 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::get('/get-product/{restaurant_id}', 'RestaurantController@getProduct');
 
      });
-     //________________________ Restaurant Type Route__________________//
+     /*-------------Restaurant Type  Route------------------*/
      Route::group(['prefix'=>'restauranttypes','namespace'=>'RestaurantType'],function () {
          Route::get('/', 'RestaurantTypeController@get');
          Route::get('/{id}', 'RestaurantTypeController@getById');
@@ -315,7 +316,7 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::get('/get-restaurant/{restaurantType_id}', 'RestaurantTypeController@getRestaurant');
 
      });
-     //________________________ Restaurant Category Route__________________//
+     /*-------------Restaurant Category Route------------------*/
      Route::group(['prefix'=>'restaurantcategories','namespace'=>'RestaurantCategory'],function () {
          Route::get('/', 'RestaurantCategoyrController@get');
          Route::get('/{id}', 'RestaurantCategoyrController@getById');
@@ -331,7 +332,7 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::get('/get-product/{restaurantCategory_id}', 'RestaurantCategoyrController@getProduct');
 
      });
-     //________________________ Restaurant Product Route__________________//
+     /*-------------Restaurant  Product Route------------------*/
      Route::group(['prefix'=>'restaurantproducts','namespace'=>'RestaurantProduct'],function () {
          Route::get('/', 'RestaurantProductController@get');
          Route::get('/{id}', 'RestaurantProductController@getById');
@@ -347,7 +348,7 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::get('/get-category/{restaurantProduct_id}', 'RestaurantProductController@getCategory');
 
      });
-     //________________________ Item Route__________________//
+     /*-------------Item  Route------------------*/
      Route::group(['prefix'=>'items','namespace'=>'Item'],function () {
          Route::get('/', 'ItemController@get');
          Route::get('/{id}', 'ItemController@getById');

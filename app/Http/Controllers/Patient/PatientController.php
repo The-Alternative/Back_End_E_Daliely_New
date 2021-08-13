@@ -5,17 +5,14 @@ namespace App\Http\Controllers\Patient;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Patient\PatientRequest;
 use App\Service\Patient\PatientService;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class PatientController extends Controller
 {
     private $PatientService;
 
-    public function __construct(PatientService $PatientService,Response $response )
+    public function __construct(PatientService $PatientService )
     {
         $this->PatientService=$PatientService;
-        $this->response=$response;
     }
 
 

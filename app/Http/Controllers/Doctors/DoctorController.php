@@ -5,19 +5,14 @@ namespace App\Http\Controllers\Doctors;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Doctors\DoctorRequest;
 use App\Service\Doctors\DoctorService;
-use App\Traits\GeneralTrait;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class DoctorController extends Controller
 {
-    use GeneralTrait;
     private $DoctorService;
 
-    public function __construct(DoctorService $DoctorService,Response $response )
+    public function __construct(DoctorService $DoctorService )
     {
         $this->DoctorService=$DoctorService;
-        $this->response=$response;
     }
 
     public function get()
