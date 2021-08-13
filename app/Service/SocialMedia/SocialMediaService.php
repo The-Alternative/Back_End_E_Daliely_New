@@ -25,7 +25,7 @@ class SocialMediaService
         return $this->returnData('SocialMedia',$SocialMedia,'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400',  $ex->getMessage());
+            return $this->returnError($ex->getCode(),  $ex->getMessage());
         }
     }
     public function getById($id)
@@ -40,7 +40,7 @@ class SocialMediaService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400',  $ex->getMessage());
+            return $this->returnError($ex->getCode(),  $ex->getMessage());
         }
     }
 
@@ -69,7 +69,7 @@ class SocialMediaService
                    }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400',  $ex->getMessage());
+            return $this->returnError($ex->getCode(),  $ex->getMessage());
         }
    }
     public function update(SocialMediaRequest $request,$id)
@@ -83,7 +83,7 @@ class SocialMediaService
         $SocialMedia->instagram_account                  =$request->instagram_account;
         $SocialMedia->telegram_number                    =$request->telegram_number ;
         $SocialMedia->email                              =$request->email  ;
-        $SocialMedia->doctor_id                          =$request->doctor_id   ;
+        $SocialMedia->user_id                          =$request->user_id   ;
         $SocialMedia->is_active                          =$request->is_active   ;
 
         $result=$SocialMedia->save();
@@ -97,7 +97,7 @@ class SocialMediaService
         }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400',  $ex->getMessage());
+            return $this->returnError($ex->getCode(),  $ex->getMessage());
         }
 
     }
@@ -116,7 +116,7 @@ class SocialMediaService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400',  $ex->getMessage());
+            return $this->returnError($ex->getCode(),  $ex->getMessage());
         }
     }
     public function getTrashed()
@@ -126,7 +126,7 @@ class SocialMediaService
         return $this -> returnData('SocialMedia',$SocialMedia,'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400',  $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
     public function restoreTrashed( $id)
@@ -144,7 +144,7 @@ class SocialMediaService
         }
     }
         catch (\Exception $ex) {
-              return $this->returnError('400',  $ex->getMessage());
+              return $this->returnError($ex->getCode(),  $ex->getMessage());
        }
 
     }
@@ -162,7 +162,7 @@ class SocialMediaService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400',  $ex->getMessage());
+            return $this->returnError($ex->getCode(),  $ex->getMessage());
         }
     }
 

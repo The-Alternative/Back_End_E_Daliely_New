@@ -26,11 +26,11 @@ class Patient extends Model
         return $query->where('is_active',0)->get();
     }
 
-//    function doctor()
-//    {
-//        return $this->belongsTo(Doctor::class);
-//    }
-//
+    public function doctor()
+    {
+        return $this -> belongsToMany(Doctor::class,'doctor_patient','patient_id','doctor_id','id','id');
+    }
+
     function User()
     {
         return $this->belongsTo(User::class);

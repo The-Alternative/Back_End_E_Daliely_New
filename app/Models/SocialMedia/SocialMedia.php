@@ -2,6 +2,7 @@
 
 namespace App\Models\SocialMedia;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Doctors\doctor;
@@ -23,8 +24,8 @@ class SocialMedia extends Model
     {
         return $query->where('is_active',0)->get();
     }
-    public function doctor()
+    public function User()
     {
-        return $this->belongsTo(doctor::class);
+        return $this->belongsTo(User::class);
     }
 }

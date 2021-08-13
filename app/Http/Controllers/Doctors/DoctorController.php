@@ -3,10 +3,7 @@
 namespace App\Http\Controllers\Doctors;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CustomerDoctor\CusromerDoctorRequest;
-use App\Http\Requests\CustomerDoctor\CustomerDoctorRequest;
 use App\Http\Requests\Doctors\DoctorRequest;
-use App\Service\Doctors\CustomerDoctorService;
 use App\Service\Doctors\DoctorService;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
@@ -17,10 +14,8 @@ class DoctorController extends Controller
     use GeneralTrait;
     private $DoctorService;
 
-
-    public function __construct(DoctorService $DoctorService,CustomerDoctorService $CustomerDoctorService,Response $response )
+    public function __construct(DoctorService $DoctorService,Response $response )
     {
-        $this->CustomerDoctorService=$CustomerDoctorService;
         $this->DoctorService=$DoctorService;
         $this->response=$response;
     }
@@ -94,10 +89,10 @@ class DoctorController extends Controller
         return $this->DoctorService->doctorclinic($id);
     }
 
-//    public function customer($id)
-//    {
-//        return $this->DoctorService->customer($id);
-//    }
+    public function Patient($id)
+    {
+        return $this->DoctorService->Patient($id);
+    }
     public function DoctorRate($id)
     {
         return $this->DoctorService->DoctorRate($id);

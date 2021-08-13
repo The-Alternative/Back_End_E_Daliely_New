@@ -21,6 +21,7 @@ class MedicalDeviceService
     {
         $this->MedicalDeviceModel=$MedicalDevice;
     }
+    //get all medical devices
     public function get()
     {
         try {
@@ -28,10 +29,10 @@ class MedicalDeviceService
             return $this->returnData(' MedicalDevice', $MedicalDevice, 'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
-
     }
+    //get medical device by id
     public function getById($id)
     {
         try{
@@ -44,10 +45,10 @@ class MedicalDeviceService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
-//________________________________________________________//
+// create new medical device
     public function create( MedicalDeviceRequest $request )
     {
         try {
@@ -75,10 +76,10 @@ class MedicalDeviceService
         catch(\Exception $ex)
         {
             DB::rollback();
-            return $this->returnError('MedicalDevice', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
-//__________________________________________________________________________//
+//update old medical device
     public function update(MedicalDeviceRequest $request,$id)
     {
         try{
@@ -124,10 +125,10 @@ class MedicalDeviceService
             return $this->returnData('MedicalDevice', [$dbmedicaldevice,$values],'done');
         }
         catch(\Exception $ex){
-            return $this->returnError('400', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
-//______________________________________________________//
+//get medical device by his name
     public function search($name)
     {
         try{
@@ -144,9 +145,10 @@ class MedicalDeviceService
              }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
+    //change the is_active value to zero
     public function trash( $id)
     {
         try{
@@ -162,9 +164,10 @@ class MedicalDeviceService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
+    //get medical device where is_active value zero
     public function getTrashed()
     {
         try{
@@ -172,10 +175,11 @@ class MedicalDeviceService
         return $this -> returnData(' MedicalDevice', $MedicalDevice,'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
 
     }
+    //change the is_active value to one
     public function restoreTrashed( $id)
     {
         try{
@@ -191,9 +195,10 @@ class MedicalDeviceService
               }
           }
         catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
+    //Permanently delete the medical device  from the database
     public function delete($id)
     {
         try{
@@ -208,17 +213,17 @@ class MedicalDeviceService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
-
+//Find out which doctor is using the medical device by the medical device id
     public function doctormedicaldevice($id)
     {
         try {
             $MedicalDevice= MedicalDevice::with('doctor')->find($id);
             return $this->returnData('MedicalDevice', $MedicalDevice, 'This MedicalDevice is deleted Now');
         } catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
 }

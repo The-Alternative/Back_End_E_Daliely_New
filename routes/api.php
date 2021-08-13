@@ -15,8 +15,8 @@ Route::group(
     [
         'prefix'     => LaravelLocalization::setLocale(),
 
-        'middleware' => ['api','ChangeLanguage','localize','localizationRedirect','localeViewPath']
-//        ,'role:superadministrator|administrator|user']
+        'middleware' => ['api','ChangeLanguage','localize','localizationRedirect','localeViewPath'
+        ,'role:superadministrator|administrator|user']
     ],
  function()
     {
@@ -139,14 +139,14 @@ Route::group(
 
 			/*-------------Doctor Route------------------*/
 Route::group(['prefix'=>'doctors','namespace'=>'Doctors'],function () {
-    Route::get('/get', 'DoctorController@get');
-    Route::get('/getbyid/{id}', 'DoctorController@getById');
+    Route::get('/', 'DoctorController@get');
+    Route::get('/{id}', 'DoctorController@getById');
     Route::get('/gettrashed', 'DoctorController@getTrashed');
-    Route::post('/create', 'DoctorController@create');
-    Route::put('/update/{id}', 'DoctorController@update');
+    Route::post('/', 'DoctorController@create');
+    Route::put('/{id}', 'DoctorController@update');
     Route::GET('/search/{name}', 'DoctorController@search');
     Route::PUT('/trash/{id}', 'DoctorController@trash');
-    Route::delete('/delete/{id}', 'DoctorController@delete');
+    Route::delete('/{id}', 'DoctorController@delete');
     Route::PUT('/restoretrashed/{id}', 'DoctorController@restoreTrashed');
 
     Route::GET('/doctor-social-media/{doctor_id}', 'DoctorController@DoctorSocialMedia');
@@ -154,7 +154,7 @@ Route::group(['prefix'=>'doctors','namespace'=>'Doctors'],function () {
     Route::GET('/hospital-doctor/{doctor_id}', 'DoctorController@doctorhospital');
     Route::GET('/appointment-doctor/{doctor_id}', 'DoctorController@doctorappointment');
     Route::GET('/clinic-doctor/{doctor_id}', 'DoctorController@doctorclinic');
-//    Route::get('/view-customer/{doctor_id}','DoctorController@customer');
+    Route::get('/view-Patient/{doctor_id}','DoctorController@Patient');
     Route::get('/doctor-rate/{doctor_id}','DoctorController@DoctorRate');
     Route::get('/doctor-specialty/{doctor_id}','DoctorController@DoctorSpecialty');
 
@@ -172,36 +172,36 @@ Route::group(['prefix'=>'patients','namespace'=>'Patient'],function () {
 });
 /*---------------Doctor Rate Route--------*/
 Route::group(['prefix'=>'doctorrate','namespace'=>'DoctorRate'],function () {
-    Route::get('/get', 'DoctorRateController@get');
-    Route::get('/getbyid/{id}', 'DoctorRateController@getById');
+    Route::get('/', 'DoctorRateController@get');
+    Route::get('/{id}', 'DoctorRateController@getById');
     Route::get('/gettrashed', 'DoctorRateController@getTrashed');
-    Route::post('/create', 'DoctorRateController@create');
-    Route::put('/update/{id}', 'DoctorRateController@update');
+    Route::post('/', 'DoctorRateController@create');
+    Route::put('/{id}', 'DoctorRateController@update');
     Route::PUT('/trash/{id}', 'DoctorRateController@trash');
-    Route::delete('/delete/{id}', 'DoctorRateController@delete');
+    Route::delete('/{id}', 'DoctorRateController@delete');
     Route::PUT('/restoretrashed/{id}', 'DoctorRateController@restoreTrashed');
 });
 /*--------------Social Media Route-------*/
 Route::group(['prefix'=>'socialmedia','namespace'=>'SocialMedia'],function () {
-    Route::get('/get', 'SocialMediaController@get');
-    Route::get('/getbyid/{id}', 'SocialMediaController@getById');
+    Route::get('/', 'SocialMediaController@get');
+    Route::get('/{id}', 'SocialMediaController@getById');
     Route::get('/gettrashed', 'SocialMediaController@getTrashed');
-    Route::post('/create', 'SocialMediaController@create');
-    Route::put('/update/{id}', 'SocialMediaController@update');
+    Route::post('/', 'SocialMediaController@create');
+    Route::put('/{id}', 'SocialMediaController@update');
     Route::PUT('/trash/{id}', 'SocialMediaController@trash');
-    Route::delete('/delete/{id}', 'SocialMediaController@delete');
+    Route::delete('/{id}', 'SocialMediaController@delete');
     Route::PUT('/restoretrashed/{id}', 'SocialMediaController@restoreTrashed');
 });
 ///*------------Hospital Route------------*/
 Route::group(['prefix'=>'hospitals','namespace'=>'Hospital'],function () {
-    Route::get('/get', 'HospitalController@get');
-    Route::get('/getbyid/{id}', 'HospitalController@getById');
+    Route::get('/', 'HospitalController@get');
+    Route::get('/{id}', 'HospitalController@getById');
     Route::get('/gettrashed', 'HospitalController@getTrashed');
-    Route::post('/create', 'HospitalController@create');
-    Route::put('/update/{id}', 'HospitalController@update');
-    Route::GET('/search/{name}', 'HospitalController@search');
+    Route::post('/', 'HospitalController@create');
+    Route::put('/{id}', 'HospitalController@update');
+    Route::GET('search/{name}', 'HospitalController@search');
     Route::PUT('/trash/{id}', 'HospitalController@trash');
-    Route::delete('/delete/{id}', 'HospitalController@delete');
+    Route::delete('/{id}', 'HospitalController@delete');
     Route::PUT('/restoretrashed/{id}', 'HospitalController@restoreTrashed');
 
 
@@ -210,41 +210,41 @@ Route::group(['prefix'=>'hospitals','namespace'=>'Hospital'],function () {
 
 ///*---------------Clinic Route-------------*/
 Route::group(['prefix'=>'clinic','namespace'=>'Clinic'],function () {
-    Route::get('/get',          'ClinicController@get');
-    Route::get('/getbyid/{id}', 'ClinicController@getById');
+    Route::get('/',          'ClinicController@get');
+    Route::get('/{id}', 'ClinicController@getById');
     Route::get('/gettrashed',   'ClinicController@getTrashed');
-    Route::post('/create',      'ClinicController@create');
-    Route::put('/update/{id}',  'ClinicController@update');
+    Route::post('/',      'ClinicController@create');
+    Route::put('/{id}',  'ClinicController@update');
     Route::GET('/search/{name}','ClinicController@search');
     Route::PUT('/trash/{id}',   'ClinicController@trash');
-    Route::delete('/delete/{id}','ClinicController@delete');
+    Route::delete('/{id}','ClinicController@delete');
     Route::PUT('/restoretrashed/{id}', 'ClinicController@restoreTrashed');
 });
 
 ///*---------------Medical Device Route-------------*/
 Route::group(['prefix'=>'medicaldevices','namespace'=>'MedicalDevice'],function () {
-    Route::get('/get', 'MedicalDeviceController@get');
-    Route::get('/getbyid/{id}', 'MedicalDeviceController@getById');
+    Route::get('/', 'MedicalDeviceController@get');
+    Route::get('/{id}', 'MedicalDeviceController@getById');
     Route::get('/gettrashed', 'MedicalDeviceController@getTrashed');
-    Route::post('/create', 'MedicalDeviceController@create');
-    Route::put('/update/{id}', 'MedicalDeviceController@update');
+    Route::post('/', 'MedicalDeviceController@create');
+    Route::put('/{id}', 'MedicalDeviceController@update');
     Route::GET('/search/{name}', 'MedicalDeviceController@search');
     Route::PUT('/trash/{id}', 'MedicalDeviceController@trash');
-    Route::delete('/delete/{id}', 'MedicalDeviceController@delete');
+    Route::delete('/{id}', 'MedicalDeviceController@delete');
     Route::PUT('/restoretrashed/{id}', 'MedicalDeviceController@restoreTrashed');
 
     Route::GET('/get-doctor-by-medical-device/{id}','MedicalDeviceController@getdoctor');
 });
 /*---------------Specialty Route-------------*/
 Route::group(['prefix'=>'specialties','namespace'=>'Specialty'],function () {
-    Route::get('/get', 'SpecialtyController@get');
-    Route::get('/getbyid/{id}', 'SpecialtyController@getById');
+    Route::get('/', 'SpecialtyController@get');
+    Route::get('/{id}', 'SpecialtyController@getById');
     Route::get('/gettrashed', 'SpecialtyController@getTrashed');
-    Route::post('/create', 'SpecialtyController@create');
-    Route::put('/update/{id}', 'SpecialtyController@update');
+    Route::post('/', 'SpecialtyController@create');
+    Route::put('/{id}', 'SpecialtyController@update');
     Route::GET('/search/{name}', 'SpecialtyController@search');
     Route::PUT('/trash/{id}', 'SpecialtyController@trash');
-    Route::delete('/delete/{id}', 'SpecialtyController@delete');
+    Route::delete('/{id}', 'SpecialtyController@delete');
     Route::PUT('/restoretrashed/{id}', 'SpecialtyController@restoreTrashed');
 
     Route::get('/specialty-doctor/{speciatlty_id}', 'SpecialtyController@DoctorSpecialty');
@@ -261,27 +261,16 @@ Route::group(['prefix'=>'Calendar','namespace'=>'Calendar'],function () {
 });
 ///*---------------Appointment Route-------------*/
 Route::group(['prefix'=>'appointments','namespace'=>'Appointment'],function () {
-    Route::get('/get', 'AppointmentController@get');
-    Route::get('/getbyid/{id}', 'AppointmentController@getById');
+    Route::get('/', 'AppointmentController@get');
+    Route::get('/{id}', 'AppointmentController@getById');
     Route::get('/gettrashed', 'AppointmentController@getTrashed');
-    Route::post('/create', 'AppointmentController@create');
-    Route::put('/update/{id}', 'AppointmentController@update');
+    Route::post('/', 'AppointmentController@create');
+    Route::put('/{id}', 'AppointmentController@update');
     Route::PUT('/trash/{id}', 'AppointmentController@trash');
-    Route::delete('/delete/{id}', 'AppointmentController@delete');
+    Route::delete('/{id}', 'AppointmentController@delete');
     Route::PUT('/restoretrashed/{id}', 'AppointmentController@restoreTrashed');
 });
 
-///*---------------Medical File Route-------------*/
-Route::group(['prefix'=>'medicalfiles','namespace'=>'MedicalFile'],function () {
-    Route::get('/get', 'MedicalFileController@get');
-    Route::get('/getbyid/{id}', 'MedicalFileController@getById');
-    Route::get('/gettrashed', 'MedicalFileController@getTrashed');
-    Route::post('/create', 'MedicalFileController@create');
-    Route::put('/update/{id}', 'MedicalFileController@update');
-    Route::PUT('/trash/{id}', 'MedicalFileController@trash');
-    Route::delete('/delete/{id}', 'MedicalFileController@delete');
-    Route::PUT('/restoretrashed/{id}', 'MedicalFileController@restoreTrashed');
-});
 ///*---------------Active Time Route-------------*/
 Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
     Route::get('/get', 'ActiveTimeController@get');

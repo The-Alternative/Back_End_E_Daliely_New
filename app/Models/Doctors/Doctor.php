@@ -4,11 +4,9 @@ namespace App\Models\Doctors;
 
 use App\Models\Appointment\Appointment;
 use App\Models\Clinic\Clinic;
-use App\Models\Customer\Customer;
 use App\Models\DoctorRate\DoctorRate;
 use App\Models\Hospital\Hospital;
 use App\Models\MedicalDevice\MedicalDevice;
-use App\Models\MedicalFile\MedicalFile;
 use App\Models\SocialMedia\SocialMedia;
 use App\Models\Specialty\Specialty;
 use App\Scopes\DoctorScope;
@@ -38,10 +36,10 @@ class Doctor extends Model
         return $this->hasMany(DoctorTranslation::class,'doctor_id');
     }
 
-    public function socialMedia()
-    {
-        return $this->hasMany(SocialMedia::class);
-    }
+//    public function socialMedia()
+//    {
+//        return $this->hasMany(SocialMedia::class);
+//    }
 
 
     public  function Specialty()
@@ -68,17 +66,14 @@ class Doctor extends Model
         return $this->belongsToMany(Hospital::class,'doctor_hospital','doctor_id','hospital_id','id','id');
     }
 
-    public function customer()
+    public function Patient()
     {
-        return $this -> belongsToMany(Customer::class,'Customer_Doctor','doctor_id','customer_id','id','id');
+        return $this -> belongsToMany(Patient::class,'doctor_patient','doctor_id','patient_id','id','id');
     }
 
     public function appointment()
     {
         return $this->hasMany(Appointment::class);
     }
-    public function MedicalFile()
-    {
-        return $this->hasMany(MedicalFile::class);
-    }
+
 }

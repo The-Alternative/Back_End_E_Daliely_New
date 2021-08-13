@@ -14,10 +14,9 @@ class AppointmentController extends Controller
     use GeneralTrait;
     private $AppointmentService;
 
-    public function __construct(AppointmentService $AppointmentService,Response $response )
+    public function __construct(AppointmentService $AppointmentService)
     {
         $this->AppointmentService=$AppointmentService;
-        $this->response=$response;
     }
     public function get()
     {
@@ -31,17 +30,17 @@ class AppointmentController extends Controller
 
     public function create(AppointmentRequest $request)
     {
-        return  $response=$this->AppointmentService->create($request);
+        return $this->AppointmentService->create($request);
     }
 
     public function update(AppointmentRequest $request,$id)
     {
-        return $response=$this->AppointmentService->update($request,$id);
+        return $this->AppointmentService->update($request,$id);
     }
 
     public function trash($id)
     {
-        return   $response= $this->AppointmentService->trash($id);
+        return  $this->AppointmentService->trash($id);
     }
     public function getTrashed()
     {
@@ -50,11 +49,11 @@ class AppointmentController extends Controller
 
     public function restoreTrashed($id)
     {
-        return   $response= $this->AppointmentService->restoreTrashed($id);
+        return  $this->AppointmentService->restoreTrashed($id);
     }
 
     public function delete($id)
     {
-        return  $response=$this->AppointmentService->delete($id);
+        return $this->AppointmentService->delete($id);
     }
 }
