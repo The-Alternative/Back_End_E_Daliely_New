@@ -27,6 +27,7 @@ class DoctorSeeder extends Seeder
                     'is_approved' => $faker->boolean,
                     'is_active' => $faker->boolean,
                     'clinic_id' => $faker->numberBetween(1, 10),
+                    'user_id' => $faker->numberBetween(1, 10),
                 ]);
                 DB::table('doctor_translation')->insert([[
                     'description' => $faker->sentence(10),

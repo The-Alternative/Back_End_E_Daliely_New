@@ -70,6 +70,7 @@ class DatabaseSeeder extends Seeder
             RestaurantItemSeeder::class,
             RestaurantRestauranCategorySeeder::class,
             RestaurantRestauranProductSeeder::class,
+            RestaurantManagerSeeder::class
 
 
 
