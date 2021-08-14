@@ -5,20 +5,14 @@ namespace App\Http\Controllers\RestaurantProduct;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RestaurantProduct\RestaurantProductRequest;
 use App\Service\RestaurantProduct\RestaurantProductService;
-use App\Traits\GeneralTrait;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class RestaurantProductController extends Controller
 {
-    use GeneralTrait;
     private $RestaurantProductService;
-    private $response;
 
-    public function __construct(RestaurantProductService $RestaurantProduct,Response $response )
+    public function __construct(RestaurantProductService $RestaurantProduct)
     {
         $this->RestaurantProductService=$RestaurantProduct;
-        $this->response=$response;
     }
     public function get()
     {

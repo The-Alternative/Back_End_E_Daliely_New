@@ -38,23 +38,24 @@ class DatabaseSeeder extends Seeder
             StoreSectionSeeder::class,
             StoreSeeder::class,
             StoreImagesSeeder::class,
-            DoctorSpecialtySeeder::class,
-            CustomerDoctorSeeder::class,
-            DoctorHospitalSeeder::class,
-            DoctorMedicalDeviceSeeder::class,
-            DoctorRateSeeder::class,
             ProductsSeeder::class,
             StoreSeeder::class,
             StoreImagesSeeder::class,
+
+
             DoctorSeeder::class,
+            PatientSeeder::class,
+            DoctorPatientSeeder::class,
+            DoctorSpecialtySeeder::class,
+            DoctorHospitalSeeder::class,
+            DoctorMedicalDeviceSeeder::class,
+            DoctorRateSeeder::class,
             ActiveTimeSedeer::class,
             appointmentSedeer::class,
             ClinicSedeer::class,
-            CustomerSedeer::class,
             HospitalSedeer::class,
             HospitalMedicalDeviceSeeder::class,
             MedicalDeviceSedeer::class,
-            MedicalFileSedeer::class,
             SocialMediaSedeer::class,
             SpecialtySedeer::class,
 
@@ -69,6 +70,8 @@ class DatabaseSeeder extends Seeder
             RestaurantItemSeeder::class,
             RestaurantRestauranCategorySeeder::class,
             RestaurantRestauranProductSeeder::class,
+            RestaurantManagerSeeder::class
+
 
             PostSeeder::class,
             PostCustomerSeeder::class,
