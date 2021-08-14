@@ -284,6 +284,18 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
 });
 
 ########################## RESTAURANT ROUTE #########################################
+     /*-------------Restaurant  Manager Route------------------*/
+     Route::group(['prefix'=>'restaurantsmangers','namespace'=>'RestaurantManager'],function () {
+         Route::get('/', 'RestaurantManagerController@get');
+         Route::get('/{id}', 'RestaurantManagerController@getById');
+         Route::get('/gettrashed', 'RestaurantManagerController@getTrashed');
+         Route::GET('search/{name}','RestaurantManagerController@search');
+         Route::post('/', 'RestaurantManagerController@create');
+         Route::put('/{id}', 'RestaurantManagerController@update');
+         Route::PUT('trash/{id}', 'RestaurantManagerController@trash');
+         Route::PUT('restortrashed/{id}', 'RestaurantManagerController@restoreTrashed');
+         Route::delete('/{id}', 'RestaurantManagerController@delete');
+     });
      /*-------------Restaurant  Route------------------*/
      Route::group(['prefix'=>'restaurants','namespace'=>'Restaurant'],function () {
          Route::get('/', 'RestaurantController@get');

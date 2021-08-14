@@ -11,4 +11,5 @@ class RestaurantManager extends Model
     protected $table='restaurant_managers';
     protected $fillable =['Id','user_id','is_active','is_approved'];
     protected $hidden   =['created_at','updated_at','user_id','pivot'];
+
 }

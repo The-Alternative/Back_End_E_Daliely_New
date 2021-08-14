@@ -50,6 +50,7 @@ class DoctorService
             DB::beginTransaction();
             $unTransdoctor_id =doctor::insertGetId([
                 'clinic_id' => $request['clinic_id'],
+                'user_id' => $request['user_id'],
                 'is_active' => $request['is_active'],
                 'is_approved' => $request['is_approved'],
             ]);
@@ -88,6 +89,7 @@ class DoctorService
             $newdoctor=Doctor::where('doctors.id',$id)
                 ->update([
                     'clinic_id' => $request['clinic_id'],
+                    'user_id' => $request['user_id'],
                     'is_active' => $request['is_active'],
                     'is_approved' => $request['is_approved'],
                 ]);
