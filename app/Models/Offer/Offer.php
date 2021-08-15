@@ -2,6 +2,7 @@
 
 namespace App\Models\Offer;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,5 +24,10 @@ class Offer extends Model
     public function OfferTranslation()
     {
         return $this->hasMany(OfferTranslation::class);
+    }
+
+    public function User()
+    {
+        return $this->belongsToMany(User::class,'offer_user','offer_id','user_id','id','id');
     }
 }
