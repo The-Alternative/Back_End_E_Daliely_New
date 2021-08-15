@@ -380,15 +380,15 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
 
      //////////////// offers Route ////////////////////////////
 
-     Route::group(['prefix'=>'offers','namespace'=>'Post'],function () {
-         Route::get('/', 'PostStoreController@get');
-         Route::get('/{id}', 'PostStoreController@getById');
-         Route::post('/', 'PostStoreController@create');
-         Route::put('/{id}', 'PostStoreController@update');
-         Route::PUT('/trash/{id}', 'PostStoreController@trash');
-         Route::get('/gettrashed', 'PostStoreController@getTrashed');
-         Route::PUT('/restoretrashed/{id}', 'PostStoreController@restoreTrashed');
-         Route::delete('/{id}', 'PostStoreController@delete');
+     Route::group(['prefix'=>'offers','namespace'=>'Offer'],function () {
+         Route::get('/', 'OfferController@get');
+         Route::get('/{id}', 'OfferController@getById');
+         Route::post('/', 'OfferController@create');
+         Route::put('/{id}', 'OfferController@update');
+         Route::PUT('/trash/{id}', 'OfferController@trash');
+         Route::get('/trashed', 'OfferController@gettrsh');
+         Route::PUT('/restoretrashed/{id}', 'OfferController@restoreTrashed');
+         Route::delete('/{id}', 'OfferController@delete');
 
      });
  });
