@@ -125,6 +125,7 @@ class MedicalDeviceService
             return $this->returnData('MedicalDevice', [$dbmedicaldevice,$values],'done');
         }
         catch(\Exception $ex){
+            DB::rollBack();
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }

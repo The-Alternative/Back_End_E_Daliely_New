@@ -129,6 +129,7 @@ class HospitalService
             return $this->returnData(' hospital', [$dbhospital,$values],'done');
         }
         catch(\Exception $ex){
+            DB::rollBack();
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }

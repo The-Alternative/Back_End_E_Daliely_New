@@ -131,6 +131,7 @@ class AppointmentService
             return $this->returnData('Appointment', $dbappointment,'done');
         }
         catch(\Exception $ex){
+            DB::rollBack();
             return $this->returnError($ex->getCode(),$ex->getMessage());
         }
     }

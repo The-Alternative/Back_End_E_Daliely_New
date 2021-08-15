@@ -124,6 +124,7 @@ class SpecialtyService
             return $this->returnData('Specialty', [$dbspecialty,$values],'done');
         }
         catch(\Exception $ex){
+            DB::rollBack();
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }

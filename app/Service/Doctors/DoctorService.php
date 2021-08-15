@@ -119,6 +119,7 @@ class DoctorService
             return $this->returnData('doctor', $dbdoctor,'done');
         }
         catch(\Exception $ex){
+            DB::rollBack();
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }

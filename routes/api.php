@@ -386,10 +386,9 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::post('/', 'OfferController@create');
          Route::put('/{id}', 'OfferController@update');
          Route::PUT('/trash/{id}', 'OfferController@trash');
-         Route::get('/trashed', 'OfferController@gettrsh');
          Route::PUT('/restoretrashed/{id}', 'OfferController@restoreTrashed');
          Route::delete('/{id}', 'OfferController@delete');
-
+         Route::get('/notactive','OfferController@NotActive');
      });
  });
 
