@@ -371,7 +371,6 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::get('/gettrashed', 'ItemController@getTrashed');
          Route::PUT('/restoretrashed/{id}', 'ItemController@restoreTrashed');
          Route::delete('/{id}', 'ItemController@delete');
-
          Route::get('/get-restaurant/{item_id}', 'ItemController@getRestaurant');
          Route::get('/get-category/{item_id}', 'ItemController@getCategory');
          Route::get('/get-product/{item_id}', 'ItemController@getProduct');
