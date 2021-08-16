@@ -18,6 +18,7 @@ class CreateOfferUsersTable extends Migration
             $table->integer('offer_id');
             $table->integer('user_id');
             $table->integer('interaction_type');
+            $table->boolean('is_active');
             $table->timestamps();
         });
     }

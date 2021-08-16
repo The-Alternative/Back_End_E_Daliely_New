@@ -81,7 +81,7 @@ class OfferService
                  OfferTranslation::insert($transOffer);
              }
               DB::commit();
-              return $this->returnData('offer', $offer, 'done');
+              return $this->returnData('offer', [$untransId,$transOffer], 'done');
         }
         catch(\Exception $ex)
         {
@@ -92,7 +92,54 @@ class OfferService
 
     public function update(OfferRequest $request,$id)
     {
-        return "hello";
+      Try
+      {
+          $offer=$this->OfferModel::find($id);
+          if(!$offer)
+          {return $this->returnError('400','not found this offer');}
+          $alloffer=collect($request->Offer)->all();
+          if(!($request->has('offers.is_active')))
+          $request->request->add(['is_active'=>0]);
+          else{$request->request->add(['is_active',1]);}
+
+          $newoffer=$this->OfferModel::where('offers.id',$id)->update([
+              'store_id'        =>$request->store_id,
+              'store_product_id'=>$request->store_product_id,
+              'image'           =>$request->image,
+              'price'           =>$request->price,
+              'selling_price'   =>$request->selling_price,
+              'quantity'        =>$request->quantity,
+              'position'        =>$request->position,
+              'started_at'      =>$request->started_at,
+              'ended_at'        =>$request->ended_at,
+              'is_active'       =>$request->is_active,
+              'is_offer'        =>$request->is_offer
+          ]);
+          $db_offer=array_values(OfferTranslation::where('offer_translations.offer_id',$id)
+              ->get()->all());
+
+          $dboffer=(array_values($db_offer));
+          $request_offer=(array_values($request->Offer));
+          foreach ($dboffer as $dboffers){
+              foreach ($request_offer as $request_offers){
+                  $value=OfferTranslation::where('offer_translations.offer_id',$id)
+                      ->where('locale',$request_offers['locale'])
+                      ->update([
+                          'name'=>$request_offers['name'],
+                          'short_description'=>$request_offers['short_description'],
+                          'long_description'=>$request_offers['long_description'],
+                          'offer_id'=>$id
+                      ]);
+              }
+          }
+          DB::commit();
+          return $this->returnData('offer',[$dboffer,$value],'done');
+      }
+      catch (\Exception $ex)
+      {
+          return $this->returnError($ex->getCode(),$ex->getMessage());
+      }
+
     }
 
     public function Trash($id)
@@ -115,7 +162,7 @@ class OfferService
             return $this->returnError($ex->getCode(),$ex->getMessage());
         }
     }
-    public function NotActive()
+    public function getTrashed()
     {
         try{
             $offer=$this->OfferModel::NotActive();

@@ -37,10 +37,9 @@ class OfferController extends Controller
     {
         return $this->OfferService->Trash($id);
     }
-    public function NotActive()
+    public function getTrashed()
     {
-        return "00";
-//        return $this->OfferService->NotActive();
+        return $this->OfferService->getTrashed();
     }
     public function restoreTrashed($id)
     {

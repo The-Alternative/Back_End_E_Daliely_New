@@ -388,7 +388,19 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::PUT('/trash/{id}', 'OfferController@trash');
          Route::PUT('/restoretrashed/{id}', 'OfferController@restoreTrashed');
          Route::delete('/{id}', 'OfferController@delete');
-         Route::get('/notactive','OfferController@NotActive');
+//         Route::get('/notactive','OfferController@NotActive');
+     });
+     //////////////// interaction Route ////////////////////////////
+
+     Route::group(['prefix'=>'interactions','namespace'=>'Offer'],function () {
+         Route::get('/', 'OfferUserController@get');
+         Route::get('/{id}', 'OfferUserController@getById');
+         Route::post('/', 'OfferUserController@create');
+         Route::put('/{id}', 'OfferUserController@update');
+         Route::PUT('/trash/{id}', 'OfferUserController@trash');
+         Route::PUT('/restoretrashed/{id}', 'OfferUserController@restoreTrashed');
+         Route::delete('/{id}', 'OfferUserController@delete');
+//         Route::get('/notactive','OfferUserController@NotActive');
      });
  });
 
