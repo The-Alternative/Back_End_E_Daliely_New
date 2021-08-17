@@ -4,7 +4,9 @@ namespace App\Models\Admin;
 
 use App\Models\Admin\Permission;
 use App\Models\Admin\Role;
+use App\Models\Admin\TransModel\EmployeeTranslation;
 use App\Models\Stores_Orders\Stores_Order;
+use App\Scopes\EmployeeScope;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -56,6 +58,12 @@ class Employee extends Authenticatable implements JWTSubject
     {
         return $this->getKey();
     }
+
+    protected static function booted()
+    {
+        parent::booted();
+        static::addGlobalScope(new EmployeeScope);
+    }
     /**
      * Return a key value array, containing any custom claims to be added to the JWT.
      *
@@ -65,7 +73,12 @@ class Employee extends Authenticatable implements JWTSubject
     {
         return [];
     }
-    public function roles()
+    public function EmployeeTranslation()
+    {
+        return $this->hasMany(EmployeeTranslation::class);
+    }
+
+        public function roles()
     {
         return $this->belongsToMany(
             Role::class,

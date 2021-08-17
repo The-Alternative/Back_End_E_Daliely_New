@@ -2,6 +2,7 @@
 
 namespace App\Models\Admin;
 
+use App\Models\Admin\TransModel\PermissionTranslation;
 use App\Models\User;
 use App\Scopes\PermissionScope;
 use Laratrust\Models\LaratrustPermission;

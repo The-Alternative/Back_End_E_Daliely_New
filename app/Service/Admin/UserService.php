@@ -3,6 +3,7 @@
 namespace App\Service\Admin;
 
 use App\Models\Admin\Role;
+use App\Models\Admin\TransModel\UserTranslation;
 use App\Models\Order\Order;
 use App\Models\User;
 use App\Traits\GeneralTrait;
@@ -16,11 +17,13 @@ class UserService
     use GeneralTrait;
     private $userModel;
     private $roleModel;
+    private $userTranslation;
 
-    public function __construct(User $userModel , Role $roleModel)
+    public function __construct(User $userModel , Role $roleModel , UserTranslation $userTranslation)
     {
         $this->userModel=$userModel;
         $this->roleModel=$roleModel;
+        $this->userTranslation=$userTranslation;
     }
     /*___________________________________________________________________________*/
     /****  Get All Active User Or By ID  ****/
@@ -110,11 +113,10 @@ class UserService
         try {
 //            $validated = $request->validated();
 //            $request->is_active ? $is_active = true : $is_active = false;
+            $allusers = collect($request->user)->all();
             DB::beginTransaction();
 
             $user=$this->userModel->create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
                 'age' => $request->age,
                 'location_id' => $request->location_id,
                 'social_media_id' => $request->social_media_id,
@@ -123,6 +125,19 @@ class UserService
                 'email' => $request->email,
                 'password' =>bcrypt($request->password)
             ]);
+            $userid=$user->id;
+            if (isset($allusers) && count($allusers)) {
+                //insert other traslations for users
+                foreach ($allusers as $alluser) {
+                    $transUser_arr[] = [
+                        'first_name' => $alluser ['first_name'],
+                        'last_name' => $alluser ['last_name'],
+                        'local' => $alluser['local'],
+                        'user_id' => $userid
+                    ];
+                }
+                $this->userTranslation->insert($transUser_arr);
+            }
             $token = JWTAuth::fromUser($user);
             if ($request->has('roles')) {
                 $role = $this->userModel->find($user->id);
@@ -149,17 +164,47 @@ class UserService
         try{
 //            $validated = $request->validated();
             $user=$this->userModel->find($id);
-            $user->update([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
+            if(!$user)
+                return $this->returnError('400', 'not found this User');
+            $allusers = collect($request->user)->all();
+            if (!($request->has('user.is_active')))
+                $request->request->add(['is_active'=>0]);
+            else
+                $request->request->add(['is_active'=>1]);
+            $nuser=$this->userModel->where('users.id',$id)->update([
                 'age' => $request->age,
                 'location_id' => $request->location_id,
                 'social_media_id' => $request->social_media_id,
                 'is_active' => $request->is_active,
                 'image' => $request->image,
-                'email' => $request->email,
                 'password' =>bcrypt($request->password)
             ]);
+
+            $ss=$this->userTranslation->where('user_translation.user_id',$id);
+            $collection1 = collect($allusers);
+            $alluserslength=$collection1->count();
+            $collection2 = collect($ss);
+
+            $db_user= array_values(
+                $this->userTranslation
+                    ->where('user_translation.user_id',$id)
+                    ->get()
+                    ->all());
+            $dbdusers = array_values($db_user);
+            $request_users = array_values($request->user);
+            foreach($dbdusers as $dbduser){
+                foreach($request_users as $request_user){
+                    $values= $this->userTranslation->where('user_translation.user_id',$id)
+                        ->where('local',$request_user['local'])
+                        ->update([
+                            'first_name' => $request_user ['first_name'],
+                            'last_name' => $request_user ['last_name'],
+                            'local' => $request_user['local'],
+                            'user_id' => $id
+                        ]);
+                }
+            }
+
             $token = JWTAuth::fromUser($user);
             if ($request->has('roles')) {
                 $role = $this->userModel->find($user->id);

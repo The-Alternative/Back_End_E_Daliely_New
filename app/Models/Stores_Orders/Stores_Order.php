@@ -15,7 +15,8 @@ class Stores_Order extends Model
         'created_at', 'updated_at'
     ];
     protected $table = 'stores__orders';
-    protected $fillable = ['store_id', 'user_id',
+    protected $fillable = [
+        'store_id', 'user_id',
         'total', 'bank_transaction_id'
     ];
     public function Store()

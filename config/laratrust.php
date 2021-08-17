@@ -10,7 +10,7 @@ return [
     | are going to be used are the ones inside the 'user_models' array.
     |
     */
-    'use_morph_map' => false,
+    'use_morph_map' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -74,7 +74,8 @@ return [
     */
     'user_models' => [
         'users' => \App\Models\User::class,
-        'employees'=>\App\Models\Admin\Employee::class
+        'employees'=>\App\Models\Admin\Employee::class,
+        'type'=>\App\Models\Admin\TypeUser::class
     ],
 
     /*
@@ -127,6 +128,8 @@ return [
         'permission_role' => 'permission_role',
         'role_employee' => 'role_employee',
         'permission_employee' => 'permission_employee',
+        'role_type' => 'role_type',
+        'permission_type' => 'permission_type',
     ],
 
     /*
@@ -142,11 +145,14 @@ return [
          * User foreign key on Laratrust's role_user and permission_user tables.
          */
         'user' => 'user_id',
- /**
-         * Employee foreign key on Laratrust's role_employee and permission_employee tables.
+        /**
+         * Employee foreign key on Laratrust's role_employee and permission_type tables.
+         */
+        'type_users' => 'type_id',
+        /**
+         * Type foreign key on Laratrust's role_type and permission_employee tables.
          */
         'employee' => 'employee_id',
-
         /**
          * Role foreign key on Laratrust's role_user and permission_role tables.
          */

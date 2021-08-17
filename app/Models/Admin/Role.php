@@ -2,6 +2,7 @@
 
 namespace App\Models\Admin;
 
+use App\Models\Admin\TransModel\RoleTranslation;
 use App\Models\User;
 use App\Scopes\RoleScope;
 use Laratrust\Models\LaratrustRole;
@@ -55,6 +56,16 @@ class Role extends LaratrustRole
             'role_employee',
             'role_id',
             'employee_id',
+            'id',
+            'id');
+    }
+    public function TypeUser()
+    {
+        return $this->belongsToMany(
+            TypeUser::class,
+            'role_type',
+            'role_id',
+            'type_id',
             'id',
             'id');
     }

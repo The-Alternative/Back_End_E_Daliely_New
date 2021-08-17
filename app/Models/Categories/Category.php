@@ -38,10 +38,7 @@ class Category extends Model
         return $query->select('id')->get();
     }
     //________________ scopes end _________________//
-//    public function language()
-//    {
-//        return $this->belongsTo(Language::class, 'lang_id', 'id');
-//    }
+    //________________ relationShips _________________//
     public function CategoryTranslation()
     {
         return $this->hasMany(CategoryTranslation::class,'category_id');
@@ -50,7 +47,7 @@ class Category extends Model
     {
         return $this->belongsTo(Section::class);
     }
-    function Category()
+    public function Category()
     {
         return $this->hasMany(Category::class,'parent_id');
     }
@@ -70,22 +67,4 @@ class Category extends Model
     {
         return $this->hasMany(CategoryImages::class,'category_id');
     }
-////    public function products(){
-////        return $this->belongsToMany(product::class)->withTimestamps()->withPivot(['']);
-////    }
-//
-//    public function stores(){
-//        return $this->belongsToMany(Store::class)->withTimestamps();
-//    }
-//
-//    public function categories(){
-//        return $this->hasMany(Category::class);
-//    }
-//    public function category(){
-//        return $this->belongsTo(Category::class);
-//    }
-//    public function store_category_images(){
-//        return $this->hasMany(Store_Category_Image::class);
-//    }
-//}
 }
