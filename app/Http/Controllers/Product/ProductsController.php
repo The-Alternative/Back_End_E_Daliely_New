@@ -21,11 +21,11 @@ class ProductsController extends Controller
     {
         $this->ProductService=$ProductService;
         $this->laratrustClass=$laraturst;
-        $this->middleware(['role:superadministrator|administrator|user']);
-        $this->middleware(['permission:product-read'])->only('getAll','getById');
-        $this->middleware(['permission:product-create'])->only('create');
-        $this->middleware(['permission:product-update'])->only('update');
-        $this->middleware(['permission:product-delete'])->only(['trash','restoreTrashed','getTrashed']);
+//        $this->middleware(['role:superadministrator|administrator|user']);
+//        $this->middleware(['permission:product-read'])->only('getAll','getById');
+//        $this->middleware(['permission:product-create'])->only('create');
+//        $this->middleware(['permission:product-update'])->only('update');
+//        $this->middleware(['permission:product-delete'])->only(['trash','restoreTrashed','getTrashed']);
     }
         public function getAll()
         {
@@ -43,7 +43,7 @@ class ProductsController extends Controller
         {
             return $this->ProductService->getTrashed();
         }
-        public function create(Request $request)
+        public function create(ProductRequest $request)
         {
             return $this->ProductService->create($request);
         }

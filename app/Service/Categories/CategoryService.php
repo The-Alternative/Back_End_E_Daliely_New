@@ -128,12 +128,6 @@ class CategoryService
             $request->is_appear ? $is_appear = true : $is_appear = false;
             //transformation to collection
             $allcategories = collect($request->category)->all();
-            ///select folder to save the image
-            // $fileBath = "" ;
-            //     if($request->has('image'))
-            //     {
-            //         $fileBath=uploadImage('images/products',$request->image);
-            //     }
             DB::beginTransaction();
             // //create the default language's product
             $unTransCategory_id = $this->categoryModel->insertGetId([
@@ -207,15 +201,6 @@ class CategoryService
                 $request->request->add(['is_active'=>0]);
             else
                 $request->request->add(['is_active'=>1]);
-            //save image
-            // if($request->has('image')) {
-            //     $filePath = uploadImage('products', $request->photo);
-            //     Product::where('id', $pro_id)
-            //         ->update([
-            //             'image' => $filePath,
-            //         ]);
-            // }
-
            $ncategory=$this->categoryModel->where('categories.id',$id)
                ->update([
                    'slug'      =>$request['slug'],
@@ -245,7 +230,6 @@ class CategoryService
                             'category_id'=>$id
                         ]);
                     }
-
                 }
             $images = $request->images;
             foreach ($images as $image) {

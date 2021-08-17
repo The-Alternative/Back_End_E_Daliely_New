@@ -6,12 +6,12 @@ return [
      */
     'create_users' => true,
     'create_employees' => true,
+    'create_types' => true,
 
     /**
      * Control if all the laratrust tables should be truncated before running the seeder.
      */
     'truncate_tables' => true,
-
     'roles_structure' => [
         'superadministrator' => [
             'user' => 'c,r,u,d',
@@ -44,7 +44,6 @@ return [
             'module_1_name' => 'c,r,u,d',
         ]
     ],
-
     'permissions_map' => [
         'c' => 'create',
         'r' => 'read',

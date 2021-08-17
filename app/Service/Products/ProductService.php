@@ -168,12 +168,12 @@ class ProductService
     }
     /*__________________________________________________________________*/
     /****  Create Products   ***/
-    public function create(Request $request)
+    public function create(ProductRequest $request)
     {
 
         try {
 //            dd($request->all());
-//                validated = $request->validated();
+                $validated = $request->validated();
             $request->is_active ? $is_active = true : $is_active = false;
             $request->is_appear ? $is_appear = true : $is_appear = false;
             /////////////transformation to collection/////////////////////////

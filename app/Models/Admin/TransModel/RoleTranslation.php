@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models\Admin;
+namespace App\Models\Admin\TransModel;
 
+use App\Models\Admin\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

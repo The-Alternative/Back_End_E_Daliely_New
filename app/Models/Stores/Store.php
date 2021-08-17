@@ -23,7 +23,8 @@ class Store extends Model
         'is_approve'=> 'boolean'
     ];
     protected $table = 'stores';
-    protected $fillable = ['section_id', 'loc_id', 'country_id',
+    protected $fillable = [
+        'section_id', 'loc_id', 'country_id',
         'gov_id', 'city_id', 'street_id',
         'offer_id', 'logo', 'rating',
         'followers', 'delivery', 'edalilyPoint',
