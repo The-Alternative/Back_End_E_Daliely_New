@@ -174,7 +174,7 @@ class HospitalService
     public function getTrashed()
     {
         try{
-            $Hospital= $this->HospitalModel::NotActive()->all();
+            $Hospital= $this->HospitalModel::NotActive();
             return $this -> returnData('Hospital',$Hospital,'done');
         }
         catch (\Exception $ex) {

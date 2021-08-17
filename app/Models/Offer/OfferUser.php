@@ -14,4 +14,9 @@ class OfferUser extends Model
 
     protected $hidden=['offer_id','user_id','created_at','updated_at'];
 
+    //local scope
+    public function scopeNotActive($query)
+    {
+        return $query->where('is_active',0)->get();
+    }
 }

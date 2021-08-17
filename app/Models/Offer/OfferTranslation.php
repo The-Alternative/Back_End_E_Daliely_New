@@ -12,7 +12,7 @@ class OfferTranslation extends Model
     protected  $fillable=['id','name','short_description','long_description','locale'
         ,'offer_id'];
 
-    protected $hidden=['offer_id','created_at','updated_at'];
+    protected $hidden=['offer_id'];
 
     public function Offer()
     {

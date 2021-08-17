@@ -105,6 +105,6 @@ class User extends Authenticatable implements JWTSubject
     }
     public function Offer()
     {
-        return $this->belongsToMany(Offer::class,'offer_user','user_id','offer_id'.'id','id');
+        return $this->belongsToMany(Offer::class,'offer_user','user_id','offer_id','id','id');
     }
 }

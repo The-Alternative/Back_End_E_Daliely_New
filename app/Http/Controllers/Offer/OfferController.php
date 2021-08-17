@@ -37,10 +37,7 @@ class OfferController extends Controller
     {
         return $this->OfferService->Trash($id);
     }
-    public function getTrashed()
-    {
-        return $this->OfferService->getTrashed();
-    }
+
     public function restoreTrashed($id)
     {
         return $this->OfferService->restoreTrashed($id);
@@ -48,6 +45,24 @@ class OfferController extends Controller
     public function delete($id)
     {
         return $this->OfferService->delete($id);
+    }
+
+    public function getStoreByOfferId($Offer_id)
+    {
+        return $this->OfferService->getStoreByOfferId($Offer_id);
+    }
+    public  function getOfferByStoreId($Store_id)
+    {
+        return $this->OfferService->getOfferByStoreId($Store_id);
+    }
+    /////////////////////////////////////////////////////////////////////////
+    public function get_advertisement()
+    {
+        return $this->OfferService->get_advertisement();
+    }
+    public function getTrashed()
+    {
+        return $this->OfferService->getTrashed();
     }
 }
 

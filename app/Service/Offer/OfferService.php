@@ -5,6 +5,7 @@ namespace App\Service\Offer;
 use App\Http\Requests\Offer\OfferRequest;
 use App\Models\Offer\Offer;
 use App\Models\Offer\OfferTranslation;
+use App\Models\Stores\Store;
 use App\Traits\GeneralTrait;
 use Illuminate\Support\Facades\DB;
 
@@ -13,12 +14,15 @@ class OfferService
 
     use GeneralTrait;
     protected $OfferModel;
+    protected $StoreModel;
 
-    public function __construct(Offer $offer)
+    public function __construct(Offer $offer,Store $store)
     {
         $this->OfferModel=$offer;
+        $this->StoreModel=$store;
     }
 
+    //get all offer
     public function get()
     {
         try{
@@ -30,7 +34,7 @@ class OfferService
             return $this->returnError($ex->getCode(),$ex->getMessage());
         }
     }
-
+//get offer by offer's id
     public function getById($id)
     {
         try{
@@ -50,6 +54,7 @@ class OfferService
         }
     }
 
+    //create new offer
     public function create(OfferRequest $request)
     {
         try {
@@ -89,7 +94,7 @@ class OfferService
            return  $this->returnError($ex->getCode(),$ex->getMessage());
         }
     }
-
+//update old offer
     public function update(OfferRequest $request,$id)
     {
       Try
@@ -141,7 +146,7 @@ class OfferService
       }
 
     }
-
+// change is_active value to zero
     public function Trash($id)
     {
         try{
@@ -162,17 +167,7 @@ class OfferService
             return $this->returnError($ex->getCode(),$ex->getMessage());
         }
     }
-    public function getTrashed()
-    {
-        try{
-            $offer=$this->OfferModel::NotActive();
-            return $this->returnData('offer',$offer,'done');
-        }
-        catch (\Exception $ex)
-        {
-            return $this->returnError($ex->getCode(),$ex->getMessage());
-        }
-    }
+//change is_active value to one
     public function restoreTrashed($id)
     {
         try{
@@ -194,6 +189,7 @@ class OfferService
             return $this->returnError($ex->getCode(),$ex->getMessage());
         }
     }
+    //delete the offer from database
     public function delete($id)
     {
         try
@@ -217,4 +213,67 @@ class OfferService
             return $this->returnError($ex->getCode(),$ex->getMessage());
         }
     }
+    //Find out the store that offers this offer through this offer ID
+    public function getStoreByOfferId($Offer_id)
+    {
+        try{
+            $offer=$this->OfferModel::find($Offer_id);
+            if (!$offer)
+            {
+                return $this->returnError('400','not found this Offer');
+            }
+            else {
+                $offer=$this->OfferModel::with('Store')->find($Offer_id);
+                return $this->returnData('Offer', $offer, 'done');
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return $this->returnError($ex->getCode(),$ex->getMessage());
+        }
+    }
+//Find out about store offers via store ID
+    public function getOfferByStoreId($Store_id)
+    {
+        try{
+            $store=$this->StoreModel::find($Store_id);
+            if(!$store)
+            {return $this->returnError('400','not found this store');
+            }
+            else {
+                $store=$this->StoreModel::with('Offer')->find($Store_id);
+                return  $this->returnData('Store',$store,'done');
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return $this->returnError($ex->getCode(),$ex->getMessage());
+        }
+    }
+//_____________________________________________________________________________//
+//get offer where is_Active=0
+    public function getTrashed()
+    {
+        try{
+            $offer=$this->OfferModel::NotActive();
+            return $this->returnData('offer',$offer,'done');
+        }
+        catch (\Exception $ex)
+        {
+            return $this->returnError($ex->getCode(),$ex->getMessage());
+        }
+    }
+//get the advertisement
+    public function get_advertisement()
+    {
+        try{
+            $offer=$this->OfferModel::Advertisement();
+            return $this->returnData('advertisement',$offer,'this is advertisements');
+        }
+        catch(\Exception $ex)
+        {
+            return $this->returnError($ex->getCode(),$ex->getMessage());
+        }
+    }
+
 }

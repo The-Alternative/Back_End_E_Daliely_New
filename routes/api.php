@@ -1,5 +1,23 @@
 <?php
 
+use App\Http\Controllers\ActiveTime\ActiveTimeController;
+use App\Http\Controllers\Appointment\AppointmentController;
+use App\Http\Controllers\Clinic\ClinicController;
+use App\Http\Controllers\DoctorRate\DoctorRateController;
+use App\Http\Controllers\Doctors\DoctorController;
+use App\Http\Controllers\Hospital\HospitalController;
+use App\Http\Controllers\Item\ItemController;
+use App\Http\Controllers\MedicalDevice\MedicalDeviceController;
+use App\Http\Controllers\Offer\OfferController;
+use App\Http\Controllers\Offer\OfferUserController;
+use App\Http\Controllers\Patient\PatientController;
+use App\Http\Controllers\Restaurant\RestaurantController;
+use App\Http\Controllers\RestaurantCategory\RestaurantCategoyrController;
+use App\Http\Controllers\RestaurantManager\RestaurantManagerController;
+use App\Http\Controllers\RestaurantProduct\RestaurantProductController;
+use App\Http\Controllers\RestaurantType\RestaurantTypeController;
+use App\Http\Controllers\SocialMedia\SocialMediaController;
+use App\Http\Controllers\Specialty\SpecialtyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -141,7 +159,6 @@ Route::group(
 Route::group(['prefix'=>'doctors','namespace'=>'Doctors'],function () {
     Route::get('/', 'DoctorController@get');
     Route::get('/{id}', 'DoctorController@getById');
-    Route::get('/gettrashed', 'DoctorController@getTrashed');
     Route::post('/', 'DoctorController@create');
     Route::put('/{id}', 'DoctorController@update');
     Route::GET('/search/{name}', 'DoctorController@search');
@@ -159,6 +176,8 @@ Route::group(['prefix'=>'doctors','namespace'=>'Doctors'],function () {
     Route::get('/doctor-specialty/{doctor_id}','DoctorController@DoctorSpecialty');
 
 });
+     Route::get('doctor/gettrashed', [DoctorController::class,'getTrashed']);
+
      /*-------------Patient Route------------------*/
    Route::group(['prefix'=>'patients','namespace'=>'Patient'],function () {
     Route::get('/','PatientController@getAll');
@@ -167,36 +186,39 @@ Route::group(['prefix'=>'doctors','namespace'=>'Doctors'],function () {
     Route::put('/{id}', 'PatientController@update');
     Route::PUT('/trash/{id}', 'PatientController@trash');
     Route::delete('/{id}', 'PatientController@delete');
-    Route::get('/gettrashed', 'PatientController@getTrashed');
     Route::PUT('/restoretrashed/{id}', 'PatientController@restoreTrashed');
 });
-        /*---------------Doctor Rate Route--------*/
+     Route::get('patient/gettrashed', [PatientController::class,'getTrashed']);
+
+     /*---------------Doctor Rate Route--------*/
 Route::group(['prefix'=>'doctorrate','namespace'=>'DoctorRate'],function () {
     Route::get('/', 'DoctorRateController@get');
     Route::get('/{id}', 'DoctorRateController@getById');
-    Route::get('/gettrashed', 'DoctorRateController@getTrashed');
     Route::post('/', 'DoctorRateController@create');
     Route::put('/{id}', 'DoctorRateController@update');
     Route::PUT('/trash/{id}', 'DoctorRateController@trash');
     Route::delete('/{id}', 'DoctorRateController@delete');
     Route::PUT('/restoretrashed/{id}', 'DoctorRateController@restoreTrashed');
 });
+     Route::get('drrate/gettrashed', [DoctorRateController::class,'getTrashed']);
+
          /*--------------Social Media Route-------*/
 Route::group(['prefix'=>'socialmedia','namespace'=>'SocialMedia'],function () {
     Route::get('/', 'SocialMediaController@get');
     Route::get('/{id}', 'SocialMediaController@getById');
-    Route::get('/gettrashed', 'SocialMediaController@getTrashed');
     Route::post('/', 'SocialMediaController@create');
     Route::put('/{id}', 'SocialMediaController@update');
     Route::PUT('/trash/{id}', 'SocialMediaController@trash');
     Route::delete('/{id}', 'SocialMediaController@delete');
     Route::PUT('/restoretrashed/{id}', 'SocialMediaController@restoreTrashed');
 });
-           /*------------Hospital Route------------*/
+   Route::get('media/gettrashed', [SocialMediaController::class,'getTrashed']);
+
+
+     /*------------Hospital Route------------*/
 Route::group(['prefix'=>'hospitals','namespace'=>'Hospital'],function () {
     Route::get('/', 'HospitalController@get');
     Route::get('/{id}', 'HospitalController@getById');
-    Route::get('/gettrashed', 'HospitalController@getTrashed');
     Route::post('/', 'HospitalController@create');
     Route::put('/{id}', 'HospitalController@update');
     Route::GET('search/{name}', 'HospitalController@search');
@@ -207,12 +229,13 @@ Route::group(['prefix'=>'hospitals','namespace'=>'Hospital'],function () {
 
     Route::GET('/doctor-work-in-this-hospital/{id}', 'HospitalController@hospitalsDoctor');
 });
+     Route::get('hospital/gettrashed', [HospitalController::class,'getTrashed']);
+
 
         /*---------------Clinic Route-------------*/
-Route::group(['prefix'=>'clinic','namespace'=>'Clinic'],function () {
+Route::group(['prefix'=>'clinics','namespace'=>'Clinic'],function () {
     Route::get('/',          'ClinicController@get');
     Route::get('/{id}', 'ClinicController@getById');
-    Route::get('/gettrashed',   'ClinicController@getTrashed');
     Route::post('/',      'ClinicController@create');
     Route::put('/{id}',  'ClinicController@update');
     Route::GET('/search/{name}','ClinicController@search');
@@ -220,12 +243,13 @@ Route::group(['prefix'=>'clinic','namespace'=>'Clinic'],function () {
     Route::delete('/{id}','ClinicController@delete');
     Route::PUT('/restoretrashed/{id}', 'ClinicController@restoreTrashed');
 });
+     Route::get('clinic/gettrashed',   [ClinicController::class,'getTrashed']);
+
 
        /*---------------Medical Device Route-------------*/
 Route::group(['prefix'=>'medicaldevices','namespace'=>'MedicalDevice'],function () {
     Route::get('/', 'MedicalDeviceController@get');
     Route::get('/{id}', 'MedicalDeviceController@getById');
-    Route::get('/gettrashed', 'MedicalDeviceController@getTrashed');
     Route::post('/', 'MedicalDeviceController@create');
     Route::put('/{id}', 'MedicalDeviceController@update');
     Route::GET('/search/{name}', 'MedicalDeviceController@search');
@@ -235,11 +259,12 @@ Route::group(['prefix'=>'medicaldevices','namespace'=>'MedicalDevice'],function 
 
     Route::GET('/get-doctor-by-medical-device/{id}','MedicalDeviceController@getdoctor');
 });
+     Route::get('medicaldevice/gettrashed', [MedicalDeviceController::class,'getTrashed']);
+
         /*---------------Specialty Route-------------*/
 Route::group(['prefix'=>'specialties','namespace'=>'Specialty'],function () {
     Route::get('/', 'SpecialtyController@get');
     Route::get('/{id}', 'SpecialtyController@getById');
-    Route::get('/gettrashed', 'SpecialtyController@getTrashed');
     Route::post('/', 'SpecialtyController@create');
     Route::put('/{id}', 'SpecialtyController@update');
     Route::GET('/search/{name}', 'SpecialtyController@search');
@@ -249,6 +274,8 @@ Route::group(['prefix'=>'specialties','namespace'=>'Specialty'],function () {
 
     Route::get('/specialty-doctor/{speciatlty_id}', 'SpecialtyController@DoctorSpecialty');
 });
+     Route::get('specialty/gettrashed', [SpecialtyController::class,'getTrashed']);
+
        /*--------------- Calendar Route-------------*/
 //Route::group(['prefix'=>'Calendar','namespace'=>'Calendar'],function () {
 //    Route::get('/',          'CalendarController@get');
@@ -263,39 +290,42 @@ Route::group(['prefix'=>'specialties','namespace'=>'Specialty'],function () {
 Route::group(['prefix'=>'appointments','namespace'=>'Appointment'],function () {
     Route::get('/', 'AppointmentController@get');
     Route::get('/{id}', 'AppointmentController@getById');
-    Route::get('/gettrashed', 'AppointmentController@getTrashed');
     Route::post('/', 'AppointmentController@create');
     Route::put('/{id}', 'AppointmentController@update');
     Route::PUT('/trash/{id}', 'AppointmentController@trash');
     Route::delete('/{id}', 'AppointmentController@delete');
     Route::PUT('/restoretrashed/{id}', 'AppointmentController@restoreTrashed');
 });
+     Route::get('appointment/gettrashed', [AppointmentController::class,'getTrashed']);
+
 
     /*---------------Active Time Route-------------*/
 Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
     Route::get('/', 'ActiveTimeController@get');
     Route::get('/{id}', 'ActiveTimeController@getById');
-    Route::get('/gettrashed', 'ActiveTimeController@getTrashed');
     Route::post('/', 'ActiveTimeController@create');
     Route::put('/{id}', 'ActiveTimeController@update');
     Route::PUT('/trash/{id}', 'ActiveTimeController@trash');
     Route::delete('/{id}', 'ActiveTimeController@delete');
     Route::PUT('/restoretrashed/{id}', 'ActiveTimeController@restoreTrashed');
 });
+     Route::get('activetime/gettrashed', [ActiveTimeController::class,'getTrashed']);
+
 
 ########################## RESTAURANT ROUTE #########################################
-     /*-------------Restaurant  Manager Route------------------*/
-     Route::group(['prefix'=>'restaurantsmangers','namespace'=>'RestaurantManager'],function () {
-         Route::get('/', 'RestaurantManagerController@get');
-         Route::get('/{id}', 'RestaurantManagerController@getById');
-         Route::get('/gettrashed', 'RestaurantManagerController@getTrashed');
-         Route::GET('search/{name}','RestaurantManagerController@search');
-         Route::post('/', 'RestaurantManagerController@create');
-         Route::put('/{id}', 'RestaurantManagerController@update');
-         Route::PUT('trash/{id}', 'RestaurantManagerController@trash');
-         Route::PUT('restortrashed/{id}', 'RestaurantManagerController@restoreTrashed');
-         Route::delete('/{id}', 'RestaurantManagerController@delete');
-     });
+//     /*-------------Restaurant  Manager Route------------------*/
+//     Route::group(['prefix'=>'restaurantsmangers','namespace'=>'RestaurantManager'],function () {
+//         Route::get('/', 'RestaurantManagerController@get');
+//         Route::get('/{id}', 'RestaurantManagerController@getById');
+//         Route::GET('search/{name}','RestaurantManagerController@search');
+//         Route::post('/', 'RestaurantManagerController@create');
+//         Route::put('/{id}', 'RestaurantManagerController@update');
+//         Route::PUT('trash/{id}', 'RestaurantManagerController@trash');
+//         Route::PUT('restortrashed/{id}', 'RestaurantManagerController@restoreTrashed');
+//         Route::delete('/{id}', 'RestaurantManagerController@delete');
+//     });
+//     Route::get('restaurant/gettrashed', [RestaurantManagerController::class,'getTrashed']);
+
      /*-------------Restaurant  Route------------------*/
      Route::group(['prefix'=>'restaurants','namespace'=>'Restaurant'],function () {
          Route::get('/', 'RestaurantController@get');
@@ -313,6 +343,8 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::get('/get-product/{restaurant_id}', 'RestaurantController@getProduct');
 
      });
+          Route::get('restaurant/gettrashed', [RestaurantController::class,'getTrashed']);
+
      /*-------------Restaurant Type  Route------------------*/
      Route::group(['prefix'=>'restauranttypes','namespace'=>'RestaurantType'],function () {
          Route::get('/', 'RestaurantTypeController@get');
@@ -321,13 +353,14 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::put('/{id}', 'RestaurantTypeController@update');
          Route::GET('/search/{name}','RestaurantTypeController@search');
          Route::PUT('/trash/{id}', 'RestaurantTypeController@trash');
-         Route::get('/gettrashed', 'RestaurantTypeController@getTrashed');
          Route::PUT('/restoretrashed/{id}', 'RestaurantTypeController@restoreTrashed');
          Route::delete('/{id}', 'RestaurantTypeController@delete');
 
          Route::get('/get-restaurant/{restaurantType_id}', 'RestaurantTypeController@getRestaurant');
 
      });
+     Route::get('restauranttype/gettrashed', [RestaurantTypeController::class,'getTrashed']);
+
      /*-------------Restaurant Category Route------------------*/
      Route::group(['prefix'=>'restaurantcategories','namespace'=>'RestaurantCategory'],function () {
          Route::get('/', 'RestaurantCategoyrController@get');
@@ -336,7 +369,6 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::put('/{id}', 'RestaurantCategoyrController@update');
          Route::GET('/search/{name}','RestaurantCategoyrController@search');
          Route::PUT('/trash/{id}', 'RestaurantCategoyrController@trash');
-         Route::get('/gettrashed', 'RestaurantCategoyrController@getTrashed');
          Route::PUT('/restoretrashed/{id}', 'RestaurantCategoyrController@restoreTrashed');
          Route::delete('/{id}', 'RestaurantCategoyrController@delete');
 
@@ -344,6 +376,8 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::get('/get-product/{restaurantCategory_id}', 'RestaurantCategoyrController@getProduct');
 
      });
+     Route::get('restaurantcategory/gettrashed', [RestaurantCategoyrController::class,'getTrashed']);
+
      /*-------------Restaurant  Product Route------------------*/
      Route::group(['prefix'=>'restaurantproducts','namespace'=>'RestaurantProduct'],function () {
          Route::get('/', 'RestaurantProductController@get');
@@ -352,7 +386,6 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::put('/{id}', 'RestaurantProductController@update');
          Route::GET('/search/{name}','RestaurantProductController@search');
          Route::PUT('/trash/{id}', 'RestaurantProductController@trash');
-         Route::get('/getTrashed', 'RestaurantProductController@getTrashed');
          Route::PUT('/restoreTrashed/{id}', 'RestaurantProductController@restoreTrashed');
          Route::delete('/{id}', 'RestaurantProductController@delete');
 
@@ -360,6 +393,8 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::get('/get-category/{restaurantProduct_id}', 'RestaurantProductController@getCategory');
 
      });
+     Route::get('restaurantproduct/gettrashed', [RestaurantProductController::class,'getTrashed']);
+
      /*-------------Item  Route------------------*/
      Route::group(['prefix'=>'items','namespace'=>'Item'],function () {
          Route::get('/', 'ItemController@get');
@@ -368,7 +403,6 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::put('/{id}', 'ItemController@update');
          Route::GET('/search/{name}','ItemController@search');
          Route::PUT('/trash/{id}', 'ItemController@trash');
-         Route::get('/gettrashed', 'ItemController@getTrashed');
          Route::PUT('/restoretrashed/{id}', 'ItemController@restoreTrashed');
          Route::delete('/{id}', 'ItemController@delete');
          Route::get('/get-restaurant/{item_id}', 'ItemController@getRestaurant');
@@ -376,6 +410,8 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::get('/get-product/{item_id}', 'ItemController@getProduct');
 
      });
+     Route::get('item/gettrashed', [ItemController::class,'getTrashed']);
+
 ################ OFFERS ROUTE ##################################
 
      //////////////// offers Route ////////////////////////////
@@ -388,9 +424,15 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::PUT('/trash/{id}', 'OfferController@trash');
          Route::PUT('/restoretrashed/{id}', 'OfferController@restoreTrashed');
          Route::delete('/{id}', 'OfferController@delete');
-//         Route::get('/notactive','OfferController@NotActive');
+         Route::get('/get-store/{Offer_id}','OfferController@getStoreByOfferId');
+         Route::get('/get-offer/{store_id}','OfferController@getOfferByStoreId');
+
      });
-     //////////////// interaction Route ////////////////////////////
+
+         Route::get('offer/gettrashed',[OfferController::class,'getTrashed']);
+         Route::get('offer/get-advertisement',[OfferController::class,'get_advertisement']);
+
+         //////////////// interaction Route ////////////////////////////
 
      Route::group(['prefix'=>'interactions','namespace'=>'Offer'],function () {
          Route::get('/', 'OfferUserController@get');
@@ -400,7 +442,10 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::PUT('/trash/{id}', 'OfferUserController@trash');
          Route::PUT('/restoretrashed/{id}', 'OfferUserController@restoreTrashed');
          Route::delete('/{id}', 'OfferUserController@delete');
-//         Route::get('/notactive','OfferUserController@NotActive');
      });
+         Route::get('/interaction/gettrashed',[OfferUserController::class,'getTrashed']);
+
+     ///////////////////////Route///////////////////////////
+     ///
  });
 

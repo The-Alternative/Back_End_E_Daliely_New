@@ -5,7 +5,7 @@ namespace App\Models\Stores;
 use App\Models\Brands\Brand;
 use App\Models\Categories\Section;
 use App\Models\Images\StoreImage;
-use App\Models\Post\Post;
+use App\Models\Offer\Offer;
 use App\Models\Products\Product;
 use App\Models\Stores_Orders\Stores_Order;
 use App\Scopes\StoreScope;
@@ -96,8 +96,8 @@ class Store extends Model
         return $this->hasMany(Stores_Order::class);
     }
 
-    public function Post()
+    public function Offer()
     {
-        return $this->belongsToMany(Post::class,'post_store','store_id','post_id','id','id');
+        return $this->hasMany(Offer::class);
     }
 }
