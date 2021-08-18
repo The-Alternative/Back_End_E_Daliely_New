@@ -80,7 +80,8 @@ class LaratrustSeeder extends Seeder
                             'description' => ucfirst($permissionValue) . ' ' . ucfirst($module),
                             'local' => 'en',
                             'permission_id' => $permissions
-                        ]]);
+                        ]
+                    ]);
 
                     $this->command->info('Creating Permission to ' . $permissionValue . ' for ' . $module);
                 }
@@ -91,9 +92,7 @@ class LaratrustSeeder extends Seeder
             if (Config::get('laratrust_seeder.create_users')) {
                 $this->command->info("Creating '{$key}' user");
                 // Create default user for each role
-                $user = \App\Models\User::create([
-                    'first_name' => ucwords(str_replace('_', ' ', $key)),
-                    'last_name' => ucwords(str_replace('_', ' ', $key)),
+                $user = \App\Models\User::firstOrCreate([
                     'age' => rand(20, 50),
                     'location_id' => rand(20, 50),
                     'social_media_id' => rand(20, 50),
@@ -102,26 +101,80 @@ class LaratrustSeeder extends Seeder
                     'email' => $key . '@app.com',
                     'password' => bcrypt('password')
                 ]);
+                $userid=$user->id;
+                $userTrans = DB::table('user_translation')->insert([
+                        [
+                            'first_name' => ucwords(str_replace('_', ' ', $key)),
+                            'last_name' => ucwords(str_replace('_', ' ', $key)),
+                            'local' => 'en',
+                            'user_id' => $userid
+                        ],
+                        [
+                            'first_name' => ucwords(str_replace('_', ' ', $key)),
+                            'last_name' => ucwords(str_replace('_', ' ', $key)),
+                            'local' => 'ar',
+                            'user_id' => $userid
+                        ]
+                    ]);
                 $user->attachRole($role);
+                // Create default employee for each role\
                 if (Config::get('laratrust_seeder.create_employees')) {
 
                     $this->command->info("Creating '{$key}' employee");
                     // Create default employee for each role
-                    $employee = \App\Models\Admin\Employee::create([
-                        'first_name' => ucwords(str_replace('_', ' ', $key)),
-                        'last_name' => ucwords(str_replace('_', ' ', $key)),
+
+                    $employee = \App\Models\Admin\Employee::firstOrCreate([
                         'age' => rand(20, 50),
                         'location_id' => rand(20, 50),
                         'social_media_id' => rand(20, 50),
                         'is_active' => rand(0, 1),
                         'image' => $faker->sentence(3),
                         'email' => $key . '@app.com',
-                        'password' => bcrypt('password'),
-                        'salary' => rand(25000, 50000),
-                        'certificate' => $faker->sentence(3),
-                        'start_date' => $faker->date('Y-m-d'),
+                        'salary'=>rand(25000, 5000),
+                        'certificate' =>$faker->sentence(3),
+                        'start_date' =>$faker->date('Y-m-d'),
+                        'password' => bcrypt('password')
+                    ]);
+                    $employeeid=$employee->id;
+                    $employeeTrans = DB::table('employee_translation')->insert([
+                        [
+                            'first_name' => ucwords(str_replace('_', ' ', $key)),
+                            'last_name' => ucwords(str_replace('_', ' ', $key)),
+                            'local' => 'en',
+                            'employee_id' => $employeeid
+                        ],
+                        [
+                            'first_name' => ucwords(str_replace('_', ' ', $key)),
+                            'last_name' => ucwords(str_replace('_', ' ', $key)),
+                            'local' => 'ar',
+                            'employee_id' => $employeeid
+                        ]
                     ]);
                     $employee->attachRole($role);
+                }
+                // Create default Type for each role\
+                if (Config::get('laratrust_seeder.create_types')) {
+                    $this->command->info("Creating '{$key}' type");
+                    // Create default type for each role
+                    $type = \App\Models\Admin\TypeUser::firstOrCreate([
+                        'is_active' => rand(0, 1)
+                    ]);
+                    $typeid=$type->id;
+                    $typeTrans = DB::table('type_users_translation')->insert([
+                        [
+                            'name' => ucwords(str_replace('_', ' ', $key)),
+                            'description' => ucwords(str_replace('_', ' ', $key)),
+                            'local' => 'en',
+                            'type_users_id' => $typeid
+                        ],
+                        [
+                            'name' => ucwords(str_replace('_', ' ', $key)),
+                            'description' => ucwords(str_replace('_', ' ', $key)),
+                            'local' => 'ar',
+                            'type_users_id' => $typeid
+                        ]
+                    ]);
+                    $type->attachRole($role);
                 }
             }
         }
@@ -141,7 +194,9 @@ class LaratrustSeeder extends Seeder
         DB::table('permission_user')->truncate();
         DB::table('role_user')->truncate();
         DB::table('role_employee')->truncate();
+        DB::table('role_type')->truncate();
         DB::table('permission_employee')->truncate();
+        DB::table('permission_type')->truncate();
 
         if (Config::get('laratrust_seeder.truncate_tables')) {
             DB::table('roles')->truncate();
@@ -149,9 +204,17 @@ class LaratrustSeeder extends Seeder
 
             if (Config::get('laratrust_seeder.create_users')) {
                 $usersTable = (new \App\Models\User)->getTable();
+                $usersTransTable = (new \App\Models\Admin\TransModel\UserTranslation)->getTable();
+                $typeTable = (new \App\Models\Admin\TypeUser())->getTable();
+                $typeTransTable = (new \App\Models\Admin\TransModel\TypeUserTranslation())->getTable();
                 $employeesTable = (new \App\Models\Admin\Employee)->getTable();
+                $employeesTransTable = (new \App\Models\Admin\TransModel\EmployeeTranslation)->getTable();
                 DB::table($usersTable)->truncate();
+                DB::table($usersTransTable)->truncate();
                 DB::table($employeesTable)->truncate();
+                DB::table($employeesTransTable)->truncate();
+                DB::table($typeTable)->truncate();
+                DB::table($typeTransTable)->truncate();
             }
         }
 

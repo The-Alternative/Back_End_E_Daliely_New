@@ -7,7 +7,10 @@ use App\Models\Admin\Role;
 use App\Models\Doctors\Patient;
 use App\Models\Offer\Offer;
 use App\Models\SocialMedia\SocialMedia;
+use App\Models\Admin\TransModel\UserTranslation;
+use App\Models\Admin\TypeUser;
 use App\Models\Stores_Orders\Stores_Order;
+use App\Scopes\UserScope;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -69,6 +72,21 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+    protected static function booted()
+    {
+        parent::booted();
+        static::addGlobalScope(new UserScope);
+    }
+    public function UserTranslation()
+    {
+        return $this->hasMany(UserTranslation::class);
+    }
+    public function TypeUser(){
+        return $this->belongsToMany(TypeUser::class,
+            'user_types',
+            'user_id',
+            'type_id');
     }
     public function roles()
     {

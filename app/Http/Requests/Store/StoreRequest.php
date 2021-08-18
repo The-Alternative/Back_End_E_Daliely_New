@@ -29,18 +29,16 @@ class StoreRequest extends FormRequest
             'country_id'    =>'required',
             'gov_id'        =>'required',
             'city_id'       =>'required',
-            'offer_id'      =>'required',
+//            'offer_id'      =>'required',
             'socialMedia_id'=>'required',
-            'followers_id'  =>'required',
+//            'followers_id'  =>'required',
             'is_active'     =>'required',
-            'is_approved'   =>'required',
-            'delivery'      =>'required',
+//            'is_approved'   =>'required',
+//            'delivery'      =>'required',
             'edalilyPoint'  =>'required',
-            'rating'        =>'required',
+//            'rating'        =>'required',
             'workingHours'  =>'required',
             'logo'          =>'required',
-
-
             'store.*.title'          =>'required|min:5|max:255|string',
 
         ];

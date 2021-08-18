@@ -4,6 +4,7 @@ namespace App\Service\Admin;
 
 use App\Models\Admin\Employee;
 use App\Models\Admin\Role;
+use App\Models\Admin\TransModel\EmployeeTranslation;
 use App\Models\Order\Order;
 use App\Models\User;
 use App\Traits\GeneralTrait;
@@ -17,11 +18,13 @@ class EmployeeService
     use GeneralTrait;
     private $employeeModel;
     private $roleModel;
+    private $employeeTranslation;
 
-    public function __construct(Employee $employeeModel , Role $roleModel)
+    public function __construct(Employee $employeeModel , Role $roleModel ,EmployeeTranslation $employeeTranslation)
     {
         $this->employeeModel=$employeeModel;
         $this->roleModel=$roleModel;
+        $this->employeeTranslation=$employeeTranslation;
     }
     /*___________________________________________________________________________*/
     /****  Get All Active User Or By ID  ****/
@@ -112,10 +115,9 @@ class EmployeeService
 //            $validated = $request->validated();
             $request->is_active ? $is_active = true : $is_active = false;
             DB::beginTransaction();
+            $allemployees = collect($request->employee)->all();
 
             $employee=$this->employeeModel->create([
-               'first_name' => $request->first_name,
-               'last_name' => $request->last_name,
                'age' => $request->age,
                'location_id' => $request->location_id,
                'social_media_id' => $request->social_media_id,
@@ -127,6 +129,19 @@ class EmployeeService
                'start_date' => $request->start_date,
                'password' =>bcrypt($request->password)
             ]);
+            $employeeid=$employee->id;
+            if (isset($allemployees) && count($allemployees)) {
+                //insert other traslations for users
+                foreach ($allemployees as $allemployee) {
+                    $transEmployee_arr[] = [
+                        'first_name' => $allemployee ['first_name'],
+                        'last_name' => $allemployee ['last_name'],
+                        'local' => $allemployee['local'],
+                        'employee_id' => $employeeid
+                    ];
+                }
+                $this->employeeTranslation->insert($transEmployee_arr);
+            }
             $token = JWTAuth::fromUser($employee);
             if ($request->has('roles')) {
                 $role = $this->employeeModel->find($employee->id);
@@ -153,20 +168,46 @@ class EmployeeService
         try{
 //            $validated = $request->validated();
             $employee=$this->employeeModel->find($id);
-            $employee->update([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
+            if(!$employee)
+                return $this->returnError('400', 'not found this Employee');
+            $allemployees = collect($request->employee)->all();
+            if (!($request->has('user.is_active')))
+                $request->request->add(['is_active'=>0]);
+            else
+                $request->request->add(['is_active'=>1]);
+            $nemployee=$this->employeeModel->where('employees.id',$id)->update([
                 'age' => $request->age,
                 'location_id' => $request->location_id,
                 'social_media_id' => $request->social_media_id,
-                'image' => $request->image,
-                'email' => $request->email,
                 'is_active' => $request->is_active,
-                'salary' => $request->salary,
-                'certificate' => $request->certificate,
-                'start_date' => $request->start_date,
+                'image' => $request->image,
                 'password' =>bcrypt($request->password)
             ]);
+
+            $ss=$this->employeeTranslation->where('employee_translation.employee_id',$id);
+            $collection1 = collect($allemployees);
+            $allemployeeslength=$collection1->count();
+            $collection2 = collect($ss);
+
+            $db_employee= array_values(
+                $this->employeeTranslation
+                    ->where('employee_translation.employee_id',$id)
+                    ->get()
+                    ->all());
+            $dbdemployees = array_values($db_employee);
+            $request_employees = array_values($request->employee);
+            foreach($dbdemployees as $dbdemployee){
+                foreach($request_employees as $request_employee){
+                    $values= $this->employeeTranslation->where('employee_translation.employee_id',$id)
+                        ->where('local',$request_employee['local'])
+                        ->update([
+                            'first_name' => $request_employee ['first_name'],
+                            'last_name' => $request_employee ['last_name'],
+                            'local' => $request_employee['local'],
+                            'employee_id' => $id
+                        ]);
+                    }
+            }
             $token = JWTAuth::fromUser($employee);
             if ($request->has('roles')) {
                 $role = $this->employeeModel->find($employee->id);

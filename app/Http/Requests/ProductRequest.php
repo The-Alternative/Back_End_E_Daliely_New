@@ -25,18 +25,16 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'is_active'=>'required|in:1,0',
-            'slug'=>'required',
-            'barcode'=>'required',
-
-
             'product'=>'required|array|min:1',
             'product.*.name'=>'required|min:3|max:255|string',
             'product.*.short_des'=>'required|min:3|max:255|string',
             'product.*.long_des'=>'required|min:3|max:255|string',
             'product.*.meta'=>'required|min:3|max:255|string',
 
-
+            'is_active'=>'required|in:1,0',
+            'slug'=>'required',
+            'brand_id'=>'required',
+            'barcode'=>'required',
         ];
     }
     public function messages()

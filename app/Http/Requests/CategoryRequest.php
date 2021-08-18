@@ -39,12 +39,8 @@ class CategoryRequest extends FormRequest
         return [
             'required'=>'this field is required',
             'in'=>'this field must be 0 (is not active) or 1 (is active)',
-
-
             'name.min'=>'Your Category\'s name Is Too Short',
             'name.max'=>'Your Category\'s name Is Too Long',
-//            'name.unique'=>'This name\'s Is Used By Another Category',
-
             'slug.min'=>'Your Category\'s Slug Is Too Short ',
             'slug.max'=>'Your Category\'s Slug Is Too Long',
 

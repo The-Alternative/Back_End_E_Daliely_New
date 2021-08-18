@@ -44,7 +44,7 @@ Route::group(
                 Route::DELETE('/delete/{id}','PermissionsController@delete');
 //            });
         });
-        Route::group(['prefix' => 'users', 'namespace' => 'Admin'], function () {
+            Route::group(['prefix' => 'users', 'namespace' => 'Admin'], function () {
             Route::GET('/getAll','UsersController@getAll');
             Route::GET('/getById/{id}','UsersController@getById');
             Route::POST('/create','UsersController@create');
@@ -56,7 +56,7 @@ Route::group(
             Route::DELETE('/delete/{id}','UsersController@delete');
             Route::GET('/profile/{id}','UsersController@profile');
         });
-        Route::group(['prefix' => 'employee', 'namespace' => 'Admin'], function () {
+            Route::group(['prefix' => 'employee', 'namespace' => 'Admin'], function () {
             Route::GET('/getAll','EmployeesController@getAll');
             Route::GET('/getById/{id}','EmployeesController@getById');
             Route::POST('/create','EmployeesController@create');
@@ -67,6 +67,18 @@ Route::group(
             Route::GET('/getTrashed','EmployeesController@getTrashed');
             Route::DELETE('/delete/{id}','EmployeesController@delete');
             Route::GET('/profile/{id}','EmployeesController@profile');
+        });
+            Route::group(['prefix' => 'type', 'namespace' => 'Admin'], function () {
+            Route::GET('/getAll','TypeUsersController@getAll');
+            Route::GET('/getById/{id}','TypeUsersController@getById');
+            Route::POST('/create','TypeUsersController@create');
+            Route::PUT('/update/{id}','TypeUsersController@update');
+            Route::GET('/search/{title}','TypeUsersController@search');
+            Route::PUT('/trash/{id}','TypeUsersController@trash');
+            Route::PUT('/restoreTrashed/{id}','TypeUsersController@restoreTrashed');
+            Route::GET('/getTrashed','TypeUsersController@getTrashed');
+            Route::DELETE('/delete/{id}','TypeUsersController@delete');
+            Route::GET('/profile/{id}','TypeUsersController@profile');
         });
     });
 
