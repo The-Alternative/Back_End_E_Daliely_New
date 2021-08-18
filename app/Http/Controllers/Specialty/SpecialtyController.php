@@ -5,20 +5,14 @@ namespace App\Http\Controllers\Specialty;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Specialty\SpecialtyRequest;
 use App\Service\Specialty\SpecialtyService;
-use App\Traits\GeneralTrait;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class SpecialtyController extends Controller
 {
-    use GeneralTrait;
     private $SpecialtyService;
-    private $response;
 
-    public function __construct(SpecialtyService $SpecialtyService,Response $response )
+    public function __construct(SpecialtyService $SpecialtyService)
     {
         $this->SpecialtyService =$SpecialtyService;
-        $this->response=$response;
     }
     public function get()
     {

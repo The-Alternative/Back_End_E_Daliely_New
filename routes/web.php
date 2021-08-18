@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Offer\OfferController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\App;
+use App\Http\Controllers\Offer;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
