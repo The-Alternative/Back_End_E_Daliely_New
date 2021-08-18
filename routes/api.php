@@ -33,8 +33,7 @@ Route::group(
     [
         'prefix'     => LaravelLocalization::setLocale(),
 
-        'middleware' => ['api','ChangeLanguage','localize','localizationRedirect','localeViewPath']
-//        /,'role:superadministrator|administrator|user']
+        'middleware' => ['api','ChangeLanguage','localize','localizationRedirect','localeViewPath','role:superadministrator|administrator|user']
     ],
  function()
     {
