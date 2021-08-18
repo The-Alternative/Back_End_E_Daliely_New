@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOfferUsersTable extends Migration
+class CreateInteractionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateOfferUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('offer_users', function (Blueprint $table) {
+        Schema::create('interactions', function (Blueprint $table) {
             $table->id();
-            $table->integer('offer_id');
             $table->integer('user_id');
+            $table->integer('offer_id');
             $table->integer('interaction_type');
             $table->boolean('is_active');
             $table->timestamps();
@@ -30,6 +30,6 @@ class CreateOfferUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('offer_users');
+        Schema::dropIfExists('interactions');
     }
 }

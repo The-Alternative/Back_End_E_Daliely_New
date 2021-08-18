@@ -73,7 +73,8 @@ class DatabaseSeeder extends Seeder
             RestaurantManagerSeeder::class,
 
             OfferSeeder::class,
-            OfferUserSeeder::class,
+            CommentSeeder::class,
+            InteractionSeeder::class
         ]);
 
     }
