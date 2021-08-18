@@ -191,7 +191,7 @@ Route::group(['prefix'=>'doctors','namespace'=>'Doctors'],function () {
      Route::get('patient/gettrashed', [PatientController::class,'getTrashed']);
 
      /*---------------Doctor Rate Route--------*/
-Route::group(['prefix'=>'doctorrate','namespace'=>'DoctorRate'],function () {
+Route::group(['prefix'=>'doctorrates','namespace'=>'DoctorRate'],function () {
     Route::get('/', 'DoctorRateController@get');
     Route::get('/{id}', 'DoctorRateController@getById');
     Route::post('/', 'DoctorRateController@create');
@@ -200,7 +200,7 @@ Route::group(['prefix'=>'doctorrate','namespace'=>'DoctorRate'],function () {
     Route::delete('/{id}', 'DoctorRateController@delete');
     Route::PUT('/restoretrashed/{id}', 'DoctorRateController@restoreTrashed');
 });
-     Route::get('drrate/gettrashed', [DoctorRateController::class,'getTrashed']);
+     Route::get('doctorrate/gettrashed', [DoctorRateController::class,'getTrashed']);
 
          /*--------------Social Media Route-------*/
 Route::group(['prefix'=>'socialmedia','namespace'=>'SocialMedia'],function () {
