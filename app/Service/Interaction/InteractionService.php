@@ -19,7 +19,7 @@ class InteractionService
     {
         try{
             $interaction=$this->InteractionModel::paginate(5);
-            $this->returnData('Interaction',$interaction,'done');
+             return $this->returnData('Interaction',$interaction,'done');
         }
         catch (\Exception $ex)
         {
@@ -58,7 +58,7 @@ class InteractionService
                 return $this->returnError('400','saving failed');
             }
             else{
-                $this->returnData('Interaction',$interaction,'done');
+               return  $this->returnData('Interaction',$interaction,'done');
             }
         }
         catch (\Exception $ex){
@@ -69,6 +69,7 @@ class InteractionService
     {
         try{
             $interaction=$this->InteractionModel::find($id);
+            if(!$interaction){return $this->returnError('400','not found this Interaction');}
 
             $interaction->user_id          =$request->user_id;
             $interaction->offer_id         =$request->offer_id;
@@ -82,7 +83,7 @@ class InteractionService
                 return $this->returnError('400','updating failed');
             }
             else{
-                $this->returnData('Interaction',$interaction,'done');
+               return  $this->returnData('Interaction',$interaction,'done');
             }
         }
         catch (\Exception $ex){
@@ -120,7 +121,7 @@ class InteractionService
             return  $this->returnError($ex->getCode(),$ex->getMessage());
         }
     }
-    public function restoreTrash($id)
+    public function restoreTrashed($id)
     {
         try{
             $interaction=$this->InteractionModel::find($id);
@@ -148,14 +149,13 @@ class InteractionService
                 return $this->returnError('400','not found this interaction');
             }
             elseif($interaction->is_active==0){
-                   $interaction->delete();
+                   $interaction=$this->InteractionModel->delete();
                 return $this->returnData('interaction',$interaction,'this interaction is deleted now');
             }
             else{
                 return $this->returnError('400','this interaction can not deleted now');
             }
         }
-
         catch (\Exception $ex){
             return  $this->returnError($ex->getCode(),$ex->getMessage());
         }

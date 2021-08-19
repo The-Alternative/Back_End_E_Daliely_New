@@ -29,7 +29,7 @@ class InteractionController extends Controller
     }
     public function update(InteractionRequest $request,$id)
     {
-        return $this->InteractionService->update();
+        return $this->InteractionService->update($request,$id);
     }
     public function trash($id)
     {
@@ -39,9 +39,9 @@ class InteractionController extends Controller
     {
         return $this->InteractionService->gettrashed();
     }
-    public function restoreTrash($id)
+    public function restoreTrashed($id)
     {
-        return $this->InteractionService->restoreTrash($id);
+        return $this->InteractionService->restoreTrashed($id);
     }
     public function delete($id)
     {
