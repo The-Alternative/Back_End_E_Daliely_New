@@ -99,14 +99,4 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Stores_Order::class);
     }
-    //    public function permissions()
-//    {
-//        return $this->belongsToMany(
-//            Permission::class,
-//            'permission_user',
-//            'user_id',
-//            'permission_id',
-//            'id',
-//            'id');
-//    }
 }
