@@ -379,6 +379,7 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::get('/get-product/{item_id}', 'ItemController@getProduct');
 
      });
+
  });
 
 
