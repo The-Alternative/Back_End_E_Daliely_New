@@ -25,8 +25,6 @@ class StoreSeeder extends Seeder
                 'offer_id'=> $faker->numberBetween(1,10),
                 'street_id'=>  $faker->numberBetween(1,10),
                 'followers_id'=> $faker->numberBetween(1,10),
-                'is_active'=> $faker->boolean,
-                'is_approved'=> $faker->boolean,
                 'delivery'=> $faker->boolean,
                 'socialMedia_id'=> $faker->numberBetween(1,10),
                 'edalilyPoint'=>$faker->sentence(1),
@@ -34,7 +32,8 @@ class StoreSeeder extends Seeder
                 'workingHours'=>$faker->sentence(1),
                 'logo'=>$faker->sentence(1),
             ]);
-            DB::table('store_translations')->insert([[
+            DB::table('store_translations')->insert([
+                [
                 'title' => $faker->sentence(5),
                 'local' => 'en',
                 'store_id' => $s
@@ -43,7 +42,8 @@ class StoreSeeder extends Seeder
                     'title' => $faker->sentence(5),
                     'local' => 'ar',
                     'store_id' => $s
-                ]]);
+                ]
+            ]);
 
         }
     }

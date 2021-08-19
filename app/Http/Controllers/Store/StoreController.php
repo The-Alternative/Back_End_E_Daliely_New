@@ -24,6 +24,19 @@ class StoreController extends Controller
 //        $this->middleware(['permission:store-delete'])->only(['trash','restoreTrashed','getTrashed']);
         $this->StoreService=$StoreService;
     }
+    /****________________   admins dashboard functions ________________****/
+    /****________________   Store's approved ________________****/
+    public function aprrove( $id)
+    {
+        return $this->StoreService->aprrove($id);
+    }
+    /****________________   Store's list ________________****/
+    public function dashgetAll()
+    {
+        return $this->StoreService->dashgetAll();
+    }
+    /****____________________________________________________****/
+    /****________________   client side functions ________________****/
     public function getAll()
     {
         return $this->StoreService->getAll();
@@ -36,7 +49,7 @@ class StoreController extends Controller
     {
         return $this->StoreService->getTrashed();
     }
-    public function create(Request $request)
+    public function create(StoreRequest $request)
     {
         return $this->StoreService->create($request);
     }

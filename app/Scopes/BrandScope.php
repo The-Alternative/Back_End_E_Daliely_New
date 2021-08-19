@@ -14,9 +14,9 @@ class BrandScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         $builder->join('brand_translation', 'brands.id', '=', 'brand_translation.brand_id')
-            ->where('brand_translation.locale', '=', Config::get('app.locale'))
+            ->where('brand_translation.local', '=', Config::get('app.locale'))
             ->select([
                 'brands.id','brands.is_active',
-                'brand_translation.name','brand_translation.description', 'brand_translation.locale']);
+                'brand_translation.name','brand_translation.description', 'brand_translation.local']);
     }
 }

@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class StoresProductsTable extends Migration
+class CreateStoresProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -20,8 +20,9 @@ class StoresProductsTable extends Migration
             $table->unsignedInteger('product_id')->index();
             $table->unsignedInteger('price');
             $table->unsignedInteger('quantity')->default(300);
-            $table->boolean('is_active')->default(1);
-            $table->boolean('is_appear')->default(1);
+            $table->boolean('is_active')->default(0);
+            $table->boolean('is_appear')->default(0);
+            $table->boolean('is_approve')->default(0);
             $table->timestamps();
         });
   }

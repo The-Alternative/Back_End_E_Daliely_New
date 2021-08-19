@@ -15,6 +15,7 @@ use App\Scopes\ProductScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -22,12 +23,11 @@ class Product extends Model
     protected $primaryKey = 'id';
     protected $table ='products';
     protected $fillable = [
-        'slug','image','category_id','barcode',
-      'custom_feild_id', 'brand_id', 'rating_id',
-      'offer_id', 'is_appear','is_active'
-];
+        'slug','image','category_id',
+        'barcode', 'brand_id','is_appear','is_active'
+    ];
     protected $hidden = [
-        'created_at', 'updated_at'
+        'created_at', 'updated_at','category_id','brand_id'
     ];
     protected $casts = [
         'is_active' => 'boolean',
@@ -61,13 +61,9 @@ class Product extends Model
         parent::booted();
         static::addGlobalScope(new ProductScope);
     }
-    public function scopeWithStore()
+    public function scopeActive($q)
     {
-      return  $query=StoreProduct::join('stores_products', 'stores_products.product_id', '=', 'products.id')
-            ->select([
-//                'products.id','products.image','products.is_appear','products.created_at',
-                'stores_products.price',
-                'stores_products.quantity'])->get();
+      return $q->select('id', 'is_active');
     }
     //______________________________ scopes end _______________________________________//
     public function ProductTranslation()
@@ -99,7 +95,7 @@ class Product extends Model
             'products_custom_fields',
             'product_id',
             'customfield_id');
-    }
+    }/***->not im used***/
     public function ProductImage()
         {
         return $this->hasMany(ProductImage::class);

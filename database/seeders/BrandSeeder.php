@@ -24,7 +24,7 @@ class BrandSeeder extends Seeder
             DB::table('brand_translation')->insert([[
                 'brand_id' => $s,
                 'description' => $faker->sentence(10),
-                'locale' => 'en',
+                'local' => 'en',
                 'name' => $faker->sentence(5)
 
 
@@ -32,7 +32,7 @@ class BrandSeeder extends Seeder
                 [
                     'brand_id' => $s,
                     'description' => $faker->sentence(10),
-                    'locale' => 'ar',
+                    'local' => 'ar',
                     'name' => $faker->sentence(5)
                 ]]);
 

@@ -34,8 +34,8 @@ Route::group(
                 Route::GET('/getTrashed','ProductsController@getTrashed');
                 Route::DELETE('/delete/{id}','ProductsController@delete');
             });
-
-            Route::group(['prefix'=>'payment','namespace'=>'Stores_Orders'],function()
+        /**__________________________ Payment routes  __________________________**/
+        Route::group(['prefix'=>'payment','namespace'=>'Stores_Orders'],function()
             {
                 Route::Post('/getcheckout','StoresOrderController@getChekOutId');
             });
@@ -93,19 +93,6 @@ Route::group(
                 Route::PUT('/restoreTrashed/{id}','BrandController@restoreTrashed');
                 Route::GET('/getTrashed','BrandController@getTrashed');
                 Route::DELETE('/delete/{id}','BrandController@delete');
-            });
-        /**__________________________ Language routes __________________________**/
-        Route::group(['prefix'=>'languages','namespace'=>'Language'],function()
-            {
-                Route::POST('/getAll','LanguageController@getAll');
-                Route::POST('/getById/{id}','LanguageController@getById');
-                Route::POST('/create','LanguageController@create');
-                Route::post('/update/{id}','LanguageController@update');
-                Route::POST('/search/{title}','LanguageController@search');
-                Route::PUT('/trash/{id}','LanguageController@trash');
-                Route::PUT('/restoreTrashed/{id}','LanguageController@restoreTrashed');
-                Route::POST('/getTrashed','LanguageController@getTrashed');
-                Route::DELETE('/delete/{id}','LanguageController@delete');
             });
         /**__________________________ Store routes    __________________________**/
          Route::group(['prefix'=>'stores','namespace'=>'Store'],function ()
@@ -395,7 +382,6 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::get('/get-product/{item_id}', 'ItemController@getProduct');
 
      });
-
  });
 
 

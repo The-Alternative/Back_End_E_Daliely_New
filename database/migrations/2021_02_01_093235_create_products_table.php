@@ -19,8 +19,6 @@ class CreateProductsTable extends Migration
             $table->string('slug');
             $table->string('barcode');
             $table->unsignedInteger('brand_id')->index();
-            $table->unsignedInteger('rating_id')->index();
-            $table->unsignedInteger('offer_id')->index();
             $table->boolean('is_active');
             $table->boolean('is_appear');
             $table->timestamps();

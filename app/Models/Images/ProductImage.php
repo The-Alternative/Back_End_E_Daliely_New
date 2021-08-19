@@ -10,11 +10,13 @@ class ProductImage extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id';
+    protected $primaryKey ='id';
     protected $table ='product_images';
-    protected $fillable = ['product_id','image','is_cover'];
+    protected $fillable =['product_id','image','is_cover'];
+    protected $hidden=['product_id','created_at','updated_at'];
 
-    public function Product(){
+    public function Product()
+    {
         return $this->belongsTo(Product::class);
     }
 

@@ -7,11 +7,15 @@ use App\Models\Custom_Fieldes\Custom_Field;
 use App\Models\Products\ProductTranslation;
 use App\Models\Stores\Store;
 use App\Models\Stores\StoreProduct;
+use App\Scopes\BrandScope;
+use App\Scopes\CategoryScope;
+use App\Scopes\ProductScope;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\ProductRequest;
 use App\Models\Products\Product;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Laratrust\Laratrust;
@@ -27,12 +31,10 @@ class ProductService
     private $SectionModel;
     private $storeModel;
     private $storeProductModel;
-    private $laraturst;
-
     public function __construct(
         Product $product, ProductTranslation $productTranslation,
         Category $category, Section $sectionModel, Store $storeModel,
-        StoreProduct $storeProduct, Custom_Field $CustomField ,Laratrust $laraturst
+        StoreProduct $storeProduct, Custom_Field $CustomField
     )
     {
         $this->productModel = $product;
@@ -42,7 +44,106 @@ class ProductService
         $this->storeModel = $storeModel;
         $this->storeProductModel = $storeProduct;
         $this->customFieldModel = $CustomField;
-        $this->laratrustClass=$laraturst;
+    }
+    /*** this function for dashboard ***/
+    public function dashgetAll()
+    {
+        try {
+            $products = Product::withoutGlobalScope(ProductScope::class)->active()
+                ->with([
+                    'ProductTranslation' => function ($q) {
+                    return $q->where('product_translations.local', '='
+                        , Config::get('app.locale'))
+                        ->select('product_translations.name',
+                            'product_translations.short_des',
+                            'product_translations.product_id',
+                            'product_translations.local')
+                        ->get();
+                }, 'ProductImage' => function ($q) {
+                    return $q->where('product_images.is_cover', 1)
+                        ->select('product_id', 'image')
+                        ->get();
+                }, 'Category' => function ($q) {
+                    return $q->withoutGlobalScope(CategoryScope::class)
+                        ->select(['categories.id'])
+                        ->with(['CategoryTranslation' => function ($q) {
+                            return $q->where('category_translations.local', '='
+                                , Config::get('app.locale'))
+                                ->select(['category_translations.name',
+                                    'category_translations.local',
+                                    'category_translations.category_id'])
+                                ->get();
+                        }])->get();
+                }])->paginate(10);
+            if (count($products) > 0) {
+                return $response = $this->returnData('Products', $products, 'done');
+            } else {
+                return $response = $this->returnSuccessMessage('Product', 'Products doesnt exist yet');
+            }
+        } catch (\Exception $e) {
+            return $this->returnError('400', $e->getMessage());
+        }
+    }
+    public function dashgetById($id)
+    {
+        try {
+            $product = $this->productModel->with([
+                'Category' => function ($q) {
+                return $q->withoutGlobalScope(CategoryScope::class)
+                    ->select(['categories.id'])
+                    ->with([
+                        'CategoryTranslation' => function ($q) {
+                        return $q->where('category_translations.local', '='
+                            , Config::get('app.locale'))
+                            ->select(['category_translations.name',
+                                'category_translations.local',
+                                'category_translations.category_id'])
+                            ->get();
+                    }])->get();
+            },
+                'ProductImage'=> function ($q) {
+                return $q->select('product_id', 'image')
+                    ->get();
+            },
+                'Brand' => function ($q) {
+                return $q->withoutGlobalScope(BrandScope::class)
+                    ->select(['brands.id'])
+                    ->with(['BrandTranslation'=>function($q){
+                        return $q->where('brand_translation.local','='
+                            , Config::get('app.locale'))
+                            ->select(['brand_translation.name','brand_translation.brand_id'
+                            ])->get();
+                }])->get();
+            },
+                'Custom_Field'=> function ($q) {
+                    return $q->withoutGlobalScope(BrandScope::class)
+                        ->select(['custom_fields.id'])
+                        ->with(['custom__fields__translations'=>function($q){
+                            return $q->where('custom__fields__translations.local','='
+                                , Config::get('app.locale'))
+                                ->select(['custom__fields__translations.name'
+                                    ,'custom__fields__translations.custom_field_id'
+                                ])->get();
+                        }])->get();
+                },
+                'Custom_Field_Value'=> function ($q) {
+                    return $q->withoutGlobalScope(BrandScope::class)
+                        ->select(['custom_field_value.id'])
+                        ->with(['BrandTranslation'=>function($q){
+                            return $q->where('brand_translation.local','='
+                                , Config::get('app.locale'))
+                                ->select(['brand_translation.name','brand_translation.brand_id'
+                                ])->get();
+                        }])->get();
+                }])
+                ->find($id);
+            if (!isset($product)) {
+                return $response = $this->returnSuccessMessage('This Product not found', 'done');
+            }
+            return $response = $this->returnData('product', $product, 'done');
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
+        }
     }
     /*__________________________________________________________________*/
     /****Get All Active Products  ****/
@@ -50,7 +151,9 @@ class ProductService
     {
         try {
             $products = $this->productModel
-                ->with(['Store', 'ProductImage'])->paginate(10);
+                ->with(['Store', 'ProductImage'])
+                ->where('products.is_active','=',1)
+                ->paginate(10);
             if (count($products) > 0) {
                 return $response = $this->returnData('Products', $products, 'done');
             } else {
@@ -90,9 +193,9 @@ class ProductService
         try {
             $products = $this->categoryModel->with('Product')->find($id);
             if (is_null($products)) {
-                return $response = $this->returnSuccessMessage('This category not have products', 'done');
+                return $this->returnSuccessMessage('This category not have products', 'done');
             } else {
-                return $response = $this->returnData('Products', $products, 'done');
+                return $this->returnData('Products',$products, 'done');
             }
         } catch (\Exception $e) {
             return $this->returnError('400', $e->getMessage());
@@ -103,7 +206,9 @@ class ProductService
     public function getById($id)
     {
         try {
-            $product = $this->productModel->with(['Store', 'Category', 'ProductImage', 'Brand', 'StoreProduct'])
+            $product = $this->productModel
+                ->with(['Store', 'Category', 'ProductImage', 'Brand', 'StoreProduct'])
+                ->where('products.is_active','=',1)
                 ->find($id);
             if (!isset($product)) {
                 return $response = $this->returnSuccessMessage('This Product not found', 'done');
@@ -119,7 +224,7 @@ class ProductService
     public function getTrashed()
     {
         try {
-            $product = $this->productModel->where('is_active', 0)->get();
+            $product = $this->productModel->where('products.is_active','=',0)->get();
 
             if (count($product) > 0) {
                 return $response = $this->returnData('Store', $product, 'done');
@@ -173,7 +278,7 @@ class ProductService
 
         try {
 //            dd($request->all());
-                $validated = $request->validated();
+            $request->validated();
             $request->is_active ? $is_active = true : $is_active = false;
             $request->is_appear ? $is_appear = true : $is_appear = false;
             /////////////transformation to collection/////////////////////////

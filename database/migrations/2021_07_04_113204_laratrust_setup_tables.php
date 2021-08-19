@@ -85,47 +85,40 @@ class LaratrustSetupTables extends Migration
             ]);
         });
         // Create table for associating permissions to users (Many To Many Polymorphic)
-        Schema::create('permission_user', function (Blueprint $table) {
-            $table->unsignedBigInteger('permission_id');
-            $table->unsignedBigInteger('user_id');
-//            $table->string('user_type');
-
-            $table->foreign('permission_id')->references('id')->on('permissions')
-                ->onUpdate('cascade')->onDelete('cascade');
-
-            $table->primary([
-                'user_id',
-                'permission_id',
-//                'user_type'
-            ]);
-        });
+//        Schema::create('permission_user', function (Blueprint $table) {
+//            $table->unsignedBigInteger('permission_id');
+//            $table->unsignedBigInteger('user_id');
+//            $table->foreign('permission_id')->references('id')->on('permissions')
+//                ->onUpdate('cascade')->onDelete('cascade');
+//            $table->primary([
+//                'user_id',
+//                'permission_id',
+//            ]);
+//        });
         // Create table for associating permissions to users (Many To Many Polymorphic)
-        Schema::create('permission_employee', function (Blueprint $table) {
-            $table->unsignedBigInteger('permission_id');
-            $table->unsignedBigInteger('employee_id');
-//            $table->string('user_type');
-
-            $table->foreign('permission_id')->references('id')->on('permissions')
-                ->onUpdate('cascade')->onDelete('cascade');
-
-            $table->primary([
-                'employee_id',
-                'permission_id',
-//                'user_type'
-            ]);
-        });
+//        Schema::create('permission_employee', function (Blueprint $table) {
+//            $table->unsignedBigInteger('permission_id');
+//            $table->unsignedBigInteger('employee_id');
+//            $table->foreign('permission_id')->references('id')->on('permissions')
+//                ->onUpdate('cascade')->onDelete('cascade');
+//
+//            $table->primary([
+//                'employee_id',
+//                'permission_id',
+//            ]);
+//        });
         // Create table for associating permissions to users (Many To Many Polymorphic)
-        Schema::create('permission_type', function (Blueprint $table) {
-            $table->unsignedBigInteger('permission_id');
-            $table->unsignedBigInteger('type_id');
-            $table->foreign('permission_id')
-                ->references('id')->on('permissions')
-                ->onUpdate('cascade')->onDelete('cascade');
-            $table->primary([
-                'type_id',
-                'permission_id',
-            ]);
-        });
+//        Schema::create('permission_type', function (Blueprint $table) {
+//            $table->unsignedBigInteger('permission_id');
+//            $table->unsignedBigInteger('type_id');
+//            $table->foreign('permission_id')
+//                ->references('id')->on('permissions')
+//                ->onUpdate('cascade')->onDelete('cascade');
+//            $table->primary([
+//                'type_id',
+//                'permission_id',
+//            ]);
+//        });
         // Create table for associating permissions to roles (Many-to-Many)
         Schema::create('permission_role', function (Blueprint $table) {
             $table->unsignedBigInteger('permission_id');
@@ -147,10 +140,10 @@ class LaratrustSetupTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permission_user');
+//        Schema::dropIfExists('permission_user');
         Schema::dropIfExists('permission_role');
-        Schema::dropIfExists('permission_employee');
-        Schema::dropIfExists('permission_type');
+//        Schema::dropIfExists('permission_employee');
+//        Schema::dropIfExists('permission_type');
         Schema::dropIfExists('permissions');
         Schema::dropIfExists('role_user');
         Schema::dropIfExists('role_employee');
