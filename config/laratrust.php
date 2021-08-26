@@ -11,7 +11,6 @@ return [
     |
     */
     'use_morph_map' => true,
-
     /*
     |--------------------------------------------------------------------------
     | Which permissions and role checker to use.
@@ -26,7 +25,6 @@ return [
     |
      */
     'checker' => 'default',
-
     /*
     |--------------------------------------------------------------------------
     | Cache
@@ -58,7 +56,6 @@ return [
         */
         'expiration_time' => 3600,
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Laratrust User Models
@@ -77,7 +74,6 @@ return [
         'employees'=>\App\Models\Admin\Employee::class,
         'type'=>\App\Models\Admin\TypeUser::class
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Laratrust Models
@@ -99,7 +95,6 @@ return [
          */
         'team' => \App\Models\Team::class,
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Laratrust Tables
@@ -131,7 +126,6 @@ return [
         'role_type' => 'role_type',
         'permission_type' => 'permission_type',
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Laratrust Foreign Keys
@@ -168,7 +162,6 @@ return [
          */
         'team' => 'team_id',
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Laratrust Middleware
@@ -217,7 +210,6 @@ return [
             ]
         ]
     ],
-
     'teams' => [
         /*
         |--------------------------------------------------------------------------
@@ -243,7 +235,6 @@ return [
         */
         'strict_check' => false,
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Laratrust Magic 'isAbleTo' Method
@@ -254,7 +245,6 @@ return [
     |
     */
     'magic_is_able_to_method_case' => 'kebab_case',
-
     /*
     |--------------------------------------------------------------------------
     | Laratrust Permissions as Gates
@@ -264,7 +254,6 @@ return [
     |
     */
     'permissions_as_gates' => false,
-
     /*
     |--------------------------------------------------------------------------
     | Laratrust Panel
@@ -324,7 +313,7 @@ return [
         | Enable/Disable the permissions assignment to the users.
         |
         */
-        'assign_permissions_to_user' => true,
+        'assign_permissions_to_user' => false,
 
         /*
         |--------------------------------------------------------------------------

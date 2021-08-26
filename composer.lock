@@ -64,16 +64,16 @@
         },
         {
             "name": "brick/math",
-            "version": "0.9.2",
+            "version": "0.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brick/math.git",
-                "reference": "dff976c2f3487d42c1db75a3b180e2b9f0e72ce0"
+                "reference": "ca57d18f028f84f777b2168cd1911b0dee2343ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brick/math/zipball/dff976c2f3487d42c1db75a3b180e2b9f0e72ce0",
-                "reference": "dff976c2f3487d42c1db75a3b180e2b9f0e72ce0",
+                "url": "https://api.github.com/repos/brick/math/zipball/ca57d18f028f84f777b2168cd1911b0dee2343ae",
+                "reference": "ca57d18f028f84f777b2168cd1911b0dee2343ae",
                 "shasum": ""
             },
             "require": {
@@ -83,7 +83,7 @@
             "require-dev": {
                 "php-coveralls/php-coveralls": "^2.2",
                 "phpunit/phpunit": "^7.5.15 || ^8.5 || ^9.0",
-                "vimeo/psalm": "4.3.2"
+                "vimeo/psalm": "4.9.2"
             },
             "type": "library",
             "autoload": {
@@ -108,15 +108,94 @@
             ],
             "support": {
                 "issues": "https://github.com/brick/math/issues",
-                "source": "https://github.com/brick/math/tree/0.9.2"
+                "source": "https://github.com/brick/math/tree/0.9.3"
             },
             "funding": [
+                {
+                    "url": "https://github.com/BenMorel",
+                    "type": "github"
+                },
                 {
                     "url": "https://tidelift.com/funding/github/packagist/brick/math",
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-20T22:51:39+00:00"
+            "time": "2021-08-15T20:50:18+00:00"
+        },
+        {
+            "name": "dflydev/dot-access-data",
+            "version": "v3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dflydev/dflydev-dot-access-data.git",
+                "reference": "0992cc19268b259a39e86f296da5f0677841f42c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dflydev/dflydev-dot-access-data/zipball/0992cc19268b259a39e86f296da5f0677841f42c",
+                "reference": "0992cc19268b259a39e86f296da5f0677841f42c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.12.42",
+                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.3",
+                "scrutinizer/ocular": "1.6.0",
+                "squizlabs/php_codesniffer": "^3.5",
+                "vimeo/psalm": "^3.14"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Dflydev\\DotAccessData\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dragonfly Development Inc.",
+                    "email": "info@dflydev.com",
+                    "homepage": "http://dflydev.com"
+                },
+                {
+                    "name": "Beau Simensen",
+                    "email": "beau@dflydev.com",
+                    "homepage": "http://beausimensen.com"
+                },
+                {
+                    "name": "Carlos Frutos",
+                    "email": "carlos@kiwing.it",
+                    "homepage": "https://github.com/cfrutos"
+                },
+                {
+                    "name": "Colin O'Dell",
+                    "email": "colinodell@gmail.com",
+                    "homepage": "https://www.colinodell.com"
+                }
+            ],
+            "description": "Given a deep data structure, access data by dot notation.",
+            "homepage": "https://github.com/dflydev/dflydev-dot-access-data",
+            "keywords": [
+                "access",
+                "data",
+                "dot",
+                "notation"
+            ],
+            "support": {
+                "issues": "https://github.com/dflydev/dflydev-dot-access-data/issues",
+                "source": "https://github.com/dflydev/dflydev-dot-access-data/tree/v3.0.1"
+            },
+            "time": "2021-08-13T13:06:58+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -988,6 +1067,7 @@
         },
         {
             "name": "laravel/framework",
+
             "version": "v8.53.1",
             "source": {
                 "type": "git",
@@ -998,6 +1078,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/framework/zipball/5df423c2790f32b26baee90518bb659572aa404f",
                 "reference": "5df423c2790f32b26baee90518bb659572aa404f",
+
                 "shasum": ""
             },
             "require": {
@@ -1070,7 +1151,9 @@
                 "illuminate/view": "self.version"
             },
             "require-dev": {
+      
                 "aws/aws-sdk-php": "^3.186.4",
+
                 "doctrine/dbal": "^2.6|^3.0",
                 "filp/whoops": "^2.8",
                 "guzzlehttp/guzzle": "^6.5.5|^7.0.1",
@@ -1083,7 +1166,9 @@
                 "symfony/cache": "^5.1.4"
             },
             "suggest": {
+
                 "aws/aws-sdk-php": "Required to use the SQS queue driver, DynamoDb failed job storage and SES mail driver (^3.186.4).",
+
                 "brianium/paratest": "Required to run tests in parallel (^6.0).",
                 "doctrine/dbal": "Required to rename columns and drop SQLite columns (^2.6|^3.0).",
                 "ext-ftp": "Required to use the Flysystem FTP driver.",
@@ -1152,7 +1237,9 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
+
             "time": "2021-08-05T14:04:08+00:00"
+
         },
         {
             "name": "laravel/tinker",
@@ -1344,6 +1431,7 @@
         },
         {
             "name": "league/commonmark",
+
             "version": "2.0.1",
             "source": {
                 "type": "git",
@@ -1354,11 +1442,14 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/0d57f20aa03129ee7ef5f690e634884315d4238c",
                 "reference": "0d57f20aa03129ee7ef5f690e634884315d4238c",
+
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
+
                 "league/config": "^1.1",
+
                 "php": "^7.4 || ^8.0",
                 "psr/event-dispatcher": "^1.0",
                 "symfony/polyfill-php80": "^1.15"
@@ -1451,24 +1542,26 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-31T19:15:22+00:00"
+
+            "time": "2021-08-14T14:06:04+00:00"
         },
         {
             "name": "league/config",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/config.git",
-                "reference": "20d42d88f12a76ff862e17af4f14a5a4bbfd0925"
+                "reference": "a9d39eeeb6cc49d10a6e6c36f22c4c1f4a767f3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/config/zipball/20d42d88f12a76ff862e17af4f14a5a4bbfd0925",
-                "reference": "20d42d88f12a76ff862e17af4f14a5a4bbfd0925",
+                "url": "https://api.github.com/repos/thephpleague/config/zipball/a9d39eeeb6cc49d10a6e6c36f22c4c1f4a767f3e",
+                "reference": "a9d39eeeb6cc49d10a6e6c36f22c4c1f4a767f3e",
                 "shasum": ""
             },
             "require": {
-                "dflydev/dot-access-data": "^3.0",
+                "dflydev/dot-access-data": "^3.0.1",
+
                 "nette/schema": "^1.2",
                 "php": "^7.4 || ^8.0"
             },
@@ -1533,20 +1626,22 @@
                     "type": "github"
                 }
             ],
+
             "time": "2021-06-19T15:52:37+00:00"
+
         },
         {
             "name": "league/flysystem",
-            "version": "1.1.4",
+            "version": "1.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "f3ad69181b8afed2c9edf7be5a2918144ff4ea32"
+                "reference": "18634df356bfd4119fe3d6156bdb990c414c14ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/f3ad69181b8afed2c9edf7be5a2918144ff4ea32",
-                "reference": "f3ad69181b8afed2c9edf7be5a2918144ff4ea32",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/18634df356bfd4119fe3d6156bdb990c414c14ea",
+                "reference": "18634df356bfd4119fe3d6156bdb990c414c14ea",
                 "shasum": ""
             },
             "require": {
@@ -1619,7 +1714,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/1.1.4"
+                "source": "https://github.com/thephpleague/flysystem/tree/1.1.5"
             },
             "funding": [
                 {
@@ -1627,7 +1722,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2021-06-23T21:56:05+00:00"
+            "time": "2021-08-17T13:49:42+00:00"
         },
         {
             "name": "league/mime-type-detection",
@@ -1926,6 +2021,7 @@
         },
         {
             "name": "nesbot/carbon",
+
             "version": "2.51.1",
             "source": {
                 "type": "git",
@@ -1936,6 +2032,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/8619c299d1e0d4b344e1f98ca07a1ce2cfbf1922",
                 "reference": "8619c299d1e0d4b344e1f98ca07a1ce2cfbf1922",
+
                 "shasum": ""
             },
             "require": {
@@ -2016,7 +2113,9 @@
                     "type": "tidelift"
                 }
             ],
+
             "time": "2021-07-28T13:16:28+00:00"
+
         },
         {
             "name": "nette/schema",
@@ -2082,6 +2181,7 @@
         },
         {
             "name": "nette/utils",
+
             "version": "v3.2.2",
             "source": {
                 "type": "git",
@@ -2092,6 +2192,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/nette/utils/zipball/967cfc4f9a1acd5f1058d76715a424c53343c20c",
                 "reference": "967cfc4f9a1acd5f1058d76715a424c53343c20c",
+
                 "shasum": ""
             },
             "require": {
@@ -2161,9 +2262,11 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/utils/issues",
+
                 "source": "https://github.com/nette/utils/tree/v3.2.2"
             },
             "time": "2021-03-03T22:53:25+00:00"
+
         },
         {
             "name": "nikic/php-parser",
@@ -2914,6 +3017,7 @@
         },
         {
             "name": "ramsey/uuid",
+
             "version": "4.2.0",
             "source": {
                 "type": "git",
@@ -2924,6 +3028,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/ramsey/uuid/zipball/7231612a5221f5524d3575bebdce20eeef8547a1",
                 "reference": "7231612a5221f5524d3575bebdce20eeef8547a1",
+
                 "shasum": ""
             },
             "require": {
@@ -2995,7 +3100,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ramsey/uuid/issues",
+
                 "source": "https://github.com/ramsey/uuid/tree/4.2.0"
+
             },
             "funding": [
                 {
@@ -3007,7 +3114,9 @@
                     "type": "tidelift"
                 }
             ],
+
             "time": "2021-08-06T22:30:43+00:00"
+
         },
         {
             "name": "santigarcor/laratrust",
@@ -5971,6 +6080,7 @@
         },
         {
             "name": "facade/ignition",
+
             "version": "2.11.2",
             "source": {
                 "type": "git",
@@ -5981,6 +6091,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/facade/ignition/zipball/7c4e7a7da184cd00c7ce6eacc590200bb9672de7",
                 "reference": "7c4e7a7da184cd00c7ce6eacc590200bb9672de7",
+
                 "shasum": ""
             },
             "require": {
@@ -6043,7 +6154,9 @@
                 "issues": "https://github.com/facade/ignition/issues",
                 "source": "https://github.com/facade/ignition"
             },
+
             "time": "2021-07-20T14:01:22+00:00"
+
         },
         {
             "name": "facade/ignition-contracts",
@@ -6287,6 +6400,7 @@
         },
         {
             "name": "laravel/sail",
+
             "version": "v1.9.0",
             "source": {
                 "type": "git",
@@ -6297,6 +6411,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/sail/zipball/3e1aa8679b10ae9210eebfbc2ee5f3600f356702",
                 "reference": "3e1aa8679b10ae9210eebfbc2ee5f3600f356702",
+
                 "shasum": ""
             },
             "require": {
@@ -6344,6 +6459,7 @@
                 "source": "https://github.com/laravel/sail"
             },
             "time": "2021-08-03T18:51:44+00:00"
+
         },
         {
             "name": "mockery/mockery",
@@ -6477,6 +6593,7 @@
         },
         {
             "name": "nunomaduro/collision",
+
             "version": "v5.6.0",
             "source": {
                 "type": "git",
@@ -6487,6 +6604,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/nunomaduro/collision/zipball/0122ac6b03c75279ef78d1c0ad49725dfc52a8d2",
                 "reference": "0122ac6b03c75279ef78d1c0ad49725dfc52a8d2",
+
                 "shasum": ""
             },
             "require": {
@@ -6498,7 +6616,7 @@
             "require-dev": {
                 "brianium/paratest": "^6.1",
                 "fideloper/proxy": "^4.4.1",
-                "friendsofphp/php-cs-fixer": "^2.17.3",
+                "friendsofphp/php-cs-fixer": "^3.0",
                 "fruitcake/laravel-cors": "^2.0.3",
                 "laravel/framework": "^8.0 || ^9.0",
                 "nunomaduro/larastan": "^0.6.2",
@@ -6561,7 +6679,9 @@
                     "type": "patreon"
                 }
             ],
+
             "time": "2021-07-26T20:39:06+00:00"
+
         },
         {
             "name": "phar-io/manifest",

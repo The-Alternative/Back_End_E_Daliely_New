@@ -9,19 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 class CategoryTranslation extends Model
 {
     use HasFactory;
-    protected $fillable = ['name','local','language_id','category_id'];
-    public $timestamps = false;
+    protected $fillable = ['name','local','category_id'];
+    public $timestamps = true;
+    protected $hidden=['category_id','local','created_at','updated_at'];
 
     /////////////////Begin relation here/////////////////////
     public function Category()
     {
         return $this->belongsTo(Category::class);
     }
-    public function language()
-    {
-        return $this->belongsTo(Language::class,'');
-    }
-
-
-
 }

@@ -17,7 +17,7 @@ class Category extends Model
     protected $fillable = [
       'slug', 'parent_id', 'image', 'is_active','category_id','section_id'];
     protected $hidden = [
-        'created_at', 'updated_at'
+        'created_at', 'updated_at','section_id','category_id','parent_id','pivot'
     ];
     protected $casts = [
         'is_active' => 'boolean'

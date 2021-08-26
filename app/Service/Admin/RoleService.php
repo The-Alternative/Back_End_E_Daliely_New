@@ -3,7 +3,7 @@
 namespace App\Service\Admin;
 
 use App\Models\Admin\Role;
-use App\Models\Admin\RoleTranslation;
+use App\Models\Admin\TransModel\RoleTranslation;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

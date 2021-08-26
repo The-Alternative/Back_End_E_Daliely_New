@@ -7,7 +7,6 @@ return [
     'create_users' => true,
     'create_employees' => true,
     'create_types' => true,
-
     /**
      * Control if all the laratrust tables should be truncated before running the seeder.
      */

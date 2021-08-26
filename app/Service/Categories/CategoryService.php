@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use Illuminate\Support\Facades\File;
 
 class CategoryService
 {
@@ -128,6 +129,11 @@ class CategoryService
             $request->is_appear ? $is_appear = true : $is_appear = false;
             //transformation to collection
             $allcategories = collect($request->category)->all();
+//            $filePath = "";
+//            if ($request->has('image')) {
+//
+//                $filePath = $this->uploadImage('categories', $image);
+//            }
             DB::beginTransaction();
             // //create the default language's product
             $unTransCategory_id = $this->categoryModel->insertGetId([
@@ -144,7 +150,6 @@ class CategoryService
                         'name' => $allcategory ['name'],
                         'local' => $allcategory['local'],
                         'category_id' => $unTransCategory_id,
-                        'language_id' => $allcategory['language_id']
                     ];
                 }
                 $this->categoryTranslation->insert($transCategory_arr);
@@ -153,25 +158,30 @@ class CategoryService
             foreach ($images as $image) {
                 $arr[] = $image['image'];
             }
+
             foreach ($arr as $ar) {
                 if (isset($image)) {
                     if ($request->hasFile($ar)) {
-                        //save
-                        $file_extension = $ar->getClientOriginalExtension();
-                        $file_name = time() . $file_extension;
-                        $path = 'images/categories';
-                        $ar->move($path, $file_name);
+
+                        $folder = storage_path('/app/public/images/categories' . '/' . $unTransCategory_id . '/');
+                        if (!File::exists($folder)) {
+                            File::makeDirectory($folder, 0775, true, true);
+                            $file_extension = $ar->getClientOriginalExtension();
+                            $file_name = time() . $file_extension;
+                            $path = 'images/categories';
+                            $request->image->move($path, $file_name);
+                        }
                     }
                 }
-            }
-            if ($request->has('images')) {
-                foreach ($images as $image) {
-                    $categoryImages = $this->categoryModel->find($unTransCategory_id);
-                    $categoryImages->CategoryImages()->insert([
-                        'category_id' => $unTransCategory_id,
-                        'image' => $image['image'],
-                        'is_cover' => $image['is_cover']
-                    ]);
+                if ($request->has('images')) {
+                    foreach ($images as $image) {
+                        $categoryImages = $this->categoryModel->find($unTransCategory_id);
+                        $categoryImages->CategoryImages()->insert([
+                            'category_id' => $unTransCategory_id,
+                            'image' =>  $image['image'],
+                            'is_cover' => $image['is_cover']
+                        ]);
+                    }
                 }
             }
                 DB::commit();
@@ -305,4 +315,12 @@ class CategoryService
             return $this->returnError('400', $ex->getMessage());
         }
     }
+    function uploadImage($folder, $image)
+    {
+        $image->store('/', $folder);
+        $filename = $image->hashName();
+        $path = 'images/' . $folder . '/' . $filename;
+        return $path;
+    }
+
 }

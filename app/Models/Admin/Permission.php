@@ -40,24 +40,24 @@ class Permission extends LaratrustPermission
             'id',
             'id');
     }
-    public function users()
-    {
-        return $this->belongsToMany(
-            User::class,
-            'permission_user',
-            'permission_id',
-            'user_id',
-            'id',
-            'id');
-    }
-    public function employees()
-    {
-        return $this->belongsToMany(
-            Employee::class,
-            'permission_employee',
-            'permission_id',
-            'employee_id',
-            'id',
-            'id');
-    }
+//    public function users()
+//    {
+//        return $this->belongsToMany(
+//            User::class,
+//            'permission_user',
+//            'permission_id',
+//            'user_id',
+//            'id',
+//            'id');
+//    }
+//    public function employees()
+//    {
+//        return $this->belongsToMany(
+//            Employee::class,
+//            'permission_employee',
+//            'permission_id',
+//            'employee_id',
+//            'id',
+//            'id');
+//    }
 }

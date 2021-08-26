@@ -56,4 +56,5 @@ class TypeUsersController extends Controller
     public function delete($id)
     {
         return $this->TypeUserService->delete($id);
-    }}
+    }
+}

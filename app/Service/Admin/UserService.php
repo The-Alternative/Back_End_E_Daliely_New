@@ -4,7 +4,7 @@ namespace App\Service\Admin;
 
 use App\Models\Admin\Role;
 use App\Models\Admin\TransModel\UserTranslation;
-use App\Models\Order\Order;
+//use App\Models\Order\Order;
 use App\Models\User;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
@@ -19,7 +19,8 @@ class UserService
     private $roleModel;
     private $userTranslation;
 
-    public function __construct(User $userModel , Role $roleModel , UserTranslation $userTranslation)
+    public function __construct(User $userModel , Role $roleModel
+        , UserTranslation $userTranslation)
     {
         $this->userModel=$userModel;
         $this->roleModel=$roleModel;
@@ -143,10 +144,10 @@ class UserService
                 $role = $this->userModel->find($user->id);
                 $role->roles()->syncWithoutDetaching($request->get('roles'));
             }
-            if ($request->has('permissions')) {
-                $permissions = $this->userModel->find($user->id);
-                $permissions->permissions()->syncWithoutDetaching($request->get('permissions'));
-            }
+//            if ($request->has('permissions')) {
+//                $permissions = $this->userModel->find($user->id);
+//                $permissions->permissions()->syncWithoutDetaching($request->get('permissions'));
+//            }
             DB::commit();
             return $this->returnData('User', [$token,$user],'Done');
 

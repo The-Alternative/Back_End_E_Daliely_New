@@ -16,7 +16,7 @@ class CreateBrandTranslationTable extends Migration
         Schema::create('brand_translation', function (Blueprint $table) {
             $table->id();
             $table->integer('brand_id');
-            $table->string('locale');
+            $table->string('local');
             $table->string('name');
             $table->string('description');
             $table->timestamps();
