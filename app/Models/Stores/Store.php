@@ -5,6 +5,7 @@ namespace App\Models\Stores;
 use App\Models\Brands\Brand;
 use App\Models\Categories\Section;
 use App\Models\Images\StoreImage;
+use App\Models\Offer\Offer;
 use App\Models\Products\Product;
 use App\Models\Stores_Orders\Stores_Order;
 use App\Scopes\StoreScope;
@@ -94,5 +95,10 @@ class Store extends Model
     public function Stores_Order()
     {
         return $this->hasMany(Stores_Order::class);
+    }
+
+    public function Offer()
+    {
+        return $this->hasMany(Offer::class);
     }
 }

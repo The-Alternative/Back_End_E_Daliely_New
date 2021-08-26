@@ -14,10 +14,9 @@ class ActiveTimeController extends Controller
     use GeneralTrait;
     private $ActiveTimeService;
 
-    public function __construct(ActiveTimeService $ActiveTimeService,Response $response )
+    public function __construct(ActiveTimeService $ActiveTimeService )
     {
         $this->ActiveTimeService=$ActiveTimeService;
-        $this->response=$response;
     }
     public function get()
     {
@@ -36,12 +35,12 @@ class ActiveTimeController extends Controller
 
     public function update(ActiveTimeRequest $request,$id)
     {
-        return  $response=$this->ActiveTimeService->update($request,$id);
+        return  $this->ActiveTimeService->update($request,$id);
     }
 
     public function trash($id)
     {
-        return   $response= $this->ActiveTimeService->trash($id);
+        return    $this->ActiveTimeService->trash($id);
     }
     public function getTrashed()
     {
@@ -50,12 +49,12 @@ class ActiveTimeController extends Controller
 
     public function restoreTrashed($id)
     {
-        return  $response= $this->ActiveTimeService->restoreTrashed($id);
+        return   $this->ActiveTimeService->restoreTrashed($id);
     }
 
     public function delete($id)
     {
-        return   $response = $this->ActiveTimeService->delete($id);
+        return    $this->ActiveTimeService->delete($id);
     }
 
 }
