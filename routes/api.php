@@ -3,13 +3,14 @@
 use App\Http\Controllers\ActiveTime\ActiveTimeController;
 use App\Http\Controllers\Appointment\AppointmentController;
 use App\Http\Controllers\Clinic\ClinicController;
+use App\Http\Controllers\Comment\CommentController;
 use App\Http\Controllers\DoctorRate\DoctorRateController;
 use App\Http\Controllers\Doctors\DoctorController;
 use App\Http\Controllers\Hospital\HospitalController;
+use App\Http\Controllers\Interaction\InteractionController;
 use App\Http\Controllers\Item\ItemController;
 use App\Http\Controllers\MedicalDevice\MedicalDeviceController;
 use App\Http\Controllers\Offer\OfferController;
-use App\Http\Controllers\Offer\OfferUserController;
 use App\Http\Controllers\Patient\PatientController;
 use App\Http\Controllers\Restaurant\RestaurantController;
 use App\Http\Controllers\RestaurantCategory\RestaurantCategoyrController;
@@ -175,7 +176,7 @@ Route::group(['prefix'=>'doctors','namespace'=>'Doctors'],function () {
      Route::get('patient/gettrashed', [PatientController::class,'getTrashed']);
 
      /*---------------Doctor Rate Route--------*/
-Route::group(['prefix'=>'doctorrate','namespace'=>'DoctorRate'],function () {
+Route::group(['prefix'=>'doctorrates','namespace'=>'DoctorRate'],function () {
     Route::get('/', 'DoctorRateController@get');
     Route::get('/{id}', 'DoctorRateController@getById');
     Route::post('/', 'DoctorRateController@create');
@@ -184,7 +185,7 @@ Route::group(['prefix'=>'doctorrate','namespace'=>'DoctorRate'],function () {
     Route::delete('/{id}', 'DoctorRateController@delete');
     Route::PUT('/restoretrashed/{id}', 'DoctorRateController@restoreTrashed');
 });
-     Route::get('drrate/gettrashed', [DoctorRateController::class,'getTrashed']);
+     Route::get('doctorrate/gettrashed', [DoctorRateController::class,'getTrashed']);
 
          /*--------------Social Media Route-------*/
 Route::group(['prefix'=>'socialmedia','namespace'=>'SocialMedia'],function () {
@@ -419,24 +420,34 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::get('/get-offer/{store_id}','OfferController@getOfferByStoreId');
 
      });
-
          Route::get('offer/gettrashed',[OfferController::class,'getTrashed']);
          Route::get('offer/get-advertisement',[OfferController::class,'get_advertisement']);
 
-         //////////////// interaction Route ////////////////////////////
+         //////////////// Comment  Route ////////////////////////////
 
-     Route::group(['prefix'=>'interactions','namespace'=>'Offer'],function () {
-         Route::get('/', 'OfferUserController@get');
-         Route::get('/{id}', 'OfferUserController@getById');
-         Route::post('/', 'OfferUserController@create');
-         Route::put('/{id}', 'OfferUserController@update');
-         Route::PUT('/trash/{id}', 'OfferUserController@trash');
-         Route::PUT('/restoretrashed/{id}', 'OfferUserController@restoreTrashed');
-         Route::delete('/{id}', 'OfferUserController@delete');
+     Route::group(['prefix'=>'comments','namespace'=>'Comment'],function () {
+         Route::get('/', 'CommentController@get');
+         Route::get('/{id}', 'CommentController@getById');
+         Route::post('/', 'CommentController@create');
+         Route::put('/{id}', 'CommentController@update');
+         Route::PUT('/trash/{id}', 'CommentController@trash');
+         Route::PUT('/restoretrashed/{id}', 'CommentController@restoreTrashe');
+         Route::delete('/{id}', 'CommentController@delete');
+         Route::get('/get_offer/{comment_id}','CommentController@getOfferByCommentId');
+         Route::get('/get_comment/{offer_id}','CommentController@getcomments');
      });
-         Route::get('/interaction/gettrashed',[OfferUserController::class,'getTrashed']);
+         Route::get('/comment/gettrashed',[CommentController::class,'getTrashed']);
 
-     ///////////////////////Route///////////////////////////
-     ///
+     /////////////////////// interaction Route///////////////////////////
+     Route::group(['prefix'=>'interactions','namespace'=>'Interaction'],function () {
+         Route::get('/', 'InteractionController@get');
+         Route::get('/{id}', 'InteractionController@getById');
+         Route::post('/', 'InteractionController@create');
+         Route::put('/{id}', 'InteractionController@update');
+         Route::PUT('/trash/{id}', 'InteractionController@trash');
+         Route::PUT('/restoretrashed/{id}', 'InteractionController@restoreTrashed');
+         Route::delete('/{id}', 'InteractionController@delete');
+     });
+         Route::get('/interaction/gettrashed',[InteractionController::class,'getTrashed']);
  });
 

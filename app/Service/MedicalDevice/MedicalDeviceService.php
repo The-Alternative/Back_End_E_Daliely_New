@@ -122,7 +122,7 @@ class MedicalDeviceService
                 }
             }
             DB::commit();
-            return $this->returnData('MedicalDevice', [$dbmedicaldevice,$values],'done');
+            return $this->returnData('MedicalDevice', [$db_medicaldevice,$values],'done');
         }
         catch(\Exception $ex){
             DB::rollBack();

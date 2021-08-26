@@ -126,7 +126,7 @@ class HospitalService
                 }
             }
             DB::commit();
-            return $this->returnData(' hospital', [$dbhospital,$values],'done');
+            return $this->returnData(' hospital', [$db_hospital,$values],'done');
         }
         catch(\Exception $ex){
             DB::rollBack();

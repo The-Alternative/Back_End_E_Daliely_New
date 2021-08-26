@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class OfferController extends Controller
 {
-    protected $OfferService;
+    private $OfferService;
 
     public function __construct(OfferService $OfferService)
     {

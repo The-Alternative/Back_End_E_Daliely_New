@@ -14,7 +14,7 @@ class Hospital extends Model
     protected $table='hospitals';
     protected $fillable=['id','medical_center','general_hospital','private_hospital','location_id','is_active','is_approved'];
     protected $hidden=['created_at','updated_at','location_id','doctor_id'];
-    public $timestamps=false;
+
 
      protected static function booted()
      {

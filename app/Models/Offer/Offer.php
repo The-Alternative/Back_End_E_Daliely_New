@@ -2,6 +2,7 @@
 
 namespace App\Models\Offer;
 
+use App\Models\Comment\Comment;
 use App\Models\Stores\Store;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,12 +33,13 @@ class Offer extends Model
         return $this->hasMany(OfferTranslation::class);
     }
 
-    public function User()
-    {
-        return $this->belongsToMany(User::class,'offer_user','offer_id','user_id','id','id');
-    }
     public function Store()
     {
         return $this->belongsTo(Store::class);
+    }
+
+    public function Comment()
+    {
+        return $this->hasMany(Comment::class);
     }
 }

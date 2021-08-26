@@ -4,7 +4,9 @@ namespace App\Models;
 
 use App\Models\Admin\Permission;
 use App\Models\Admin\Role;
+use App\Models\Comment\Comment;
 use App\Models\Doctors\Patient;
+use App\Models\Interaction\Interaction;
 use App\Models\Offer\Offer;
 use App\Models\SocialMedia\SocialMedia;
 use App\Models\Admin\TransModel\UserTranslation;
@@ -111,8 +113,13 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(SocialMedia::class);
     }
-    public function Offer()
+
+    public function Comment()
     {
-        return $this->belongsToMany(Offer::class,'offer_user','user_id','offer_id','id','id');
+        return $this->hasMany(Comment::class);
+    }
+    public function Interaction()
+    {
+        return $this->hasOne(Interaction::class);
     }
 }
