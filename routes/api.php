@@ -380,6 +380,9 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
 
      });
 
+
+     Route::Post('upload','TestController@store');
+
  });
 
 

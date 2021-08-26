@@ -74,6 +74,12 @@ Route::group(
             Route::GET('/getTrashed','EmployeesController@getTrashed');
             Route::DELETE('/delete/{id}','EmployeesController@delete');
             Route::GET('/profile/{id}','EmployeesController@profile');
+
+
+
+        });
+        Route::group(['prefix' => 'employee', 'namespace' => 'Auth'], function () {
+            Route::POST('/login', 'EmployeeAuthController@login');
         });
         /**__________________________ user type routes  __________________________**/
         Route::group(['prefix' => 'type', 'namespace' => 'Admin'], function () {

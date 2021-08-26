@@ -290,9 +290,7 @@ class ProductService
                 'barcode' => $request['barcode'],
                 'is_active' => $request['is_active'],
                 'is_appear' => $request['is_appear'],
-                'rating_id' => $request['rating_id'],
                 'brand_id' => $request['brand_id'],
-                'offer_id' => $request['offer_id'],
             ]);
             //check the product and request
             if (isset($allproducts) && count($allproducts)) {
@@ -327,15 +325,19 @@ class ProductService
             }
             foreach ($arr as $ar) {
                 if (isset($image)) {
-                    if ($request->hasFile($ar)) {
+//                    if ($request->hasFile($ar)) {
                         //save
-                        $file_extension = $ar->getClientOriginalExtension();
-                        $file_name = time() . $file_extension;
-                        $path = 'images/products';
-                        $ar->move($path, $file_name);
+                        $folder = storage_path('/app/public/images/products' . '/' . $unTransProduct_id . '/');
+                        if (!File::exists($folder)) {
+                            File::makeDirectory($folder, 0775, true, true);
+                            $file_extension = $ar->getClientOriginalExtension();
+                            $file_name = time() . $file_extension;
+//                            $path = 'images/products';
+                            $request->image->move($folder, $file_name);
+                        }
                     }
+//                    }
                 }
-            }
             if ($request->has('images')) {
                 foreach ($images as $image) {
                     $product = $this->productModel->find($unTransProduct_id);
@@ -374,9 +376,9 @@ class ProductService
                     'barcode' => $request['barcode'],
                     'is_active' => $request['is_active'],
                     'is_appear' => $request['is_appear'],
-                    'rating_id' => $request['rating_id'],
+//                    'rating_id' => $request['rating_id'],
                     'brand_id' => $request['brand_id'],
-                    'offer_id' => $request['offer_id'],
+//                    'offer_id' => $request['offer_id'],
                 ]);
             $ss = $this->productTranslation->where('product_translations.product_id', $id);
             $collection1 = collect($allproducts);

@@ -3,21 +3,32 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin\Role;
+use App\Models\Admin\TransModel\UserTranslation;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Facades\JWTFactory;
 
 class AuthController extends Controller
 {
+
     /**
      * Create a new AuthController instance.
      *
      * @return void
      */
-    public function __construct()
+    private $userModel;
+    private $roleModel;
+    private $userTranslation;
+    public function __construct(User $userModel , Role $roleModel
+        , UserTranslation $userTranslation)
     {
+        $this->userModel=$userModel;
+        $this->roleModel=$roleModel;
+        $this->userTranslation=$userTranslation;
         $this->middleware('auth:api', ['except' => ['login','register','logout']]);
     }
     /**
@@ -27,12 +38,11 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $credentials = request(['email','password']);
-
-        if (! $token = auth()->attempt($credentials)) {
+        $credentials = $request->only('email', 'password');
+         $token = auth()->attempt($credentials);
+        if (! $token ) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
         return $this->respondWithToken($token);
     }
     /**
@@ -65,12 +75,28 @@ class AuthController extends Controller
     }
     public function register(Request $request)
     {
-        $user = User::create([
-            'name' => $request->name,
+        $user=$this->userModel->create([
+            'age' => $request->age,
+            'location_id' => $request->location_id,
+            'social_media_id' => $request->social_media_id,
+            'is_active' => $request->is_active,
+            'image' => $request->image,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' =>$request->password
         ]);
-
+        $userid=$user->id;
+        if (isset($allusers) && count($allusers)) {
+            //insert other traslations for users
+            foreach ($allusers as $alluser) {
+                $transUser_arr[] = [
+                    'first_name' => $alluser ['first_name'],
+                    'last_name' => $alluser ['last_name'],
+                    'local' => $alluser['local'],
+                    'user_id' => $userid
+                ];
+            }
+            $this->userTranslation->insert($transUser_arr);
+        }
         $token = JWTAuth::fromUser($user);
 
         return $this->respondWithToken($token);
@@ -87,7 +113,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => JWTFactory::factory()->getTTL() * 60
         ]);
     }
 }
