@@ -6,7 +6,9 @@ use App\Http\Requests\Offer\OfferRequest;
 use App\Models\Offer\Offer;
 use App\Models\Offer\OfferTranslation;
 use App\Models\Stores\Store;
+use App\Models\User;
 use App\Traits\GeneralTrait;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OfferService
@@ -88,6 +90,7 @@ class OfferService
               DB::commit();
               return $this->returnData('offer', [$untransId,$transOffer], 'done');
         }
+
         catch(\Exception $ex)
         {
             DB::rollBack();

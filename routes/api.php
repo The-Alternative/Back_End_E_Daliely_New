@@ -14,7 +14,6 @@ use App\Http\Controllers\Offer\OfferController;
 use App\Http\Controllers\Patient\PatientController;
 use App\Http\Controllers\Restaurant\RestaurantController;
 use App\Http\Controllers\RestaurantCategory\RestaurantCategoyrController;
-use App\Http\Controllers\RestaurantManager\RestaurantManagerController;
 use App\Http\Controllers\RestaurantProduct\RestaurantProductController;
 use App\Http\Controllers\RestaurantType\RestaurantTypeController;
 use App\Http\Controllers\SocialMedia\SocialMediaController;
