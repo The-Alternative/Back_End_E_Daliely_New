@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ActiveTime\ActiveTimeController;
 use App\Http\Controllers\Appointment\AppointmentController;
 use App\Http\Controllers\Clinic\ClinicController;
 use App\Http\Controllers\Comment\CommentController;
@@ -426,7 +425,6 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
          Route::delete('/{id}', 'OfferController@delete');
          Route::get('/get-store/{Offer_id}','OfferController@getStoreByOfferId');
          Route::get('/get-offer/{store_id}','OfferController@getOfferByStoreId');
-
      });
          Route::get('offer/gettrashed',[OfferController::class,'getTrashed']);
          Route::get('offer/get-advertisement',[OfferController::class,'get_advertisement']);

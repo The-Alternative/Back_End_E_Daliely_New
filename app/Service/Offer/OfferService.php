@@ -59,12 +59,14 @@ class OfferService
     //create new offer
     public function create(OfferRequest $request)
     {
+    
         try {
             $offer=collect($request->Offer)->all();
             DB::beginTransaction();
             $untransId=$this->OfferModel::insertGetId([
                 'store_id'        =>$request->store_id,
                 'store_product_id'=>$request->store_product_id,
+                'user_email'      =>$request->user_email,
                 'image'           =>$request->image,
                 'price'           =>$request->price,
                 'selling_price'   =>$request->selling_price,
@@ -88,7 +90,14 @@ class OfferService
                  OfferTranslation::insert($transOffer);
              }
               DB::commit();
+
               return $this->returnData('offer', [$untransId,$transOffer], 'done');
+
+              
+              Mail::To($untransId->user_email)->send(new OfferMail());
+
+              return $this->returnData('email',$eamil,'An email has been sent to you');
+            
         }
 
         catch(\Exception $ex)
@@ -113,6 +122,7 @@ class OfferService
           $newoffer=$this->OfferModel::where('offers.id',$id)->update([
               'store_id'        =>$request->store_id,
               'store_product_id'=>$request->store_product_id,
+              'user_email'      =>$request->user_email,
               'image'           =>$request->image,
               'price'           =>$request->price,
               'selling_price'   =>$request->selling_price,
@@ -278,5 +288,4 @@ class OfferService
             return $this->returnError($ex->getCode(),$ex->getMessage());
         }
     }
-
 }

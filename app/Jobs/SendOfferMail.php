@@ -10,20 +10,22 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
+use App\Traits\GenaralTrait;
 
 class SendOfferMail implements ShouldQueue
 {
+    use GeneralTrait;
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $offer;
+    public $email;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($offer)
+    public function __construct($email)
     {
-        $this->offer=$offer;
+        $this->email=$email;
     }
 
     /**
@@ -33,7 +35,6 @@ class SendOfferMail implements ShouldQueue
      */
     public function handle()
     {
-        $email = new OfferMail();
-        Mail::to($this->offer['email'])->send($email);
+       
     }
 }

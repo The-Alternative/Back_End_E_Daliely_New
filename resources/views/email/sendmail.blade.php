@@ -6,12 +6,6 @@
     <title>Test Mail Laravel8</title>
 </head>
 <body>
-<center>
-    <h2 style="padding: 23px;background: #b3deb8a1;border-bottom: 6px green solid;">
-        <a href="https://itsolutionstuff.com">Visit Our Website : ItSolutionStuff.com</a>
-    </h2>
-</center>
-
 
 <p>Hi, Sir</p>
 
