@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActiveTime\ActiveTimeController;
 use App\Http\Controllers\Appointment\AppointmentController;
 use App\Http\Controllers\Clinic\ClinicController;
 use App\Http\Controllers\Comment\CommentController;
