@@ -3,14 +3,17 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-Route::middleware('auth:api')->get('/user', function (Request $request)
+
+Route::middleware('auth:api')
+    ->get('/user', function (Request $request)
 {
     return $request->user();
 });
 Route::group(
     [
         'prefix'     => LaravelLocalization::setLocale(),
-        'middleware' => ['api','ChangeLanguage','localize','localizationRedirect','localeViewPath']
+        'middleware' => ['api','ChangeLanguage',
+            'localize','localizationRedirect','localeViewPath']
     ],
     function() {
         Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
@@ -21,7 +24,8 @@ Route::group(
             Route::post('me', 'AuthController@me');
         });
 //        Route::group(['middleware'=>'role:superadministrator'],function() {
-            Route::group(['prefix' => 'roles', 'namespace' => 'Admin'], function () {
+        /**__________________________ Roles routes  __________________________**/
+        Route::group(['prefix' => 'roles', 'namespace' => 'Admin'], function () {
                 Route::GET('/getAll','RolesController@getAll');
                 Route::GET('/getById/{id}','RolesController@getById');
                 Route::POST('/create','RolesController@create');
@@ -32,7 +36,8 @@ Route::group(
                 Route::GET('/getTrashed','RolesController@getTrashed');
                 Route::DELETE('/delete/{id}','RolesController@delete');
             });
-            Route::group(['prefix' => 'permissions', 'namespace' => 'Admin'], function () {
+        /**__________________________ Permissions routes  __________________________**/
+        Route::group(['prefix' => 'permissions', 'namespace' => 'Admin'], function () {
                 Route::GET('/getAll','PermissionsController@getAll');
                 Route::GET('/getById/{id}','PermissionsController@getById');
                 Route::POST('/create','PermissionsController@create');
@@ -44,7 +49,8 @@ Route::group(
                 Route::DELETE('/delete/{id}','PermissionsController@delete');
 //            });
         });
-            Route::group(['prefix' => 'users', 'namespace' => 'Admin'], function () {
+        /**__________________________ Users routes  __________________________**/
+        Route::group(['prefix' => 'users', 'namespace' => 'Admin'], function () {
             Route::GET('/getAll','UsersController@getAll');
             Route::GET('/getById/{id}','UsersController@getById');
             Route::POST('/create','UsersController@create');
@@ -56,7 +62,8 @@ Route::group(
             Route::DELETE('/delete/{id}','UsersController@delete');
             Route::GET('/profile/{id}','UsersController@profile');
         });
-            Route::group(['prefix' => 'employee', 'namespace' => 'Admin'], function () {
+        /**__________________________ Employee routes  __________________________**/
+        Route::group(['prefix' => 'employee', 'namespace' => 'Admin'], function () {
             Route::GET('/getAll','EmployeesController@getAll');
             Route::GET('/getById/{id}','EmployeesController@getById');
             Route::POST('/create','EmployeesController@create');
@@ -67,8 +74,15 @@ Route::group(
             Route::GET('/getTrashed','EmployeesController@getTrashed');
             Route::DELETE('/delete/{id}','EmployeesController@delete');
             Route::GET('/profile/{id}','EmployeesController@profile');
+
+
+
         });
-            Route::group(['prefix' => 'type', 'namespace' => 'Admin'], function () {
+        Route::group(['prefix' => 'employee', 'namespace' => 'Auth'], function () {
+            Route::POST('/login', 'EmployeeAuthController@login');
+        });
+        /**__________________________ user type routes  __________________________**/
+        Route::group(['prefix' => 'type', 'namespace' => 'Admin'], function () {
             Route::GET('/getAll','TypeUsersController@getAll');
             Route::GET('/getById/{id}','TypeUsersController@getById');
             Route::POST('/create','TypeUsersController@create');
@@ -80,5 +94,26 @@ Route::group(
             Route::DELETE('/delete/{id}','TypeUsersController@delete');
             Route::GET('/profile/{id}','TypeUsersController@profile');
         });
+        /**______________________ Product dashboard routes  _____________________**/
+        Route::group(['prefix'=>'dashproducts','namespace'=>'Product'],function()
+        {
+            Route::GET('/getAll','ProductsController@dashgetAll');
+//            Route::GET('/getProductByCategory/{id}','ProductsController@getProductByCategory');
+            Route::GET('/getById/{id}','ProductsController@dashgetById');
+//            Route::POST('/create','ProductsController@create');
+//            Route::PUT('/update/{id}','ProductsController@update');
+//            Route::GET('/search/{title}','ProductsController@search');
+//            Route::PUT('/trash/{id}','ProductsController@trash');
+//            Route::PUT('/restoreTrashed/{id}','ProductsController@restoreTrashed');
+//            Route::GET('/getTrashed','ProductsController@getTrashed');
+//            Route::DELETE('/delete/{id}','ProductsController@delete');
+        });
+        /**_______________________ Store dashboard routes  ___________________**/
+        Route::group(['prefix'=>'dashstores','namespace'=>'Store'],function()
+        {
+            Route::PUT('/aprrove/{id}','storeController@aprrove');
+            Route::GET('/getAll','storeController@dashgetAll');
+        });
+
     });
 

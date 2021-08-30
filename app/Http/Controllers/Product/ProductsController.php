@@ -27,6 +27,16 @@ class ProductsController extends Controller
 //        $this->middleware(['permission:product-update'])->only('update');
 //        $this->middleware(['permission:product-delete'])->only(['trash','restoreTrashed','getTrashed']);
     }
+    /*** this function for dashboard ***/
+        public function dashgetAll()
+        {
+            return $this->ProductService->dashgetAll();
+        }
+        public function dashgetById($id)
+        {
+            return $this->ProductService->dashgetById($id);
+        }
+        /** ___________________________________ **/
         public function getAll()
         {
             return $this->ProductService->getAll();

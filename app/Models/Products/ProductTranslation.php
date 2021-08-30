@@ -11,6 +11,7 @@ class ProductTranslation extends Model
     protected $fillable = [
         'name','meta','short_des','long_des','product_id','local'
     ];
+    protected $hidden=['product_id','local','created_at','updated_at'];
 
     public function Product()
     {

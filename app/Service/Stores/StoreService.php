@@ -5,15 +5,15 @@ use App\Http\Requests\Store\StoreRequest;
 use App\Http\Requests\StoreProduct\StoreProductRequest;
 use App\Models\Stores\Store;
 use App\Models\Stores\StoreTranslation;
+use App\Scopes\BrandScope;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
 class  StoreService
 {
     use GeneralTrait;
-    private $StoreService;
-    private $storeModel;
     private $storeTranslation;
     private $Store;
     public function __construct(Store $store ,StoreTranslation $storeTranslation)
@@ -21,25 +21,84 @@ class  StoreService
         $this->storeModel=$store;
         $this->storeTranslation=$storeTranslation;
     }
+    /****________________   admins dashboard ________________****/
+    /****________________   Store's approved ________________****/
+    public function aprrove( $id)
+    {
+        try{
+            $store=$this->storeModel->find($id);
+            if (is_null($store) ){
+                return $response= $this->returnSuccessMessage('Store','This stores not found');
+            }else{
+                $store->is_approved=true;
+                $store->save();
+                return $this->returnData('Store', $store,'This Store Is aprroved Now');
+            }
+        }catch(\Exception $ex){
+            return $this->returnError('400',$ex->getMessage());
+        }
+    }
+    /****________________   Store's list ________________****/
+    public function dashgetAll()
+    {
+        try {
+            $store =$this->storeModel->with([
+                'Section',
+                'Brand'=> function ($q) {
+                    return $q->withoutGlobalScope(BrandScope::class)
+                        ->select(['brands.id'])
+                        ->with(['BrandTranslation'=>function($q){
+                            return $q->where('brand_translation.local',
+                                '=',
+                                Config::get('app.locale'))
+                                ->select(['brand_translation.name','brand_translation.brand_id'
+                                ])->get();
+                        }])->get();
+                },
+                'StoreImage'=>function($q){
+                return $q->where('is_cover',1)
+                    ->get();}
+            ])->get();
+            if (count($store) > 0){
+                return $this->returnData('Stores',$store,'done');
+            }else{
+                return $this->returnSuccessMessage('Store','stores doesnt exist yet');
+            }
+        } catch(\Exception $ex)
+        {
+            return $this->returnError('400',$ex->getMessage());
+        }
+    }
+    /****________________   client side functions ________________****/
     /****________________ Get All Active Store Or By ID  ________________****/
     public function getAll()
     {
         try {
-            $store =collect($this->storeModel->with(['Section','Product','Brand','StoreImage'=>function($q){
-                return $q->where('is_cover',1)->get();}])->get());
-//            $store =$this->storeModel->with(['Section','Product','Brand'])->paginate(10);
+            $store =$this->storeModel->with([
+                'Section',
+                'Product',
+                'Brand'=> function ($q) {
+                    return $q->withoutGlobalScope(BrandScope::class)
+                        ->select(['brands.id'])
+                        ->with(['BrandTranslation'=>function($q){
+                            return $q->where('brand_translation.local','='
+                                , Config::get('app.locale'))
+                                ->select(['brand_translation.name','brand_translation.brand_id'
+                                ])->get();
+                        }])->get();},
+                'StoreImage'=>function($q){
+                return $q->where('is_cover',1)->get();}])->get();
             if (count($store) > 0){
                 return $this->returnData('Stores',$store,'done');
             }else{
-                return $response= $this->returnSuccessMessage('Store','stores doesnt exist yet');
+                return $this->returnSuccessMessage('stores doesnt exist yet',200);
             }
         } catch(\Exception $ex){
 
             return $this->returnError('400',$ex->getMessage());
         }
     }
-    /*___________________________________________________________________________*/
-    public function getById($store_id)
+   public function getById($store_id)
     {
         try {
         $store =  $this->storeModel->with(['Product'=>function($q) use ($store_id) {
@@ -58,7 +117,6 @@ class  StoreService
             return $this->returnError('400',$ex->getMessage());
         }
     }
-    /*___________________________________________________________________________*/
     /****________________  This Functions For Trashed Store  ________________****/
     /****________________  Get All Trashed Stores Or By ID   ________________****/
     public function getTrashed()
@@ -74,7 +132,6 @@ class  StoreService
             return $this->returnError('400',$ex->getMessage());
         }
     }
-    /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
     /****________________Restore Store Fore Active status  ________________****/
     public function restoreTrashed( $id)
     {
@@ -91,7 +148,6 @@ class  StoreService
         return $this->returnError('400',$ex->getMessage());
         }
     }
-    /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
     /****________________   Store's Soft Delete   ________________****/
     public function trash( $id)
     {
@@ -108,15 +164,11 @@ class  StoreService
               return $this->returnError('400',$ex->getMessage());
         }
     }
-    /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
     /****________________  Create Store   ________________****/
-    /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
-    public function create(Request $request)
+    public function create(StoreRequest $request)
     {
         try {
-//        validated = $request->validated();
-        $request->is_active?$is_active=true:$is_active=false;
-        $request->is_appear?$is_appear=true:$is_appear=false;
+            $request->validated();
       /***  //transformation to collection*////
         $stores = collect($request->store)->all();
         DB::beginTransaction();
@@ -138,6 +190,16 @@ class  StoreService
             'workingHours'=>$request['workingHours'],
             'logo'=>$request['logo']
         ]);
+        $logo = $request->logo;
+            if (isset($logo)) {
+                if ($request->hasFile($logo)) {
+                    //save
+                    $file_extension = $logo->getClientOriginalExtension();
+                    $file_name = time() . $file_extension;
+                    $path = 'images/stores/logo';
+                    $logo->move($path, $file_name);
+                }
+            }
         //check the category and request
         if(isset($stores) && count($stores))
         {
@@ -160,7 +222,8 @@ class  StoreService
             foreach ($images as $image) {
                 $arr[] = $image['image'];
             }
-            foreach ($arr as $ar) {
+            foreach ($arr as $ar)
+            {
                 if (isset($image)) {
                     if ($request->hasFile($ar)) {
                         //save
@@ -190,7 +253,6 @@ class  StoreService
                 return $this->returnError('store',$ex->getMessage());
             }
     }
-    /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
     /****__________________  Update Store   ___________________****/
     public function update(Request $request,$id)
     {
@@ -274,7 +336,6 @@ class  StoreService
             return $this->returnError('400', $ex->getMessage());
         }
     }
-    /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
     /****________________  ٍsearch for Store _________________****/
     public function search($title)
     {
@@ -294,7 +355,6 @@ class  StoreService
         return $this->returnError('400',$ex->getMessage());
         }
     }
-    /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
     /****_______________  Delete Store   ________________****/
     public function delete($id)
     {
@@ -311,7 +371,6 @@ class  StoreService
            return $this->returnError('400',$ex->getMessage());
         }
     }
-    /*ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*/
     public function getSectionInStore($id)
     {
         try {

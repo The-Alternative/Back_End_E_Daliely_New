@@ -16,7 +16,7 @@ class Brand extends Model
     protected $primaryKey = 'id';
     protected $table='brands';
     protected $hidden = [
-        'created_at', 'updated_at'
+        'created_at', 'updated_at','pivot'
     ];
     protected $casts = [
         'is_active' => 'boolean'
@@ -27,9 +27,9 @@ class Brand extends Model
         parent::booted();
         static::addGlobalScope(new BrandScope);
     }
-    public function language()
+    public function BrandTranslation()
     {
-        return $this->belongsToMany(language::class);
+        return $this->hasMany(BrandTranslation::class);
     }
     public function Product()
     {

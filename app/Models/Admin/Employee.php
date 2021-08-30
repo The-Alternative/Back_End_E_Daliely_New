@@ -59,11 +59,7 @@ class Employee extends Authenticatable implements JWTSubject
         return $this->getKey();
     }
 
-    protected static function booted()
-    {
-        parent::booted();
-        static::addGlobalScope(new EmployeeScope);
-    }
+
     /**
      * Return a key value array, containing any custom claims to be added to the JWT.
      *
@@ -73,6 +69,13 @@ class Employee extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    protected static function booted()
+    {
+        parent::booted();
+        static::addGlobalScope(new EmployeeScope);
+    }
+
     public function EmployeeTranslation()
     {
         return $this->hasMany(EmployeeTranslation::class);
@@ -88,16 +91,16 @@ class Employee extends Authenticatable implements JWTSubject
             'id',
             'id');
     }
-    public function permissions()
-    {
-        return $this->belongsToMany(
-            Permission::class,
-            'permission_employee',
-            'employee_id',
-            'permission_id',
-            'id',
-            'id');
-    }
+//    public function permissions()
+//    {
+//        return $this->belongsToMany(
+//            Permission::class,
+//            'permission_employee',
+//            'employee_id',
+//            'permission_id',
+//            'id',
+//            'id');
+//    }
     public function Stores_Order()
     {
         return $this->hasMany(Stores_Order::class);

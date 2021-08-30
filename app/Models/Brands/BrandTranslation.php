@@ -11,7 +11,8 @@ class BrandTranslation extends Model
     use HasFactory;
 
     protected $table='brand_translation';
-    protected $fillable=['id','brand_id','name','description','locale'];
+    protected $fillable=['id','brand_id','name','description','local'];
+    protected $hidden=['brand_id','locale'];
 
     public function brand()
     {

@@ -5,7 +5,7 @@ namespace App\Service\Admin;
 
 
 use App\Models\Admin\Permission;
-use App\Models\Admin\PermissionTranslation;
+use App\Models\Admin\TransModel\PermissionTranslation;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

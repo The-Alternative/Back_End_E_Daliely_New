@@ -25,8 +25,8 @@ class CreateStoresTable extends Migration
             $table->unsignedInteger('offer_id')->index()->nullable();
             $table->unsignedInteger('socialMedia_id')->index()->nullable();
             $table->unsignedInteger( 'followers_id')->index()->nullable();
-            $table->boolean('is_active');
-            $table->boolean('is_approved')->nullable();
+            $table->boolean('is_active')->default(0);
+            $table->boolean('is_approved')->default(0);
             $table->boolean('delivery')->nullable();
             $table->string( 'edalilyPoint');
             $table->string( 'rating')->nullable();
