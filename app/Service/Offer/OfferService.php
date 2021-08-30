@@ -94,7 +94,7 @@ class OfferService
               return $this->returnData('offer', [$untransId,$transOffer], 'done');
 
               
-              Mail::To($untransId->user_email)->send(new OfferMail());
+              Mail::To($untransId->user_email)->send(new OfferMail($untransId->user_email));
 
               return $this->returnData('email',$eamil,'An email has been sent to you');
             
