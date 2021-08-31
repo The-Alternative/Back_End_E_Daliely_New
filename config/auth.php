@@ -40,21 +40,20 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-
-        'api' => [
-            'driver' => 'jwt',
-            'provider' => 'users',
-            'hash' => false
+            'api' => [
+                'driver' => 'jwt',
+                'provider' => 'users',
+            ],
         ],
-        'users' => [
-            'driver' => 'jwt',
-            'provider' => 'users',
-        ],
-        'employees' =>[
-            'driver' => 'jwt',
-            'provider' => 'employees',
-        ],
-    ],
+//        'users' => [
+//            'driver' => 'token',
+//            'provider' => 'users',
+//        ],
+//        'employees' =>[
+//            'driver' => 'token',
+//            'provider' => 'employees',
+//        ],
+//    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -78,11 +77,11 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
-         'employees' => [
-             'driver' => 'eloquent',
-             'model' => App\Models\Admin\Employee::class,
-         ],
+//
+//         'employees' => [
+//             'driver' => 'eloquent',
+//             'model' => App\Models\Admin\Employee::class,
+//         ],
     ],
 
     /*

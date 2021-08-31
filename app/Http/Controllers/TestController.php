@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Nette\Utils\Image;
 
 class TestController extends Controller
 {
@@ -38,54 +39,20 @@ class TestController extends Controller
      */
     public function store(Request $request)
     {
-//        $files = $request->file('image');
-//        if(!empty($files)) {
-//            foreach ($files as $file) {
-//                Storage::put($file->getClientOriginalName(), file_get_contents($file));
-//            }
-//        }
-
-
-//        $files = $request->file('image');
-//         $folder = public_path('../public/Images/' . 1 . '/');
-//
-//    if (!Storage::exists($folder)) {
-//         Storage::makeDirectory($folder, 0775, true, true);
-//    }
-////    return 'ok';
-//
-//    if (!empty($files)) {
-//        foreach($files as $file) {
-//             Storage::disk(['drivers' => 'local', 'root' => $folder])->put($file->getClientOriginalName(), file_get_contents($file));
-//        }
-//        return 'ok';
-//    }
-
-
-//        $test = Test::find($id);   //getting the post id from blade
         $image = $request->file('image');
-        $folder = storage_path('/app/public/images/products' . '/' . 3 . '/');
-        $filename = time() . '.' . $image->getClientOriginalExtension();
+        $folder = public_path('images/products' . '/' . 19 . '/');
+        $filename = time() . '.' . $image->getClientOriginalName() . '.' . $image->getClientOriginalExtension();
         if (!File::exists($folder)) {
             File::makeDirectory($folder, 0775, true, true);
-//             $location = storage_path('/app/public/images'  . '/' . 1 . '/' . $filename);
+//             $location = storage_path('/app/public/images'  . '/' . 5 . '/' . $filename);
 //            Image::make($image)->resize(800,400)->save($location); //resizing and saving the image
+
         }
-
-
-
     $file_extension= $request-> image-> getClientOriginalExtension();
-   $file_name = time().$file_extension;
+//   $file_name = time().$file_extension;
    $path='images/brands';
-        $request->image->move($folder,$file_name);
+        $request->image->move($folder,$filename);
 
-
-
-//        $test= new Test();
-//        $test->imgae = $file_name;
-//        $test->save();
-//        Test::create(['image'=> $file_name]);
-//        return 'ok';
     }
 
     /**

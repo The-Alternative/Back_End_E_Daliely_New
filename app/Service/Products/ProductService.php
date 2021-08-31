@@ -31,6 +31,7 @@ class ProductService
     private $SectionModel;
     private $storeModel;
     private $storeProductModel;
+
     public function __construct(
         Product $product, ProductTranslation $productTranslation,
         Category $category, Section $sectionModel, Store $storeModel,
@@ -45,6 +46,7 @@ class ProductService
         $this->storeProductModel = $storeProduct;
         $this->customFieldModel = $CustomField;
     }
+
     /*** this function for dashboard ***/
     public function dashgetAll()
     {
@@ -52,29 +54,29 @@ class ProductService
             $products = Product::withoutGlobalScope(ProductScope::class)->active()
                 ->with([
                     'ProductTranslation' => function ($q) {
-                    return $q->where('product_translations.local', '='
-                        , Config::get('app.locale'))
-                        ->select('product_translations.name',
-                            'product_translations.short_des',
-                            'product_translations.product_id',
-                            'product_translations.local')
-                        ->get();
-                }, 'ProductImage' => function ($q) {
-                    return $q->where('product_images.is_cover', 1)
-                        ->select('product_id', 'image')
-                        ->get();
-                }, 'Category' => function ($q) {
-                    return $q->withoutGlobalScope(CategoryScope::class)
-                        ->select(['categories.id'])
-                        ->with(['CategoryTranslation' => function ($q) {
-                            return $q->where('category_translations.local', '='
-                                , Config::get('app.locale'))
-                                ->select(['category_translations.name',
-                                    'category_translations.local',
-                                    'category_translations.category_id'])
-                                ->get();
-                        }])->get();
-                }])->paginate(10);
+                        return $q->where('product_translations.local', '='
+                            , Config::get('app.locale'))
+                            ->select('product_translations.name',
+                                'product_translations.short_des',
+                                'product_translations.product_id',
+                                'product_translations.local')
+                            ->get();
+                    }, 'ProductImage' => function ($q) {
+                        return $q->where('product_images.is_cover', 1)
+                            ->select('product_id', 'image')
+                            ->get();
+                    }, 'Category' => function ($q) {
+                        return $q->withoutGlobalScope(CategoryScope::class)
+                            ->select(['categories.id'])
+                            ->with(['CategoryTranslation' => function ($q) {
+                                return $q->where('category_translations.local', '='
+                                    , Config::get('app.locale'))
+                                    ->select(['category_translations.name',
+                                        'category_translations.local',
+                                        'category_translations.category_id'])
+                                    ->get();
+                            }])->get();
+                    }])->paginate(10);
             if (count($products) > 0) {
                 return $response = $this->returnData('Products', $products, 'done');
             } else {
@@ -84,55 +86,56 @@ class ProductService
             return $this->returnError('400', $e->getMessage());
         }
     }
+
     public function dashgetById($id)
     {
         try {
             $product = $this->productModel->with([
                 'Category' => function ($q) {
-                return $q->withoutGlobalScope(CategoryScope::class)
-                    ->select(['categories.id'])
-                    ->with([
-                        'CategoryTranslation' => function ($q) {
-                        return $q->where('category_translations.local', '='
-                            , Config::get('app.locale'))
-                            ->select(['category_translations.name',
-                                'category_translations.local',
-                                'category_translations.category_id'])
-                            ->get();
-                    }])->get();
-            },
-                'ProductImage'=> function ($q) {
-                return $q->select('product_id', 'image')
-                    ->get();
-            },
+                    return $q->withoutGlobalScope(CategoryScope::class)
+                        ->select(['categories.id'])
+                        ->with([
+                            'CategoryTranslation' => function ($q) {
+                                return $q->where('category_translations.local', '='
+                                    , Config::get('app.locale'))
+                                    ->select(['category_translations.name',
+                                        'category_translations.local',
+                                        'category_translations.category_id'])
+                                    ->get();
+                            }])->get();
+                },
+                'ProductImage' => function ($q) {
+                    return $q->select('product_id', 'image')
+                        ->get();
+                },
                 'Brand' => function ($q) {
-                return $q->withoutGlobalScope(BrandScope::class)
-                    ->select(['brands.id'])
-                    ->with(['BrandTranslation'=>function($q){
-                        return $q->where('brand_translation.local','='
-                            , Config::get('app.locale'))
-                            ->select(['brand_translation.name','brand_translation.brand_id'
-                            ])->get();
-                }])->get();
-            },
-                'Custom_Field'=> function ($q) {
                     return $q->withoutGlobalScope(BrandScope::class)
-                        ->select(['custom_fields.id'])
-                        ->with(['custom__fields__translations'=>function($q){
-                            return $q->where('custom__fields__translations.local','='
+                        ->select(['brands.id'])
+                        ->with(['BrandTranslation' => function ($q) {
+                            return $q->where('brand_translation.local', '='
                                 , Config::get('app.locale'))
-                                ->select(['custom__fields__translations.name'
-                                    ,'custom__fields__translations.custom_field_id'
+                                ->select(['brand_translation.name', 'brand_translation.brand_id'
                                 ])->get();
                         }])->get();
                 },
-                'Custom_Field_Value'=> function ($q) {
+                'Custom_Field' => function ($q) {
+                    return $q->withoutGlobalScope(BrandScope::class)
+                        ->select(['custom_fields.id'])
+                        ->with(['custom__fields__translations' => function ($q) {
+                            return $q->where('custom__fields__translations.local', '='
+                                , Config::get('app.locale'))
+                                ->select(['custom__fields__translations.name'
+                                    , 'custom__fields__translations.custom_field_id'
+                                ])->get();
+                        }])->get();
+                },
+                'Custom_Field_Value' => function ($q) {
                     return $q->withoutGlobalScope(BrandScope::class)
                         ->select(['custom_field_value.id'])
-                        ->with(['BrandTranslation'=>function($q){
-                            return $q->where('brand_translation.local','='
+                        ->with(['BrandTranslation' => function ($q) {
+                            return $q->where('brand_translation.local', '='
                                 , Config::get('app.locale'))
-                                ->select(['brand_translation.name','brand_translation.brand_id'
+                                ->select(['brand_translation.name', 'brand_translation.brand_id'
                                 ])->get();
                         }])->get();
                 }])
@@ -152,7 +155,7 @@ class ProductService
         try {
             $products = $this->productModel
                 ->with(['Store', 'ProductImage'])
-                ->where('products.is_active','=',1)
+                ->where('products.is_active', '=', 1)
                 ->paginate(10);
             if (count($products) > 0) {
                 return $response = $this->returnData('Products', $products, 'done');
@@ -188,6 +191,7 @@ class ProductService
 //        }
 //        return $models;
     }
+
     public function getProductByCategory($id)
     {
         try {
@@ -195,7 +199,7 @@ class ProductService
             if (is_null($products)) {
                 return $this->returnSuccessMessage('This category not have products', 'done');
             } else {
-                return $this->returnData('Products',$products, 'done');
+                return $this->returnData('Products', $products, 'done');
             }
         } catch (\Exception $e) {
             return $this->returnError('400', $e->getMessage());
@@ -208,7 +212,7 @@ class ProductService
         try {
             $product = $this->productModel
                 ->with(['Store', 'Category', 'ProductImage', 'Brand', 'StoreProduct'])
-                ->where('products.is_active','=',1)
+                ->where('products.is_active', '=', 1)
                 ->find($id);
             if (!isset($product)) {
                 return $response = $this->returnSuccessMessage('This Product not found', 'done');
@@ -224,7 +228,7 @@ class ProductService
     public function getTrashed()
     {
         try {
-            $product = $this->productModel->where('products.is_active','=',0)->get();
+            $product = $this->productModel->where('products.is_active', '=', 0)->get();
 
             if (count($product) > 0) {
                 return $response = $this->returnData('Store', $product, 'done');
@@ -320,24 +324,24 @@ class ProductService
                 $product->Section()->syncWithoutDetaching($request->get('Sections'));
             }
             $images = $request->images;
-            foreach ($images as $image) {
-                $arr[] = $image['image'];
-            }
-            foreach ($arr as $ar) {
-                if (isset($image)) {
-//                    if ($request->hasFile($ar)) {
-                        //save
-                        $folder = storage_path('/app/public/images/products' . '/' . $unTransProduct_id . '/');
-                        if (!File::exists($folder)) {
-                            File::makeDirectory($folder, 0775, true, true);
-                            $file_extension = $ar->getClientOriginalExtension();
-                            $file_name = time() . $file_extension;
-//                            $path = 'images/products';
-                            $request->image->move($folder, $file_name);
-                        }
-                    }
+//            foreach ($images as $image) {
+//                $arr[] = $image['image'];
+//            }
+//            foreach ($arr as $ar) {
+//                if (isset($image)) {
+////                    if ($request->hasFile($ar)) {
+//                    //save
+//                    $folder = storage_path('/app/public/images/products' . '/' . $unTransProduct_id . '/');
+//                    if (!File::exists($folder)) {
+//                        File::makeDirectory($folder, 0775, true, true);
+//                        $file_extension = $ar->getClientOriginalExtension();
+//                        $file_name = time() . $file_extension;
+////                            $path = 'images/products';
+//                        $request->image->move($folder, $file_name);
 //                    }
-                }
+//                }
+//                    }
+//            }
             if ($request->has('images')) {
                 foreach ($images as $image) {
                     $product = $this->productModel->find($unTransProduct_id);
@@ -357,7 +361,7 @@ class ProductService
     }
     /*__________________________________________________________________*/
     /****  Update Product   ***/
-    public function update(ProductRequest $request,$id)
+    public function update(ProductRequest $request, $id)
     {
         $validated = $request->validated();
         try {
@@ -418,20 +422,20 @@ class ProductService
                     $product->Section()->syncWithoutDetaching($request->get('Sections'));
                 }
                 $images = $request->images;
-                foreach ($images as $image) {
-                    $arr[] = $image['image'];
-                }
-                foreach ($arr as $ar) {
-                    if (isset($image)) {
-                        if ($request->hasFile($ar)) {
-                            //save
-                            $file_extension = $ar->getClientOriginalExtension();
-                            $file_name = time() . $file_extension;
-                            $path = 'images/products';
-                            $ar->move($path, $file_name);
-                        }
-                    }
-                }
+//                foreach ($images as $image) {
+//                    $arr[] = $image['image'];
+//                }
+//                foreach ($arr as $ar) {
+//                    if (isset($image)) {
+//                        if ($request->hasFile($ar)) {
+//                            //save
+//                            $file_extension = $ar->getClientOriginalExtension();
+//                            $file_name = time() . $file_extension;
+//                            $path = 'images/products';
+//                            $ar->move($path, $file_name);
+//                        }
+//                    }
+//                }
                 if ($request->has('images')) {
                     foreach ($images as $image) {
                         $product = $this->productModel->find($id);
@@ -446,42 +450,38 @@ class ProductService
                 DB::commit();
                 return $this->returnData('Product', [['old data', $dbdproducts], ['new data', $request_products]], 'done');
             }
-        }
-        catch(\Exception $ex){
+        } catch (\Exception $ex) {
             DB::rollback();
             return $this->returnError('400', $ex->getMessage());
         }
     }
+
     /*__________________________________________________________________*/
     public function search($title)
     {
-        try{
-        $product= $this->productModel->searchTitle();
-        if (!$product)
-        {
-            return $this->returnError('400', 'not found this Product');
-        }
-          else
-            {
-                return $this->returnData('products', $product,'done');
+        try {
+            $product = $this->productModel->searchTitle();
+            if (!$product) {
+                return $this->returnError('400', 'not found this Product');
+            } else {
+                return $this->returnData('products', $product, 'done');
             }
-        }catch(\Exception $ex){
-            return $this->returnError('400',$ex->getMessage());
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     /*__________________________________________________________________*/
     /****  Delete Product   ****/
-    public function delete( $id)
+    public function delete($id)
     {
-        try{
-        $product=$this->productModel->find($id);
-        if ($product->is_active=0)
-            {
-                $product=$this->productModel->destroy($id);
-                 return $this->returnData('Product', $product,'This Product Is deleted Now');
+        try {
+            $product = $this->productModel->find($id);
+            if ($product->is_active = 0) {
+                $product = $this->productModel->destroy($id);
+                return $this->returnData('Product', $product, 'This Product Is deleted Now');
             }
-        }catch(\Exception $ex){
-            return $this->returnError('400',$ex->getMessage());
+        } catch (\Exception $ex) {
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 }

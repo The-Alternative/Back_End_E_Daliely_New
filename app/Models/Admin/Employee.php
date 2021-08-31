@@ -14,7 +14,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laratrust\Traits\LaratrustUserTrait;
 
-class Employee extends Authenticatable implements JWTSubject
+class Employee extends Authenticatable
 {
     use LaratrustUserTrait;
     use HasFactory, Notifiable;
@@ -54,10 +54,6 @@ class Employee extends Authenticatable implements JWTSubject
      *
      * @return mixed
      */
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
 
 
     /**
@@ -65,10 +61,7 @@ class Employee extends Authenticatable implements JWTSubject
      *
      * @return array
      */
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
+
 
     protected static function booted()
     {

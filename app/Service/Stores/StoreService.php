@@ -15,10 +15,10 @@ class  StoreService
 {
     use GeneralTrait;
     private $storeTranslation;
-    private $Store;
-    public function __construct(Store $store ,StoreTranslation $storeTranslation)
+    private $storeModel;
+    public function __construct(Store $storeModel ,StoreTranslation $storeTranslation)
     {
-        $this->storeModel=$store;
+        $this->storeModel=$storeModel;
         $this->storeTranslation=$storeTranslation;
     }
     /****________________   admins dashboard ________________****/

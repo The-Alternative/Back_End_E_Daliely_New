@@ -380,8 +380,19 @@ Route::group(['prefix'=>'activetimes','namespace'=>'ActiveTime'],function () {
 
      });
 
+     Route::group(['prefix'=>'upload','namespace'=>'Images'],function()
+     {
+         Route::POST('brands','BrandImagesController@upload');
+         Route::POST('categories','CategoryImagesController@upload');
+         Route::POST('custom-fieldes','CustomFieldImagesController@upload');
+         Route::POST('products/{id}','ProductImageController@upload');
+         Route::POST('stores/{id}','StoreImagesController@upload');
+         Route::POST('stores-multi/{id}','StoreImagesController@uploadMultiple');
+         Route::POST('stores-logo','StoreImagesController@uploadLogo');
+     });
 
-     Route::Post('upload','TestController@store');
+
+     Route::POST('upload','TestController@store');
 
  });
 

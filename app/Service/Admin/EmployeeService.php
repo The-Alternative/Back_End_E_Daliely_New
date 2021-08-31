@@ -142,7 +142,7 @@ class EmployeeService
                 }
                 $this->employeeTranslation->insert($transEmployee_arr);
             }
-            $token = JWTAuth::fromUser($employee);
+//            $token = JWTAuth::fromUser($employee);
             if ($request->has('roles')) {
                 $role = $this->employeeModel->find($employee->id);
                 $role->roles()->syncWithoutDetaching($request->get('roles'));
@@ -152,7 +152,7 @@ class EmployeeService
                 $permissions->permissions()->syncWithoutDetaching($request->get('permissions'));
             }
             DB::commit();
-            return $this->returnData('Employee', [$token,$employee],'Done');
+            return $this->returnData('Employee', [$employee],'Done');
 
         }
         catch(\Exception $ex)

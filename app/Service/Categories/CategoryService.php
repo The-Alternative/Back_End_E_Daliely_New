@@ -162,14 +162,15 @@ class CategoryService
             foreach ($arr as $ar) {
                 if (isset($image)) {
                     if ($request->hasFile($ar)) {
-
-                        $folder = storage_path('/app/public/images/categories' . '/' . $unTransCategory_id . '/');
+//
+                        $folder = storage_path('/images/categories' . '/' . $unTransCategory_id . '/');
+                        $filename = time() . '.' . $image->getClientOriginalName() . '.' . $image->getClientOriginalExtension();
                         if (!File::exists($folder)) {
                             File::makeDirectory($folder, 0775, true, true);
                             $file_extension = $ar->getClientOriginalExtension();
-                            $file_name = time() . $file_extension;
-                            $path = 'images/categories';
-                            $request->image->move($path, $file_name);
+//                            $file_name = time() . $file_extension;
+//                            $path = 'images/categories';
+                            $request->image->move($folder, $filename);
                         }
                     }
                 }

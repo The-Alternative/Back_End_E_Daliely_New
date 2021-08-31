@@ -13,20 +13,15 @@ use Illuminate\Http\Response;
 class StoreController extends Controller
 {
     use GeneralTrait;
-    private $StoreService;
 
-    public function __construct(StoreService $StoreService  )
+    private $Service;
+    public function __construct(StoreService $Service  )
     {
-//        $this->middleware(['role:superadministrator|administrator|user']);
-//        $this->middleware(['permission:store-read'])->only('getAll','getById');
-//        $this->middleware(['permission:store-create'])->only('create');
-//        $this->middleware(['permission:store-update'])->only('update');
-//        $this->middleware(['permission:store-delete'])->only(['trash','restoreTrashed','getTrashed']);
-        $this->StoreService=$StoreService;
+        $this->StoreService=$Service;
     }
     /****________________   admins dashboard functions ________________****/
     /****________________   Store's approved ________________****/
-    public function aprrove( $id)
+    public function aprrove($id)
     {
         return $this->StoreService->aprrove($id);
     }

@@ -9,6 +9,17 @@ Route::middleware('auth:api')
 {
     return $request->user();
 });
+
+Route::group(['middleware' => ['api','jwt.verify']], function() {
+    Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
+        Route::post('login', 'AuthController@login');
+        Route::post('register', 'AuthController@register');
+        Route::post('logout', 'AuthController@logout');
+        Route::post('refresh', 'AuthController@refresh');
+        Route::post('me', 'AuthController@me');
+    });
+
+});
 Route::group(
     [
         'prefix'     => LaravelLocalization::setLocale(),

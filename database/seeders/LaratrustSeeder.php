@@ -99,7 +99,7 @@ class LaratrustSeeder extends Seeder
                     'is_active' => rand(0, 1),
                     'image' => $faker->sentence(3),
                     'email' => $key . '@app.com',
-                    'password' => bcrypt('password')
+                    'password' => bcrypt('123456789')
                 ]);
                 $userid=$user->id;
                 $userTrans = DB::table('user_translation')->insert([
@@ -133,7 +133,7 @@ class LaratrustSeeder extends Seeder
                         'salary'=>rand(25000, 5000),
                         'certificate' =>$faker->sentence(3),
                         'start_date' =>$faker->date('Y-m-d'),
-                        'password' => bcrypt('password')
+                        'password' => bcrypt('123456789')
                     ]);
                     $employeeid=$employee->id;
                     $employeeTrans = DB::table('employee_translation')->insert([
