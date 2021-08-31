@@ -5,20 +5,14 @@ namespace App\Http\Controllers\Item;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Item\ItemRequest;
 use App\Service\Item\ItemService;
-use App\Traits\GeneralTrait;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class ItemController extends Controller
 {
-    use GeneralTrait;
     private $ItemService;
-    private $response;
 
-    public function __construct(ItemService $ItemService,Response $response )
+    public function __construct(ItemService $ItemService)
     {
         $this->ItemService=$ItemService;
-        $this->response=$response;
     }
     public function get()
     {

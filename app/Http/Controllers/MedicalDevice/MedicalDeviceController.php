@@ -5,21 +5,14 @@ namespace App\Http\Controllers\MedicalDevice;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MedicalDevice\MedicalDeviceRequest;
 use App\Service\MedicalDevice\MedicalDeviceService;
-use App\Traits\GeneralTrait;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class MedicalDeviceController extends Controller
 {
-
-    use GeneralTrait;
     private $MedicalDeviceService;
-    private $response;
 
-    public function __construct(MedicalDeviceService $MedicalDeviceService,Response $response )
+    public function __construct(MedicalDeviceService $MedicalDeviceService )
     {
         $this->MedicalDeviceService =$MedicalDeviceService;
-        $this->response=$response;
     }
     public function get()
     {
@@ -31,11 +24,11 @@ class MedicalDeviceController extends Controller
     }
     public function getTrashed()
     {
-        return$this->MedicalDeviceService->getTrashed();
+        return $this->MedicalDeviceService->getTrashed();
     }
     public function create(MedicalDeviceRequest $request)
     {
-        return$this->MedicalDeviceService->create($request);
+        return $this->MedicalDeviceService->create($request);
     }
     public function update(MedicalDeviceRequest $request,$id)
     {

@@ -4,6 +4,9 @@ namespace App\Models;
 
 use App\Models\Admin\Permission;
 use App\Models\Admin\Role;
+use App\Models\Doctors\Patient;
+use App\Models\Offer\Offer;
+use App\Models\SocialMedia\SocialMedia;
 use App\Models\Admin\TransModel\UserTranslation;
 use App\Models\Admin\TypeUser;
 use App\Models\Stores_Orders\Stores_Order;
@@ -98,5 +101,18 @@ class User extends Authenticatable implements JWTSubject
     public function Stores_Order()
     {
         return $this->hasMany(Stores_Order::class);
+    }
+
+    public function Patient()
+    {
+        return $this->hasMany(Patient::class);
+    }
+    public function socialMedia()
+    {
+        return $this->hasMany(SocialMedia::class);
+    }
+    public function Offer()
+    {
+        return $this->belongsToMany(Offer::class,'offer_user','user_id','offer_id','id','id');
     }
 }
