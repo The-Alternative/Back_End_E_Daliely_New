@@ -127,8 +127,8 @@ class DoctorService
     public function search($name)
     {
         try {
-            $doctor = DB::table('users')
-                ->where("name", "like", "%" . $name . "%")
+            $doctor = DB::table('user_translation')
+                ->where("first_name", "like", "%" . $name . "%")
                 ->get();
             if (!$doctor) {
                 return $this->returnError('400', 'not found this doctor');
@@ -197,6 +197,7 @@ class DoctorService
             if ($doctor->is_active == 0) {
                 $doctor->delete();
                 $doctor->doctortranslation()->delete();
+                $doctor->User()->delete();
                 return $this->returnData('doctor', $doctor, 'This doctor is deleted Now');
             }
             else {
