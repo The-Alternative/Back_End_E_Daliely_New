@@ -17,6 +17,7 @@ class CreateOffersTable extends Migration
             $table->id();
             $table->integer('store_id')->unsigned();
             $table->integer('store_product_id')->unique();
+            $table->string('user_email');
             $table->string('image');
             $table->integer('position');
             $table->integer('price');

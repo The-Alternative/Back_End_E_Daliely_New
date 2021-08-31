@@ -4,6 +4,8 @@
 namespace App\Service\Doctors;
 
 use App\Models\Doctors\Doctor;
+use App\Models\User;
+use App\Models\Admin\TransModel\UserTranslation;
 use App\Models\Doctors\DoctorTranslation;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\Doctors\DoctorRequest;
@@ -54,6 +56,17 @@ class DoctorService
                 'is_active' => $request['is_active'],
                 'is_approved' => $request['is_approved'],
             ]);
+            // $alluser = collect($request->user)->all();
+            // $unTransuser_id =User::insertGetId([
+            //     'age' => $request['age'],
+            //     'email' => $request['email'],
+            //     'is_active' => $request['is_active'],
+            //     'location_id' => $request['location_id'],
+            //     'social_media_id' => $request['social_media_id'],
+            //     'image' => $request['image'],
+            //     'password' => $request['password'],
+
+            // ]);
             if (isset($alldoctor)) {
                 foreach ($alldoctor as $alldoctors) {
                     $transdoctor[] = [
@@ -62,8 +75,20 @@ class DoctorService
                         'doctor_id' => $unTransdoctor_id,
                     ];
                 }
+
                 DoctorTranslation::insert( $transdoctor);
             }
+            // if (isset($alluser)) {
+            //     foreach ($alluser as $allusers) {
+            //         $transuser[] = [
+            //             'first_name' => $allusers ['first_name'],
+            //             'last_name' => $allusers ['last_name'],
+            //             'local' => $allusers['local'],
+            //             'user_id' => $unTransuser_id,
+            //         ];
+            //     }
+            //         UserTranslation::insert($transuser);
+            //     }
             DB::commit();
             return $this->returnData('doctor', [$unTransdoctor_id, $transdoctor], 'done');
         }
@@ -89,9 +114,9 @@ class DoctorService
             $newdoctor=Doctor::where('doctors.id',$id)
                 ->update([
                     'clinic_id' => $request['clinic_id'],
-                    'user_id' => $request['user_id'],
-                    'is_active' => $request['is_active'],
-                    'is_approved' => $request['is_approved'],
+                'user_id' => $request['user_id'],
+                'is_active' => $request['is_active'],
+                'is_approved' => $request['is_approved'],
                 ]);
 
             $ss=DoctorTranslation::where('doctor_translation.doctor_id',$id);
@@ -127,8 +152,8 @@ class DoctorService
     public function search($name)
     {
         try {
-            $doctor = DB::table('users')
-                ->where("name", "like", "%" . $name . "%")
+            $doctor = DB::table('user_translation')
+                ->where("first_name", "like", "%" . $name . "%")
                 ->get();
             if (!$doctor) {
                 return $this->returnError('400', 'not found this doctor');
@@ -197,6 +222,7 @@ class DoctorService
             if ($doctor->is_active == 0) {
                 $doctor->delete();
                 $doctor->doctortranslation()->delete();
+                $doctor->User()->delete();
                 return $this->returnData('doctor', $doctor, 'This doctor is deleted Now');
             }
             else {

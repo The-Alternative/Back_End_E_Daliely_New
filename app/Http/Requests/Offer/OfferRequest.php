@@ -25,6 +25,7 @@ class OfferRequest extends FormRequest
     {
         return [
             'image'           =>'required|string',
+            'user_email'      =>'required|email',
             'store_id'        =>'required:integer',
             'store_product_id'=>'required:integer',
             'price'           =>'required:integer',

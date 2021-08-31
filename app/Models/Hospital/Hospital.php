@@ -26,8 +26,7 @@ class Hospital extends Model
 
     public function scopeNotActive($query)
     {
-        return $query->where('is_active',0)->get();
-
+        return $query->where('is_active','=',0)->get();
     }
     public function HospitalTranslation()
     {
