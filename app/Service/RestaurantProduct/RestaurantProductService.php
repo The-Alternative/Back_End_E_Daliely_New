@@ -127,6 +127,7 @@ class RestaurantProductService
             return $this->returnData(' restaurant Product', [$dbProduct,$values],'done');
         }
         catch(\Exception $ex){
+            DB::rollBack();
             return $this->returnError('400', $ex->getMessage());
         }
     }

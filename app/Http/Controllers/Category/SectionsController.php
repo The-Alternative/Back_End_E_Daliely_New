@@ -19,6 +19,11 @@ class SectionsController extends Controller
     public function __construct(SectionService $SectionService)
     {
         $this->sectionService=$SectionService;
+//        $this->middleware(['role:superadministrator|administrator|user']);
+//        $this->middleware(['permission:section-read'])->only('getAll','getById');
+//        $this->middleware(['permission:section-create'])->only('create');
+//        $this->middleware(['permission:section-update'])->only('update');
+//        $this->middleware(['permission:section-delete'])->only(['trash','restoreTrashed','getTrashed']);
     }
     public function getAll()
     {

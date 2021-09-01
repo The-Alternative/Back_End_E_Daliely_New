@@ -158,21 +158,21 @@ class CategoryService
             foreach ($images as $image) {
                 $arr[] = $image['image'];
             }
-//
-//            foreach ($arr as $ar) {
-//                if (isset($image)) {
-//                    if ($request->hasFile($ar)) {
-//
-//                        $folder = storage_path('/app/public/images/categories' . '/' . $unTransCategory_id . '/');
-//                        if (!File::exists($folder)) {
-//                            File::makeDirectory($folder, 0775, true, true);
-//                            $file_extension = $ar->getClientOriginalExtension();
-//                            $file_name = time() . $file_extension;
-//                            $path = 'images/categories';
-//                            $request->image->move($path, $file_name);
-//                        }
-//                    }
-//                }
+
+            foreach ($arr as $ar) {
+                if (isset($image)) {
+                    if ($request->hasFile($ar)) {
+
+                        $folder = storage_path('/app/public/images/categories' . '/' . $unTransCategory_id . '/');
+                        if (!File::exists($folder)) {
+                            File::makeDirectory($folder, 0775, true, true);
+                            $file_extension = $ar->getClientOriginalExtension();
+                            $file_name = time() . $file_extension;
+                            $path = 'images/categories';
+                            $request->image->move($path, $file_name);
+                        }
+                    }
+                }
                 if ($request->has('images')) {
                     foreach ($images as $image) {
                         $categoryImages = $this->categoryModel->find($unTransCategory_id);
@@ -183,6 +183,7 @@ class CategoryService
                         ]);
                     }
                 }
+            }
                 DB::commit();
                 return $this->returnData('category', [$unTransCategory_id,$transCategory_arr],'done');
             }

@@ -15,7 +15,7 @@ class CreateSocialMediaTable extends Migration
     {
         Schema::create('social_media', function (Blueprint $table) {
             $table->id();
-            $table->integer('doctor_id')->unsigned();
+            $table->integer('user_id')->unsigned();
             $table->string('phone_number');
             $table->string('whatsapp_number');
             $table->string('facebook_account');
