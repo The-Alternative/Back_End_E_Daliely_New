@@ -126,6 +126,7 @@ class RestaurantCategoryService
             return $this->returnData(' restaurant category', [$dbcategory,$values],'done');
         }
         catch(\Exception $ex){
+            DB::rollBack();
             return $this->returnError('400', $ex->getMessage());
         }
     }

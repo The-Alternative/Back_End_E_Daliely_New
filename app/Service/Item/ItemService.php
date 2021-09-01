@@ -127,6 +127,7 @@ class ItemService
             return $this->returnData('Item', [$dbItem,$values],'done');
         }
         catch(\Exception $ex){
+            DB::rollBack();
             return $this->returnError('400', $ex->getMessage());
         }
     }
