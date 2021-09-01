@@ -12,7 +12,7 @@ class MedicalDeviceTranslation extends Model
 
     protected $table='medical_device_translation';
     protected $fillable=['id','medical_device_id','name','locale','description'];
-    protected $hidden=['medical_device_id','created_at','updated_at'];
+    protected $hidden=['medical_device_id','id','name','created_at','updated_at'];
     public function medicaldevice()
     {
         return $this->belongsTo(MedicalDevice::class);

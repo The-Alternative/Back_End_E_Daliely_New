@@ -13,7 +13,7 @@ class DoctorTranslation extends Model
     use HasFactory;
 
     protected $table='doctor_translation';
-    protected $fillable=['id','doctor_id','description','locale'];
+    protected $fillable=['id','doctor_id','first_name','last_name','description','locale'];
 
     public function doctor()
     {

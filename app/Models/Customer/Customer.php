@@ -6,7 +6,6 @@ use App\Models\Doctors\CustomerDoctor;
 use App\Models\Doctors\Doctor;
 use App\Models\Customer\CustomerTranslation;
 use App\Models\MedicalFile\MedicalFile;
-use App\Models\Post\Post;
 use App\Scopes\CustomerScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -42,10 +41,5 @@ class Customer extends Model
     public function MedicalFile()
     {
         return $this->hasMany(MedicalFile::class);
-    }
-
-    public  function Post()
-    {
-        return $this->belongsToMany(Post::class,'post_customer','customer_id','post_id','id','id');
     }
 }

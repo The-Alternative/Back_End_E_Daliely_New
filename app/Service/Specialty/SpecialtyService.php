@@ -24,7 +24,6 @@ class SpecialtyService
     {
         $this->SpecialtyModel=$Specialty;
     }
-    //get all specialties
     public function get()
     {
         try {
@@ -32,10 +31,10 @@ class SpecialtyService
             return $this->returnData(' Specialty', $Specialty, 'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
+
     }
-    //get specialty by specialty  id
     public function getById($id)
     {
         try{
@@ -48,10 +47,11 @@ class SpecialtyService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
-//create new specialty
+
+//_____________________________________________________________________//
     public function create( SpecialtyRequest $request )
     {
         try {
@@ -78,10 +78,10 @@ class SpecialtyService
         catch(\Exception $ex)
         {
             DB::rollback();
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
-//update old specialty
+//_________________________________________________________//
     public function update(SpecialtyRequest $request,$id)
     {
         try{
@@ -124,11 +124,10 @@ class SpecialtyService
             return $this->returnData('Specialty', [$dbspecialty,$values],'done');
         }
         catch(\Exception $ex){
-            DB::rollBack();
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
-// search for a specialty by specialties name
+//__________________________________________________________________________//
     public function search($name)
     {
         try{
@@ -145,10 +144,9 @@ class SpecialtyService
         }
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
-    //change the is_active value to zero
     public function trash( $id)
     {
         try{
@@ -164,10 +162,9 @@ class SpecialtyService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
-    //get specialty where is_active value zero
     public function getTrashed()
     {
         try{
@@ -175,10 +172,10 @@ class SpecialtyService
         return $this -> returnData('Specialty', $Specialty,'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
-//change the is_active value to one
+
     public function restoreTrashed( $id)
     {
         try{
@@ -194,10 +191,9 @@ class SpecialtyService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
-    //Permanently delete the specialty  from the database
     public function delete($id)
     {
         try{
@@ -206,23 +202,24 @@ class SpecialtyService
                $Specialty->delete();
                $Specialty->SpecialtyTranslation()->delete();
                 return $this->returnData('Specialty',  $Specialty, 'This Specialty is deleted Now');
+
             }
             else{
                 return $this->returnData('Specialty',  $Specialty, 'This Specialty can not deleted Now');
             }
     }
     catch (\Exception $ex) {
-     return $this->returnError($ex->getCode(), $ex->getMessage());
+     return $this->returnError('400', $ex->getMessage());
      }
     }
-//Knowing the doctor from the identifier of the specialty
+
     public function DoctorSpecialty($id)
     {
         try {
             $Specialty= Specialty::with('doctor')->find($id);
             return $this->returnData('Specialty',  $Specialty, 'done');
         } catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 }

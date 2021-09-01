@@ -5,15 +5,20 @@ namespace App\Http\Controllers\RestaurantCategory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RestaurantCategory\RestaurantCategoryRequest;
 use App\Service\RestaurantCategory\RestaurantCategoryService;
+use App\Traits\GeneralTrait;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class RestaurantCategoyrController extends Controller
 {
+    use GeneralTrait;
     private $RestaurantCategoryService;
+    private $response;
 
-    public function __construct(RestaurantCategoryService $RestaurantCategory )
+    public function __construct(RestaurantCategoryService $RestaurantCategory,Response $response )
     {
         $this->RestaurantCategoryService=$RestaurantCategory;
-
+        $this->response=$response;
     }
     public function get()
     {

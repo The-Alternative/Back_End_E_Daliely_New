@@ -19,13 +19,9 @@ class DoctorScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
       $builder->join('doctor_translation','doctors.id','=','doctor_translation.doctor_id')
-              ->join('users','users.id','=','doctors.user_id')
-              ->join('user_translation','user_translation.id','=','doctors.user_id')
-              ->where('doctor_translation.locale','=',config::get('app.locale'))
-
-              ->select(['doctors.id','doctors.is_active','doctors.is_approved',
-              'doctor_translation.description','users.social_media_id'
-              ,'user_translation.first_name','user_translation.last_name']);
+          ->where('doctor_translation.locale','=',config::get('app.locale'))
+          ->select(['doctors.id','doctors.is_active','doctors.is_approved','doctors.image',
+              'doctor_translation.first_name', 'doctor_translation.last_name', 'doctor_translation.description']);
 
     }
 }

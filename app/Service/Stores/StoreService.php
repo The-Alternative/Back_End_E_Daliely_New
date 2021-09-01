@@ -15,10 +15,15 @@ class  StoreService
 {
     use GeneralTrait;
     private $storeTranslation;
-    private $Store;
-    public function __construct(Store $store ,StoreTranslation $storeTranslation)
+    private $storeModel;
+    /**
+     * @var Store
+     */
+//    private $storeModel;
+
+    public function __construct(Store $storeModel ,StoreTranslation $storeTranslation)
     {
-        $this->storeModel=$store;
+        $this->storeModel=$storeModel;
         $this->storeTranslation=$storeTranslation;
     }
     /****________________   admins dashboard ________________****/
@@ -165,10 +170,10 @@ class  StoreService
         }
     }
     /****________________  Create Store   ________________****/
-    public function create(StoreRequest $request)
+    public function create(Request $request)
     {
         try {
-            $request->validated();
+//            $request->validated();
       /***  //transformation to collection*////
         $stores = collect($request->store)->all();
         DB::beginTransaction();
@@ -219,21 +224,21 @@ class  StoreService
                 $store->Section()->syncWithoutDetaching($request->get('section'));
             }
             $images = $request->images;
-            foreach ($images as $image) {
-                $arr[] = $image['image'];
-            }
-            foreach ($arr as $ar)
-            {
-                if (isset($image)) {
-                    if ($request->hasFile($ar)) {
-                        //save
-                        $file_extension = $ar->getClientOriginalExtension();
-                        $file_name = time() . $file_extension;
-                        $path = 'images/stores';
-                        $ar->move($path, $file_name);
-                    }
-                }
-            }
+//            foreach ($images as $image) {
+//                $arr[] = $image['image'];
+//            }
+//            foreach ($arr as $ar)
+//            {
+//                if (isset($image)) {
+//                    if ($request->hasFile($ar)) {
+//                        //save
+//                        $file_extension = $ar->getClientOriginalExtension();
+//                        $file_name = time() . $file_extension;
+//                        $path = 'images/stores';
+//                        $ar->move($path, $file_name);
+//                    }
+//                }
+//            }
             if ($request->has('images')) {
                 foreach ($images as $image) {
                     $storeImages = $this->storeModel->find($unTransStore_id);
@@ -304,20 +309,20 @@ class  StoreService
                 $store->Section()->syncWithoutDetaching($request->get('section'));
             }
             $images = $request->images;
-            foreach ($images as $image) {
-                $arr[] = $image['image'];
-            }
-            foreach ($arr as $ar) {
-                if (isset($image)) {
-                    if ($request->hasFile($ar)) {
-                        //save
-                        $file_extension = $ar->getClientOriginalExtension();
-                        $file_name = time() . $file_extension;
-                        $path = 'images/stores';
-                        $ar->move($path, $file_name);
-                    }
-                }
-            }
+//            foreach ($images as $image) {
+//                $arr[] = $image['image'];
+//            }
+//            foreach ($arr as $ar) {
+//                if (isset($image)) {
+//                    if ($request->hasFile($ar)) {
+//                        //save
+//                        $file_extension = $ar->getClientOriginalExtension();
+//                        $file_name = time() . $file_extension;
+//                        $path = 'images/stores';
+//                        $ar->move($path, $file_name);
+//                    }
+//                }
+//            }
             if ($request->has('images')) {
                 foreach ($images as $image) {
                     $storeImages = $this->storeModel->find($id);

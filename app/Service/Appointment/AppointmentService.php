@@ -20,7 +20,6 @@ class AppointmentService
     {
         $this->AppointmentModel=$appointment;
     }
-    //get all appointments
     public function get()
     {
         try
@@ -30,10 +29,10 @@ class AppointmentService
         }
         catch(\Exception $ex)
         {
-            return $this->returnError($ex->getCode(),$ex->getMessage());
+            return $this->returnError('400',$ex->getMessage());
         }
     }
-//get appointment by appointment's id
+
     public function getById($id)
     {
         try
@@ -48,10 +47,10 @@ class AppointmentService
         }
         catch(\Exception $ex)
         {
-            return $this->returnError($ex->getCode(),$ex->getMessage());
+            return $this->returnError('400',$ex->getMessage());
         }
     }
-//create a new appointment
+
     public function create( AppointmentRequest $request )
     {
         try {
@@ -82,10 +81,10 @@ class AppointmentService
         catch(\Exception $ex)
         {
             DB::rollback();
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('Specialty', $ex->getMessage());
         }
     }
-// update appointment
+////_________________________________________________________//
     public function update(AppointmentRequest $request,$id)
     {
         try{
@@ -131,11 +130,10 @@ class AppointmentService
             return $this->returnData('Appointment', $dbappointment,'done');
         }
         catch(\Exception $ex){
-            DB::rollBack();
-            return $this->returnError($ex->getCode(),$ex->getMessage());
+            return $this->returnError('400',$ex->getMessage());
         }
     }
-//change the is_active value to zero
+
     public function trash( $id)
     {
         try {
@@ -150,10 +148,9 @@ class AppointmentService
         }
         catch (\Exception $ex)
         {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
-    //get appointment where is_active zero
     public function getTrashed()
     {
         try {
@@ -162,11 +159,11 @@ class AppointmentService
         }
         catch (\Exception $ex)
         {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 
-//change the is_active value to one
+
     public function restoreTrashed( $id)
     {
         try {
@@ -176,15 +173,15 @@ class AppointmentService
             } else {
               $appointment->is_active=1;
               $appointment->save();
-              return $this->returnData('Appointment', $appointment,'This Appointment is restore  trashed Now');
+              return $this->returnData('Appointment', $appointment,'This Appointment is trashed Now');
             }
         }
         catch (\Exception $ex)
         {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
-//delete appointment from database
+
     public function delete($id)
     {
         try {
@@ -201,7 +198,7 @@ class AppointmentService
                 return $this->returnData('appointment', $appointment, 'This appointment can not deleted Now');
             }
         } catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
 
     }

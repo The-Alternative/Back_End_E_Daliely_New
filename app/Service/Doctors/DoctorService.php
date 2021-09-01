@@ -3,13 +3,17 @@
 
 namespace App\Service\Doctors;
 
+use App\Http\Requests\CustomerDoctor\CustomerDoctorRequest;
+use App\Models\Customer\Customer;
+use App\Models\DoctorRate\DoctorRate;
 use App\Models\Doctors\Doctor;
-use App\Models\User;
-use App\Models\Admin\TransModel\UserTranslation;
 use App\Models\Doctors\DoctorTranslation;
+use App\Models\MedicalFile\MedicalFile;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\Doctors\DoctorRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class DoctorService
 {
@@ -17,11 +21,12 @@ class DoctorService
     private $customerModel;
     use GeneralTrait;
 
-    public function __construct(Doctor $doctor)
+
+    public function __construct(Doctor $doctor,customer $customer)
     {
-        $this->DoctorModel = $doctor;
+        $this->DoctorModel=$doctor;
+        $this->customerModel=$customer;
     }
-        //get all doctors
     public function get()
     {
         try{
@@ -30,75 +35,54 @@ class DoctorService
         }
         catch(\Exception $ex)
         {
-            return $this->returnError($ex->getCode(),$ex->getMessage());
+            return $this->returnError('400',$ex->getMessage());
         }
     }
-//get doctors details by doctor id
+
     public function getById($id)
     {
         try{
-            $doctor=  Doctor::with('Specialty','clinic','medicalDevice','hospital')->find($id);
-             return $this->returnData('doctor',$doctor,'done');
+            return  Doctor::with('Specialty','clinic','medicalDevice','socialMedia','hospital')->find($id);
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
-//create new doctor
+////__________________________________________________________________________//
     public function create( DoctorRequest $request )
     {
         try {
             $alldoctor = collect($request->doctor)->all();
             DB::beginTransaction();
             $unTransdoctor_id =doctor::insertGetId([
+                'image' => $request['image'],
+                'social_media_id' => $request['social_media_id'],
                 'clinic_id' => $request['clinic_id'],
-                'user_id' => $request['user_id'],
-                'is_active' => $request['is_active'],
                 'is_approved' => $request['is_approved'],
+                'is_active' => $request['is_active'],
             ]);
-            // $alluser = collect($request->user)->all();
-            // $unTransuser_id =User::insertGetId([
-            //     'age' => $request['age'],
-            //     'email' => $request['email'],
-            //     'is_active' => $request['is_active'],
-            //     'location_id' => $request['location_id'],
-            //     'social_media_id' => $request['social_media_id'],
-            //     'image' => $request['image'],
-            //     'password' => $request['password'],
-
-            // ]);
             if (isset($alldoctor)) {
                 foreach ($alldoctor as $alldoctors) {
                     $transdoctor[] = [
+                        'first_name' => $alldoctors ['first_name'],
+                        'last_name' => $alldoctors ['last_name'],
                         'description' => $alldoctors ['description'],
                         'locale' => $alldoctors['locale'],
                         'doctor_id' => $unTransdoctor_id,
                     ];
                 }
-
                 DoctorTranslation::insert( $transdoctor);
             }
-            // if (isset($alluser)) {
-            //     foreach ($alluser as $allusers) {
-            //         $transuser[] = [
-            //             'first_name' => $allusers ['first_name'],
-            //             'last_name' => $allusers ['last_name'],
-            //             'local' => $allusers['local'],
-            //             'user_id' => $unTransuser_id,
-            //         ];
-            //     }
-            //         UserTranslation::insert($transuser);
-            //     }
             DB::commit();
             return $this->returnData('doctor', [$unTransdoctor_id, $transdoctor], 'done');
         }
         catch(\Exception $ex)
         {
             DB::rollback();
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('doctor', $ex->getMessage());
         }
     }
-//update doctor by doctor's id
+//_________________________________________________________//
     public function update(DoctorRequest $request,$id)
     {
         try{
@@ -113,10 +97,11 @@ class DoctorService
 
             $newdoctor=Doctor::where('doctors.id',$id)
                 ->update([
+                    'image' => $request['image'],
+                    'social_media_id' => $request['social_media_id'],
                     'clinic_id' => $request['clinic_id'],
-                'user_id' => $request['user_id'],
-                'is_active' => $request['is_active'],
-                'is_approved' => $request['is_approved'],
+                    'is_approved' => $request['is_approved'],
+                    'is_active' => $request['is_active'],
                 ]);
 
             $ss=DoctorTranslation::where('doctor_translation.doctor_id',$id);
@@ -134,6 +119,8 @@ class DoctorService
                     $values= DoctorTranslation::where('doctor_translation.doctor_id',$id)
                         ->where('locale',$request_doctors['locale'])
                         ->update([
+                            'first_name' => $request_doctors ['first_name'],
+                            'last_name' => $request_doctors ['last_name'],
                             'description' => $request_doctors ['description'],
                             'locale' => $request_doctors['locale'],
                             'doctor_id' => $id,
@@ -144,15 +131,14 @@ class DoctorService
             return $this->returnData('doctor', $dbdoctor,'done');
         }
         catch(\Exception $ex){
-            DB::rollBack();
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
-//Search for a doctor by his name
+//___________________________________________________________//
     public function search($name)
     {
         try {
-            $doctor = DB::table('user_translation')
+            $doctor = DB::table('doctor_translation')
                 ->where("first_name", "like", "%" . $name . "%")
                 ->get();
             if (!$doctor) {
@@ -163,10 +149,10 @@ class DoctorService
         }
         catch(\Exception $ex)
             {
-                return $this->returnError($ex->getCode(),$ex->getMessage());
+                return $this->returnError('400',$ex->getMessage());
             }
     }
-//Change the is_active value to zero
+
     public function trash( $id)
     {
         try{
@@ -181,10 +167,10 @@ class DoctorService
         }
         catch(\Exception $ex)
         {
-            return $this->returnError($ex->getCode(),$ex->getMessage());
+            return $this->returnError('400',$ex->getMessage());
         }
     }
-//get doctor where is_active value zero
+
     public function getTrashed()
     {
         try {
@@ -193,10 +179,10 @@ class DoctorService
         }
         catch(\Exception $ex)
         {
-            return $this->returnError($ex->getCode(),$ex->getMessage());
+            return $this->returnError('400',$ex->getMessage());
         }
     }
-//Change the is_active value to one
+
     public function restoreTrashed( $id)
     {
         try {
@@ -211,10 +197,10 @@ class DoctorService
         }
         catch(\Exception $ex)
         {
-            return $this->returnError($ex->getCode(),$ex->getMessage());
+            return $this->returnError('400',$ex->getMessage());
         }
     }
-    //Permanently delete the doctor from the database
+
     public function delete($id)
     {
         try{
@@ -222,28 +208,31 @@ class DoctorService
             if ($doctor->is_active == 0) {
                 $doctor->delete();
                 $doctor->doctortranslation()->delete();
-                $doctor->User()->delete();
                 return $this->returnData('doctor', $doctor, 'This doctor is deleted Now');
+
             }
             else {
                 return $this->returnData('doctor', $doctor, 'This doctor can not deleted Now');
             }
         } catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
+
     }
 
 //    get all doctor's social media by doctor's id
-    public function DoctorSocialMedia($id)
+    public function SocialMedia($id)
     {
         try {
            $doctor= Doctor::with('socialMedia')->find($id);
             return $this->returnData('doctor', $doctor, 'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
+
+
     //get  doctor's medical devices by doctor's id
     public function doctormedicaldevice($id)
     {
@@ -252,55 +241,55 @@ class DoctorService
             return $this->returnData('doctor', $doctor, 'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 
     //get hospital by doctor's id
-    public function doctorhospital($id)
+    public function hospital($id)
     {
       try{
           $doctor= Doctor::with('hospital')->find($id);
           return $this->returnData('doctor', $doctor, 'done');
       }
       catch (\Exception $ex) {
-           return $this->returnError($ex->getCode(), $ex->getMessage());
+           return $this->returnError('400', $ex->getMessage());
        }
     }
 
-    //get doctor's appopintment by doctor's id
-    public function doctorappointment($id)
+    //get doctor's appopintment
+    public function appointment($id)
     {
         try{
             $doctor= Doctor::with('appointment')->find($id);
             return $this->returnData('doctor', $doctor, 'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 
-    //get doctor clinic by doctor's id
-    public function doctorclinic($id)
+    //get clinic by doctor's id
+    public function clinic($id)
     {
         try{
             $doctor= Doctor::with('clinic')->find($id);
             return $this->returnData('doctor', $doctor, 'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 
-    //get patient by doctor's id
-    public function Patient($id)
+    //get paitent by doctor's id
+    public function customer($id)
     {
         try{
-            $doctor=  Doctor::with('Patient')->find($id);
+            $doctor=  Doctor::with('customer')->find($id);
             return $this->returnData('doctor', $doctor, 'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 
@@ -312,17 +301,17 @@ class DoctorService
             return $this->returnData('doctor', $doctor, 'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
-    //get doctor specialty by doctor's id
+    //get specialty by doctor id
     public function DoctorSpecialty($id)
     {
         try {
             $doctor= Doctor::with('Specialty')->find($id);
             return $this->returnData('doctor', $doctor, 'done');
         } catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 

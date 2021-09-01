@@ -2,7 +2,6 @@
 
 namespace App\Models\SocialMedia;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Doctors\doctor;
@@ -11,8 +10,8 @@ class SocialMedia extends Model
 {
     use HasFactory;
     protected $table='social_media';
-    protected $fillable=['id','phone_number','whatsapp_number','facebook_account','telegram_number','email','user_id','instagram_account','is_active'];
-    protected $hidden=['created_at','updated_at','user_id'];
+    protected $fillable=['id','phone_number','whatsapp_number','facebook_account','telegram_number','email','doctor_id','instagram_account','is_active'];
+    protected $hidden=['created_at','updated_at','doctor_id'];
     public $timestamps =true;
 
     //scope
@@ -24,8 +23,8 @@ class SocialMedia extends Model
     {
         return $query->where('is_active',0)->get();
     }
-    public function User()
+    public function doctor()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(doctor::class);
     }
 }

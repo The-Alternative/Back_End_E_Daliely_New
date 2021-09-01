@@ -19,7 +19,6 @@ class ClinicService
     {
         $this->ClinicModel=$clinic;
     }
-    //get all clinics
     public function get()
     {
         try
@@ -29,10 +28,10 @@ class ClinicService
         }
         catch(\Exception $ex)
         {
-            return $this->returnError($ex->getCode(),$ex->getMessage());
+            return $this->returnError('400',$ex->getMessage());
         }
     }
-//get clinic by clinic id
+
     public function getById($id)
     {
         try
@@ -47,11 +46,13 @@ class ClinicService
         }
         catch(\Exception $ex)
         {
-            return $this->returnError($ex->getCode(),$ex->getMessage());
+            return $this->returnError('400','failed');
         }
 
     }
-// create a new clinic
+
+
+//___________________________________________________________________//
     public function create( ClinicRequest $request )
     {
         try {
@@ -79,10 +80,10 @@ class ClinicService
         catch(\Exception $ex)
         {
             DB::rollback();
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('Clinic', $ex->getMessage());
         }
     }
-//update old clinic
+//______________________________________________________________//
     public function update(ClinicRequest $request,$id)
     {
         try{
@@ -108,10 +109,10 @@ class ClinicService
             }
         }
         catch(\Exception $ex){
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
-//search of clinic by clinic name
+//_________________________________________________________________//
     public function search($name)
     {
         try {
@@ -125,10 +126,9 @@ class ClinicService
             }
         }
         catch(\Exception $ex){
-            return $this->returnError($ex->getCode(),$ex->getMessage());
+            return $this->returnError('400','failed');
         }
     }
-    //change  the is_active value to zero
     public function trash( $id)
     {
         try {
@@ -145,10 +145,9 @@ class ClinicService
          }
        catch (\Exception $ex)
        {
-         return $this->returnError($ex->getCode(), $ex->getMessage());
+         return $this->returnError('400', 'failed');
         }
     }
-    //get doctor where is_active value zero
     public function getTrashed()
     {
         try {
@@ -157,10 +156,9 @@ class ClinicService
         }
         catch (\Exception $ex)
         {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', 'failed');
         }
     }
-    //change the is_active value to one
     public function restoreTrashed( $id)
     {
         try {
@@ -177,10 +175,10 @@ class ClinicService
         }
         catch (\Exception $ex)
       {
-        return $this->returnError($ex->getCode(), $ex->getMessage());
+        return $this->returnError('400', 'failed');
       }
     }
-    //Permanently delete the clinic from the database
+
     public function delete($id)
     {
         try {
@@ -194,7 +192,7 @@ class ClinicService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 

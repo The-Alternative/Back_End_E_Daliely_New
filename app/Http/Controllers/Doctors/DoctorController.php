@@ -3,16 +3,26 @@
 namespace App\Http\Controllers\Doctors;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CustomerDoctor\CusromerDoctorRequest;
+use App\Http\Requests\CustomerDoctor\CustomerDoctorRequest;
 use App\Http\Requests\Doctors\DoctorRequest;
+use App\Service\Doctors\CustomerDoctorService;
 use App\Service\Doctors\DoctorService;
+use App\Traits\GeneralTrait;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class DoctorController extends Controller
 {
+    use GeneralTrait;
     private $DoctorService;
 
-    public function __construct(DoctorService $DoctorService )
+
+    public function __construct(DoctorService $DoctorService,CustomerDoctorService $CustomerDoctorService,Response $response )
     {
+        $this->CustomerDoctorService=$CustomerDoctorService;
         $this->DoctorService=$DoctorService;
+        $this->response=$response;
     }
 
     public function get()
@@ -59,34 +69,38 @@ class DoctorController extends Controller
         return $this->DoctorService->delete($id);
     }
 
-    public function DoctorSocialMedia($id)
+    public function SocialMedia($id)
     {
-        return $this->DoctorService->DoctorSocialMedia($id);
+        return $this->DoctorService->SocialMedia($id);
     }
 
     public function doctormedicaldevice($id)
     {
         return $this->DoctorService->doctormedicaldevice($id);
     }
-
-    public function doctorhospital($id)
+    public function getalldetails($id)
     {
-        return $this->DoctorService->doctorhospital($id);
+        return $this->DoctorService->getalldetails($id);
     }
 
-    public function doctorappointment($id)
+    public function hospital($id)
     {
-        return $this->DoctorService->doctorappointment($id);
+        return $this->DoctorService->hospital($id);
     }
 
-    public function doctorclinic($id)
+    public function appointment($id)
     {
-        return $this->DoctorService->doctorclinic($id);
+        return $this->DoctorService->appointment($id);
     }
 
-    public function Patient($id)
+    public function clinic($id)
     {
-        return $this->DoctorService->Patient($id);
+        return $this->DoctorService->clinic($id);
+    }
+
+    public function customer($id)
+    {
+        return $this->DoctorService->customer($id);
     }
     public function DoctorRate($id)
     {
