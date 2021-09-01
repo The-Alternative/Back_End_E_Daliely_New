@@ -320,24 +320,24 @@ class ProductService
                 $product->Section()->syncWithoutDetaching($request->get('Sections'));
             }
             $images = $request->images;
-            foreach ($images as $image) {
-                $arr[] = $image['image'];
-            }
-            foreach ($arr as $ar) {
-                if (isset($image)) {
-//                    if ($request->hasFile($ar)) {
-                        //save
-                        $folder = storage_path('/app/public/images/products' . '/' . $unTransProduct_id . '/');
-                        if (!File::exists($folder)) {
-                            File::makeDirectory($folder, 0775, true, true);
-                            $file_extension = $ar->getClientOriginalExtension();
-                            $file_name = time() . $file_extension;
-//                            $path = 'images/products';
-                            $request->image->move($folder, $file_name);
-                        }
-                    }
+//            foreach ($images as $image) {
+//                $arr[] = $image['image'];
+//            }
+//            foreach ($arr as $ar) {
+//                if (isset($image)) {
+////                    if ($request->hasFile($ar)) {
+//                        //save
+//                        $folder = storage_path('/app/public/images/products' . '/' . $unTransProduct_id . '/');
+//                        if (!File::exists($folder)) {
+//                            File::makeDirectory($folder, 0775, true, true);
+//                            $file_extension = $ar->getClientOriginalExtension();
+//                            $file_name = time() . $file_extension;
+////                            $path = 'images/products';
+//                            $request->image->move($folder, $file_name);
+//                        }
 //                    }
-                }
+////                    }
+//                }
             if ($request->has('images')) {
                 foreach ($images as $image) {
                     $product = $this->productModel->find($unTransProduct_id);
@@ -418,20 +418,20 @@ class ProductService
                     $product->Section()->syncWithoutDetaching($request->get('Sections'));
                 }
                 $images = $request->images;
-                foreach ($images as $image) {
-                    $arr[] = $image['image'];
-                }
-                foreach ($arr as $ar) {
-                    if (isset($image)) {
-                        if ($request->hasFile($ar)) {
-                            //save
-                            $file_extension = $ar->getClientOriginalExtension();
-                            $file_name = time() . $file_extension;
-                            $path = 'images/products';
-                            $ar->move($path, $file_name);
-                        }
-                    }
-                }
+//                foreach ($images as $image) {
+//                    $arr[] = $image['image'];
+//                }
+//                foreach ($arr as $ar) {
+//                    if (isset($image)) {
+//                        if ($request->hasFile($ar)) {
+//                            //save
+//                            $file_extension = $ar->getClientOriginalExtension();
+//                            $file_name = time() . $file_extension;
+//                            $path = 'images/products';
+//                            $ar->move($path, $file_name);
+//                        }
+//                    }
+//                }
                 if ($request->has('images')) {
                     foreach ($images as $image) {
                         $product = $this->productModel->find($id);

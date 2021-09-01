@@ -5,14 +5,20 @@ namespace App\Http\Controllers\Hospital;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\HospitalRequest;
 use App\Service\Hospital\HospitalService;
+use App\Traits\GeneralTrait;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class HospitalController extends Controller
 {
+    use GeneralTrait;
     private $HospitalService;
+    private $response;
 
-    public function __construct(HospitalService $HospitalService )
+    public function __construct(HospitalService $HospitalService,Response $response )
     {
         $this->HospitalService=$HospitalService;
+        $this->response=$response;
     }
     public function get()
     {

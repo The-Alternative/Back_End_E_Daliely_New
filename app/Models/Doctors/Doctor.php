@@ -4,9 +4,11 @@ namespace App\Models\Doctors;
 
 use App\Models\Appointment\Appointment;
 use App\Models\Clinic\Clinic;
+use App\Models\Customer\Customer;
 use App\Models\DoctorRate\DoctorRate;
 use App\Models\Hospital\Hospital;
 use App\Models\MedicalDevice\MedicalDevice;
+use App\Models\MedicalFile\MedicalFile;
 use App\Models\SocialMedia\SocialMedia;
 use App\Models\Specialty\Specialty;
 use App\Scopes\DoctorScope;
@@ -17,8 +19,8 @@ class Doctor extends Model
 {
     use HasFactory;
     protected $table='doctors';
-    protected $fillable =['Id','clinic_id','user_id','is_active','is_approved'];
-    protected $hidden   =['created_at','updated_at','clinic_id','user_id','pivot'];
+    protected $fillable =['Id','image','clinic_id','social_media_id','is_active','is_approved'];
+    protected $hidden   =['social_media_id','created_at','updated_at','clinic_id','pivot'];
 
     protected static function boot()
     {
@@ -36,10 +38,10 @@ class Doctor extends Model
         return $this->hasMany(DoctorTranslation::class,'doctor_id');
     }
 
-//    public function socialMedia()
-//    {
-//        return $this->hasMany(SocialMedia::class);
-//    }
+    public function socialMedia()
+    {
+        return $this->hasMany(SocialMedia::class);
+    }
 
 
     public  function Specialty()
@@ -66,18 +68,17 @@ class Doctor extends Model
         return $this->belongsToMany(Hospital::class,'doctor_hospital','doctor_id','hospital_id','id','id');
     }
 
-    public function Patient()
+    public function customer()
     {
-        return $this -> belongsToMany(Patient::class,'doctor_patient','doctor_id','patient_id','id','id');
+        return $this -> belongsToMany(Customer::class,'Customer_Doctor','doctor_id','customer_id','id','id');
     }
 
     public function appointment()
     {
         return $this->hasMany(Appointment::class);
     }
-    Public function User()
+    public function MedicalFile()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->hasMany(MedicalFile::class);
     }
-
 }

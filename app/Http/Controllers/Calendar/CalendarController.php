@@ -14,9 +14,10 @@ class CalendarController extends Controller
     use GeneralTrait;
     private $CalendarService;
 
-    public function __construct(CalendarService $CalendarService )
+    public function __construct(CalendarService $CalendarService,Response $response )
     {
         $this->CalendarService=$CalendarService;
+        $this->response=$response;
     }
     public function get()
     {
@@ -30,26 +31,26 @@ class CalendarController extends Controller
 
      public function create(CalendarRequest $request)
     {
-        return   $this->CalendarService->create($request);
+        return   $response=$this->CalendarService->create($request);
     }
 
     public function update(CalendarRequest $request,$id)
     {
-        return $this->CalendarService->update($request,$id);
+        return $response=$this->CalendarService->update($request,$id);
     }
 
     public function trash($id)
     {
-        return $this->CalendarService->trash($id);
+        return   $response= $this->CalendarService->trash($id);
     }
 
     public function restoreTrashed($id)
     {
-        return   $this->CalendarService->restoreTrashed($id);
+        return  $response= $this->CalendarService->restoreTrashed($id);
     }
 
     public function delete($id)
     {
-        return    $this->CalendarService->delete($id);
+        return   $response = $this->CalendarService->delete($id);
     }
 }

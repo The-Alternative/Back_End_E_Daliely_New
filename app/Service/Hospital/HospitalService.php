@@ -19,7 +19,6 @@ class HospitalService
     {
         $this->HospitalModel=$Hospital;
     }
-    //get all hospitals
     public function get()
     {
         try {
@@ -27,10 +26,9 @@ class HospitalService
             return $this->returnData('Hospital', $Hospital, 'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
-    //get hospital by hospitals id
     public function getById($id)
     {
         try{
@@ -44,10 +42,10 @@ class HospitalService
     }
     catch(\Exception $ex)
       {
-         return $this->returnError($ex->getCode(),$ex->getMessage());
+         return $this->returnError('400',$ex->getMessage());
       }
     }
-    //create new hospital
+    //__________________________________________________________//
     public function create( HospitalRequest $request )
     {
         try {
@@ -77,11 +75,11 @@ class HospitalService
         catch(\Exception $ex)
         {
             DB::rollback();
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('Hospital', $ex->getMessage());
         }
 
     }
-    //update old hospital
+    //___________________________________________________________________//
     public function update(HospitalRequest $request,$id)
     {
         try{
@@ -126,14 +124,13 @@ class HospitalService
                 }
             }
             DB::commit();
-            return $this->returnData(' hospital', [$db_hospital,$values],'done');
+            return $this->returnData(' hospital', [$dbhospital,$values],'done');
         }
         catch(\Exception $ex){
-            DB::rollBack();
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
-    //search for a hospital by name
+    //____________________________________________________________//
     public function search($name)
     {
         try {
@@ -147,10 +144,9 @@ class HospitalService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
-    //Change the is_active value to zero
     public function trash( $id)
     {
         try{
@@ -166,22 +162,19 @@ class HospitalService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
 
     }
-    //get hospital where is_active value zero
     public function getTrashed()
     {
         try{
-            $Hospital= $this->HospitalModel::NotActive();
+            $Hospital= $this->HospitalModel::NotActive()->all();
             return $this -> returnData('Hospital',$Hospital,'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
-        }
-    }
-    //Change the is_active value to one
+            return $this->returnError('400', $ex->getMessage());
+        }    }
     public function restoreTrashed( $id)
     {
         try{
@@ -197,10 +190,10 @@ class HospitalService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
-    //Permanently delete the hospital from the database
+    //________________________________________//
     public function delete($id)
     {
         try{
@@ -216,7 +209,7 @@ class HospitalService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
     //get all the doctors who work in the hospital according to her name
@@ -228,7 +221,7 @@ class HospitalService
 
         }
         catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+            return $this->returnError('400', $ex->getMessage());
         }
     }
 

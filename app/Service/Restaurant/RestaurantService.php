@@ -136,9 +136,9 @@ class RestaurantService
             }
             DB::commit();
             return $this->returnData('restaurant',[$dbrestarurant,$values],'done');
+
         }
         catch(\Exception $ex){
-            DB::rollBack();
             return $this->returnError('400', $ex->getMessage());
         }
     }

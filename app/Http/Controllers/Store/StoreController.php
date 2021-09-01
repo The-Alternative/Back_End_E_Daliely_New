@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Store;
 
-use App\Http\Requests\Store\StoreRequest;
-use App\Http\Requests\StoreProduct\StoreProductRequest;
+
 use App\Traits\GeneralTrait;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Service\Stores\StoreService;
-use Illuminate\Http\Response;
 
 class StoreController extends Controller
 {
@@ -17,11 +15,6 @@ class StoreController extends Controller
 
     public function __construct(StoreService $StoreService  )
     {
-//        $this->middleware(['role:superadministrator|administrator|user']);
-//        $this->middleware(['permission:store-read'])->only('getAll','getById');
-//        $this->middleware(['permission:store-create'])->only('create');
-//        $this->middleware(['permission:store-update'])->only('update');
-//        $this->middleware(['permission:store-delete'])->only(['trash','restoreTrashed','getTrashed']);
         $this->StoreService=$StoreService;
     }
     /****________________   admins dashboard functions ________________****/
@@ -49,7 +42,7 @@ class StoreController extends Controller
     {
         return $this->StoreService->getTrashed();
     }
-    public function create(StoreRequest $request)
+    public function create(Request $request)
     {
         return $this->StoreService->create($request);
     }

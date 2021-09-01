@@ -5,6 +5,8 @@ namespace App\Http\Controllers\RestaurantType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RestaurantType\RestaurantTypeRequest;
 use App\Service\RestaurantType\RestaurantTypeService;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class RestaurantTypeController extends Controller
 {
