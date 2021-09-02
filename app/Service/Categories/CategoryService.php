@@ -155,24 +155,24 @@ class CategoryService
                 $this->categoryTranslation->insert($transCategory_arr);
             }
              $images = $request->images;
-            foreach ($images as $image) {
-                $arr[] = $image['image'];
-            }
-
-            foreach ($arr as $ar) {
-                if (isset($image)) {
-                    if ($request->hasFile($ar)) {
-
-                        $folder = storage_path('/app/public/images/categories' . '/' . $unTransCategory_id . '/');
-                        if (!File::exists($folder)) {
-                            File::makeDirectory($folder, 0775, true, true);
-                            $file_extension = $ar->getClientOriginalExtension();
-                            $file_name = time() . $file_extension;
-                            $path = 'images/categories';
-                            $request->image->move($path, $file_name);
-                        }
-                    }
-                }
+//            foreach ($images as $image) {
+//                $arr[] = $image['image'];
+//            }
+//
+//            foreach ($arr as $ar) {
+//                if (isset($image)) {
+//                    if ($request->hasFile($ar)) {
+//
+//                        $folder = storage_path('/app/public/images/categories' . '/' . $unTransCategory_id . '/');
+//                        if (!File::exists($folder)) {
+//                            File::makeDirectory($folder, 0775, true, true);
+//                            $file_extension = $ar->getClientOriginalExtension();
+//                            $file_name = time() . $file_extension;
+//                            $path = 'images/categories';
+//                            $request->image->move($path, $file_name);
+//                        }
+//                    }
+//                }
                 if ($request->has('images')) {
                     foreach ($images as $image) {
                         $categoryImages = $this->categoryModel->find($unTransCategory_id);
@@ -183,7 +183,7 @@ class CategoryService
                         ]);
                     }
                 }
-            }
+//            }
                 DB::commit();
                 return $this->returnData('category', [$unTransCategory_id,$transCategory_arr],'done');
             }
@@ -242,20 +242,20 @@ class CategoryService
                     }
                 }
             $images = $request->images;
-            foreach ($images as $image) {
-                $arr[] = $image['image'];
-            }
-            foreach ($arr as $ar) {
-                if (isset($image)) {
-                    if ($request->hasFile($ar)) {
-                        //save
-                        $file_extension = $ar->getClientOriginalExtension();
-                        $file_name = time() . $file_extension;
-                        $path = 'images/categories';
-                        $ar->move($path, $file_name);
-                    }
-                }
-            }
+//            foreach ($images as $image) {
+//                $arr[] = $image['image'];
+//            }
+//            foreach ($arr as $ar) {
+//                if (isset($image)) {
+//                    if ($request->hasFile($ar)) {
+//                        //save
+//                        $file_extension = $ar->getClientOriginalExtension();
+//                        $file_name = time() . $file_extension;
+//                        $path = 'images/categories';
+//                        $ar->move($path, $file_name);
+//                    }
+//                }
+//            }
             if ($request->has('images')) {
                 foreach ($images as $image) {
                     $categoryImages = $this->categoryModel->find($id);

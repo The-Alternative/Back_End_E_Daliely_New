@@ -13,7 +13,7 @@ class CategoryImagesController extends Controller
     {
         $image = $request->file('image');
         $folder = public_path('images/categories' . '/');
-        $filename = time() . '.' . $image->getClientOriginalExtension();
+        $filename = time() . '.' . $image->getClientOriginalName();
         if (!File::exists($folder)) {
             File::makeDirectory($folder, 0775, true, true);
 //             $location = storage_path('/app/public/images'  . '/' . 5 . '/' . $filename);
