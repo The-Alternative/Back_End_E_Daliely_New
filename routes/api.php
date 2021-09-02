@@ -410,7 +410,7 @@ Route::group(
             {
                Route::get('/', 'OfferController@get');
                Route::get('/{id}', 'OfferController@getById');
-               Route::post('/', 'OfferController@create');
+               Route::post('/create', 'OfferController@create');
                Route::put('/{id}', 'OfferController@update');
                Route::PUT('/trash/{id}', 'OfferController@trash');
                Route::PUT('/restoretrashed/{id}', 'OfferController@restoreTrashed');
