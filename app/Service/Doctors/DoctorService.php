@@ -10,6 +10,7 @@ use App\Models\Doctors\DoctorTranslation;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\Doctors\DoctorRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class DoctorService
 {
@@ -56,17 +57,6 @@ class DoctorService
                 'is_active' => $request['is_active'],
                 'is_approved' => $request['is_approved'],
             ]);
-            // $alluser = collect($request->user)->all();
-            // $unTransuser_id =User::insertGetId([
-            //     'age' => $request['age'],
-            //     'email' => $request['email'],
-            //     'is_active' => $request['is_active'],
-            //     'location_id' => $request['location_id'],
-            //     'social_media_id' => $request['social_media_id'],
-            //     'image' => $request['image'],
-            //     'password' => $request['password'],
-
-            // ]);
             if (isset($alldoctor)) {
                 foreach ($alldoctor as $alldoctors) {
                     $transdoctor[] = [
@@ -75,20 +65,9 @@ class DoctorService
                         'doctor_id' => $unTransdoctor_id,
                     ];
                 }
-
                 DoctorTranslation::insert( $transdoctor);
             }
-            // if (isset($alluser)) {
-            //     foreach ($alluser as $allusers) {
-            //         $transuser[] = [
-            //             'first_name' => $allusers ['first_name'],
-            //             'last_name' => $allusers ['last_name'],
-            //             'local' => $allusers['local'],
-            //             'user_id' => $unTransuser_id,
-            //         ];
-            //     }
-            //         UserTranslation::insert($transuser);
-            //     }
+    
             DB::commit();
             return $this->returnData('doctor', [$unTransdoctor_id, $transdoctor], 'done');
         }
@@ -325,6 +304,37 @@ class DoctorService
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
+    //___________________________________________________________________________________________//
+ 
+    Public function InsertDoctorHospital(Request $request)
+    {
+        $doctor=Doctor::find($request->doctor_id);
+        if(!$doctor)
+        return $this->returnError('400','not found this doctor');
+
+        $doctor->Hospital()->syncwithoutdetaching($request->hospital_id);
+        return $this->returnData('doctor',$doctor,'create don');
+    }
+
+    public function InsertDoctorMedicalDevice(Request $request)
+    {
+        $doctor=Doctor::find($request->doctor_id);
+        if(!$doctor)
+        return $this->returnError('400','not found this doctor');
+        $doctor->medicalDevice()->syncwithoutdetaching($request->medical_device_id);
+        return $this->returnData('doctor',$doctor,'create done');
+    }
+
+    public function InsertDoctorSpecialty(Request $request)
+    {
+        $doctor=Doctor::find($request->doctor_id);
+        if(!$doctor)
+        return $this->returnError('400','not found this doctor');
+        $doctor->Specialty()->syncwithoutdetaching($request->specialty_id);
+        return $this->returnData('doctor',$doctor,'create done');
+    }
+
+
 
 
 }

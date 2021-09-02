@@ -144,14 +144,14 @@ Route::group(
                 {
                 Route::get('/', 'DoctorController@get');
                 Route::get('/{id}', 'DoctorController@getById');
-                Route::post('/', 'DoctorController@create');
+                Route::post('/create', 'DoctorController@create');
                 Route::put('/{id}', 'DoctorController@update');
                 Route::GET('/search/{name}', 'DoctorController@search');
                 Route::PUT('/trash/{id}', 'DoctorController@trash');
                 Route::delete('/{id}', 'DoctorController@delete');
                 Route::PUT('/restoretrashed/{id}', 'DoctorController@restoreTrashed');
 
-                Route::GET('/doctor-social-media/{doctor_id}', 'DoctorController@DoctorSocialMedia');
+                // Route::GET('/doctor-social-media/{doctor_id}', 'DoctorController@DoctorSocialMedia');
                 Route::GET('/doctor-medical-device/{doctor_id}', 'DoctorController@doctormedicaldevice');
                 Route::GET('/hospital-doctor/{doctor_id}', 'DoctorController@doctorhospital');
                 Route::GET('/appointment-doctor/{doctor_id}', 'DoctorController@doctorappointment');
@@ -160,6 +160,11 @@ Route::group(
                 Route::get('/doctor-rate/{doctor_id}','DoctorController@DoctorRate');
                 Route::get('/doctor-specialty/{doctor_id}','DoctorController@DoctorSpecialty');
 
+
+                //____ insert 
+                Route::post('/hospital','DoctorController@InsertDoctorHospital');
+                Route::post('/medical-device','DoctorController@InsertDoctorMedicalDevice');
+                Route::Post('/specialty','DoctorController@InsertDoctorSpecialty');
             });
                 Route::get('doctor/gettrashed', [DoctorController::class,'getTrashed']);
 
