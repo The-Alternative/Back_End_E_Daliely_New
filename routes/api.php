@@ -182,7 +182,7 @@ Route::group(
               Route::get('patient/gettrashed', [PatientController::class,'getTrashed']);
 
                 /*---------------Doctor Rate Route--------*/
-            Route::group(['prefix'=>'doctorrates','namespace'=>'DoctorRate'],function () 
+            Route::group(['prefix'=>'doctorrates','namespace'=>'DoctorRate'],function ()
             {
                 Route::get('/', 'DoctorRateController@get');
                 Route::get('/{id}', 'DoctorRateController@getById');
@@ -225,7 +225,7 @@ Route::group(
 
 
              /*---------------Clinic Route-------------*/
-         Route::group(['prefix'=>'clinics','namespace'=>'Clinic'],function () 
+         Route::group(['prefix'=>'clinics','namespace'=>'Clinic'],function ()
                {
                 Route::get('/',          'ClinicController@get');
                 Route::get('/{id}', 'ClinicController@getById');
@@ -238,7 +238,7 @@ Route::group(
                });
                    Route::get('clinic/gettrashed',   [ClinicController::class,'getTrashed']);
                 /*---------------Medical Device Route-------------*/
-                Route::group(['prefix'=>'medicaldevices','namespace'=>'MedicalDevice'],function () 
+                Route::group(['prefix'=>'medicaldevices','namespace'=>'MedicalDevice'],function ()
                 {
                 Route::get('/', 'MedicalDeviceController@get');
                 Route::get('/{id}', 'MedicalDeviceController@getById');
@@ -303,7 +303,7 @@ Route::group(
                 Route::PUT('/restoretrashed/{id}', 'ActiveTimeController@restoreTrashed');
            });
                 Route::get('activetime/gettrashed', [ActiveTimeController::class,'getTrashed']);
- 
+
 
            ########################## RESTAURANT ROUTE #########################################
            /*-------------Restaurant  Manager Route------------------*/
@@ -321,7 +321,7 @@ Route::group(
             // Route::get('restaurant/gettrashed', [RestaurantManagerController::class,'getTrashed']);
 
             /*-------------Restaurant  Route------------------*/
-             Route::group(['prefix'=>'restaurants','namespace'=>'Restaurant'],function () 
+             Route::group(['prefix'=>'restaurants','namespace'=>'Restaurant'],function ()
               {
                 Route::get('/', 'RestaurantController@get');
                 Route::get('/{id}', 'RestaurantController@getById');
@@ -332,7 +332,7 @@ Route::group(
                 Route::PUT('trash/{id}', 'RestaurantController@trash');
                 Route::PUT('restortrashed/{id}', 'RestaurantController@restoreTrashed');
                 Route::delete('/{id}', 'RestaurantController@delete');
-    
+
                 Route::get('/get-type/{restaurant_id}', 'RestaurantController@getType');
                 Route::get('/get-category/{restaurant_id}', 'RestaurantController@getCategory');
                 Route::get('/get-product/{restaurant_id}', 'RestaurantController@getProduct');
@@ -340,7 +340,7 @@ Route::group(
                  Route::get('restaurant/gettrashed', [RestaurantController::class,'getTrashed']);
 
              /*-------------Restaurant Type  Route------------------*/
-             Route::group(['prefix'=>'restauranttypes','namespace'=>'RestaurantType'],function () 
+             Route::group(['prefix'=>'restauranttypes','namespace'=>'RestaurantType'],function ()
              {
                Route::get('/', 'RestaurantTypeController@get');
                Route::get('/{id}', 'RestaurantTypeController@getById');
@@ -387,7 +387,7 @@ Route::group(
                Route::get('restaurantproduct/gettrashed', [RestaurantProductController::class,'getTrashed']);
 
              /*-------------Item  Route------------------*/
-            Route::group(['prefix'=>'items','namespace'=>'Item'],function () 
+            Route::group(['prefix'=>'items','namespace'=>'Item'],function ()
             {
                Route::get('/', 'ItemController@get');
                Route::get('/{id}', 'ItemController@getById');
@@ -421,7 +421,7 @@ Route::group(
                 Route::get('offer/get-advertisement',[OfferController::class,'get_advertisement']);
              //////////////// Comment  Route ////////////////////////////
 
-           Route::group(['prefix'=>'comments','namespace'=>'Comment'],function () 
+           Route::group(['prefix'=>'comments','namespace'=>'Comment'],function ()
            {
               Route::get('/', 'CommentController@get');
               Route::get('/{id}', 'CommentController@getById');
@@ -447,4 +447,19 @@ Route::group(
                 Route::delete('/{id}', 'InteractionController@delete');
            });
                  Route::get('/interaction/gettrashed',[InteractionController::class,'getTrashed']);
+
+
+
+     Route::group(['prefix'=>'upload','namespace'=>'Images'],function ()
+     {
+         Route::post('category', 'CategoryImagesController@upload');
+         Route::post('product', 'ProductImageController@upload');
+         Route::post('brand', 'BrandImagesController@upload');
+         Route::post('store', 'StoreImagesController@upload');
+         Route::post('store-logo', 'StoreImagesController@uploadLogo');
+         Route::post('custom-field', 'CustomFieldImagesController@upload');
+
+
+     });
+
         });
