@@ -308,39 +308,59 @@ class DoctorService
  
     Public function InsertDoctorHospital(Request $request)
     {
+        try{
         $doctor=Doctor::find($request->doctor_id);
         if(!$doctor)
         return $this->returnError('400','not found this doctor');
 
         $doctor->Hospital()->syncwithoutdetaching($request->hospital_id);
         return $this->returnData('doctor',$doctor,'create don');
+        }
+        catch(\Exception $ex){
+            return $this->returnError($ex->getcode(),$ex->getMessage());
+        }
     }
 
     public function InsertDoctorMedicalDevice(Request $request)
     {
+        try{
         $doctor=Doctor::find($request->doctor_id);
         if(!$doctor)
         return $this->returnError('400','not found this doctor');
         $doctor->medicalDevice()->syncwithoutdetaching($request->medical_device_id);
         return $this->returnData('doctor',$doctor,'create done');
     }
+    catch(\Exception $ex){
+        return $this->returnError($ex->getcode(),$ex->getMessage());
+    }
+    }
 
     public function InsertDoctorSpecialty(Request $request)
     {
+        try{
         $doctor=Doctor::find($request->doctor_id);
         if(!$doctor)
         return $this->returnError('400','not found this doctor');
         $doctor->Specialty()->syncwithoutdetaching($request->specialty_id);
         return $this->returnData('doctor',$doctor,'create done');
     }
+    catch(\Exception $ex){
+        return $this->returnError($ex->getcode(),$ex->getMessage());
+    }
+    }
 
     public function InsertDoctorPatient(Request $request)
     {
+        try{
         $doctor=Doctor::find($request->doctor_id);
         if(!$doctor)
         return $this->returnError('400','not found this doctor');
         $doctor->Patient()->syncwithoutdetaching($request->patient_id);
         return $this->returnData('doctor',$doctor,'create done');
+    }
+    catch(\Exception $ex){
+        return $this->returnError($ex->getcode(),$ex->getMessage());
+    }
     }
 
 
