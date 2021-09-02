@@ -334,6 +334,14 @@ class DoctorService
         return $this->returnData('doctor',$doctor,'create done');
     }
 
+    public function InsertDoctorPatient(Request $request)
+    {
+        $doctor=Doctor::find($request->doctor_id);
+        if(!$doctor)
+        return $this->returnError('400','not found this doctor');
+        $doctor->Patient()->syncwithoutdetaching($request->patient_id);
+        return $this->returnData('doctor',$doctor,'create done');
+    }
 
 
 

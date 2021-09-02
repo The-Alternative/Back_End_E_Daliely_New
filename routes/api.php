@@ -160,11 +160,12 @@ Route::group(
                 Route::get('/doctor-rate/{doctor_id}','DoctorController@DoctorRate');
                 Route::get('/doctor-specialty/{doctor_id}','DoctorController@DoctorSpecialty');
 
-
                 //____ insert 
                 Route::post('/hospital','DoctorController@InsertDoctorHospital');
                 Route::post('/medical-device','DoctorController@InsertDoctorMedicalDevice');
                 Route::Post('/specialty','DoctorController@InsertDoctorSpecialty');
+                Route::Post('/patient','DoctorController@InsertDoctorPatient');
+
             });
                 Route::get('doctor/gettrashed', [DoctorController::class,'getTrashed']);
 
