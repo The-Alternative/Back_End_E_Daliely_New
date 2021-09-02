@@ -97,7 +97,8 @@ class DoctorController extends Controller
     {
         return $this->DoctorService->DoctorSpecialty($id);
     }
-    //________________________________________________________________________//
+    //______________________________insert function __________________________________________//
+
      public function InsertDoctorHospital(Request $request)
      {
          return $this->DoctorService->InsertDoctorHospital($request);

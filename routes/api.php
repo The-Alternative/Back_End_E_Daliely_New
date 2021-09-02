@@ -328,7 +328,7 @@ Route::group(
                 Route::get('/{id}', 'RestaurantController@getById');
                 Route::get('/gettrashed', 'RestaurantController@getTrashed');
                 Route::GET('search/{name}','RestaurantController@search');
-                Route::post('/', 'RestaurantController@create');
+                Route::post('/create', 'RestaurantController@create');
                 Route::put('/{id}', 'RestaurantController@update');
                 Route::PUT('trash/{id}', 'RestaurantController@trash');
                 Route::PUT('restortrashed/{id}', 'RestaurantController@restoreTrashed');
