@@ -454,6 +454,7 @@ Route::group(
          Route::post('store-logo', 'StoreImagesController@uploadLogo');
          Route::post('custom-field', 'CustomFieldImagesController@upload');
          Route::post('store-multi/{id}', 'StoreImagesController@uploadMultiple');
+         Route::post('product-multi/{id}', 'ProductImageController@uploadMultiple');
 
 
      });

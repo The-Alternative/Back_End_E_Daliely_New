@@ -13,11 +13,12 @@ class ProductImageController extends Controller
         $image = $request->file('image');
         $folder = public_path('images/products' . '/' . $id . '/');
         $filename = time() . '.' . $image->getClientOriginalName();
+        $imageUrl[]='images/products/' . $id  . '/' .  $filename;
         if (!File::exists($folder)) {
             File::makeDirectory($folder, 0775, true, true);
         }
         $image->move($folder,$filename);
-        return [$folder,$filename];
+        return $imageUrl;
     }
 
     public function uploadMultiple(Request $request, $id)
@@ -33,10 +34,12 @@ class ProductImageController extends Controller
         }
         foreach ($files as $file) {
             $filename[] = time() . '.' . $file->getClientOriginalName() ;
-
             $file->move($folder,  time() . '.' . $file->getClientOriginalName() );
         }
-        return [$folder, $filename];
+        foreach ($filename as $f) {
+            $imageUrl[]='images/products/' . $id  . '/' .  $f;
+        }
+        return $imageUrl;
 
     }
 }

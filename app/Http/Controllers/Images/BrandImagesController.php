@@ -13,13 +13,13 @@ class BrandImagesController extends Controller
         $image = $request->file('image');
         $folder = public_path('images/brands' . '/');
         $filename = time() . '.' . $image->getClientOriginalName();
+        $imageUrl='images/brands' . '/' . $filename;
+
         if (!File::exists($folder)) {
             File::makeDirectory($folder, 0775, true, true);
-//             $location = storage_path('/app/public/images'  . '/' . 5 . '/' . $filename);
-//            Image::make($image)->resize(800,400)->save($location); //resizing and saving the image
         }
         $request->image->move($folder,$filename);
-        return [$folder,$filename];
+        return $imageUrl;
 
     }
 }
