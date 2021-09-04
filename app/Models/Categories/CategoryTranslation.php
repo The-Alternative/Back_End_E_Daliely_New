@@ -10,7 +10,7 @@ class CategoryTranslation extends Model
 {
     use HasFactory;
     protected $fillable = ['name','local','category_id'];
-    public $timestamps = true;
+    public $timestamps = false;
     protected $hidden=['category_id','local','created_at','updated_at'];
 
     /////////////////Begin relation here/////////////////////
