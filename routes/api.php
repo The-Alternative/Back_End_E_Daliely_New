@@ -144,14 +144,14 @@ Route::group(
                 {
                 Route::get('/', 'DoctorController@get');
                 Route::get('/{id}', 'DoctorController@getById');
-                Route::post('/', 'DoctorController@create');
+                Route::post('/create', 'DoctorController@create');
                 Route::put('/{id}', 'DoctorController@update');
                 Route::GET('/search/{name}', 'DoctorController@search');
                 Route::PUT('/trash/{id}', 'DoctorController@trash');
                 Route::delete('/{id}', 'DoctorController@delete');
                 Route::PUT('/restoretrashed/{id}', 'DoctorController@restoreTrashed');
 
-                Route::GET('/doctor-social-media/{doctor_id}', 'DoctorController@DoctorSocialMedia');
+                // Route::GET('/doctor-social-media/{doctor_id}', 'DoctorController@DoctorSocialMedia');
                 Route::GET('/doctor-medical-device/{doctor_id}', 'DoctorController@doctormedicaldevice');
                 Route::GET('/hospital-doctor/{doctor_id}', 'DoctorController@doctorhospital');
                 Route::GET('/appointment-doctor/{doctor_id}', 'DoctorController@doctorappointment');
@@ -159,6 +159,12 @@ Route::group(
                 Route::get('/view-Patient/{doctor_id}','DoctorController@Patient');
                 Route::get('/doctor-rate/{doctor_id}','DoctorController@DoctorRate');
                 Route::get('/doctor-specialty/{doctor_id}','DoctorController@DoctorSpecialty');
+
+                //____ insert 
+                Route::post('/hospital','DoctorController@InsertDoctorHospital');
+                Route::post('/medical-device','DoctorController@InsertDoctorMedicalDevice');
+                Route::Post('/specialty','DoctorController@InsertDoctorSpecialty');
+                Route::Post('/patient','DoctorController@InsertDoctorPatient');
 
             });
                 Route::get('doctor/gettrashed', [DoctorController::class,'getTrashed']);
@@ -322,7 +328,7 @@ Route::group(
                 Route::get('/{id}', 'RestaurantController@getById');
                 Route::get('/gettrashed', 'RestaurantController@getTrashed');
                 Route::GET('search/{name}','RestaurantController@search');
-                Route::post('/', 'RestaurantController@create');
+                Route::post('/create', 'RestaurantController@create');
                 Route::put('/{id}', 'RestaurantController@update');
                 Route::PUT('trash/{id}', 'RestaurantController@trash');
                 Route::PUT('restortrashed/{id}', 'RestaurantController@restoreTrashed');
@@ -404,7 +410,7 @@ Route::group(
             {
                Route::get('/', 'OfferController@get');
                Route::get('/{id}', 'OfferController@getById');
-               Route::post('/', 'OfferController@create');
+               Route::post('/create', 'OfferController@create');
                Route::put('/{id}', 'OfferController@update');
                Route::PUT('/trash/{id}', 'OfferController@trash');
                Route::PUT('/restoretrashed/{id}', 'OfferController@restoreTrashed');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Doctors;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Doctors\DoctorRequest;
 use App\Service\Doctors\DoctorService;
+use Illuminate\Http\Request;
 
 class DoctorController extends Controller
 {
@@ -96,5 +97,22 @@ class DoctorController extends Controller
     {
         return $this->DoctorService->DoctorSpecialty($id);
     }
+    //______________________________insert function __________________________________________//
 
+     public function InsertDoctorHospital(Request $request)
+     {
+         return $this->DoctorService->InsertDoctorHospital($request);
+     }
+     public function InsertDoctorMedicalDevice(Request $request)
+     {
+         return $this->DoctorService->InsertDoctorMedicalDevice($request);
+     }
+     public function InsertDoctorSpecialty(Request $request)
+     {
+         return $this->DoctorService->InsertDoctorSpecialty($request);
+     }
+     public function InsertDoctorPatient(Request $request)
+     {
+         return $this->DoctorService->InsertDoctorPatient($request);
+     }
 }
