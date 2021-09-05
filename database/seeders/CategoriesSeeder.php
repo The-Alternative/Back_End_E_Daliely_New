@@ -20,6 +20,7 @@ class CategoriesSeeder extends Seeder
             $s = DB::table('categories')->insertGetId([
                 'slug' => $faker->sentence(1),
                 'is_active' => $faker->boolean,
+                'image' => $faker->boolean,
                 'parent_id' => $faker->numberBetween(1,5),
                 'section_id' =>  $faker->numberBetween(1,10)
             ]);

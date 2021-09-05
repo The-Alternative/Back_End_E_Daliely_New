@@ -68,6 +68,8 @@ Route::group(
                 Route::GET('/search/{name}','CategoriesController@search');
                 Route::GET('/getTrashed','CategoriesController@getTrashed');
                 Route::DELETE('/delete/{id}','CategoriesController@delete');
+                Route::post('upload', 'CategoriesController@upload');
+
             });
         /**__________________________ Section routes  __________________________**/
         Route::group(['prefix'=>'sections','namespace'=>'Category'],function()
@@ -82,6 +84,8 @@ Route::group(
             Route::GET('/search/{name}','SectionsController@search');
             Route::GET('/getTrashed','SectionsController@getTrashed');
             Route::DELETE('/delete/{id}','SectionsController@delete');
+            Route::POST('upload', 'SectionsController@upload');
+
         });
         /**__________________________ Category routes __________________________**/
         Route::group(['prefix'=>'customfields','namespace'=>'Custom_fields'],function()
@@ -96,6 +100,7 @@ Route::group(
                 Route::GET('/search/{name}','CustomFieldsController@search');
                 Route::GET('/getTrashed','CustomFieldsController@getTrashed');
                 Route::DELETE('/delete/{id}','CustomFieldsController@delete');
+                Route::post('upload', 'CustomFieldsController@upload');
             });
         /**__________________________ Brand routes    __________________________**/
         Route::group(['prefix'=>'brands','namespace'=>'Brand'],function()
@@ -109,6 +114,8 @@ Route::group(
                 Route::PUT('/restoreTrashed/{id}','BrandController@restoreTrashed');
                 Route::GET('/getTrashed','BrandController@getTrashed');
                 Route::DELETE('/delete/{id}','BrandController@delete');
+                Route::post('upload', 'BrandController@upload');
+
             });
         /**__________________________ Store routes    __________________________**/
          Route::group(['prefix'=>'stores','namespace'=>'Store'],function ()
@@ -160,7 +167,7 @@ Route::group(
                 Route::get('/doctor-rate/{doctor_id}','DoctorController@DoctorRate');
                 Route::get('/doctor-specialty/{doctor_id}','DoctorController@DoctorSpecialty');
 
-                //____ insert 
+                //____ insert
                 Route::post('/hospital','DoctorController@InsertDoctorHospital');
                 Route::post('/medical-device','DoctorController@InsertDoctorMedicalDevice');
                 Route::Post('/specialty','DoctorController@InsertDoctorSpecialty');
@@ -453,16 +460,11 @@ Route::group(
 
      Route::group(['prefix'=>'upload','namespace'=>'Images'],function ()
      {
-         Route::post('category', 'CategoryImagesController@upload');
          Route::post('product/{id}', 'ProductImageController@upload');
-         Route::post('brand', 'BrandImagesController@upload');
          Route::post('store/{id}', 'StoreImagesController@upload');
          Route::post('store-logo', 'StoreImagesController@uploadLogo');
-         Route::post('custom-field', 'CustomFieldImagesController@upload');
          Route::post('store-multi/{id}', 'StoreImagesController@uploadMultiple');
          Route::post('product-multi/{id}', 'ProductImageController@uploadMultiple');
-
-
      });
 
         });

@@ -36,8 +36,4 @@ class Custom_Field extends Model
     {
         return $this->hasMany(Custom_Field_Value::class,'custom_field_id');
     }
-    public function CustomFieldImages()
-    {
-        return $this->hasMany(CustomFieldImages::class,'custom_field_id');
-    }
 }

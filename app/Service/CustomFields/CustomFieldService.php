@@ -9,6 +9,7 @@ use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use Illuminate\Support\Facades\File;
 use LaravelLocalization;
 
 class CustomFieldService
@@ -32,14 +33,12 @@ class CustomFieldService
     public function getAll()
     {
         try{
-            $custom_field = $this->CustomFieldModel->with(['CustomFieldImages'=>function($q){
-                return $q->where('is_cover',1)->get();
-            },'Custom_Field_Value'])->get();
+            $custom_field = $this->CustomFieldModel->with(['Custom_Field_Value'])->get();
             $custom_field = $this->CustomFieldModel->paginate(10);
             if (count($custom_field) > 0){
-                return $response= $this->returnData('Custom_fields',$custom_field,'done');
+                return $this->returnData('Custom_fields',$custom_field,'done');
             }else{
-                return $response= $this->returnSuccessMessage('custom_field','custom_field doesnt exist yet');
+                return $this->returnSuccessMessage('custom_field','custom_field doesnt exist yet');
             }
         }catch(\Exception $ex){
             return $this->returnError('400',$ex->getMessage());
@@ -51,9 +50,9 @@ class CustomFieldService
         try{
             $custom_field =$this->CustomFieldModel->with('CustomFieldImages','Custom_Field_Value')->find($id);
             if (is_null($custom_field) ){
-                return $response= $this->returnSuccessMessage('not found this Custom_field','done');
+                return $this->returnSuccessMessage('not found this Custom_field','done');
             }else{
-                return $response= $this->returnData('Custom_field',$custom_field,'done');
+                return $this->returnData('Custom_field',$custom_field,'done');
             }
         }catch(\Exception $ex){
             return $this->returnError('400',$ex->getMessage());
@@ -63,7 +62,7 @@ class CustomFieldService
     public function getCustomFieldsByProduct($id)
     {
         $custom_field=$this->CustomFieldModel->with('Product')->get();
-        return $response= $this->returnData('Custom_field',$custom_field,'done');
+        return $this->returnData('Custom_field',$custom_field,'done');
     }
     /*___________________________________________________________________________*/
     /****ــــــThis Functions For Trashed Custom_field  ****/
@@ -135,6 +134,7 @@ class CustomFieldService
             // //create the default language's product
              $unTransCustomField_id=$this->CustomFieldModel->insertGetId([
                 'is_active' =>$request['is_active'],
+                'image' =>$request['image'],
             ]);
             //check the Custom_field and request
             if(isset($allcustom_fields) && count($allcustom_fields)) {
@@ -161,34 +161,7 @@ class CustomFieldService
                     }
                     $CustomField = Custom_Field_Value::insert($cfv);
                 }
-                $images = $request->images;
-                foreach ($images as $image) {
-                    $arr[] = $image['image'];
-                }
-                foreach ($arr as $ar) {
-                    if (isset($image)) {
-                        if ($request->hasFile($ar)) {
-                            //save
-                            $file_extension = $ar->getClientOriginalExtension();
-                            $file_name = time() . $file_extension;
-                            $path = 'images/custom_fieldes';
-                            $ar->move($path, $file_name);
-                        }
-                    }
-                }
-                if ($request->has('images')) {
-                    foreach ($images as $image) {
-                        $customFieldImages = $this->CustomFieldModel->find($unTransCustomField_id);
-                        $customFieldImages->CustomFieldImages()->insert([
-                            'custom_field_id' => $unTransCustomField_id,
-                            'image' => $image['image'],
-                            'is_cover' => $image['is_cover'],
-                        ]);
-                    }
-                }
             }
-
-
             DB::commit();
             return $this->returnData('customField', [$unTransCustomField_id,$transCustom_field_arr],'done');
         }
@@ -219,7 +192,8 @@ class CustomFieldService
             DB::beginTransaction();
             $ncustom_field=$this->CustomFieldModel->where('custom_fields.id',$id)
                 ->update([
-                    'is_active' =>$request['is_active']
+                    'is_active' =>$request['is_active'],
+                    'image' =>$request['image']
                 ]);
             $ss=$this->Custom_Field_Translation->where('custom__fields__translations.custom_field_id',$id);
             $collection1 = collect($allcustom_fields);
@@ -244,7 +218,6 @@ class CustomFieldService
                         ]);
                 }
             }
-
             if ($request->has('CustomFieldValues')) {
                   $dbCustomFields = $custom_field->Custom_Field_Value()->get();
                 $customFieldValues = $request->CustomFieldValues;
@@ -260,31 +233,6 @@ class CustomFieldService
                 }
                 $dbCustomField->update($arr);
 
-            }
-            $images = $request->images;
-            foreach ($images as $image) {
-                $arr[] = $image['image'];
-            }
-            foreach ($arr as $ar) {
-                if (isset($image)) {
-                    if ($request->hasFile($ar)) {
-                        //save
-                        $file_extension = $ar->getClientOriginalExtension();
-                        $file_name = time() . $file_extension;
-                        $path = 'images/custom_fieldes';
-                        $ar->move($path, $file_name);
-                    }
-                }
-            }
-            if ($request->has('images')) {
-                foreach ($images as $image) {
-                    $customFieldImages = $this->CustomFieldModel->find($id);
-                    $customFieldImages->CustomFieldImages()->update([
-                        'custom_field_id' => $id,
-                        'image' => $image['image'],
-                        'is_cover' => $image['is_cover'],
-                    ]);
-                }
             }
             DB::commit();
             return $this->returnData('custom_field', $dbdcustom_fields,'done');
@@ -334,5 +282,19 @@ class CustomFieldService
         }catch(\Exception $ex){
             return $this->returnError('400',$ex->getMessage());
         }
+    }
+    public function upload(Request $request)
+    {
+        $image = $request->file('image');
+        $folder = public_path('images/customfields' . '/');
+        $filename = time() . '.' . $image->getClientOriginalName();
+        $imageUrl='images/customfields' . '/' . $filename;
+
+        if (!File::exists($folder)) {
+            File::makeDirectory($folder, 0775, true, true);
+        }
+        $request->image->move($folder,$filename);
+        return $imageUrl;
+
     }
 }

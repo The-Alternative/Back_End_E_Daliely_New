@@ -19,15 +19,14 @@ class BrandSeeder extends Seeder
         for ($i = 1; $i <= 5; $i++) {
             $s = DB::table('brands')->insertGetId([
                 'is_active'=>$faker->boolean,
-                'slug'=>$faker->sentence(3)
+                'slug'=>$faker->sentence(3),
+                'image'=>$faker->sentence(3)
             ]);
             DB::table('brand_translation')->insert([[
                 'brand_id' => $s,
                 'description' => $faker->sentence(10),
                 'local' => 'en',
                 'name' => $faker->sentence(5)
-
-
             ],
                 [
                     'brand_id' => $s,
@@ -35,7 +34,6 @@ class BrandSeeder extends Seeder
                     'local' => 'ar',
                     'name' => $faker->sentence(5)
                 ]]);
-
         }
     }
 }
