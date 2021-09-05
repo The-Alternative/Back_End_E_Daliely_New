@@ -11,6 +11,9 @@ class SectionTranslation extends Model
 
     protected $fillable = ['name','local','description','section_id'];
     public $timestamps = false;
+    protected $hidden = [
+        'created_at', 'updated_at','section_id'
+    ];
 
     /////////////////Begin relation here/////////////////////
     public function Section()

@@ -115,5 +115,16 @@ Route::group(
             Route::GET('/getAll','storeController@dashgetAll');
         });
 
+        /**_______________________ Category dashboard routes  ___________________**/
+        Route::group(['prefix'=>'dashcategories','namespace'=>'Category'],function()
+        {
+            Route::GET('/list','CategoriesController@list');
+        });
+        /**_______________________ Brand dashboard routes  ___________________**/
+        Route::group(['prefix'=>'dashbrands','namespace'=>'Brand'],function()
+        {
+            Route::GET('/list','BrandController@list');
+        });
+
     });
 

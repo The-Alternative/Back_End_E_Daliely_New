@@ -19,6 +19,7 @@ class CustomFieldSeeder extends Seeder
             for ($i = 0; $i <= 5; $i++) {
                 $s = DB::table('custom_fields')->insertGetId([
                     'is_active' => $faker->boolean,
+                    'image' => $faker->boolean,
 
                 ]);
                 DB::table('custom__fields__translations')->insert([[

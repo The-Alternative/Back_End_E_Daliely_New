@@ -13,13 +13,12 @@ class BrandController extends Controller
     public function __construct(BrandsService $BrandsService)
     {
         $this->BrandsService=$BrandsService;
-// $this->middleware(['role:superadministrator|administrator|user']);
-//        $this->middleware(['permission:brand-read'])->only('getAll','getById');
-//        $this->middleware(['permission:brand-create'])->only('create');
-//        $this->middleware(['permission:brand-update'])->only('update');
-//        $this->middleware(['permission:brand-delete'])->only(['trash','restoreTrashed','getTrashed']);
-//
     }
+    public function list()
+    {
+        return $this->BrandsService->list();
+    }
+
     public function getAll()
     {
         return $this->BrandsService->getAll();
@@ -55,5 +54,9 @@ class BrandController extends Controller
     public function delete($id)
     {
         return $this->BrandsService->delete($id);
+    }
+    public function upload(Request $request)
+    {
+        return $this->BrandsService->upload($request);
     }
 }

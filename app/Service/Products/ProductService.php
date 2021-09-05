@@ -277,14 +277,13 @@ class ProductService
     {
 
         try {
-//            dd($request->all());
             $request->validated();
             $request->is_active ? $is_active = true : $is_active = false;
             $request->is_appear ? $is_appear = true : $is_appear = false;
-            /////////////transformation to collection/////////////////////////
+            /**transformation to collection**/
             $allproducts = collect($request->product)->all();
             DB::beginTransaction();
-            // //create the default language's product
+            /**create the default language's product**/
             $unTransProduct_id = $this->productModel->insertGetId([
                 'slug' => $request['slug'],
                 'barcode' => $request['barcode'],
@@ -294,7 +293,7 @@ class ProductService
             ]);
             //check the product and request
             if (isset($allproducts) && count($allproducts)) {
-                //insert other traslations for products
+                /**insert other traslations for products**/
                 foreach ($allproducts as $allproduct) {
                     $transProduct_arr[] = [
                         'name' => $allproduct ['name'],
@@ -320,24 +319,6 @@ class ProductService
                 $product->Section()->syncWithoutDetaching($request->get('Sections'));
             }
             $images = $request->images;
-            foreach ($images as $image) {
-                $arr[] = $image['image'];
-            }
-            foreach ($arr as $ar) {
-                if (isset($image)) {
-//                    if ($request->hasFile($ar)) {
-                        //save
-                        $folder = storage_path('/app/public/images/products' . '/' . $unTransProduct_id . '/');
-                        if (!File::exists($folder)) {
-                            File::makeDirectory($folder, 0775, true, true);
-                            $file_extension = $ar->getClientOriginalExtension();
-                            $file_name = time() . $file_extension;
-//                            $path = 'images/products';
-                            $request->image->move($folder, $file_name);
-                        }
-                    }
-//                    }
-                }
             if ($request->has('images')) {
                 foreach ($images as $image) {
                     $product = $this->productModel->find($unTransProduct_id);
@@ -376,15 +357,12 @@ class ProductService
                     'barcode' => $request['barcode'],
                     'is_active' => $request['is_active'],
                     'is_appear' => $request['is_appear'],
-//                    'rating_id' => $request['rating_id'],
                     'brand_id' => $request['brand_id'],
-//                    'offer_id' => $request['offer_id'],
                 ]);
             $ss = $this->productTranslation->where('product_translations.product_id', $id);
             $collection1 = collect($allproducts);
             $allcategorieslength = $collection1->count();
             $collection2 = collect($ss);
-
             $db_product = array_values(
                 $this->productTranslation
                     ->where('product_translations.product_id', $id)
@@ -418,20 +396,6 @@ class ProductService
                     $product->Section()->syncWithoutDetaching($request->get('Sections'));
                 }
                 $images = $request->images;
-                foreach ($images as $image) {
-                    $arr[] = $image['image'];
-                }
-                foreach ($arr as $ar) {
-                    if (isset($image)) {
-                        if ($request->hasFile($ar)) {
-                            //save
-                            $file_extension = $ar->getClientOriginalExtension();
-                            $file_name = time() . $file_extension;
-                            $path = 'images/products';
-                            $ar->move($path, $file_name);
-                        }
-                    }
-                }
                 if ($request->has('images')) {
                     foreach ($images as $image) {
                         $product = $this->productModel->find($id);

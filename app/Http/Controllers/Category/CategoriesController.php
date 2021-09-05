@@ -25,6 +25,10 @@ class CategoriesController extends Controller
 //        $this->middleware(['permission:category-update'])->only('update');
 //        $this->middleware(['permission:category-delete'])->only(['trash','restoreTrashed','getTrashed']);
     }
+    public function list()
+    {
+        return $this->CategoryService->list();
+    }
     public function getAll()
     {
         return $this->CategoryService->getAll();
@@ -64,5 +68,9 @@ class CategoriesController extends Controller
     public function delete($id)
     {
         return $this->CategoryService->delete($id);
+    }
+    public function upload(Request $request)
+    {
+        return $this->CategoryService->upload($request);
     }
 }

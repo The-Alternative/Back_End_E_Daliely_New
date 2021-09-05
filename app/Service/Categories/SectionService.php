@@ -8,7 +8,7 @@ use App\Traits\GeneralTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\File;
 use LaravelLocalization;
 
 class SectionService
@@ -35,9 +35,9 @@ class SectionService
             ->get();
 
             if (count($section) > 0) {
-                return $response = $this->returnData('Section', $section, 'done');
+                return $this->returnData('Section', $section, 'done');
             } else {
-                return $response = $this->returnSuccessMessage('Section', 'Section doesnt exist yet');
+                return $this->returnSuccessMessage('Section', 'Section doesnt exist yet');
             }
         }catch(\Exception $ex){
             return $this->returnError('400',$ex->getMessage());
@@ -55,9 +55,9 @@ class SectionService
             }])
             ->find($id);
             if (is_null($section) ){
-                return $response= $this->returnSuccessMessage('This Section not found','done');
+                return $this->returnSuccessMessage('This Section not found','done');
             }else{
-                return $response= $this->returnData('Section',$section,'done');
+                return $this->returnData('Section',$section,'done');
             }
         }catch(\Exception $ex){
             return $this->returnError('400',$ex->getMessage());
@@ -68,9 +68,9 @@ class SectionService
     {
         $sec=$this->SectionModel->with('Category')->get();
         if (is_null($sec) ){
-            return $response= $this->returnSuccessMessage('This section not found','done');
+            return $this->returnSuccessMessage('This section not found','done');
         }else{
-            return $response= $this->returnData('Section',$sec,'done');
+            return $this->returnData('Section',$sec,'done');
         }
     }
     /*___________________________________________________________________________*/
@@ -83,7 +83,7 @@ class SectionService
             if (count($section) > 0){
                 return $this -> returnData('Section',$section,'done');
             }else{
-                return $response= $this->returnSuccessMessage('section','sections trashed doesnt exist yet');
+                return $this->returnSuccessMessage('section','sections trashed doesnt exist yet');
             }
         }catch(\Exception $ex){
             return $this->returnError('400',$ex->getMessage());
@@ -96,7 +96,7 @@ class SectionService
         try{
         $section=$this->SectionModel->find($id);
             if (is_null($section) ){
-                return $response= $this->returnSuccessMessage('This Section not found','done');
+                return $this->returnSuccessMessage('This Section not found','done');
             }else{
                 $section->is_active=true;
                 $section->save();
@@ -113,7 +113,7 @@ class SectionService
         try{
         $section=$this->SectionModel->find($id);
             if (is_null($section) ){
-                return $response= $this->returnSuccessMessage('This Section not found','done');
+                return $this->returnSuccessMessage('This Section not found','done');
             }else{
                 $section->is_active=false;
                 $section->save();
@@ -132,14 +132,12 @@ class SectionService
         {
             try{
 //                $validated = $request->validated();
-                $request->is_active?$is_active=true:$is_active=false;
-//                $request->is_appear?$is_appear=true:$is_appear=false;
+//                $request->is_active?$is_active=true:$is_active=false;
                 //transformation to collection
                 $allsections = collect($request->section)->all();
                 DB::beginTransaction();
                 // //create the default language's product
                 $unTransSection_id=$this->SectionModel->insertGetId([
-
                     'slug' => $request['slug'],
                     'image' => $request['image'],
                     'is_active' => $request['is_active']
@@ -195,7 +193,6 @@ class SectionService
             $collection1 = collect($allsections);
             $allsectionslength=$collection1->count();
             $collection2 = collect($ss);
-
               $db_section= array_values($this->SectionTranslation->where('section_id',$id)->get()->all());
               $dbdsections = array_values($db_section);
               $request_sections = array_values($request->section);
@@ -258,5 +255,18 @@ class SectionService
         }catch(\Exception $ex){
             return $this->returnError('400',$ex->getMessage());
         }
+    }
+    /****  Upload Section's Image   ****/
+    public function upload(Request $request)
+    {
+        $image = $request->file('image');
+        $folder = public_path('images/sections' . '/');
+        $filename = time() . '.' . $image->getClientOriginalName();
+        $imageUrl='images/sections' . '/' . $filename;
+        if (!File::exists($folder)) {
+            File::makeDirectory($folder, 0775, true, true);
+        }
+        $image->move($folder,$filename);
+        return $imageUrl;
     }
 }
