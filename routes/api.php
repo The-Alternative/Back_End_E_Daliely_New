@@ -454,11 +454,13 @@ Route::group(
      Route::group(['prefix'=>'upload','namespace'=>'Images'],function ()
      {
          Route::post('category', 'CategoryImagesController@upload');
-         Route::post('product', 'ProductImageController@upload');
+         Route::post('product/{id}', 'ProductImageController@upload');
          Route::post('brand', 'BrandImagesController@upload');
-         Route::post('store', 'StoreImagesController@upload');
+         Route::post('store/{id}', 'StoreImagesController@upload');
          Route::post('store-logo', 'StoreImagesController@uploadLogo');
          Route::post('custom-field', 'CustomFieldImagesController@upload');
+         Route::post('store-multi/{id}', 'StoreImagesController@uploadMultiple');
+         Route::post('product-multi/{id}', 'ProductImageController@uploadMultiple');
 
 
      });

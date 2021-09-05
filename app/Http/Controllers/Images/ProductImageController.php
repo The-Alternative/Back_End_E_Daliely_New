@@ -12,14 +12,34 @@ class ProductImageController extends Controller
     {
         $image = $request->file('image');
         $folder = public_path('images/products' . '/' . $id . '/');
-        $filename = time() . '.' . $image->getClientOriginalExtension();
+        $filename = time() . '.' . $image->getClientOriginalName();
+        $imageUrl[]='images/products/' . $id  . '/' .  $filename;
         if (!File::exists($folder)) {
             File::makeDirectory($folder, 0775, true, true);
-//             $location = storage_path('/app/public/images'  . '/' . 5 . '/' . $filename);
-//            Image::make($image)->resize(800,400)->save($location); //resizing and saving the image
         }
-        $request->image->move($folder,$filename);
-        return [$folder,$filename];
+        $image->move($folder,$filename);
+        return $imageUrl;
+    }
+
+    public function uploadMultiple(Request $request, $id)
+    {
+        if (!$request->hasFile('images')) {
+            return response()->json(['not found the files'], 400);
+        }
+        $files = $request->file(['images']);
+        $errors = [];
+        $folder = public_path('images/products' . '/' . $id . '/');
+        if (!File::exists($folder)) {
+            File::makeDirectory($folder, 0775, true, true);
+        }
+        foreach ($files as $file) {
+            $filename[] = time() . '.' . $file->getClientOriginalName() ;
+            $file->move($folder,  time() . '.' . $file->getClientOriginalName() );
+        }
+        foreach ($filename as $f) {
+            $imageUrl[]='images/products/' . $id  . '/' .  $f;
+        }
+        return $imageUrl;
 
     }
 }

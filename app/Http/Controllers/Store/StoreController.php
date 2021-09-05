@@ -49,7 +49,7 @@ class StoreController extends Controller
     {
         return $this->StoreService->getTrashed();
     }
-    public function create(StoreRequest $request)
+    public function create(Request $request)
     {
         return $this->StoreService->create($request);
     }
