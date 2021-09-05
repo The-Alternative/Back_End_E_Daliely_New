@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Restaurant;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Restaurant\RestaurantRequest;
 use App\Service\Restaurant\RestaurantService;
+use Illuminate\Http\Request;
+
 
 class RestaurantController extends Controller
 {
@@ -62,5 +64,24 @@ class RestaurantController extends Controller
     {
         return $this->RestaurantService->getProduct($id);
     }
+    //_______________________________insert _____________________________//
 
+    public function insertToRestaurantRestaurantType(Request $request)
+    {
+        return $this->RestaurantService->insertToRestaurantRestaurantType($request);
+    }
+    public function insertToRestaurantRestaurantcategory(Request $request)
+    {
+        return $this->RestaurantService->insertToRestaurantRestaurantcategory($request);
+    }
+    public function insertToRestaurantRestaurantproduct(Request $request)
+    {
+        return $this->RestaurantService->insertToRestaurantRestaurantproduct($request);
+    }
+    public function insertToRestaurantitem(Request $request)
+    {
+        return $this->RestaurantService->insertToRestaurantitem($request);
+    }
+    
 }
+

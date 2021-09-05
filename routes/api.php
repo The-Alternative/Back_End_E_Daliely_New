@@ -336,8 +336,17 @@ Route::group(
                 Route::get('/restaurant/get-type/{restaurant_id}', 'RestaurantController@getType');
                 Route::get('/restaurant/get-category/{restaurant_id}', 'RestaurantController@getCategory');
                 Route::get('/restaurant/get-product/{restaurant_id}', 'RestaurantController@getProduct');
+
+                 //____________insert 
+                 Route::post('/restaurant/type','RestaurantController@insertToRestaurantRestaurantType');
+                 Route::post('/restaurant/category','RestaurantController@insertToRestaurantRestaurantcategory');
+                 Route::post('/restaurant/product','RestaurantController@insertToRestaurantRestaurantproduct');
+                 Route::post('/restaurant/item','RestaurantController@insertToRestaurantitem');
+
+
             });
                  Route::get('/restaurants/gettrashed', [RestaurantController::class,'getTrashed']);
+               
 
              /*-------------Restaurant Type  Route------------------*/
              Route::group(['namespace'=>'RestaurantType'],function ()
@@ -367,6 +376,9 @@ Route::group(
                 Route::delete('restaurant/category/{id}', 'RestaurantCategoyrController@delete');
                 Route::get('restaurant/category/get-restaurant/{restaurantCategory_id}', 'RestaurantCategoyrController@getRestaurant');
                 Route::get('restaurant/category/get-product/{restaurantCategory_id}', 'RestaurantCategoyrController@getProduct');
+                //____insert
+                Route::post('/restaurant/category/restaurant/product','RestaurantCategoyrController@insertToRestaurantcategoryRestaurantproduct');
+                Route::post('/restaurant/category/item','RestaurantCategoyrController@insertToRestaurantcategoryItem');
            });
                 Route::get('restaurants/category/gettrashed', [RestaurantCategoyrController::class,'getTrashed']);
 

@@ -8,6 +8,8 @@ use App\Http\Requests\RestaurantCategory\RestaurantCategoryRequest;
 use App\Models\RestaurantCategory\RestaurantCategory;
 use App\Models\RestaurantCategory\RestaurantCategoryTranslation;
 use App\Traits\GeneralTrait;
+use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
 
 class RestaurantCategoryService
@@ -231,4 +233,33 @@ class RestaurantCategoryService
             return $this->returnError('400', $ex->getMessage());
         }
     }
+
+    public function insertToRestaurantcategoryRestaurantproduct(Request $request)
+{
+    try{
+    $restaurantcategory=RestaurantCategory::find($request->restaurant_category_id);
+    if(!$restaurantcategory)
+    return $this->returnError('400','not found this restaurant category');
+    $restaurantcategory->RestaurantProduct()->syncwithoutdetaching($request->restaurant_product_id);
+    return $this->returnData('restaurant category ',$restaurantcategory,'create done');
+}
+catch(\Exception $ex){
+    return $this->returnError($ex->getcode(),$ex->getMessage());
+}
+}
+
+public function insertToRestaurantcategoryItem(Request $request)
+{
+    try{
+    $restaurantcategory=RestaurantCategory::find($request->restaurant_category_id);
+    if(!$restaurantcategory)
+
+    return $this->returnError('400','not found this restaurant category');
+    $restaurantcategory->Item()->syncwithoutdetaching($request->item_id);
+    return $this->returnData('restaurant category ',$restaurantcategory,'create done');
+}
+catch(\Exception $ex){
+    return $this->returnError($ex->getcode(),$ex->getMessage());
+}
+}
 }
