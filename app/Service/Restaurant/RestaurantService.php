@@ -6,9 +6,12 @@ namespace App\Service\Restaurant;
 
 use App\Http\Requests\Restaurant\RestaurantRequest;
 use App\Models\Restaurant\Restaurant;
+use App\Models\Restaurant\RestaurantItem;
 use App\Models\Restaurant\RestaurantTranslation;
 use App\Traits\GeneralTrait;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+
 
 class RestaurantService
 {
@@ -258,5 +261,71 @@ class RestaurantService
               return $this->returnError('400', $ex->getMessage());
           }
      }
+//_____________________________________insert_______________________________//
 
+public function insertToRestaurantRestaurantType(Request $request)
+{
+    try{
+    $restaurant=Restaurant::find($request->restaurant_id);
+    if(!$restaurant)
+    return $this->returnError('400','not found this restaurant');
+    $restaurant->restaurantType()->syncwithoutdetaching($request->restaurant_type_id);
+    return $this->returnData('restaurant',$restaurant,'create done');
+}
+catch(\Exception $ex){
+    return $this->returnError($ex->getcode(),$ex->getMessage());
+}
+}
+
+
+public function insertToRestaurantRestaurantcategory(Request $request)
+{
+    try{
+    $restaurant=Restaurant::find($request->restaurant_id);
+    if(!$restaurant)
+    return $this->returnError('400','not found this restaurant');
+    $restaurant->RestaurantCategory()->syncwithoutdetaching($request->restaurant_category_id);
+    return $this->returnData('restaurant',$restaurant,'create done');
+}
+catch(\Exception $ex){
+    return $this->returnError($ex->getcode(),$ex->getMessage());
+}
+}
+public function insertToRestaurantRestaurantproduct(Request $request)
+{
+    try{
+    $restaurant=Restaurant::find($request->restaurant_id);
+    if(!$restaurant)
+    return $this->returnError('400','not found this restaurant');
+    $restaurant->RestaurantProduct()->syncwithoutdetaching($request->restaurant_product_id);
+    return $this->returnData('restaurant',$restaurant,'create done');
+}
+catch(\Exception $ex){
+    return $this->returnError($ex->getcode(),$ex->getMessage());
+}
+}
+public function insertToRestaurantitem(Request $request)
+{
+    try{
+
+     $restaurantitem=new RestaurantItem();
+
+     $restaurantitem->item_id   =$request->item_id;
+     $restaurantitem->restaurant_id   =$request->restaurant_id;
+     $restaurantitem->price   =$request->price;
+     $restaurantitem->quantity   =$request->quantity;
+     $restaurantitem->is_active   =$request->is_active;
+     $restaurantitem->is_approved   =$request->is_approved;
+
+    $result= $restaurantitem->save();
+    if(!$result) {
+        return $this0>returnError('400','faield save');
+    }else{
+    return $this->returnData('restaurantItem',$result,'create done');
+    }
+}
+catch(\Exception $ex){
+    return $this->returnError($ex->getcode(),$ex->getMessage());
+}
+}
 }
