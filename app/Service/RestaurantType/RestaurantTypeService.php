@@ -24,7 +24,7 @@ class RestaurantTypeService
     }
     public function get()
     {
-        try{
+         try{
             $RestaurantType= $this->RestaurantTypeModel::paginate(5);
             return $this->returnData('restaurant type',$RestaurantType,'done');
         }
