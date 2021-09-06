@@ -27,7 +27,7 @@ class RestaurantService
     public function get()
     {
         try{
-            $restaurant= $this->RestaurantModel::paginate(5);
+            $restaurant= $this->RestaurantModel::with('RestaurantCategory')->paginate(5);
             return $this->returnData('restaurant',$restaurant,'done');
         }
         catch(\Exception $ex)
@@ -39,7 +39,11 @@ class RestaurantService
     public function getById($id)
     {
         try{
-            $restaurant= $this->RestaurantModel->find($id);
+            $restaurant=$this->RestaurantModel::with(['restaurantType','RestaurantCategory'=>function($q){
+                return $q->with(['RestaurantProduct'=>function($q){
+                    return $q->with(['Item'])->get();
+                }]);
+            }])->find($id);
             if (is_null($restaurant)){
                 return $this->returnSuccessMessage('this Restaurant not found','done');
             }
