@@ -193,12 +193,12 @@ Route::group(
             Route::group(['namespace'=>'DoctorRate'],function ()
             {
                 Route::GET('/doctors-rate', 'DoctorRateController@get');
-                Route::GET('/doctor/{id}', 'DoctorRateController@getById');
-                Route::post('/doctor/create', 'DoctorRateController@create');
-                Route::put('/doctor/{id}', 'DoctorRateController@update');
-                Route::PUT('/doctor/trash/{id}', 'DoctorRateController@trash');
-                Route::delete('/doctor/{id}', 'DoctorRateController@delete');
-                Route::PUT('/doctor/restoretrashed/{id}', 'DoctorRateController@restoreTrashed');
+                Route::GET('/doctor-rate/{id}', 'DoctorRateController@getById');
+                Route::post('/doctor-rate/create', 'DoctorRateController@create');
+                Route::put('/doctor-rate/{id}', 'DoctorRateController@update');
+                Route::PUT('/doctor-rate/trash/{id}', 'DoctorRateController@trash');
+                Route::delete('/doctor-rate/{id}', 'DoctorRateController@delete');
+                Route::PUT('/doctor-rate/restoretrashed/{id}', 'DoctorRateController@restoreTrashed');
             });
                 Route::GET('doctors-rate/gettrashed', [DoctorRateController::class,'getTrashed']);
 
@@ -302,15 +302,15 @@ Route::group(
               /*---------------Active Time Route-------------*/
           Route::group(['namespace'=>'ActiveTime'],function ()
            {
-                Route::GET('/activetimes', 'ActiveTimeController@get');
-                Route::GET('/activetime/{id}', 'ActiveTimeController@getById');
-                Route::post('/activetime/create', 'ActiveTimeController@create');
-                Route::put('/activetime/{id}', 'ActiveTimeController@update');
-                Route::PUT('/activetime/trash/{id}', 'ActiveTimeController@trash');
-                Route::delete('/activetime/{id}', 'ActiveTimeController@delete');
-                Route::PUT('/activetime/restoretrashed/{id}', 'ActiveTimeController@restoreTrashed');
+                Route::GET('/active-times', 'ActiveTimeController@get');
+                Route::GET('/active-time/{id}', 'ActiveTimeController@getById');
+                Route::post('/active-time/create', 'ActiveTimeController@create');
+                Route::put('/active-time/{id}', 'ActiveTimeController@update');
+                Route::PUT('/active-time/trash/{id}', 'ActiveTimeController@trash');
+                Route::delete('/active-time/{id}', 'ActiveTimeController@delete');
+                Route::PUT('/active-time/restoretrashed/{id}', 'ActiveTimeController@restoreTrashed');
            });
-                Route::GET('/activetimes/gettrashed', [ActiveTimeController::class,'getTrashed']);
+                Route::GET('/active-times/gettrashed', [ActiveTimeController::class,'getTrashed']);
 
 
            ########################## RESTAURANT ROUTE #########################################
