@@ -4,9 +4,12 @@ namespace App\Service\Categories;
 use App\Models\Categories\CategoryTranslation;
 use App\Models\Categories\Category;
 use App\Http\Requests\CategoryRequest;
+use App\Scopes\CategoryScope;
+use App\Scopes\SectionScope;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Facades\File;
@@ -27,6 +30,38 @@ class CategoryService
         $this->categoryTranslation=$categoryTranslation;
     }
     /*___________________________________________________________________________*/
+/** category list  */
+    public function list()
+    {
+     try{
+         $list = $this->categoryModel->withoutGlobalScope(CategoryScope::class)
+             ->select(['categories.id','categories.is_active','categories.section_id',
+                 'categories.parent_id','categories.image'])
+             ->with(['CategoryTranslation'=>function($q){
+             return $q->where('category_translations.local', '=',
+                 Config::get('app.locale'))
+                 ->select(['category_translations.name','category_translations.category_id'])
+                 ->get();},
+                 'Section'=> function ($q) {
+                         return $q->withoutGlobalScope(SectionScope::class)
+                             ->select(['sections.id'])
+                             ->with(['SectionTranslation'=>function($q){
+                                 return $q->where('section_translations.local',
+                                     '=',
+                                     Config::get('app.locale'))
+                                     ->select(['section_translations.name','section_translations.section_id'])
+                                     ->get();
+                             },'Category'])
+                     ->get();
+             }])
+             ->get();
+         return $this->returnData('category',$list,200);
+        }catch(\Exception $ex){
+         return $this->returnError('400', $ex->getMessage());
+     }
+    }
+
+    /*___________________________________________________________________________*/
     /****Get All Active category Or By ID  ****/
     public function getAll()
     {
@@ -34,9 +69,9 @@ class CategoryService
         $category = $this->categoryModel->with(['CategoryImages'=>function($q){
                 return $q->where('is_cover',1)->get();}])->get();
             if (count($category) > 0){
-                return $response= $this->returnData('Category',$category,'done');
+                return $this->returnData('Category',$category,'done');
             }else{
-                return $response= $this->returnSuccessMessage('Category','Category doesnt exist yet');
+                return $this->returnSuccessMessage('Category','Category doesnt exist yet');
             }
     }catch(\Exception $ex){
         return $this->returnError('400', $ex->getMessage());
@@ -46,11 +81,11 @@ class CategoryService
     public function getById($id)
     {
         try{
-        $category =$this->categoryModel->with(['CategoryImages','Category'])->find($id);
+        $category =$this->categoryModel->with(['Section','Category'])->find($id);
             if (is_null($category) ){
-                return $response= $this->returnSuccessMessage('This Category not found','done');
+                return $this->returnSuccessMessage('This Category not found','done');
             }else{
-                return $response= $this->returnData('Category',$category,'done');
+                return $this->returnData('Category',$category,'done');
             }
         }catch(\Exception $ex){
             return $this->returnError('400', $ex->getMessage());
@@ -129,18 +164,15 @@ class CategoryService
             $request->is_appear ? $is_appear = true : $is_appear = false;
             //transformation to collection
             $allcategories = collect($request->category)->all();
-//            $filePath = "";
-//            if ($request->has('image')) {
-//
-//                $filePath = $this->uploadImage('categories', $image);
-//            }
             DB::beginTransaction();
             // //create the default language's product
             $unTransCategory_id = $this->categoryModel->insertGetId([
                 'slug' => $request['slug'],
                 'is_active' => $request['is_active'],
                 'section_id' => $request['section_id'],
-                'parent_id' => $request['parent_id']
+                'parent_id' => $request['parent_id'],
+                'image' =>$request['image']
+
             ]);
             //check the category and request
             if (isset($allcategories) && count($allcategories)) {
@@ -154,36 +186,6 @@ class CategoryService
                 }
                 $this->categoryTranslation->insert($transCategory_arr);
             }
-             $images = $request->images;
-//            foreach ($images as $image) {
-//                $arr[] = $image['image'];
-//            }
-//
-//            foreach ($arr as $ar) {
-//                if (isset($image)) {
-//                    if ($request->hasFile($ar)) {
-//
-//                        $folder = storage_path('/app/public/images/categories' . '/' . $unTransCategory_id . '/');
-//                        if (!File::exists($folder)) {
-//                            File::makeDirectory($folder, 0775, true, true);
-//                            $file_extension = $ar->getClientOriginalExtension();
-//                            $file_name = time() . $file_extension;
-//                            $path = 'images/categories';
-//                            $request->image->move($path, $file_name);
-//                        }
-//                    }
-//                }
-                if ($request->has('images')) {
-                    foreach ($images as $image) {
-                        $categoryImages = $this->categoryModel->find($unTransCategory_id);
-                        $categoryImages->CategoryImages()->insert([
-                            'category_id' => $unTransCategory_id,
-                            'image' =>  $image['image'],
-                            'is_cover' => $image['is_cover']
-                        ]);
-                    }
-                }
-//            }
                 DB::commit();
                 return $this->returnData('category', [$unTransCategory_id,$transCategory_arr],'done');
             }
@@ -216,7 +218,8 @@ class CategoryService
                    'slug'      =>$request['slug'],
                    'is_active' =>$request['is_active'],
                    'section_id' =>$request['section_id'],
-                   'parent_id' =>$request['parent_id']
+                   'parent_id' =>$request['parent_id'],
+                   'image' =>$request['image']
             ]);
             $ss=$this->categoryTranslation->where('category_translations.category_id',$id);
             $collection1 = collect($allcategories);
@@ -241,33 +244,8 @@ class CategoryService
                         ]);
                     }
                 }
-            $images = $request->images;
-//            foreach ($images as $image) {
-//                $arr[] = $image['image'];
-//            }
-//            foreach ($arr as $ar) {
-//                if (isset($image)) {
-//                    if ($request->hasFile($ar)) {
-//                        //save
-//                        $file_extension = $ar->getClientOriginalExtension();
-//                        $file_name = time() . $file_extension;
-//                        $path = 'images/categories';
-//                        $ar->move($path, $file_name);
-//                    }
-//                }
-//            }
-            if ($request->has('images')) {
-                foreach ($images as $image) {
-                    $categoryImages = $this->categoryModel->find($id);
-                    $categoryImages->CategoryImages()->update([
-                        'category_id' => $id,
-                        'image' => $image['image'],
-                        'is_cover' => $image['is_cover']
-                    ]);
-                }
-            }
             DB::commit();
-            return $this->returnData('Category', $dbdcategory,'done');
+            return $this->returnData('Category', $request_category,'done');
         }
         catch(\Exception $ex){
             DB::rollBack();
@@ -315,12 +293,16 @@ class CategoryService
             return $this->returnError('400', $ex->getMessage());
         }
     }
-    function uploadImage($folder, $image)
+    public function upload(Request $request)
     {
-        $image->store('/', $folder);
-        $filename = $image->hashName();
-        $path = 'images/' . $folder . '/' . $filename;
-        return $path;
+        $image = $request->file('image');
+        $folder = public_path('images/categories' . '/');
+        $filename = time() . '.' . $image->getClientOriginalName();
+        $imageUrl='images/categories' . '/' . $filename;
+        if (!File::exists($folder)) {
+            File::makeDirectory($folder, 0775, true, true);
+        }
+        $image->move($folder,$filename);
+        return $imageUrl;
     }
-
 }

@@ -219,21 +219,6 @@ class  StoreService
                 $store->Section()->syncWithoutDetaching($request->get('section'));
             }
             $images = $request->images;
-//            foreach ($images as $image) {
-//                $arr[] = $image['image'];
-//            }
-//            foreach ($arr as $ar)
-//            {
-//                if (isset($image)) {
-//                    if ($request->hasFile($ar)) {
-//                        //save
-//                        $file_extension = $ar->getClientOriginalExtension();
-//                        $file_name = time() . $file_extension;
-//                        $path = 'images/stores';
-//                        $ar->move($path, $file_name);
-//                    }
-//                }
-//            }
             if ($request->has('images')) {
                 foreach ($images as $image) {
                     $storeImages = $this->storeModel->find($unTransStore_id);
@@ -304,20 +289,6 @@ class  StoreService
                 $store->Section()->syncWithoutDetaching($request->get('section'));
             }
             $images = $request->images;
-//            foreach ($images as $image) {
-//                $arr[] = $image['image'];
-//            }
-//            foreach ($arr as $ar) {
-//                if (isset($image)) {
-//                    if ($request->hasFile($ar)) {
-//                        //save
-//                        $file_extension = $ar->getClientOriginalExtension();
-//                        $file_name = time() . $file_extension;
-//                        $path = 'images/stores';
-//                        $ar->move($path, $file_name);
-//                    }
-//                }
-//            }
             if ($request->has('images')) {
                 foreach ($images as $image) {
                     $storeImages = $this->storeModel->find($id);

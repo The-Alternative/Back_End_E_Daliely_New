@@ -5,9 +5,13 @@ namespace App\Service\Brands;
 use App\Models\Brands\Brand;
 use App\Models\Brands\BrandTranslation;
 use App\Models\Images\BrandImages;
+use App\Scopes\BrandScope;
+use App\Scopes\CategoryScope;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\Brands\BrandRequest;
+use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,11 +26,31 @@ class BrandsService
         $this->brandTranslation = $brandTranslation;
         $this->BrandModel = $brand;
     }
+    public function list()
+    {
+        try{
+            $list = $this->BrandModel->withoutGlobalScope(BrandScope::class)
+                ->select(['brands.id','brands.is_active'])
+                ->with(['BrandTranslation'=>function($q){
+                return $q->where('brand_translation.local',
+                    '=',
+                    Config::get('app.locale'))
+                    ->select(['brand_translation.name','brand_translation.description','brand_translation.brand_id'])
+                    ->get();
+            }])
+                ->get();
+            return $this->returnData('Brand', $list, '200');
+
+        }catch (\Exception $ex){
+            return $this->returnError('400', $ex->getMessage());
+        }
+
+    }
     /****Get All Active Products  ****/
     public function getAll()
     {
         try {
-            $brands = $this->BrandModel->with(['BrandImages','Product'])->paginate(10);
+            $brands = $this->BrandModel->with(['Product'])->paginate(10);
             if (count($brands) > 0) {
                 return $response = $this->returnData('Brand', $brands, 'done');
             } else {
@@ -44,7 +68,7 @@ class BrandsService
     public function getById($id)
     {
         try {
-            $brand = $this->BrandModel->with('Product','BrandImages')->find($id);
+            $brand = $this->BrandModel->with('Product')->find($id);
             if (!isset($brand)) {
                 return $response = $this->returnSuccessMessage('This Brand not found', 'done');
             }
@@ -115,18 +139,19 @@ class BrandsService
     /****  Create Products   ***
      * @return JsonResponse
      */
-    public function create(Request $request)
+    public function create(BrandRequest $request)
     {
         try {
-//                $validated = $request->validated();
+                $validated = $request->validated();
             $request->is_active ? $is_active = true : $is_active = false;
-            /////////////////////transformation to collection///////////////////////////
+            /** transformation to collection */
             $allbrands = collect($request->brands)->all();
             DB::beginTransaction();
             // //create the default language's product
             $unTransBrand_id = $this->BrandModel->insertGetId([
                 'slug' => $request['slug'],
                 'is_active' => $request['is_active'],
+                'image' => $request['image'],
             ]);
             //check the Brand and request
             if (isset($allbrands) && count($allbrands)) {
@@ -134,37 +159,12 @@ class BrandsService
                 foreach ($allbrands as $allbrand) {
                     $transBrand_arr[] = [
                         'name' => $allbrand ['name'],
-                        'locale' => $allbrand['locale'],
+                        'local' => $allbrand['local'],
                         'description' => $allbrand['description'],
                         'brand_id' => $unTransBrand_id
                     ];
                 }
                 $this->brandTranslation->insert($transBrand_arr);
-            }
-            $images = $request->images;
-            foreach ($images as $image) {
-                $arr[] = $image['image'];
-            }
-            foreach ($arr as $ar) {
-                if (isset($image)) {
-                    if ($request->hasFile($ar)) {
-                        //save
-                        $file_extension = $ar->getClientOriginalExtension();
-                        $file_name = time() . $file_extension;
-                        $path = 'images/brands';
-                        $ar->move($path, $file_name);
-                    }
-                }
-            }
-            if ($request->has('images')) {
-                foreach ($images as $image) {
-                    $brandImages = $this->BrandModel->find($unTransBrand_id);
-                    $brandImages->BrandImages()->insert([
-                        'brand_id' => $unTransBrand_id,
-                        'image' => $image['image'],
-                        'is_cover' => $image['is_cover'],
-                    ]);
-                }
             }
             DB::commit();
             return $this->returnData('Brand', [$unTransBrand_id, $transBrand_arr], 'done');
@@ -178,9 +178,9 @@ class BrandsService
      * @param $id
      * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(BrandRequest $request, $id)
     {
-//        $validated = $request->validated();
+        $validated = $request->validated();
         try {
             $brand = $this->BrandModel->find($id);
             if (!$brand)
@@ -195,6 +195,7 @@ class BrandsService
                 ->update([
                     'slug' => $request['slug'],
                     'is_active' => $request['is_active'],
+                    'image' => $request['image'],
                 ]);
             $ss = $this->brandTranslation->where('brand_id', $id);
             $collection1 = collect($allbrands);
@@ -218,31 +219,6 @@ class BrandsService
                             'description' => $request_brand['description'],
                             'brand_id' => $id
                         ]);
-                }
-            }
-            $images = $request->images;
-            foreach ($images as $image) {
-                $arr[] = $image['image'];
-            }
-            foreach ($arr as $ar) {
-                if (isset($image)) {
-                    if ($request->hasFile($ar)) {
-                        //save
-                        $file_extension = $ar->getClientOriginalExtension();
-                        $file_name = time() . $file_extension;
-                        $path = 'images/brands';
-                        $ar->move($path, $file_name);
-                    }
-                }
-            }
-            if ($request->has('images')) {
-                foreach ($images as $image) {
-                    $brandImages = $this->BrandModel->find($id);
-                    $brandImages->BrandImages()->updateOrCreate([
-                        'brand_id' => $id,
-                        'image' => $image['image'],
-                        'is_cover' => $image['is_cover'],
-                    ]);
                 }
             }
             DB::commit();
@@ -283,5 +259,19 @@ class BrandsService
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }
+    }
+    public function upload(\Illuminate\Http\Request $request)
+    {
+        $image = $request->file('image');
+        $folder = public_path('images/brands' . '/');
+        $filename = time() . '.' . $image->getClientOriginalName();
+        $imageUrl='images/brands' . '/' . $filename;
+
+        if (!File::exists($folder)) {
+            File::makeDirectory($folder, 0775, true, true);
+        }
+        $request->image->move($folder,$filename);
+        return $imageUrl;
+
     }
 }

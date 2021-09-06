@@ -63,8 +63,4 @@ class Category extends Model
     {
         return $this->hasMany(ProductCategory::class);
     }
-    public function CategoryImages()
-    {
-        return $this->hasMany(CategoryImages::class,'category_id');
-    }
 }

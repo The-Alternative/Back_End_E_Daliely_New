@@ -71,4 +71,8 @@ class CustomFieldsController extends Controller
     {
         return $this->customfieldService->delete($id);
     }
+    public function upload(Request $request)
+    {
+        return $this->customfieldService->upload($request);
+    }
 }

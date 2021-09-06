@@ -44,8 +44,4 @@ class Brand extends Model
             'id',
             'id');
     }
-    public function BrandImages()
-    {
-        return $this->hasMany(BrandImages::class);
-    }
 }

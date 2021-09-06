@@ -18,6 +18,7 @@ class CreateBrandsTable extends Migration
             $table->id();
             $table->string('slug');
             $table->boolean('is_active');
+            $table->string('image');
             $table->timestamps();
         });
     }
