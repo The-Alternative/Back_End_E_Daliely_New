@@ -98,6 +98,8 @@ class RestaurantProductService
                     'image'   => $request['image'],
                     'is_approved' => $request['is_approved'],
                     'is_active'   => $request['is_active'],
+                    'item_id'   => $request['item_id'],
+
                 ]);
 
             $ss=RestaurantProductTranslation::where('restaurant_product_translations.restaurant_product_id',$id);
