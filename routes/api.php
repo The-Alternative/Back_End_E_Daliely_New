@@ -345,10 +345,8 @@ Route::group(
                 Route::GET('/restaurant/get-product/{restaurant_id}', 'RestaurantController@getProduct');
 
                  //____________insert 
-                 Route::post('/restaurant/type','RestaurantController@insertToRestaurantRestaurantType');
-                 Route::post('/restaurant/category','RestaurantController@insertToRestaurantRestaurantcategory');
                  Route::post('/restaurant/product','RestaurantController@insertToRestaurantRestaurantproduct');
-                 Route::post('/restaurant/item','RestaurantController@insertToRestaurantitem');
+                 Route::post('/restaurant/item','RestaurantController@insertRestaurantitem');
 
 
             });

@@ -301,35 +301,6 @@ class RestaurantService
           }
      }
 //_____________________________________insert_______________________________//
-
-public function insertToRestaurantRestaurantType(Request $request)
-{
-    try{
-    $restaurant=Restaurant::find($request->restaurant_id);
-    if(!$restaurant)
-    return $this->returnError('400','not found this restaurant');
-    $restaurant->restaurantType()->syncwithoutdetaching($request->restaurant_type_id);
-    return $this->returnData('restaurant',$restaurant,'create done');
-}
-catch(\Exception $ex){
-    return $this->returnError($ex->getcode(),$ex->getMessage());
-}
-}
-
-
-public function insertToRestaurantRestaurantcategory(Request $request)
-{
-    try{
-    $restaurant=Restaurant::find($request->restaurant_id);
-    if(!$restaurant)
-    return $this->returnError('400','not found this restaurant');
-    $restaurant->RestaurantCategory()->syncwithoutdetaching($request->restaurant_category_id);
-    return $this->returnData('restaurant',$restaurant,'create done');
-}
-catch(\Exception $ex){
-    return $this->returnError($ex->getcode(),$ex->getMessage());
-}
-}
 public function insertToRestaurantRestaurantproduct(Request $request)
 {
     try{
@@ -343,10 +314,13 @@ catch(\Exception $ex){
     return $this->returnError($ex->getcode(),$ex->getMessage());
 }
 }
-public function insertToRestaurantitem(Request $request)
+public function insertRestaurantitem(Request $request)
 {
     try{
 
+     $restaurant=collect($request->restaurant)->all();
+     $item = $this->RestaurantModel->find($request->restaurant_id);
+          
      $restaurantitem=new RestaurantItem();
 
      $restaurantitem->item_id   =$request->item_id;

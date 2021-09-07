@@ -69,7 +69,6 @@ class RestaurantProductService
                     ];
                 }
                 RestaurantProductTranslation::insert($transProduct);
-
              
             }
             DB::commit();
