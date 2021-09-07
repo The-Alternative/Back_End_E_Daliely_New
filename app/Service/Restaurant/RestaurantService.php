@@ -73,6 +73,7 @@ class RestaurantService
                 'is_approved' => $request['is_approved'],
                 'is_active' => $request['is_active'],
             ]);
+        
             if (isset($allrestaurant)) {
                 foreach ($allrestaurant as $allrestaurants) {
                     $transrestaurant[] = [
@@ -85,9 +86,33 @@ class RestaurantService
                 }
                 RestaurantTranslation::insert( $transrestaurant);
             }
+                if($request->has('RestaurantCategory')){
+                    $restaurant=$this->RestaurantModel::find($unTransrestaurant_id);
+                    $restaurant->RestaurantCategory()->syncWithoutDetaching($request->get('RestaurantCategory'));
+                }
+
+                if($request->has('RestaurantType')){
+                    $restaurant=$this->RestaurantModel::find($unTransrestaurant_id);
+                    $restaurant->RestaurantType()->syncWithoutDetaching($request->get('RestaurantType'));
+                }
+                // $item=$request->item;
+                // if ($request->has('Item')){
+                //     foreach(array($item) as $items){
+                //        $restaurant=$this->RestaurantModel::find($unTransrestaurant_id);
+                //        $restaurant->Item()->insert([
+                //          'restaurant_id'=>$unTransrestaurant_id,
+                //          'item_id'=>$items['item_id'],
+                //          'price'=>$items['price'],
+                //          'quantity'=>$items['quantity'],
+                //          'is_active'=>$items['is_active'],
+                //          'is_approved'=>$items['is_approved']
+                //         ]);
+                //     }
+                // }
             DB::commit();
             return $this->returnData('restaurant', [$unTransrestaurant_id,  $transrestaurant], 'done');
-        }
+            }
+        
         catch(\Exception $ex)
         {
             DB::rollback();
@@ -141,6 +166,16 @@ class RestaurantService
                         ]);
                 }
             }
+            if ($request->has('RestaurantCategory')){
+                $restaurant=$this->RestaurantModel::find($id);
+                $restaurant->RestaurantCategory()->syncWithoutDetaching($request->get('RestaurantCategory'));
+            }
+
+            if($request->has('RestaurantType')){
+                $restaurant=$this->RestaurantModel::find($id);
+                $restaurant->restaurantType()->syncWithoutDetaching($request->get('RestaurantType'));
+            }
+
             DB::commit();
             return $this->returnData('restaurant',[$dbrestarurant,$values],'done');
         }

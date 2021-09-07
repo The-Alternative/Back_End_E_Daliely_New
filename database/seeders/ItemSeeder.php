@@ -21,7 +21,7 @@ class ItemSeeder extends Seeder
                 'image' => $faker->sentence(5),
                 'is_active' => $faker->boolean,
                 'is_approved' =>$faker->boolean,
-                'Restaurant_product_id' =>$faker->numberBetween(1,10),
+                'restaurant_product_id' =>$faker->numberBetween(1,10),
             ]);
 
             DB::table('item_translations')->insert([[

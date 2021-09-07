@@ -15,7 +15,6 @@ class CreateRestaurantProductsTable extends Migration
     {
         Schema::create('restaurant_products', function (Blueprint $table) {
             $table->id();
-            $table->integer('item_id');
             $table->string('image');
             $table->boolean('is_active');
             $table->boolean('is_approved');

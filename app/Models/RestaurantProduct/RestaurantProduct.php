@@ -13,7 +13,7 @@ class RestaurantProduct extends Model
 {
     use HasFactory;
     protected $table='restaurant_products';
-    protected $fillable=['id','item_id','image','is_active','is_approved'];
+    protected $fillable=['id','image','is_active','is_approved'];
 
     protected static function boot()
     {
@@ -40,7 +40,7 @@ class RestaurantProduct extends Model
     }
     public function Item()
     {
-        return $this->hasOne(Item::class);
+        return $this->hasMany(Item::class);
     }
 
 }
