@@ -64,9 +64,9 @@ class RestaurantTypeService
             if (isset($allrestauranttype)) {
                 foreach ($allrestauranttype as $allrestauranttypes) {
                     $transrestauranttype[] = [
-                        'title' => $allrestauranttypes ['title'],
-                        'short_description' => $allrestauranttypes ['short_description'],
-                        'long_description' => $allrestauranttypes ['short_description'],
+                        'title' => $allrestauranttypes['title'],
+                        'short_description' => $allrestauranttypes['short_description'],
+                        'long_description' => $allrestauranttypes['short_description'],
                         'locale' => $allrestauranttypes['locale'],
                         'restaurant_type_id' => $unTransrestauranttype_id,
                     ];

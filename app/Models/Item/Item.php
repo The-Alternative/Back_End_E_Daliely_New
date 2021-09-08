@@ -13,7 +13,7 @@ class Item extends Model
 {
     use HasFactory;
     protected $table='items';
-    protected $fillable=['id','product_id','image','is_active','is_approved'];
+    protected $fillable=['id','restaurant_product_id','image','is_active','is_approved'];
 
     protected static function boot()
     {

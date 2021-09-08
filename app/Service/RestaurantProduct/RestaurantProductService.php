@@ -69,6 +69,7 @@ class RestaurantProductService
                     ];
                 }
                 RestaurantProductTranslation::insert($transProduct);
+             
             }
             DB::commit();
             return $this->returnData('Restaurant Product',[$unTransProduct_id, $transProduct],'done');

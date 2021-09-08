@@ -70,6 +70,11 @@ class RestaurantCategoryService
                     ];
                 }
                 RestaurantCategoryTranslation::insert($transCategory);
+
+                if($request->has('RestaurantProduct')){
+                    $category=$this->RestaurantCategoryModel::find($unTransCategory_id);
+                    $category->RestaurantProduct()->syncWithoutDetaching($request->get('RestaurantProduct'));
+                }
             }
             DB::commit();
             return $this->returnData('Restaurant Category',[$unTransCategory_id, $transCategory],'done');
@@ -123,6 +128,10 @@ class RestaurantCategoryService
                             'restaurant_category_id' => $id,
                         ]);
                 }
+            }
+            if($request->has('RestaurantProduct')){
+                $category=$this->RestaurantCategoryModel::find($id);
+                $category->RestaurantProduct()->syncWithoutDetaching($request->get('RestaurantProduct'));
             }
             DB::commit();
             return $this->returnData(' restaurant category', [$dbcategory,$values],'done');

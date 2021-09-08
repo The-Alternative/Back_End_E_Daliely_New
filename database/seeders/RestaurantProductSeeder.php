@@ -22,7 +22,7 @@ class RestaurantProductSeeder extends Seeder
                 'image' => $faker->sentence(5),
                 'is_active' => $faker->boolean,
                 'is_approved' =>$faker->boolean,
-                'item_id' =>$faker->numberBetween(1,10),
+                'item_id'=>$faker->numberbetween(1,5)
             ]);
 
             DB::table('restaurant_product_translations')->insert([[

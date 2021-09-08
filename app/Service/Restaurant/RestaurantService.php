@@ -27,7 +27,7 @@ class RestaurantService
     public function get()
     {
         try{
-            $restaurant= $this->RestaurantModel::paginate(5);
+            $restaurant= $this->RestaurantModel::with('RestaurantCategory')->paginate(5);
             return $this->returnData('restaurant',$restaurant,'done');
         }
         catch(\Exception $ex)
@@ -39,7 +39,11 @@ class RestaurantService
     public function getById($id)
     {
         try{
-            $restaurant= $this->RestaurantModel->find($id);
+            $restaurant=$this->RestaurantModel::with(['restaurantType','RestaurantCategory'=>function($q){
+                return $q->with(['RestaurantProduct'=>function($q){
+                    return $q->with(['Item'])->get();
+                }]);
+            }])->find($id);
             if (is_null($restaurant)){
                 return $this->returnSuccessMessage('this Restaurant not found','done');
             }
@@ -69,6 +73,7 @@ class RestaurantService
                 'is_approved' => $request['is_approved'],
                 'is_active' => $request['is_active'],
             ]);
+        
             if (isset($allrestaurant)) {
                 foreach ($allrestaurant as $allrestaurants) {
                     $transrestaurant[] = [
@@ -81,9 +86,33 @@ class RestaurantService
                 }
                 RestaurantTranslation::insert( $transrestaurant);
             }
+                if($request->has('RestaurantCategory')){
+                    $restaurant=$this->RestaurantModel::find($unTransrestaurant_id);
+                    $restaurant->RestaurantCategory()->syncWithoutDetaching($request->get('RestaurantCategory'));
+                }
+
+                if($request->has('RestaurantType')){
+                    $restaurant=$this->RestaurantModel::find($unTransrestaurant_id);
+                    $restaurant->RestaurantType()->syncWithoutDetaching($request->get('RestaurantType'));
+                }
+                // $item=$request->item;
+                // if ($request->has('Item')){
+                //     foreach(array($item) as $items){
+                //        $restaurant=$this->RestaurantModel::find($unTransrestaurant_id);
+                //        $restaurant->Item()->insert([
+                //          'restaurant_id'=>$unTransrestaurant_id,
+                //          'item_id'=>$items['item_id'],
+                //          'price'=>$items['price'],
+                //          'quantity'=>$items['quantity'],
+                //          'is_active'=>$items['is_active'],
+                //          'is_approved'=>$items['is_approved']
+                //         ]);
+                //     }
+                // }
             DB::commit();
             return $this->returnData('restaurant', [$unTransrestaurant_id,  $transrestaurant], 'done');
-        }
+            }
+        
         catch(\Exception $ex)
         {
             DB::rollback();
@@ -137,6 +166,16 @@ class RestaurantService
                         ]);
                 }
             }
+            if ($request->has('RestaurantCategory')){
+                $restaurant=$this->RestaurantModel::find($id);
+                $restaurant->RestaurantCategory()->syncWithoutDetaching($request->get('RestaurantCategory'));
+            }
+
+            if($request->has('RestaurantType')){
+                $restaurant=$this->RestaurantModel::find($id);
+                $restaurant->restaurantType()->syncWithoutDetaching($request->get('RestaurantType'));
+            }
+
             DB::commit();
             return $this->returnData('restaurant',[$dbrestarurant,$values],'done');
         }
@@ -262,35 +301,6 @@ class RestaurantService
           }
      }
 //_____________________________________insert_______________________________//
-
-public function insertToRestaurantRestaurantType(Request $request)
-{
-    try{
-    $restaurant=Restaurant::find($request->restaurant_id);
-    if(!$restaurant)
-    return $this->returnError('400','not found this restaurant');
-    $restaurant->restaurantType()->syncwithoutdetaching($request->restaurant_type_id);
-    return $this->returnData('restaurant',$restaurant,'create done');
-}
-catch(\Exception $ex){
-    return $this->returnError($ex->getcode(),$ex->getMessage());
-}
-}
-
-
-public function insertToRestaurantRestaurantcategory(Request $request)
-{
-    try{
-    $restaurant=Restaurant::find($request->restaurant_id);
-    if(!$restaurant)
-    return $this->returnError('400','not found this restaurant');
-    $restaurant->RestaurantCategory()->syncwithoutdetaching($request->restaurant_category_id);
-    return $this->returnData('restaurant',$restaurant,'create done');
-}
-catch(\Exception $ex){
-    return $this->returnError($ex->getcode(),$ex->getMessage());
-}
-}
 public function insertToRestaurantRestaurantproduct(Request $request)
 {
     try{
@@ -304,10 +314,13 @@ catch(\Exception $ex){
     return $this->returnError($ex->getcode(),$ex->getMessage());
 }
 }
-public function insertToRestaurantitem(Request $request)
+public function insertRestaurantitem(Request $request)
 {
     try{
 
+     $restaurant=collect($request->restaurant)->all();
+     $item = $this->RestaurantModel->find($request->restaurant_id);
+          
      $restaurantitem=new RestaurantItem();
 
      $restaurantitem->item_id   =$request->item_id;

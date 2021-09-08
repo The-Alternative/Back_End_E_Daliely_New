@@ -37,6 +37,9 @@ class RestaurantRequest extends FormRequest
             'restaurant.*.short_description'=>'required|min:10|max:255',
             'restaurant.*.long_description'=>'required|min:10|max:255',
             'restaurant.*.locale'=>'required',
+
+            'RestaurantCategory'=>'required|array|min:1',
+            
         ];
     }
     public function messages()
