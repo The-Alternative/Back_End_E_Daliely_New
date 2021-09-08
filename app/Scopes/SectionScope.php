@@ -15,7 +15,7 @@ class SectionScope implements Scope
     {
         $builder->join('section_translations', 'sections.id', '=','section_translations.section_id' )
             ->where('section_translations.local','=',Config::get('app.locale'))
-            ->select(['sections.id','sections.image',
+            ->select(['sections.id','sections.image','sections.is_active',
                 'section_translations.name']);
     }
 }

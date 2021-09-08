@@ -1,12 +1,12 @@
 <?php
 namespace App\Http\Controllers\Brand;
 
-use App\Http\controllers\controller;
+use App\Http\Controllers\Controller;
 use App\Service\Brands\BrandsService;
 use App\Traits\GeneralTrait;
 use Symfony\Component\HttpFoundation\Request;
 
-class BrandController extends Controller
+class BrandController
 {
     use GeneralTrait;
     private $BrandsService;
@@ -18,7 +18,6 @@ class BrandController extends Controller
     {
         return $this->BrandsService->list();
     }
-
     public function getAll()
     {
         return $this->BrandsService->getAll();

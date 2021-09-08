@@ -15,7 +15,7 @@ class StoreController extends Controller
     use GeneralTrait;
     private $StoreService;
 
-    public function __construct(StoreService $StoreService  )
+    public function __construct(StoreService $StoreService)
     {
 //        $this->middleware(['role:superadministrator|administrator|user']);
 //        $this->middleware(['permission:store-read'])->only('getAll','getById');

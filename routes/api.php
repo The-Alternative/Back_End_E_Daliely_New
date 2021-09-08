@@ -68,7 +68,7 @@ Route::group(
                 Route::GET('/search/{name}','CategoriesController@search');
                 Route::GET('/getTrashed','CategoriesController@getTrashed');
                 Route::DELETE('/delete/{id}','CategoriesController@delete');
-                Route::post('upload', 'CategoriesController@upload');
+                Route::post('/upload', 'CategoriesController@upload');
 
             });
         /**__________________________ Section routes  __________________________**/
@@ -100,7 +100,7 @@ Route::group(
                 Route::GET('/search/{name}','CustomFieldsController@search');
                 Route::GET('/getTrashed','CustomFieldsController@getTrashed');
                 Route::DELETE('/delete/{id}','CustomFieldsController@delete');
-                Route::post('upload', 'CustomFieldsController@upload');
+                Route::post('/upload', 'CustomFieldsController@upload');
             });
         /**__________________________ Brand routes    __________________________**/
         Route::group(['prefix'=>'brands','namespace'=>'Brand'],function()
@@ -114,7 +114,7 @@ Route::group(
                 Route::PUT('/restoreTrashed/{id}','BrandController@restoreTrashed');
                 Route::GET('/getTrashed','BrandController@getTrashed');
                 Route::DELETE('/delete/{id}','BrandController@delete');
-                Route::post('upload', 'BrandController@upload');
+                Route::post('/upload', 'BrandController@upload');
 
             });
         /**__________________________ Store routes    __________________________**/
