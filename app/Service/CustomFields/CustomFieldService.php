@@ -1,6 +1,7 @@
 <?php
 namespace App\Service\CustomFields;
 
+use App\Http\Requests\CustomField\CustomFieldRequest;
 use App\Models\Custom_Fieldes\Custom_Field;
 use App\Models\Custom_Fieldes\Custom_Field_Translation;
 use App\Models\Custom_Fieldes\Custom_Field_Value;
@@ -122,16 +123,16 @@ class CustomFieldService
      * @return \Illuminate\Http\JsonResponse
      */
     /*___________________________________________________________________________*/
-    public function create(Request $request)
+    public function create(CustomFieldRequest $request)
     {
         try
         {
-//            $validated = $request->validated();
+            $request->validated();
             $request->is_active?$is_active=true:$is_active=false;
             //transformation to collection
             $allcustom_fields = collect($request->custom_field)->all();
             DB::beginTransaction();
-            // //create the default language's product
+            // //create the default language's custom_field
              $unTransCustomField_id=$this->CustomFieldModel->insertGetId([
                 'is_active' =>$request['is_active'],
                 'image' =>$request['image'],
@@ -176,14 +177,13 @@ class CustomFieldService
      * @param $id
      * @return Exception|\Illuminate\Http\JsonResponse
      */
-    public function update(Request $request,$id)
+    public function update(CustomFieldRequest $request,$id)
     {
         try{
-//            $validated = $request->validated();
-             $custom_field= $this->CustomFieldModel->find($id);
+            $request->validated();
+            $custom_field= $this->CustomFieldModel->find($id);
             if(!$custom_field)
                 return $this->returnError('400', 'not found this custom_field');
-            $allcustom_fields = collect($request->custom_field)->all();
             if (!($request->has('custom_fields.is_active')))
                 $request->request->add(['is_active'=>0]);
             else
@@ -195,20 +195,9 @@ class CustomFieldService
                     'is_active' =>$request['is_active'],
                     'image' =>$request['image']
                 ]);
-            $ss=$this->Custom_Field_Translation->where('custom__fields__translations.custom_field_id',$id);
-            $collection1 = collect($allcustom_fields);
-            $allcustom_fieldlength=$collection1->count();
-            $collection2 = collect($ss);
-            $db_custom_fields= array_values(
-                $this->Custom_Field_Translation
-                    ->where('custom__fields__translations.custom_field_id',$id)
-                    ->get()
-                    ->all());
-            $dbdcustom_fields= array_values($db_custom_fields);
             $request_custom_fields = array_values($request->custom_field);
-            foreach($db_custom_fields as $db_custom_field){
                 foreach($request_custom_fields as $request_custom_field){
-                    $values= $this->Custom_Field_Translation->where('custom__fields__translations.custom_field_id',$id)
+                    $this->Custom_Field_Translation->where('custom__fields__translations.custom_field_id',$id)
                         ->where('local',$request_custom_field['local'])
                         ->update([
                             'name' => $request_custom_field ['name'],
@@ -217,7 +206,6 @@ class CustomFieldService
                             'description' => $request_custom_field['description']
                         ]);
                 }
-            }
             if ($request->has('CustomFieldValues')) {
                   $dbCustomFields = $custom_field->Custom_Field_Value()->get();
                 $customFieldValues = $request->CustomFieldValues;
@@ -235,7 +223,7 @@ class CustomFieldService
 
             }
             DB::commit();
-            return $this->returnData('custom_field', $dbdcustom_fields,'done');
+            return $this->returnData('custom_field', [$id,$request_custom_fields],'done');
         }
         catch(\Exception $ex){
             DB::rollBack();

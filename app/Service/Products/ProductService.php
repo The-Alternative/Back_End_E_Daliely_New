@@ -340,8 +340,8 @@ class ProductService
     /****  Update Product   ***/
     public function update(ProductRequest $request,$id)
     {
-        $validated = $request->validated();
         try {
+            $request->validated();
             $product = $this->productModel->find($id);
             if (!$product)
                 return $this->returnError('400', 'not found this Product');
@@ -359,18 +359,7 @@ class ProductService
                     'is_appear' => $request['is_appear'],
                     'brand_id' => $request['brand_id'],
                 ]);
-            $ss = $this->productTranslation->where('product_translations.product_id', $id);
-            $collection1 = collect($allproducts);
-            $allcategorieslength = $collection1->count();
-            $collection2 = collect($ss);
-            $db_product = array_values(
-                $this->productTranslation
-                    ->where('product_translations.product_id', $id)
-                    ->get()
-                    ->all());
-            $dbdproducts = array_values($db_product);
             $request_products = array_values($request->product);
-            foreach ($dbdproducts as $dbdproduct) {
                 foreach ($request_products as $request_product) {
                     $values = $this->productTranslation->where('product_translations.product_id', $id)
                         ->where('product_translations.local', $request_product['local'])
@@ -405,10 +394,8 @@ class ProductService
                             'is_cover' => $image['is_cover'],
                         ]);
                     }
-
-                }
                 DB::commit();
-                return $this->returnData('Product', [['old data', $dbdproducts], ['new data', $request_products]], 'done');
+                return $this->returnData('Product' , [$id, $request_products], 'done');
             }
         }
         catch(\Exception $ex){

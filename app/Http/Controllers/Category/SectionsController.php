@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Category;
 
+use App\Http\Requests\Category\SectionRequest;
 use App\Traits\GeneralTrait;
 use App\Http\Controllers\Controller;
 use App\Service\Categories\SectionService;
 use Illuminate\Http\Request;
-use App\Http\Requests\CategoryRequest;
-use Illuminate\Http\Response;
 
 class SectionsController extends Controller
 {
@@ -36,11 +35,11 @@ class SectionsController extends Controller
     {
         return $this->sectionService->getTrashed();
     }
-    public function create(Request $request)
+    public function create(SectionRequest $request)
     {
         return $this->sectionService->create($request);
     }
-    public function update(Request $request,$id)
+    public function update(SectionRequest $request,$id)
     {
         return $this->sectionService->update($request,$id);
     }

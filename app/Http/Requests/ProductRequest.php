@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\Products\Product;
 
 class ProductRequest extends FormRequest
 {
@@ -54,8 +53,6 @@ class ProductRequest extends FormRequest
 
             'product.meta.min'=>'Your product\'s name Is Too Short',
             'product.meta.max'=>'Your product\'s name Is Too Long',
-
-
         ];
     }
 }

@@ -2,6 +2,8 @@
 namespace App\Http\Controllers\Brand;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Brands\BrandRequest;
+use App\Models\Brands\Brand;
 use App\Service\Brands\BrandsService;
 use App\Traits\GeneralTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,11 +32,11 @@ class BrandController
     {
         return $this->BrandsService->getTrashed();
     }
-    public function create(Request $request)
+    public function create(BrandRequest $request)
     {
         return $this->BrandsService->create($request);
     }
-    public function update(Request $request,$id)
+    public function update(BrandRequest $request,$id)
     {
         return $this->BrandsService->update($request,$id);
     }

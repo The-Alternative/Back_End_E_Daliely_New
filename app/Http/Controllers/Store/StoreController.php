@@ -17,11 +17,6 @@ class StoreController extends Controller
 
     public function __construct(StoreService $StoreService)
     {
-//        $this->middleware(['role:superadministrator|administrator|user']);
-//        $this->middleware(['permission:store-read'])->only('getAll','getById');
-//        $this->middleware(['permission:store-create'])->only('create');
-//        $this->middleware(['permission:store-update'])->only('update');
-//        $this->middleware(['permission:store-delete'])->only(['trash','restoreTrashed','getTrashed']);
         $this->StoreService=$StoreService;
     }
     /****________________   admins dashboard functions ________________****/

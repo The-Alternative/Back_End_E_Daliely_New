@@ -138,16 +138,15 @@ class BrandsService
     /****  Create Products   ***
      * @return JsonResponse
      */
-    public function create(Request $request)
+    public function create(BrandRequest $request)
     {
-
         try {
-//                $validated = $request->validated();
+                $validated = $request->validated();
             $request->is_active ? $is_active = true : $is_active = false;
             /** transformation to collection */
-            $allbrands = collect($request->brands)->all();
+            $allbrands = collect($request->brand)->all();
             DB::beginTransaction();
-            // //create the default language's product
+            // //create the default language's brand
             $unTransBrand_id = $this->BrandModel->insertGetId([
                 'slug' => $request['slug'],
                 'is_active' => $request['is_active'],
@@ -167,7 +166,7 @@ class BrandsService
                 $this->brandTranslation->insert($transBrand_arr);
             }
             DB::commit();
-            return $this->returnData('Brand', [$unTransBrand_id, $transBrand_arr], 'done');
+            return $this->returnData('Brand', [$unTransBrand_id,$allbrands], 'done');
         } catch (\Exception $ex) {
             DB::rollback();
             return $this->returnError('Brand', $ex->getMessage());
@@ -178,40 +177,26 @@ class BrandsService
      * @param $id
      * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(BrandRequest $request, $id)
     {
-//        $validated = $request->validated();
+         $request->validated();
         try {
             $brand = $this->BrandModel->find($id);
             if (!$brand)
                 return $this->returnError('400', 'not found this Brand');
-            $allbrands = collect($request->brands)->all();
             if (!($request->has('brand.is_active')))
                 $request->request->add(['is_active' => 0]);
             else
                 $request->request->add(['is_active' => 1]);
-
             $unTransBrand = $this->BrandModel->where('brands.id', $id)
                 ->update([
                     'slug' => $request['slug'],
                     'is_active' => $request['is_active'],
                     'image' => $request['image'],
                 ]);
-            $ss = $this->brandTranslation->where('brand_id', $id);
-            $collection1 = collect($allbrands);
-            $allbrandslength = $collection1->count();
-            $collection2 = collect($ss);
-
-            $db_brand = array_values(
-                $this->brandTranslation
-                    ->where('brand_id', $id)
-                    ->get()
-                    ->all());
-            $dbdbrands = array_values($db_brand);
-            $request_brands = array_values($request->brands);
-            foreach ($dbdbrands as $dbdbrand) {
+            $request_brands = array_values($request->brand);
                 foreach ($request_brands as $request_brand) {
-                    $values = $this->brandTranslation->where('brand_id', $id)
+                     $this->brandTranslation->where('brand_id', $id)
                         ->where('local', $request_brand['local'])
                         ->update([
                             'name' => $request_brand ['name'],
@@ -220,9 +205,8 @@ class BrandsService
                             'brand_id' => $id
                         ]);
                 }
-            }
             DB::commit();
-            return $this->returnData('Brand', $dbdbrands, 'done');
+            return $this->returnData('Brand', [$id,$request_brands], 'done');
         } catch (\Exception $ex) {
             DB::rollback();
             return $this->returnError('400', $ex->getMessage());
@@ -269,7 +253,7 @@ class BrandsService
         if (!File::exists($folder)) {
             File::makeDirectory($folder, 0775, true, true);
         }
-        $request->image->move($folder,$filename);
+        $image->move($folder,$filename);
         return $imageUrl;
     }
 }
