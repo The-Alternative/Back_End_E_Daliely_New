@@ -64,5 +64,9 @@ class OfferController extends Controller
     {
         return $this->OfferService->getTrashed();
     }
+
+    public function sendmail($id){
+        return $this->OfferService->sendmail($id);
+    }
 }
 

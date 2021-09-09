@@ -434,6 +434,8 @@ Route::group(
                Route::delete('/offer/{id}', 'OfferController@delete');
                Route::get('/offer/get-store/{Offer_id}','OfferController@getStoreByOfferId');
                Route::get('/offer/get-offer/{store_id}','OfferController@getOfferByStoreId');
+
+               Route::post('/sendmail/{id}','OfferController@sendmail');
            });
                 Route::get('offers/gettrashed',[OfferController::class,'getTrashed']);
                 Route::get('offer/get-advertisement',[OfferController::class,'get_advertisement']);

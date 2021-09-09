@@ -10,6 +10,8 @@ use App\Models\User;
 use App\Traits\GeneralTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OfferMail;
 
 class OfferService
 {
@@ -93,11 +95,11 @@ class OfferService
 
               return $this->returnData('offer', [$untransId,$transOffer], 'done');
 
-              
-              Mail::To($untransId->user_email)->send(new OfferMail($untransId->user_email));
+        
+            //   Mail::To($untransId->user_email)->send(new OfferMail($untransId->user_email));
 
-              return $this->returnData('email',$eamil,'An email has been sent to you');
-            
+            //   return $this->returnData('email',$eamil,'An email has been sent to you');
+
         }
 
         catch(\Exception $ex)
@@ -287,5 +289,28 @@ class OfferService
         {
             return $this->returnError($ex->getCode(),$ex->getMessage());
         }
+    }
+    public function sendmail($id){
+
+        try{
+        $user =$this->OfferModel::find($id)->toArray();
+        if(!$user)
+        return $thi->returnError('400','This offer not found');
+        else{
+        Mail::send('email.sendmail', $user, function($message) use ($user) {
+            $message->to($user['user_email']);
+            $message->subject('Welcome Mail');
+        });
+        return $this->returnData ('offer',$user,'Mail Send Successfully');
+    }
+    }catch(\Exception $ex){
+       return $this->returnError($ex->getcode(),$ex->getmessage());
+    }
+    //  $untransId=$this->OfferModel::find($id);
+
+    //     Mail::To($untransId->user_email)->send(new OfferMail($untransId->user_email));
+
+    //     return $this->returnData('email',$eamil,'An email has been sent to you');
+
     }
 }
