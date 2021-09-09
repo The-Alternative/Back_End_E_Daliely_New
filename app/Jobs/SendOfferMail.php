@@ -35,6 +35,6 @@ class SendOfferMail implements ShouldQueue
      */
     public function handle()
     {
-       
+
     }
 }

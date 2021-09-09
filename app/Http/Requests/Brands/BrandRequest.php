@@ -30,9 +30,9 @@ class BrandRequest extends FormRequest
             'slug'=>'required',
 
             'brand'=>'required|array|min:1',
-            'brand.*.name'=>'required|min:3|string|unique',
+            'brand.*.name'=>'required|min:3|string',
             'brand.*.description'=>'required|min:10|max:255',
-            'brand.*.locale'=>'required',
+            'brand.*.local'=>'required'
  ];
     }
 
