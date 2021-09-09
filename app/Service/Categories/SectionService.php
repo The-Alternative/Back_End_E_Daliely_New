@@ -174,7 +174,6 @@ class SectionService
      */
     public function update(Request $request,$id)
     {
-//        $validated = $request->validated();
         try{
             $section= $this->SectionModel->find($id);
             if(!$section)

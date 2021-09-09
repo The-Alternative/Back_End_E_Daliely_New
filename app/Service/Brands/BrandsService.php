@@ -4,9 +4,7 @@ namespace App\Service\Brands;
 
 use App\Models\Brands\Brand;
 use App\Models\Brands\BrandTranslation;
-use App\Models\Images\BrandImages;
 use App\Scopes\BrandScope;
-use App\Scopes\CategoryScope;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use App\Traits\GeneralTrait;
@@ -29,16 +27,17 @@ class BrandsService
     public function list()
     {
         try{
-            $list = $this->BrandModel->withoutGlobalScope(BrandScope::class)
-                ->select(['brands.id','brands.is_active'])
-                ->with(['BrandTranslation'=>function($q){
-                return $q->where('brand_translation.local',
-                    '=',
-                    Config::get('app.locale'))
-                    ->select(['brand_translation.name','brand_translation.description','brand_translation.brand_id'])
-                    ->get();
-            }])
-                ->get();
+            $list =$this->BrandModel->paginate(5);
+//            $list = $this->BrandModel->withoutGlobalScope(BrandScope::class)
+//                ->select(['brands.id','brands.is_active'])
+//                ->with(['BrandTranslation'=>function($q){
+//                return $q->where('brand_translation.local',
+//                    '=',
+//                    Config::get('app.locale'))
+//                    ->select(['brand_translation.name','brand_translation.description','brand_translation.brand_id'])
+//                    ->get();
+//            }])
+//                ->get();
             return $this->returnData('Brand', $list, '200');
 
         }catch (\Exception $ex){
@@ -139,10 +138,11 @@ class BrandsService
     /****  Create Products   ***
      * @return JsonResponse
      */
-    public function create(BrandRequest $request)
+    public function create(Request $request)
     {
+
         try {
-                $validated = $request->validated();
+//                $validated = $request->validated();
             $request->is_active ? $is_active = true : $is_active = false;
             /** transformation to collection */
             $allbrands = collect($request->brands)->all();
@@ -178,9 +178,9 @@ class BrandsService
      * @param $id
      * @return JsonResponse
      */
-    public function update(BrandRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $validated = $request->validated();
+//        $validated = $request->validated();
         try {
             $brand = $this->BrandModel->find($id);
             if (!$brand)
@@ -212,10 +212,10 @@ class BrandsService
             foreach ($dbdbrands as $dbdbrand) {
                 foreach ($request_brands as $request_brand) {
                     $values = $this->brandTranslation->where('brand_id', $id)
-                        ->where('locale', $request_brand['locale'])
+                        ->where('local', $request_brand['local'])
                         ->update([
                             'name' => $request_brand ['name'],
-                            'locale' => $request_brand['locale'],
+                            'local' => $request_brand['local'],
                             'description' => $request_brand['description'],
                             'brand_id' => $id
                         ]);
@@ -260,18 +260,16 @@ class BrandsService
             return $this->returnError('400', $ex->getMessage());
         }
     }
-    public function upload(\Illuminate\Http\Request $request)
+    public function upload(Request $request)
     {
         $image = $request->file('image');
         $folder = public_path('images/brands' . '/');
         $filename = time() . '.' . $image->getClientOriginalName();
         $imageUrl='images/brands' . '/' . $filename;
-
         if (!File::exists($folder)) {
             File::makeDirectory($folder, 0775, true, true);
         }
         $request->image->move($folder,$filename);
         return $imageUrl;
-
     }
 }

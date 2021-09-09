@@ -4,7 +4,6 @@ namespace App\Service\Categories;
 use App\Models\Categories\CategoryTranslation;
 use App\Models\Categories\Category;
 use App\Http\Requests\CategoryRequest;
-use App\Scopes\CategoryScope;
 use App\Scopes\SectionScope;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\JsonResponse;
@@ -34,15 +33,8 @@ class CategoryService
     public function list()
     {
      try{
-         $list = $this->categoryModel->withoutGlobalScope(CategoryScope::class)
-             ->select(['categories.id','categories.is_active','categories.section_id',
-                 'categories.parent_id','categories.image'])
-             ->with(['CategoryTranslation'=>function($q){
-             return $q->where('category_translations.local', '=',
-                 Config::get('app.locale'))
-                 ->select(['category_translations.name','category_translations.category_id'])
-                 ->get();},
-                 'Section'=> function ($q) {
+         $list = $this->categoryModel
+             ->with(['Section'=> function ($q) {
                          return $q->withoutGlobalScope(SectionScope::class)
                              ->select(['sections.id'])
                              ->with(['SectionTranslation'=>function($q){
@@ -66,8 +58,7 @@ class CategoryService
     public function getAll()
     {
         try{
-        $category = $this->categoryModel->with(['CategoryImages'=>function($q){
-                return $q->where('is_cover',1)->get();}])->get();
+        $category = $this->categoryModel->with('Category')->paginate(10);
             if (count($category) > 0){
                 return $this->returnData('Category',$category,'done');
             }else{

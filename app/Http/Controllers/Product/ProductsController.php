@@ -13,19 +13,11 @@ use Laratrust\Traits\LaratrustUserTrait;
 class ProductsController extends Controller
 {
     use GeneralTrait;
-    use LaratrustUserTrait;
     private $ProductService;
-    private $laraturst;
 
-    public function __construct(ProductService $ProductService,Laratrust $laraturst)
+    public function __construct(ProductService $ProductService)
     {
         $this->ProductService=$ProductService;
-        $this->laratrustClass=$laraturst;
-//        $this->middleware(['role:superadministrator|administrator|user']);
-//        $this->middleware(['permission:product-read'])->only('getAll','getById');
-//        $this->middleware(['permission:product-create'])->only('create');
-//        $this->middleware(['permission:product-update'])->only('update');
-//        $this->middleware(['permission:product-delete'])->only(['trash','restoreTrashed','getTrashed']);
     }
     /*** this function for dashboard ***/
         public function dashgetAll()

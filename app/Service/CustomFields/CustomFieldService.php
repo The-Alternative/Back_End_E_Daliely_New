@@ -33,7 +33,7 @@ class CustomFieldService
     public function getAll()
     {
         try{
-            $custom_field = $this->CustomFieldModel->with(['Custom_Field_Value'])->get();
+            $custom_field = $this->CustomFieldModel->with('Custom_Field_Value')->get();
             $custom_field = $this->CustomFieldModel->paginate(10);
             if (count($custom_field) > 0){
                 return $this->returnData('Custom_fields',$custom_field,'done');
@@ -48,7 +48,7 @@ class CustomFieldService
     public function getById($id)
     {
         try{
-            $custom_field =$this->CustomFieldModel->with('CustomFieldImages','Custom_Field_Value')->find($id);
+            $custom_field =$this->CustomFieldModel->with('Custom_Field_Value')->find($id);
             if (is_null($custom_field) ){
                 return $this->returnSuccessMessage('not found this Custom_field','done');
             }else{
