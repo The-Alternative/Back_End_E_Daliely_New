@@ -29,7 +29,6 @@ class OfferMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Your offer is awaiting approval')
-            ->view('email.sendmail');
+        return $this->view('email.sendmail');
     }
 }
