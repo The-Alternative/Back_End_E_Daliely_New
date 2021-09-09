@@ -1,10 +1,9 @@
 <?php
 namespace App\Service\Categories;
 
+use App\Http\Requests\Category\CategoryRequest;
 use App\Models\Categories\CategoryTranslation;
 use App\Models\Categories\Category;
-use App\Http\Requests\CategoryRequest;
-use App\Scopes\CategoryScope;
 use App\Scopes\SectionScope;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\JsonResponse;
@@ -34,15 +33,8 @@ class CategoryService
     public function list()
     {
      try{
-         $list = $this->categoryModel->withoutGlobalScope(CategoryScope::class)
-             ->select(['categories.id','categories.is_active','categories.section_id',
-                 'categories.parent_id','categories.image'])
-             ->with(['CategoryTranslation'=>function($q){
-             return $q->where('category_translations.local', '=',
-                 Config::get('app.locale'))
-                 ->select(['category_translations.name','category_translations.category_id'])
-                 ->get();},
-                 'Section'=> function ($q) {
+         $list = $this->categoryModel
+             ->with(['Section'=> function ($q) {
                          return $q->withoutGlobalScope(SectionScope::class)
                              ->select(['sections.id'])
                              ->with(['SectionTranslation'=>function($q){
@@ -66,8 +58,7 @@ class CategoryService
     public function getAll()
     {
         try{
-        $category = $this->categoryModel->with(['CategoryImages'=>function($q){
-                return $q->where('is_cover',1)->get();}])->get();
+        $category = $this->categoryModel->with('Category')->paginate(10);
             if (count($category) > 0){
                 return $this->returnData('Category',$category,'done');
             }else{
@@ -159,7 +150,7 @@ class CategoryService
     public function create(CategoryRequest $request)
     {
         try {
-            $validated = $request->validated();
+            $request->validated();
             $request->is_active ? $is_active = true : $is_active = false;
             $request->is_appear ? $is_appear = true : $is_appear = false;
             //transformation to collection
@@ -204,11 +195,10 @@ class CategoryService
     public function update(CategoryRequest $request,$id)
     {
         try{
-            $validated = $request->validated();
+            $request->validated();
             $category= $this->categoryModel->find($id);
             if(!$category)
                 return $this->returnError('400', 'not found this Category');
-           $allcategories = collect($request->category)->all();
             if (!($request->has('category.is_active')))
                 $request->request->add(['is_active'=>0]);
             else
@@ -221,21 +211,9 @@ class CategoryService
                    'parent_id' =>$request['parent_id'],
                    'image' =>$request['image']
             ]);
-            $ss=$this->categoryTranslation->where('category_translations.category_id',$id);
-            $collection1 = collect($allcategories);
-            $allcategorieslength=$collection1->count();
-            $collection2 = collect($ss);
-
-              $db_category= array_values(
-                  $this->categoryTranslation
-                  ->where('category_translations.category_id',$id)
-                  ->get()
-                  ->all());
-              $dbdcategory = array_values($db_category);
               $request_category = array_values($request->category);
-                foreach($dbdcategory as $dbdcategor){
                     foreach($request_category as $request_categor){
-                        $values= $this->categoryTranslation->where('category_translations.category_id',$id)
+                         $this->categoryTranslation->where('category_translations.category_id',$id)
                             ->where('local',$request_categor['local'])
                             ->update([
                             'name'=>$request_categor['name'],
@@ -243,9 +221,8 @@ class CategoryService
                             'category_id'=>$id
                         ]);
                     }
-                }
             DB::commit();
-            return $this->returnData('Category', $request_category,'done');
+            return $this->returnData('Category', [$id,$request_category],'done');
         }
         catch(\Exception $ex){
             DB::rollBack();

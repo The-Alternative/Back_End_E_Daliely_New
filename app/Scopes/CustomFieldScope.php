@@ -15,6 +15,6 @@ class CustomFieldScope implements Scope
     {
         $builder->join('custom__fields__translations', 'custom_fields.id', '=', 'custom__fields__translations.custom_field_id')
             ->where('custom__fields__translations.local', '=', Config::get('app.locale'))
-            ->select(['custom_fields.id', 'custom__fields__translations.name','custom__fields__translations.description', 'custom__fields__translations.local']);
+            ->select(['custom_fields.id','custom_fields.image', 'custom__fields__translations.name','custom__fields__translations.description', 'custom__fields__translations.local']);
     }
 }

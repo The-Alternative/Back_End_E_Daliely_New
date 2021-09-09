@@ -1,6 +1,7 @@
 <?php
 namespace App\Service\Categories;
 
+use App\Http\Requests\Category\SectionRequest;
 use App\Models\Categories\Category;
 use App\Models\Categories\Section;
 use App\Models\Categories\SectionTranslation;
@@ -9,7 +10,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use LaravelLocalization;
 
 class SectionService
 {
@@ -19,7 +19,9 @@ class SectionService
     private $SectionTranslation;
     private $categoryModel;
 
-    public function __construct(Section $sectionModel,SectionTranslation $sectionTranslation,Category $categoryModel)
+    public function __construct(Section $sectionModel,
+                                SectionTranslation $sectionTranslation,
+                                Category $categoryModel)
     {
         $this->SectionModel=$sectionModel;
         $this->categoryModel=$categoryModel;
@@ -128,15 +130,15 @@ class SectionService
      * @param Request $request
      * @return JsonResponse
      */
-        public function create(Request $request)
+        public function create(SectionRequest $request)
         {
             try{
-//                $validated = $request->validated();
-//                $request->is_active?$is_active=true:$is_active=false;
+                $request->validated();
+                $request->is_active?$is_active=true:$is_active=false;
                 //transformation to collection
                 $allsections = collect($request->section)->all();
                 DB::beginTransaction();
-                // //create the default language's product
+                // //create the default language's section
                 $unTransSection_id=$this->SectionModel->insertGetId([
                     'slug' => $request['slug'],
                     'image' => $request['image'],
@@ -172,33 +174,25 @@ class SectionService
      * @param $id
      * @return JsonResponse
      */
-    public function update(Request $request,$id)
+    public function update(SectionRequest $request,$id)
     {
-//        $validated = $request->validated();
         try{
+            $request->validated();
             $section= $this->SectionModel->find($id);
             if(!$section)
                 return $this->returnError('400', 'not found this section');
-           $allsections= collect($request->section)->all();
             if (!($request->has('sections.is_active')))
                 $request->request->add(['is_active'=>0]);
             else
                 $request->request->add(['is_active'=>1]);
-           $ncategory=$this->SectionModel->where('sections.id',$id)->update([
-               'slug' => $request['slug'],
-               'image' => $request['image'],
-               'is_active' => $request['is_active'],
-            ]);
-            $ss=$this->SectionTranslation->where('section_id',$id);
-            $collection1 = collect($allsections);
-            $allsectionslength=$collection1->count();
-            $collection2 = collect($ss);
-              $db_section= array_values($this->SectionTranslation->where('section_id',$id)->get()->all());
-              $dbdsections = array_values($db_section);
+                $this->SectionModel->where('sections.id',$id)->update([
+                   'slug' => $request['slug'],
+                   'image' => $request['image'],
+                   'is_active' => $request['is_active'],
+                ]);
               $request_sections = array_values($request->section);
-                foreach($dbdsections as $dbdsection){
                     foreach($request_sections as $request_section){
-                        $values= $this->SectionTranslation
+                        $this->SectionTranslation
                             ->where('section_id',$id)
                             ->where('local',$request_section['local'])
                             ->update([
@@ -208,9 +202,8 @@ class SectionService
                             'section_id' => $id
                         ]);
                     }
-                }
             DB::commit();
-            return $this->returnData('Section', $dbdsections,'done');
+            return $this->returnData('Section', [$id,$request_sections],'done');
 
         }
         catch(\Exception $ex){

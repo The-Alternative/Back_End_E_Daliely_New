@@ -40,6 +40,5 @@ class ProductImageController extends Controller
             $imageUrl[]='images/products/' . $id  . '/' .  $f;
         }
         return $imageUrl;
-
     }
 }

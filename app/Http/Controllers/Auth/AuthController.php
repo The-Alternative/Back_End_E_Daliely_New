@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\Role;
 use App\Models\Admin\TransModel\UserTranslation;
 use App\Models\User;
+use App\Traits\GeneralTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,8 @@ class AuthController extends Controller
      *
      * @return void
      */
+    use GeneralTrait;
+
     private $userModel;
     private $roleModel;
     private $userTranslation;
@@ -38,12 +41,17 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-         $token = auth()->attempt($credentials);
-        if (! $token ) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        try{
+            $credentials = $request->only('email', 'password');
+            $token = auth('api')->attempt($credentials);
+//            if (! $token ) {
+//                return response()->json(['error' => 'Unauthorized'], 401);
+//            }
+            return $this->respondWithToken($token);
+        }catch(\Exception $ex){
+            return $this->returnError('400',$ex->getMessage());
         }
-        return $this->respondWithToken($token);
+
     }
     /**
      * Get the authenticated User.
@@ -82,7 +90,7 @@ class AuthController extends Controller
             'is_active' => $request->is_active,
             'image' => $request->image,
             'email' => $request->email,
-            'password' =>$request->password
+            'password' =>bcrypt($request->password)
         ]);
         $userid=$user->id;
         if (isset($allusers) && count($allusers)) {
@@ -113,7 +121,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => JWTFactory::factory()->getTTL() * 60
+            'expires_in' => auth('api')->factory()->getTTL() * 60
         ]);
     }
 }

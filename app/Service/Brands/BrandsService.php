@@ -4,9 +4,7 @@ namespace App\Service\Brands;
 
 use App\Models\Brands\Brand;
 use App\Models\Brands\BrandTranslation;
-use App\Models\Images\BrandImages;
 use App\Scopes\BrandScope;
-use App\Scopes\CategoryScope;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use App\Traits\GeneralTrait;
@@ -29,16 +27,17 @@ class BrandsService
     public function list()
     {
         try{
-            $list = $this->BrandModel->withoutGlobalScope(BrandScope::class)
-                ->select(['brands.id','brands.is_active'])
-                ->with(['BrandTranslation'=>function($q){
-                return $q->where('brand_translation.local',
-                    '=',
-                    Config::get('app.locale'))
-                    ->select(['brand_translation.name','brand_translation.description','brand_translation.brand_id'])
-                    ->get();
-            }])
-                ->get();
+            $list =$this->BrandModel->paginate(5);
+//            $list = $this->BrandModel->withoutGlobalScope(BrandScope::class)
+//                ->select(['brands.id','brands.is_active'])
+//                ->with(['BrandTranslation'=>function($q){
+//                return $q->where('brand_translation.local',
+//                    '=',
+//                    Config::get('app.locale'))
+//                    ->select(['brand_translation.name','brand_translation.description','brand_translation.brand_id'])
+//                    ->get();
+//            }])
+//                ->get();
             return $this->returnData('Brand', $list, '200');
 
         }catch (\Exception $ex){
@@ -145,9 +144,9 @@ class BrandsService
                 $validated = $request->validated();
             $request->is_active ? $is_active = true : $is_active = false;
             /** transformation to collection */
-            $allbrands = collect($request->brands)->all();
+            $allbrands = collect($request->brand)->all();
             DB::beginTransaction();
-            // //create the default language's product
+            // //create the default language's brand
             $unTransBrand_id = $this->BrandModel->insertGetId([
                 'slug' => $request['slug'],
                 'is_active' => $request['is_active'],
@@ -167,7 +166,7 @@ class BrandsService
                 $this->brandTranslation->insert($transBrand_arr);
             }
             DB::commit();
-            return $this->returnData('Brand', [$unTransBrand_id, $transBrand_arr], 'done');
+            return $this->returnData('Brand', [$unTransBrand_id,$allbrands], 'done');
         } catch (\Exception $ex) {
             DB::rollback();
             return $this->returnError('Brand', $ex->getMessage());
@@ -180,49 +179,34 @@ class BrandsService
      */
     public function update(BrandRequest $request, $id)
     {
-        $validated = $request->validated();
+         $request->validated();
         try {
             $brand = $this->BrandModel->find($id);
             if (!$brand)
                 return $this->returnError('400', 'not found this Brand');
-            $allbrands = collect($request->brands)->all();
             if (!($request->has('brand.is_active')))
                 $request->request->add(['is_active' => 0]);
             else
                 $request->request->add(['is_active' => 1]);
-
             $unTransBrand = $this->BrandModel->where('brands.id', $id)
                 ->update([
                     'slug' => $request['slug'],
                     'is_active' => $request['is_active'],
                     'image' => $request['image'],
                 ]);
-            $ss = $this->brandTranslation->where('brand_id', $id);
-            $collection1 = collect($allbrands);
-            $allbrandslength = $collection1->count();
-            $collection2 = collect($ss);
-
-            $db_brand = array_values(
-                $this->brandTranslation
-                    ->where('brand_id', $id)
-                    ->get()
-                    ->all());
-            $dbdbrands = array_values($db_brand);
-            $request_brands = array_values($request->brands);
-            foreach ($dbdbrands as $dbdbrand) {
+            $request_brands = array_values($request->brand);
                 foreach ($request_brands as $request_brand) {
-                    $values = $this->brandTranslation->where('brand_id', $id)
-                        ->where('locale', $request_brand['locale'])
+                     $this->brandTranslation->where('brand_id', $id)
+                        ->where('local', $request_brand['local'])
                         ->update([
                             'name' => $request_brand ['name'],
-                            'locale' => $request_brand['locale'],
+                            'local' => $request_brand['local'],
                             'description' => $request_brand['description'],
                             'brand_id' => $id
                         ]);
                 }
-            }
             DB::commit();
-            return $this->returnData('Brand', $dbdbrands, 'done');
+            return $this->returnData('Brand', [$id,$request_brands], 'done');
         } catch (\Exception $ex) {
             DB::rollback();
             return $this->returnError('400', $ex->getMessage());
@@ -260,18 +244,16 @@ class BrandsService
             return $this->returnError('400', $ex->getMessage());
         }
     }
-    public function upload(\Illuminate\Http\Request $request)
+    public function upload(Request $request)
     {
         $image = $request->file('image');
         $folder = public_path('images/brands' . '/');
         $filename = time() . '.' . $image->getClientOriginalName();
         $imageUrl='images/brands' . '/' . $filename;
-
         if (!File::exists($folder)) {
             File::makeDirectory($folder, 0775, true, true);
         }
-        $request->image->move($folder,$filename);
+        $image->move($folder,$filename);
         return $imageUrl;
-
     }
 }

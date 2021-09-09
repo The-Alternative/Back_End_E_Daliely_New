@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Category;
 
+use App\Http\Requests\Category\CategoryRequest;
 use App\Traits\GeneralTrait;
 use App\Http\Controllers\Controller;
 use App\Service\Categories\CategoryService;
 use Illuminate\Http\Request;
-use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\Response;
 
 class CategoriesController extends Controller
@@ -19,11 +19,6 @@ class CategoriesController extends Controller
     {
         $this->CategoryService=$CategoryService;
         $this->response=$response;
-//        $this->middleware(['role:superadministrator|administrator|user']);
-//        $this->middleware(['permission:category-read'])->only('getAll','getById');
-//        $this->middleware(['permission:category-create'])->only('create');
-//        $this->middleware(['permission:category-update'])->only('update');
-//        $this->middleware(['permission:category-delete'])->only(['trash','restoreTrashed','getTrashed']);
     }
     public function list()
     {

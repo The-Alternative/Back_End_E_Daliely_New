@@ -2,8 +2,6 @@
 
 namespace App\Models\Brands;
 
-use App\Models\Images\BrandImages;
-use App\Models\Language\Language;
 use App\Models\Products\Product;
 use App\Models\Stores\Store;
 use App\Scopes\BrandScope;
