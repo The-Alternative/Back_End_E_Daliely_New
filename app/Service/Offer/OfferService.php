@@ -93,15 +93,20 @@ class OfferService
              }
               DB::commit();
 
-              return $this->returnData('offer', [$untransId,$transOffer], 'done');
+            //   return $this->returnData('offer', [$untransId,$transOffer], 'done');
 
-        
-            //   Mail::To($untransId->user_email)->send(new OfferMail($untransId->user_email));
-
-            //   return $this->returnData('email',$eamil,'An email has been sent to you');
+              $user =$this->OfferModel::find($untransId)->toArray();
+              if(!$user)
+              return $thi->returnError('400','This offer not found');
+              else{
+              Mail::send('email.sendmail', $user, function($message) use ($user) {
+                  $message->to($user['user_email']);
+                  $message->subject('Welcome Mail');
+              });
+              return $this->returnData ('offer',$user,'Mail Send Successfully');
 
         }
-
+    }
         catch(\Exception $ex)
         {
             DB::rollBack();
@@ -290,27 +295,22 @@ class OfferService
             return $this->returnError($ex->getCode(),$ex->getMessage());
         }
     }
-    public function sendmail($id){
+    // public function sendmail($id){
 
-        try{
-        $user =$this->OfferModel::find($id)->toArray();
-        if(!$user)
-        return $thi->returnError('400','This offer not found');
-        else{
-        Mail::send('email.sendmail', $user, function($message) use ($user) {
-            $message->to($user['user_email']);
-            $message->subject('Welcome Mail');
-        });
-        return $this->returnData ('offer',$user,'Mail Send Successfully');
-    }
-    }catch(\Exception $ex){
-       return $this->returnError($ex->getcode(),$ex->getmessage());
-    }
-    //  $untransId=$this->OfferModel::find($id);
+    //     try{
+    //     $user =$this->OfferModel::find($id)->toArray();
+    //     if(!$user)
+    //     return $thi->returnError('400','This offer not found');
+    //     else{
+    //     Mail::send('email.sendmail', $user, function($message) use ($user) {
+    //         $message->to($user['user_email']);
+    //         $message->subject('Welcome Mail');
+    //     });
+    //     return $this->returnData ('offer',$user,'Mail Send Successfully');
+    // }
+    // }catch(\Exception $ex){
+    //    return $this->returnError($ex->getcode(),$ex->getmessage());
+    // }
 
-    //     Mail::To($untransId->user_email)->send(new OfferMail($untransId->user_email));
-
-    //     return $this->returnData('email',$eamil,'An email has been sent to you');
-
-    }
+    // }
 }
