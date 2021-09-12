@@ -435,4 +435,24 @@ class ProductService
             return $this->returnError('400',$ex->getMessage());
         }
     }
+    public function uploadMultiple(Request $request ,$id)
+    {
+        if (!$request->hasFile('images')) {
+            return response()->json(['not found the files'], 400);
+        }
+        $files = $request->file(['images']);
+        $errors = [];
+        $folder = public_path('images/products' . '/' . $id . '/');
+        if (!File::exists($folder)) {
+            File::makeDirectory($folder, 0775, true, true);
+        }
+        foreach ($files as $file) {
+            $filename[] = time() . '.' . $file->getClientOriginalName() ;
+            $file->move($folder,  time() . '.' . $file->getClientOriginalName() );
+        }
+        foreach ($filename as $f) {
+            $imageUrl[]='images/products/' . $id  . '/' .  $f;
+        }
+        return $imageUrl;
+    }
 }

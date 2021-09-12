@@ -69,4 +69,8 @@ class ProductsController extends Controller
         {
             return $this->ProductService->delete($id);
         }
+        public function uploadMultiple(Request $request ,$id)
+        {
+            return $this->ProductService->uploadMultiple($request ,$id);
+        }
 }
