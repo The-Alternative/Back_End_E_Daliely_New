@@ -44,12 +44,12 @@ return [
         'api' => [
             'driver' => 'jwt',
             'provider' => 'users',
-            'hash' => false
+//            'hash' => false
         ],
-        'users' => [
-            'driver' => 'jwt',
-            'provider' => 'users',
-        ],
+//        'users' => [
+//            'driver' => 'jwt',
+//            'provider' => 'users',
+//        ],
         'employees' =>[
             'driver' => 'jwt',
             'provider' => 'employees',
