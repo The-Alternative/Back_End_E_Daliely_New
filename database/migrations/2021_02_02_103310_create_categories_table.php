@@ -20,7 +20,7 @@ class CreateCategoriesTable extends Migration
             $table->string('image');
             $table->boolean('is_active');
             $table->unsignedInteger('parent_id');
-            $table->integer('section_id')->unsigned();
+            $table->unsignedInteger('section_id');
            $table->timestamps();
 
         });

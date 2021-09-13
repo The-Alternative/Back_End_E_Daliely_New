@@ -58,7 +58,7 @@ class CategoryService
     public function getAll()
     {
         try{
-        $category = $this->categoryModel->with('Parent')->paginate(10);
+        $category = $this->categoryModel->with(['Section','Parent'])->paginate(10);
             if (count($category) > 0){
                 return $this->returnData('Category',$category,'done');
             }else{
