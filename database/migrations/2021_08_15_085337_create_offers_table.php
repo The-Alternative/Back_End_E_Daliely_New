@@ -27,6 +27,8 @@ class CreateOffersTable extends Migration
             $table->dateTime('ended_at');
             $table->boolean('is_active');
             $table->boolean('is_offer');
+            $table->boolean('is_approved');
+
             $table->timestamps();
         });
     }

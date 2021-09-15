@@ -7,14 +7,17 @@ use App\Models\Stores\Store;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
 
 class Offer extends Model
 {
-    use HasFactory;
+    use HasFactory,Notifiable;
 
     protected $table='offers';
     protected  $fillable=['id','user_email','image','store_id','store_product_id','price','selling_price','quantity'
-    ,'started_at','ended_at','position','is_active','is_offer'];
+    ,'started_at','ended_at','position','is_active','is_offer','is_approved'];
 
     protected $hidden=['position','store_id','store_product_id','created_at','updated_at'];
 

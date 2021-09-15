@@ -435,7 +435,9 @@ Route::group(
                Route::get('/offer/get-store/{Offer_id}','OfferController@getStoreByOfferId');
                Route::get('/offer/get-offer/{store_id}','OfferController@getOfferByStoreId');
 
-               Route::post('/sendmail/{id}','OfferController@sendmail');
+            //    Route::post('/sendmail/{id}','OfferController@sendmail');
+               Route::get('/offer/notification/{id}','OfferController@Notification');
+               Route::put('/offer/approved/{offer_id}','OfferController@OfferApproved');
            });
                 Route::get('offers/gettrashed',[OfferController::class,'getTrashed']);
                 Route::get('offer/get-advertisement',[OfferController::class,'get_advertisement']);
