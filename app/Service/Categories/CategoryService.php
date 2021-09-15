@@ -58,7 +58,7 @@ class CategoryService
     public function getAll()
     {
         try{
-        $category = $this->categoryModel->with('Category')->paginate(10);
+        $category = $this->categoryModel->with(['Section','Parent'])->paginate(10);
             if (count($category) > 0){
                 return $this->returnData('Category',$category,'done');
             }else{
@@ -72,7 +72,7 @@ class CategoryService
     public function getById($id)
     {
         try{
-        $category =$this->categoryModel->with(['Section','Category'])->find($id);
+        $category =$this->categoryModel->with(['Section','Parent'])->find($id);
             if (is_null($category) ){
                 return $this->returnSuccessMessage('This Category not found','done');
             }else{
@@ -85,7 +85,7 @@ class CategoryService
     /*___________________________________________________________________________*/
     public function getCategoryBySelf($id)
     {
-        $category=$this->categoryModel->with('Category')->get();
+        $category=$this->categoryModel->with('Parent')->get();
         return $response= $this->returnData('Category',$category,'done');
     }
     /*___________________________________________________________________________*/

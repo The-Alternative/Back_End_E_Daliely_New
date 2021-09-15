@@ -49,6 +49,8 @@ Route::group(
                 Route::PUT('/restoreTrashed/{id}','ProductsController@restoreTrashed');
                 Route::GET('/getTrashed','ProductsController@getTrashed');
                 Route::DELETE('/delete/{id}','ProductsController@delete');
+                Route::post('upload-multi/{id}', 'ProductsController@uploadMultiple');
+
             });
         /**__________________________ Payment routes  __________________________**/
         Route::group(['prefix'=>'payment','namespace'=>'Stores_Orders'],function()
@@ -344,14 +346,14 @@ Route::group(
                 Route::GET('/restaurant/get-category/{restaurant_id}', 'RestaurantController@getCategory');
                 Route::GET('/restaurant/get-product/{restaurant_id}', 'RestaurantController@getProduct');
 
-                 //____________insert 
+                 //____________insert
                  Route::post('/restaurant/product','RestaurantController@insertToRestaurantRestaurantproduct');
                  Route::post('/restaurant/item','RestaurantController@insertRestaurantitem');
 
 
             });
                  Route::GET('/restaurants/gettrashed', [RestaurantController::class,'getTrashed']);
-               
+
 
              /*-------------Restaurant Type  Route------------------*/
              Route::group(['namespace'=>'RestaurantType'],function ()

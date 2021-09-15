@@ -45,11 +45,11 @@ class Category extends Model
     }
     public function Section()
     {
-        return $this->belongsTo(Section::class);
+        return $this->belongsTo(Section::class,'section_id');
     }
-    public function Category()
+    public function Parent()
     {
-        return $this->hasMany(Category::class,'parent_id');
+        return $this->belongsTo(Category::class,'parent_id');
     }
     public function Product()
     {
