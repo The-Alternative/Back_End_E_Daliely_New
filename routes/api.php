@@ -22,6 +22,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
+//@define(PAGINATION_COUNT,'=','10');
+
 Route::middleware('auth:api')->get('/user', function (Request $request)
     {
         return $request->user();
@@ -71,6 +73,7 @@ Route::group(
                 Route::GET('/getTrashed','CategoriesController@getTrashed');
                 Route::DELETE('/delete/{id}','CategoriesController@delete');
                 Route::post('/upload', 'CategoriesController@upload');
+                Route::post('/upload/{id}', 'CategoriesController@update_upload');
 
             });
         /**__________________________ Section routes  __________________________**/
@@ -87,9 +90,9 @@ Route::group(
             Route::GET('/getTrashed','SectionsController@getTrashed');
             Route::DELETE('/delete/{id}','SectionsController@delete');
             Route::POST('upload', 'SectionsController@upload');
-
+            Route::post('/upload/{id}', 'SectionsController@update_upload');
         });
-        /**__________________________ Category routes __________________________**/
+        /**__________________________ customfields routes __________________________**/
         Route::group(['prefix'=>'customfields','namespace'=>'Custom_fields'],function()
             {
                 Route::GET('/getAll','CustomFieldsController@getAll');
@@ -103,6 +106,8 @@ Route::group(
                 Route::GET('/getTrashed','CustomFieldsController@getTrashed');
                 Route::DELETE('/delete/{id}','CustomFieldsController@delete');
                 Route::post('/upload', 'CustomFieldsController@upload');
+                Route::post('/upload/{id}', 'CustomFieldsController@update_upload');
+
             });
         /**__________________________ Brand routes    __________________________**/
         Route::group(['prefix'=>'brands','namespace'=>'Brand'],function()
@@ -117,6 +122,7 @@ Route::group(
                 Route::GET('/getTrashed','BrandController@getTrashed');
                 Route::DELETE('/delete/{id}','BrandController@delete');
                 Route::post('/upload', 'BrandController@upload');
+                Route::post('/upload/{id}', 'BrandController@update_upload');
 
             });
         /**__________________________ Store routes    __________________________**/
@@ -477,6 +483,7 @@ Route::group(
          Route::post('store-logo', 'StoreImagesController@uploadLogo');
          Route::post('store-multi/{id}', 'StoreImagesController@uploadMultiple');
          Route::post('product-multi/{id}', 'ProductImageController@uploadMultiple');
+         Route::post('update_uploadMultiple/{id}', 'ProductImageController@update_uploadMultiple');
      });
 
         });

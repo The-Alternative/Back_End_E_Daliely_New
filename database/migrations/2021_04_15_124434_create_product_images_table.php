@@ -17,7 +17,8 @@ class CreateProductImagesTable extends Migration
             $table->id();
             $table->unsignedInteger('product_id');
             $table->string('image');
-            $table->string('is_cover');
+            $table->boolean('is_cover');
+            $table->boolean('is_check')->default(false);
             $table->timestamps();
         });
     }

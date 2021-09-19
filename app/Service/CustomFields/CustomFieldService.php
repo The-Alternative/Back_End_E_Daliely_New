@@ -5,13 +5,11 @@ use App\Http\Requests\CustomField\CustomFieldRequest;
 use App\Models\Custom_Fieldes\Custom_Field;
 use App\Models\Custom_Fieldes\Custom_Field_Translation;
 use App\Models\Custom_Fieldes\Custom_Field_Value;
-use App\Http\Requests\CategoryRequest;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Facades\File;
-use LaravelLocalization;
 
 class CustomFieldService
 {
@@ -193,7 +191,7 @@ class CustomFieldService
             $ncustom_field=$this->CustomFieldModel->where('custom_fields.id',$id)
                 ->update([
                     'is_active' =>$request['is_active'],
-                    'image' =>$request['image']
+//                    'image' =>$request['image']
                 ]);
             $request_custom_fields = array_values($request->custom_field);
                 foreach($request_custom_fields as $request_custom_field){
@@ -220,7 +218,6 @@ class CustomFieldService
                     }
                 }
                 $dbCustomField->update($arr);
-
             }
             DB::commit();
             return $this->returnData('custom_field', [$id,$request_custom_fields],'done');
@@ -276,13 +273,28 @@ class CustomFieldService
         $image = $request->file('image');
         $folder = public_path('images/customfields' . '/');
         $filename = time() . '.' . $image->getClientOriginalName();
-        $imageUrl='images/customfields' . '/' . $filename;
-
         if (!File::exists($folder)) {
             File::makeDirectory($folder, 0775, true, true);
         }
         $request->image->move($folder,$filename);
-        return $imageUrl;
-
+        return $filename;
+    }
+    public function update_upload(Request $request,$id)
+    {
+        $custom_field= $this->CustomFieldModel->find($id);
+        if (is_null($custom_field) ){
+            return $this->returnSuccessMessage('not found this Custom_field','done');
+        }
+        $old_image=$custom_field->image;
+        $image = $request->file('image');
+        $old_images=public_path('images/customfields' . '/' . $old_image);
+        if(File::exists($old_images)){
+            unlink($old_images);
+        }
+        $folder = public_path('images/customfields' . '/');
+        $filename = time() . '.' . $image->getClientOriginalName();
+        $custom_field->update(['image' => $filename]);  /** update in database **/
+        $image->move($folder,$filename);
+        return $filename;
     }
 }

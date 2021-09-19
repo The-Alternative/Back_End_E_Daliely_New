@@ -12,12 +12,13 @@ class ProductImage extends Model
 
     protected $primaryKey ='id';
     protected $table ='product_images';
-    protected $fillable =['product_id','image','is_cover'];
+    protected $fillable =['product_id','image','is_cover','is_check'];
     protected $hidden=['product_id','created_at','updated_at'];
+
+
 
     public function Product()
     {
         return $this->belongsTo(Product::class);
     }
-
 }

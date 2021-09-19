@@ -18,6 +18,7 @@ class SectionService
     private $SectionModel;
     private $SectionTranslation;
     private $categoryModel;
+    private $PAGINATION_COUNT;
 
     public function __construct(Section $sectionModel,
                                 SectionTranslation $sectionTranslation,
@@ -26,6 +27,7 @@ class SectionService
         $this->SectionModel=$sectionModel;
         $this->categoryModel=$categoryModel;
         $this->SectionTranslation=$sectionTranslation;
+        $this->PAGINATION_COUNT=25;
     }
     /*___________________________________________________________________________*/
     /****Get All Active section Or By ID  ****/
@@ -34,7 +36,7 @@ class SectionService
         try{
         $section = $this->SectionModel
             ->with(['Category','Product'])
-            ->get();
+            ->paginate($this->PAGINATION_COUNT);
 
             if (count($section) > 0) {
                 return $this->returnData('Section', $section, 'done');
@@ -187,7 +189,6 @@ class SectionService
                 $request->request->add(['is_active'=>1]);
                 $this->SectionModel->where('sections.id',$id)->update([
                    'slug' => $request['slug'],
-                   'image' => $request['image'],
                    'is_active' => $request['is_active'],
                 ]);
               $request_sections = array_values($request->section);
@@ -255,11 +256,25 @@ class SectionService
         $image = $request->file('image');
         $folder = public_path('images/sections' . '/');
         $filename = time() . '.' . $image->getClientOriginalName();
-        $imageUrl='images/sections' . '/' . $filename;
         if (!File::exists($folder)) {
             File::makeDirectory($folder, 0775, true, true);
         }
         $image->move($folder,$filename);
-        return $imageUrl;
+        return $filename;
+    }
+    public function update_upload(Request $request,$id)
+    {/**update in database**/
+        $section= $this->SectionModel->find($id);
+        $old_image=$section->image;
+        $image = $request->file('image');
+        $old_images=public_path('images/sections' . '/' .$old_image);
+        if(File::exists($old_images)){
+            unlink($old_images);
+        }
+        $folder = public_path('images/sections' . '/');
+        $filename = time() . '.' . $image->getClientOriginalName();
+        $section->update(['image' => $filename]);/**update in database**/
+        $image->move($folder,$filename);
+        return $filename;
     }
 }

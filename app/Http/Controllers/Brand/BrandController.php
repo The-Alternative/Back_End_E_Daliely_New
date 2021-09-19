@@ -60,4 +60,8 @@ class BrandController
     {
         return $this->BrandsService->upload($request);
     }
+    public function update_upload(Request $request,$id)
+    {
+        return $this->BrandsService->update_upload($request,$id);
+    }
 }
