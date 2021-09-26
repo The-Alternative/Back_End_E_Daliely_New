@@ -9,6 +9,8 @@ Route::middleware('auth:api')
 {
     return $request->user();
 });
+Route::post('auth/login', 'Auth\AuthController@login');
+
 Route::group(
     [
         'prefix'     => LaravelLocalization::setLocale(),
@@ -17,7 +19,6 @@ Route::group(
     ],
     function() {
         Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
-            Route::post('login', 'AuthController@login');
             Route::post('register', 'AuthController@register');
             Route::post('logout', 'AuthController@logout');
             Route::post('refresh', 'AuthController@refresh');

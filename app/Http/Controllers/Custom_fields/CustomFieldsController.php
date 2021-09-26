@@ -66,4 +66,8 @@ class CustomFieldsController extends Controller
     {
         return $this->customfieldService->upload($request);
     }
+    public function update_upload(Request $request,$id)
+    {
+        return $this->customfieldService->update_upload($request,$id);
+    }
 }
