@@ -31,12 +31,13 @@ class UserService
     public function getAll()
     {
         try{
-            $user = $this->userModel->get();
-            if (count($user) > 0){
+            return $token = JWTAuth::getToken();
+            $user = JWTAuth::toUser($token)->get();
+//            if (count($user) > 0){
                 return $response= $this->returnData('User',$user,'done');
-            }else{
-                return $response= $this->returnSuccessMessage('User','User doesnt exist yet');
-            }
+//            }else{
+//                return $response= $this->returnSuccessMessage('User','User doesnt exist yet');
+//            }
         }catch(\Exception $ex){
             return $this->returnError('400', $ex->getMessage());
         }

@@ -73,4 +73,8 @@ class ProductsController extends Controller
         {
             return $this->ProductService->uploadMultiple($request ,$id);
         }
+        public function filter(Request $request )
+        {
+            return $this->ProductService->filter($request );
+        }
 }

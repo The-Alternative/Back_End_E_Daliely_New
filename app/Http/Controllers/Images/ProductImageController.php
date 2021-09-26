@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Images;
 
 use App\Http\Controllers\Controller;
 use App\Models\Images\ProductImage;
+use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
 class ProductImageController extends Controller
 {
+    use GeneralTrait;
+
     public function upload(Request $request,$id)
     {
         $image = $request->file('image');
@@ -82,5 +85,33 @@ class ProductImageController extends Controller
 //        }
     }
         return $imageUrl;
+    }
+    public function delete_image($id){
+        $image=ProductImage::find($id);
+        if (!is_null($image)) {
+            $image_name=$image->image;
+            $old = public_path( $image_name);
+            if (File::exists($old)) {
+                unlink($old);
+            }
+            $delete=$image->destroy($id);
+            return  $this->returnSuccessMessage('image', 'delete success');
+        } else {
+            return $this->returnSuccessMessage('image', 'image doesnt exist yet');
+        }
+
+    }
+    public function get_is_cover($pro_id,$img_id){
+        $images=ProductImage::where('product_id',$pro_id)->get();
+        foreach($images as $image){
+            $image->update([
+               'is_cover'=>0
+            ]);
+        }
+        $cover_image=ProductImage::where('product_id',$pro_id)->find($img_id);
+        $cover_image->update([
+            'is_cover'=>1
+        ]);
+        return $this->returnSuccessMessage('This image selected to cover', '200');
     }
 }

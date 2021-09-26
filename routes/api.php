@@ -52,6 +52,7 @@ Route::group(
                 Route::GET('/getTrashed','ProductsController@getTrashed');
                 Route::DELETE('/delete/{id}','ProductsController@delete');
                 Route::post('upload-multi/{id}', 'ProductsController@uploadMultiple');
+                Route::get('filter', 'ProductsController@filter');
 
             });
         /**__________________________ Payment routes  __________________________**/
@@ -476,14 +477,15 @@ Route::group(
 
 
 
-     Route::group(['prefix'=>'upload','namespace'=>'Images'],function ()
-     {
-         Route::post('product/{id}', 'ProductImageController@upload');
-         Route::post('store/{id}', 'StoreImagesController@upload');
-         Route::post('store-logo', 'StoreImagesController@uploadLogo');
-         Route::post('store-multi/{id}', 'StoreImagesController@uploadMultiple');
-         Route::post('product-multi/{id}', 'ProductImageController@uploadMultiple');
-         Route::post('update_uploadMultiple/{id}', 'ProductImageController@update_uploadMultiple');
-     });
-
+             Route::group(['prefix'=>'upload','namespace'=>'Images'],function ()
+             {
+                 Route::post('product/{id}', 'ProductImageController@upload');
+                 Route::post('store/{id}', 'StoreImagesController@upload');
+                 Route::post('store-logo', 'StoreImagesController@uploadLogo');
+                 Route::post('store-multi/{id}', 'StoreImagesController@uploadMultiple');
+                 Route::post('product-multi/{id}', 'ProductImageController@uploadMultiple');
+                 Route::post('update_uploadMultiple/{id}', 'ProductImageController@update_uploadMultiple');
+                 Route::delete('delete/{id}', 'ProductImageController@delete_image');
+                 Route::put('get_is_cover/{pro_id}/{img_id}', 'ProductImageController@get_is_cover');
+             });
         });

@@ -72,7 +72,7 @@ class Kernel extends HttpKernel
         'permission'              =>\Laratrust\Middleware\LaratrustPermission::class,
         'ability'                 =>\Laratrust\Middleware\LaratrustAbility::class,
         'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
-        'jwt.auth' => 'Tymon\JWTAuth\Middleware\GetUserFromToken',
-        'jwt.refresh' => 'Tymon\JWTAuth\Middleware\RefreshToken',
+//        'jwt.auth' => 'Tymon\JWTAuth\Middleware\GetUserFromToken',
+//        'jwt.refresh' => 'Tymon\JWTAuth\Middleware\RefreshToken',
     ];
 }

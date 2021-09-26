@@ -20,6 +20,10 @@ class Brand extends Model
         'is_active' => 'boolean'
     ];
     protected $fillable=['id','image','slug','is_active'];
+    public function getImagePathAttribute($value)
+    {
+        return $value=public_path('images/brands/' . $this->image);
+    }
     protected static function booted()
     {
         parent::booted();

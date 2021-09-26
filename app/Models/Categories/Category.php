@@ -27,6 +27,10 @@ class Category extends Model
     {
         return $value==1 ? 'Active' : 'Not Active';
     }
+    public function getImagePathAttribute($value)
+    {
+        return $value=public_path('images/categories/' . $this->image);
+    }
     //________________ scopes begin _________________//
     protected static function booted()
     {

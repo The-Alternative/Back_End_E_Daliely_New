@@ -13,7 +13,10 @@ class StoreImage extends Model
     protected $primaryKey = 'id';
     protected $table ='store_images';
     protected $fillable = ['store_id','image','is_cover'];
-
+    public function getImagePathAttribute($value)
+    {
+        return $value=public_path('images/stores' . '/' . $this -> store_id . '/' . $this->image);
+    }
     public function Store()
     {
         return $this->belongsTo(Store::class);

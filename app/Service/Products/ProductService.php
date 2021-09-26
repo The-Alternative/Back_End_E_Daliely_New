@@ -4,6 +4,7 @@ namespace App\Service\Products;
 use App\Models\Categories\Category;
 use App\Models\Categories\Section;
 use App\Models\Custom_Fieldes\Custom_Field;
+use App\Models\Images\ProductImage;
 use App\Models\Products\ProductTranslation;
 use App\Models\Stores\Store;
 use App\Models\Stores\StoreProduct;
@@ -155,12 +156,11 @@ class ProductService
         try {
             $products = $this->productModel
                 ->with(['Store', 'ProductImage'])
-                ->where('products.is_active','=',1)
                 ->paginate($this->PAGINATION_COUNT);
             if (count($products) > 0) {
-                return $response = $this->returnData('Products', $products, 'done');
+                return $this->returnData('Products', $products, 'done');
             } else {
-                return $response = $this->returnSuccessMessage('Product', 'Products doesnt exist yet');
+                return $this->returnSuccessMessage('Product', 'Products doesnt exist yet');
             }
         } catch (\Exception $e) {
             return $this->returnError('400', $e->getMessage());
@@ -298,14 +298,15 @@ class ProductService
             }
             $images = $request->images;
             if ($request->has('images')) {
-                foreach ($images as $image) {
-                    $product = $this->productModel->find($unTransProduct_id);
-                    $product->ProductImage()->insert([
-                        'product_id' => $unTransProduct_id,
-                        'image' => $image['image'],
-                        'is_cover' => $image['is_cover'],
-                    ]);
-                }
+                $this->uploadMultiple($request ,$unTransProduct_id);
+//                foreach ($images as $image) {
+//                    $product = $this->productModel->find($unTransProduct_id);
+//                    $product->ProductImage()->insert([
+//                        'product_id' => $unTransProduct_id,
+//                        'image' => $image['image'],
+//                        'is_cover' => $image['is_cover'],
+//                    ]);
+//                }
             }
             DB::commit();
             return $this->returnData('Product', [$unTransProduct_id, $transProduct_arr], 'done');
@@ -430,8 +431,29 @@ class ProductService
             $file->move($folder,  time() . '.' . $file->getClientOriginalName() );
         }
         foreach ($filename as $f) {
-            $imageUrl[]='images/products/' . $id  . '/' .  $f;
+            $imageUrls[]='images/products/' . $id  . '/' .  $f;
         }
-        return $imageUrl;
+//        return $imageUrls;
+        foreach ($imageUrls as $imageUrl){
+            ProductImage::create([
+                'product_id' => $id,
+                'image' => $imageUrl,
+                'is_cover' => 1,
+            ]);
+        }
+                return $imageUrls;
+
+    }
+    public function filter(Request $request){
+        try {
+            return $products=$this->productModel->get();
+//            if($request -> has('relation')){
+//
+//
+//            }
+        }catch (\Exception $ex) {
+            return $this->returnError('400',$ex->getMessage());
+
+        }
     }
 }

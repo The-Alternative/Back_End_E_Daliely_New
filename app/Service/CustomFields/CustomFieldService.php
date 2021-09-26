@@ -33,7 +33,6 @@ class CustomFieldService
     {
         try{
             $custom_field = $this->CustomFieldModel->with('Custom_Field_Value')->get();
-            $custom_field = $this->CustomFieldModel->paginate(10);
             if (count($custom_field) > 0){
                 return $this->returnData('Custom_fields',$custom_field,'done');
             }else{
