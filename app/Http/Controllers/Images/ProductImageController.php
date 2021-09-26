@@ -86,6 +86,7 @@ class ProductImageController extends Controller
     }
         return $imageUrl;
     }
+
     public function delete_image($id){
         $image=ProductImage::find($id);
         if (!is_null($image)) {
@@ -101,6 +102,7 @@ class ProductImageController extends Controller
         }
 
     }
+
     public function get_is_cover($pro_id,$img_id){
         $images=ProductImage::where('product_id',$pro_id)->get();
         foreach($images as $image){
@@ -114,4 +116,5 @@ class ProductImageController extends Controller
         ]);
         return $this->returnSuccessMessage('This image selected to cover', '200');
     }
+
 }
