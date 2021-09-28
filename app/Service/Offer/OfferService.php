@@ -7,6 +7,7 @@ use App\Models\Offer\Offer;
 use App\Models\Offer\OfferTranslation;
 use App\Models\Stores\Store;
 use App\Models\User;
+use App\Service\Notification\NotificationService;
 use App\Traits\GeneralTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -14,18 +15,26 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\OfferMail;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Notifications\OfferNotification;
-use Notification;
+//use Notification;
+use App\Service\Mail\MailService;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Notification;
+
 class OfferService
 {
 
     use GeneralTrait;
     protected $OfferModel;
     protected $StoreModel;
+    protected $MailService;
+    protected $NotificationService;
 
-    public function __construct(Offer $offer,Store $store)
+    public function __construct(Offer $offer,Store $store,MailService $MailService,NotificationService $notificationService)
     {
         $this->OfferModel=$offer;
         $this->StoreModel=$store;
+        $this->MailService=$MailService;
+        $this->NotificationService=$notificationService;
     }
 
     //get all offer
@@ -63,7 +72,7 @@ class OfferService
     //create new offer
     public function create(OfferRequest $request)
     {
-    
+
         try {
             $offer=collect($request->Offer)->all();
             DB::beginTransaction();
@@ -96,20 +105,16 @@ class OfferService
              }
               DB::commit();
 
-            //   return $this->returnData('offer', [$untransId,$transOffer], 'done');
+              //Send Mail
+              $this->MailService->SendMail($untransId,Offer::class, $request->user_email);
 
-              $user =$this->OfferModel::find($untransId)->toArray();
-              if(!$user)
-              return $thi->returnError('400','This offer not found');
-              else{
-              Mail::send('email.sendmail', $user, function($message) use ($user) {
-                  $message->to($user['user_email']);
-                  $message->subject('Welcome Mail');
-              });
-              return $this->returnData ('offer',$user,'Mail Send Successfully');
+              //Send Notification
+              $notification=Offer::find($untransId);
+              Notification::send($notification,new OfferNotification($notification));
+
+              return $this->returnData('offer', [$untransId,$transOffer], 'Mail Send Successfully');
 
         }
-    }
         catch(\Exception $ex)
         {
             DB::rollBack();
@@ -300,32 +305,8 @@ class OfferService
             return $this->returnError($ex->getCode(),$ex->getMessage());
         }
     }
-    // public function sendmail($id){
 
-    //     try{
-    //     $user =$this->OfferModel::find($id)->toArray();
-    //     if(!$user)
-    //     return $thi->returnError('400','This offer not found');
-    //     else{
-    //     Mail::send('email.sendmail', $user, function($message) use ($user) {
-    //         $message->to($user['user_email']);
-    //         $message->subject('Welcome Mail');
-    //     });
-    //     return $this->returnData ('offer',$user,'Mail Send Successfully');
-    // }
-    // }catch(\Exception $ex){
-    //    return $this->returnError($ex->getcode(),$ex->getmessage());
-    // }
 
-    // }
-
-    public function Notification($id)
-    {
-        $offer=$this->OfferModel::find($id);
-        Notification::send($offer,new OfferNotification($offer));
-
-        return $this->returnData('offer',$offer,'send notification');
-    }
     public function OfferApproved($offer_id)
     {
         try{

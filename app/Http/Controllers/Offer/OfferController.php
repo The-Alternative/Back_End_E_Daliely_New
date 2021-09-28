@@ -65,14 +65,6 @@ class OfferController extends Controller
         return $this->OfferService->getTrashed();
     }
 
-    // public function sendmail($id){
-    //     return $this->OfferService->sendmail($id);
-    // }
-
-    public function Notification($id)
-    {
-        return $this->OfferService->Notification($id);
-    }
     public function OfferApproved($offer_id)
     {
         return $this->OfferService->OfferApproved($offer_id);
