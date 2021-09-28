@@ -7,7 +7,6 @@ use App\Models\Offer\Offer;
 use App\Models\Offer\OfferTranslation;
 use App\Models\Stores\Store;
 use App\Models\User;
-use App\Service\Notification\NotificationService;
 use App\Traits\GeneralTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,14 +26,12 @@ class OfferService
     protected $OfferModel;
     protected $StoreModel;
     protected $MailService;
-    protected $NotificationService;
 
-    public function __construct(Offer $offer,Store $store,MailService $MailService,NotificationService $notificationService)
+    public function __construct(Offer $offer,Store $store,MailService $MailService)
     {
         $this->OfferModel=$offer;
         $this->StoreModel=$store;
         $this->MailService=$MailService;
-        $this->NotificationService=$notificationService;
     }
 
     //get all offer

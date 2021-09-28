@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+//use Illuminate\Support\Facades\Notification;
 
 class OfferNotification extends Notification
 {
@@ -37,7 +38,7 @@ class OfferNotification extends Notification
         return[
             'id'=>$this->offer->id,
             'price'=>$this->offer->price,
-            
+
         ];
     }
     /**

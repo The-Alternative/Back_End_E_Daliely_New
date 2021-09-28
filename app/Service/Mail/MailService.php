@@ -2,15 +2,9 @@
 
 namespace App\Service\Mail;
 
-use App\Models\Doctors\Doctor;
-use App\Models\Offer\Offer;
-use App\Models\Restaurant\Restaurant;
-use App\Models\Stores\Store;
-use App\Notifications\OfferNotification;
 use App\Traits\GeneralTrait;
-use Illuminate\Database\Eloquent\Model ;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Notification;
+
 
 class MailService
 {
