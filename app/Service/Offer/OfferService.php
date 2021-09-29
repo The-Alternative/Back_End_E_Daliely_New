@@ -7,13 +7,13 @@ use App\Models\Offer\Offer;
 use App\Models\Offer\OfferTranslation;
 use App\Models\Stores\Store;
 use App\Models\User;
+use App\Notifications\Notifications;
 use App\Traits\GeneralTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OfferMail;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use App\Notifications\OfferNotification;
 //use Notification;
 use App\Service\Mail\MailService;
 use Illuminate\Database\Eloquent\Model;
@@ -107,7 +107,7 @@ class OfferService
 
               //Send Notification
               $notification=Offer::find($untransId);
-              Notification::send($notification,new OfferNotification($notification));
+              Notification::send($notification,new Notifications($notification));
 
               return $this->returnData('offer', [$untransId,$transOffer], 'Mail Send Successfully');
 

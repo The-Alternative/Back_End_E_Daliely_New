@@ -10,6 +10,7 @@ use App\Http\Controllers\Hospital\HospitalController;
 use App\Http\Controllers\Interaction\InteractionController;
 use App\Http\Controllers\Item\ItemController;
 use App\Http\Controllers\MedicalDevice\MedicalDeviceController;
+use App\Http\Controllers\Menu\MenuController;
 use App\Http\Controllers\Offer\OfferController;
 use App\Http\Controllers\Patient\PatientController;
 use App\Http\Controllers\Restaurant\RestaurantController;
@@ -371,23 +372,23 @@ Route::group(
                 Route::GET('/restaurant/types/gettrashed', [RestaurantTypeController::class,'getTrashed']);
 
               /*-------------Restaurant Category Route------------------*/
-           Route::group(['namespace'=>'RestaurantCategory'],function ()
+           Route::group(['namespace'=>'Menu'],function ()
             {
-                Route::GET('/restaurants/category', 'RestaurantCategoyrController@get');
-                Route::GET('/restaurant/category/{id}', 'RestaurantCategoyrController@getById');
-                Route::post('/restaurant/category/create', 'RestaurantCategoyrController@create');
-                Route::put('/restaurant/category/{id}', 'RestaurantCategoyrController@update');
-                Route::GET('/restaurant/category/search/{name}','RestaurantCategoyrController@search');
-                Route::PUT('/restaurant/category/trash/{id}', 'RestaurantCategoyrController@trash');
-                Route::PUT('/restaurant/category/restoretrashed/{id}', 'RestaurantCategoyrController@restoreTrashed');
-                Route::delete('/restaurant/category/{id}', 'RestaurantCategoyrController@delete');
-                Route::GET('/restaurant/category/get-restaurant/{restaurantCategory_id}', 'RestaurantCategoyrController@getRestaurant');
-                Route::GET('/restaurant/category/get-product/{restaurantCategory_id}', 'RestaurantCategoyrController@getProduct');
+                Route::GET('/restaurants/menu', 'MenuController@get');
+                Route::GET('/restaurant/menu/{id}', 'MenuController@getById');
+                Route::post('/restaurant/menu/create', 'MenuController@create');
+                Route::put('/restaurant/menu/{id}', 'MenuController@update');
+                Route::GET('/restaurant/menu/search/{name}','MenuController@search');
+                Route::PUT('/restaurant/menu/trash/{id}', 'MenuController@trash');
+                Route::PUT('/restaurant/menu/restoretrashed/{id}', 'MenuController@restoreTrashed');
+                Route::delete('/restaurant/menu/{id}', 'MenuController@delete');
+                Route::GET('/restaurant/menu/get-restaurant/{menu_id}', 'MenuController@getRestaurant');
+                Route::GET('/restaurant/menu/get-product/{menu_id}', 'MenuController@getProduct');
                 //____insert
-                Route::post('/restaurant/category/restaurant/product','RestaurantCategoyrController@insertToRestaurantcategoryRestaurantproduct');
-                Route::post('/restaurant/category/item','RestaurantCategoyrController@insertToRestaurantcategoryItem');
+//                Route::post('/restaurant/menu/restaurant/product','MenuController@insertToRestaurantcategoryRestaurantproduct');
+//                Route::post('/restaurant/menu/item','MenuController@insertToRestaurantcategoryItem');
            });
-                Route::GET('/restaurants/category/gettrashed', [RestaurantCategoyrController::class,'getTrashed']);
+                Route::GET('/restaurants/menu/gettrashed', [MenuController::class,'getTrashed']);
 
              /*-------------Restaurant  Product Route------------------*/
            Route::group(['namespace'=>'RestaurantProduct'],function ()
