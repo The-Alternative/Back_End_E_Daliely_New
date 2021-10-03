@@ -10,7 +10,6 @@ use App\Http\Controllers\Hospital\HospitalController;
 use App\Http\Controllers\Interaction\InteractionController;
 use App\Http\Controllers\Item\ItemController;
 use App\Http\Controllers\MedicalDevice\MedicalDeviceController;
-use App\Http\Controllers\Menu\MenuController;
 use App\Http\Controllers\Offer\OfferController;
 use App\Http\Controllers\Patient\PatientController;
 use App\Http\Controllers\Restaurant\RestaurantController;
@@ -22,6 +21,8 @@ use App\Http\Controllers\Specialty\SpecialtyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+
+//@define(PAGINATION_COUNT,'=','10');
 
 Route::middleware('auth:api')->get('/user', function (Request $request)
     {
@@ -51,6 +52,7 @@ Route::group(
                 Route::GET('/getTrashed','ProductsController@getTrashed');
                 Route::DELETE('/delete/{id}','ProductsController@delete');
                 Route::post('upload-multi/{id}', 'ProductsController@uploadMultiple');
+                Route::get('filter', 'ProductsController@filter');
 
             });
         /**__________________________ Payment routes  __________________________**/
@@ -72,6 +74,7 @@ Route::group(
                 Route::GET('/getTrashed','CategoriesController@getTrashed');
                 Route::DELETE('/delete/{id}','CategoriesController@delete');
                 Route::post('/upload', 'CategoriesController@upload');
+                Route::post('/upload/{id}', 'CategoriesController@update_upload');
 
             });
         /**__________________________ Section routes  __________________________**/
@@ -88,9 +91,9 @@ Route::group(
             Route::GET('/getTrashed','SectionsController@getTrashed');
             Route::DELETE('/delete/{id}','SectionsController@delete');
             Route::POST('upload', 'SectionsController@upload');
-
+            Route::post('/upload/{id}', 'SectionsController@update_upload');
         });
-        /**__________________________ Category routes __________________________**/
+        /**__________________________ customfields routes __________________________**/
         Route::group(['prefix'=>'customfields','namespace'=>'Custom_fields'],function()
             {
                 Route::GET('/getAll','CustomFieldsController@getAll');
@@ -104,6 +107,8 @@ Route::group(
                 Route::GET('/getTrashed','CustomFieldsController@getTrashed');
                 Route::DELETE('/delete/{id}','CustomFieldsController@delete');
                 Route::post('/upload', 'CustomFieldsController@upload');
+                Route::post('/upload/{id}', 'CustomFieldsController@update_upload');
+
             });
         /**__________________________ Brand routes    __________________________**/
         Route::group(['prefix'=>'brands','namespace'=>'Brand'],function()
@@ -118,6 +123,7 @@ Route::group(
                 Route::GET('/getTrashed','BrandController@getTrashed');
                 Route::DELETE('/delete/{id}','BrandController@delete');
                 Route::post('/upload', 'BrandController@upload');
+                Route::post('/upload/{id}', 'BrandController@update_upload');
 
             });
         /**__________________________ Store routes    __________________________**/
@@ -372,23 +378,23 @@ Route::group(
                 Route::GET('/restaurant/types/gettrashed', [RestaurantTypeController::class,'getTrashed']);
 
               /*-------------Restaurant Category Route------------------*/
-           Route::group(['namespace'=>'Menu'],function ()
+           Route::group(['namespace'=>'RestaurantCategory'],function ()
             {
-                Route::GET('/restaurants/menu', 'MenuController@get');
-                Route::GET('/restaurant/menu/{id}', 'MenuController@getById');
-                Route::post('/restaurant/menu/create', 'MenuController@create');
-                Route::put('/restaurant/menu/{id}', 'MenuController@update');
-                Route::GET('/restaurant/menu/search/{name}','MenuController@search');
-                Route::PUT('/restaurant/menu/trash/{id}', 'MenuController@trash');
-                Route::PUT('/restaurant/menu/restoretrashed/{id}', 'MenuController@restoreTrashed');
-                Route::delete('/restaurant/menu/{id}', 'MenuController@delete');
-                Route::GET('/restaurant/menu/get-restaurant/{menu_id}', 'MenuController@getRestaurant');
-                Route::GET('/restaurant/menu/get-product/{menu_id}', 'MenuController@getProduct');
+                Route::GET('/restaurants/category', 'RestaurantCategoyrController@get');
+                Route::GET('/restaurant/category/{id}', 'RestaurantCategoyrController@getById');
+                Route::post('/restaurant/category/create', 'RestaurantCategoyrController@create');
+                Route::put('/restaurant/category/{id}', 'RestaurantCategoyrController@update');
+                Route::GET('/restaurant/category/search/{name}','RestaurantCategoyrController@search');
+                Route::PUT('/restaurant/category/trash/{id}', 'RestaurantCategoyrController@trash');
+                Route::PUT('/restaurant/category/restoretrashed/{id}', 'RestaurantCategoyrController@restoreTrashed');
+                Route::delete('/restaurant/category/{id}', 'RestaurantCategoyrController@delete');
+                Route::GET('/restaurant/category/get-restaurant/{restaurantCategory_id}', 'RestaurantCategoyrController@getRestaurant');
+                Route::GET('/restaurant/category/get-product/{restaurantCategory_id}', 'RestaurantCategoyrController@getProduct');
                 //____insert
-//                Route::post('/restaurant/menu/restaurant/product','MenuController@insertToRestaurantcategoryRestaurantproduct');
-//                Route::post('/restaurant/menu/item','MenuController@insertToRestaurantcategoryItem');
+                Route::post('/restaurant/category/restaurant/product','RestaurantCategoyrController@insertToRestaurantcategoryRestaurantproduct');
+                Route::post('/restaurant/category/item','RestaurantCategoyrController@insertToRestaurantcategoryItem');
            });
-                Route::GET('/restaurants/menu/gettrashed', [MenuController::class,'getTrashed']);
+                Route::GET('/restaurants/category/gettrashed', [RestaurantCategoyrController::class,'getTrashed']);
 
              /*-------------Restaurant  Product Route------------------*/
            Route::group(['namespace'=>'RestaurantProduct'],function ()
@@ -437,9 +443,6 @@ Route::group(
                Route::delete('/offer/{id}', 'OfferController@delete');
                Route::get('/offer/get-store/{Offer_id}','OfferController@getStoreByOfferId');
                Route::get('/offer/get-offer/{store_id}','OfferController@getOfferByStoreId');
-
-//               Route::get('/offer/notification/{id}','OfferController@Notification');
-               Route::put('/offer/approved/{offer_id}','OfferController@OfferApproved');
            });
                 Route::get('offers/gettrashed',[OfferController::class,'getTrashed']);
                 Route::get('offer/get-advertisement',[OfferController::class,'get_advertisement']);
@@ -474,13 +477,15 @@ Route::group(
 
 
 
-     Route::group(['prefix'=>'upload','namespace'=>'Images'],function ()
-     {
-         Route::post('product/{id}', 'ProductImageController@upload');
-         Route::post('store/{id}', 'StoreImagesController@upload');
-         Route::post('store-logo', 'StoreImagesController@uploadLogo');
-         Route::post('store-multi/{id}', 'StoreImagesController@uploadMultiple');
-         Route::post('product-multi/{id}', 'ProductImageController@uploadMultiple');
-     });
-
+             Route::group(['prefix'=>'upload','namespace'=>'Images'],function ()
+             {
+                 Route::post('product/{id}', 'ProductImageController@upload');
+                 Route::post('store/{id}', 'StoreImagesController@upload');
+                 Route::post('store-logo', 'StoreImagesController@uploadLogo');
+                 Route::post('store-multi/{id}', 'StoreImagesController@uploadMultiple');
+                 Route::post('product-multi/{id}', 'ProductImageController@uploadMultiple');
+                 Route::post('update_uploadMultiple/{id}', 'ProductImageController@update_uploadMultiple');
+                 Route::delete('delete/{id}', 'ProductImageController@delete_image');
+                 Route::put('get_is_cover/{pro_id}/{img_id}', 'ProductImageController@get_is_cover');
+             });
         });

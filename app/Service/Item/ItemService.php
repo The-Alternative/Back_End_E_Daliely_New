@@ -26,7 +26,7 @@ class ItemService
             return $this->returnData('Item', $Item, 'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
     public function getById($id)
@@ -42,7 +42,7 @@ class ItemService
         }
         catch(\Exception $ex)
         {
-            return $this->returnError('400',$ex->getMessage());
+            return $this->returnError($ex->getCode(),$ex->getMessage());
         }
     }
     //__________________________________________________________//
@@ -75,7 +75,7 @@ class ItemService
         catch(\Exception $ex)
         {
             DB::rollback();
-            return $this->returnError('Item', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
 
     }
@@ -128,7 +128,7 @@ class ItemService
         }
         catch(\Exception $ex){
             DB::rollBack();
-            return $this->returnError('400', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
     //____________________________________________________________//
@@ -145,7 +145,7 @@ class ItemService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
     public function trash( $id)
@@ -163,7 +163,7 @@ class ItemService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
 
     }
@@ -174,8 +174,9 @@ class ItemService
             return $this -> returnData('Item',$Item,'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
-        }    }
+            return $this->returnError($ex->getCode(), $ex->getMessage());
+        }
+    }
     public function restoreTrashed( $id)
     {
         try{
@@ -191,7 +192,7 @@ class ItemService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
     //________________________________________//
@@ -210,7 +211,7 @@ class ItemService
             }
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
     public function getRestaurant($id)
@@ -221,7 +222,7 @@ class ItemService
 
 
         } catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
 
@@ -232,19 +233,8 @@ class ItemService
             return $this->returnData('Item', $Item, 'done');
 
         } catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
 
-
-    public function getCategory($id)
-    {
-        try{
-            $Item= Item::with('RestaurantCategory')->find($id);
-            return $this->returnData('Item', $Item, 'done');
-
-        } catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
-        }
-    }
 }

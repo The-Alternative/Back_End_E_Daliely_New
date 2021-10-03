@@ -4,7 +4,6 @@ namespace App\Models\Menu;
 
 use App\Models\Item\Item;
 use App\Models\Restaurant\Restaurant;
-use App\Models\RestaurantProduct\RestaurantProduct;
 use App\Scopes\MenuScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -41,14 +40,11 @@ class Menu extends Model
 
     public function Restaurant()
     {
-        return $this->belongsToMany(Restaurant::class,'restaurant_restaurant_category','restaurant_category_id','restaurant_id','id','id');
+        return $this->belongsToMany(Restaurant::class,'restaurant_menu','menu_id','restaurant_id','id','id');
     }
-    public function Meal()
-    {
-        return $this->belongsToMany(Meal::class,'restaurant_category_restaurant_product','restaurant_category_id','restaurant_product_id','id','id');
-    }
-    public function Item()
-    {
-        return $this->belongsToMany(Item::class,'restaurant_category_item','restaurant_category_id','item_id','id','id');
-    }
+
+//    public function Item()
+//    {
+//        return $this->belongsToMany(Item::class,'restaurant_category_item','restaurant_category_id','item_id','id','id');
+//    }
 }

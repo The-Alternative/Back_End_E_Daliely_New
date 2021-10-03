@@ -56,18 +56,6 @@ class MenuController extends Controller
     {
         return $this->MenuService->getRestaurant($id);
     }
-    public function getProduct($id)
-    {
-        return $this->MenuService->getProduct($id);
-    }
-    //_________________insert_____________________//
 
-//    public function insertToRestaurantcategoryRestaurantproduct(Request $request)
-//    {
-//        return $this->MenuService->insertToRestaurantcategoryRestaurantproduct($request);
-//    }
-//    public function insertToRestaurantcategoryItem(Request $request)
-//    {
-//        return $this->MenuService->insertToRestaurantcategoryItem($request);
-//    }
+
 }

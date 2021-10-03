@@ -27,7 +27,7 @@ class MenuService
             return $this->returnData('Menu', $menu, 'done');
         }
         catch (\Exception $ex) {
-            return $this->returnError('400', $ex->getMessage());
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
     public function getById($id)
@@ -43,7 +43,7 @@ class MenuService
         }
         catch(\Exception $ex)
         {
-            return $this->returnError('400',$ex->getMessage());
+            return $this->returnError($ex->getCode(),$ex->getMessage());
         }
     }
     //__________________________________________________________//
@@ -72,11 +72,6 @@ class MenuService
 
                 $notification=Menu::find($unTransMenu_id);
                 Notification::send($notification,new Notifications($notification));
-
-                if($request->has('Meal')){
-                    $menu=$this->MenuModel::find($unTransMenu_id);
-                    $menu->Meal()->syncWithoutDetaching($request->get('Meal'));
-                }
             }
             DB::commit();
             return $this->returnData('Menu',[$unTransMenu_id, $transmenu],'done');
@@ -131,10 +126,7 @@ class MenuService
                         ]);
                 }
             }
-            if($request->has('Meal')){
-                $menu=$this->MenuModel::find($id);
-                $menu->Meal()->syncWithoutDetaching($request->get('Meal'));
-            }
+
             DB::commit();
             return $this->returnData(' restaurant category', [$dbmenu,$values],'done');
         }
@@ -226,52 +218,14 @@ class MenuService
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
-    public function getProduct($id)
-    {
-        try{
-            $menu=  $this->MenuModel::with('Meal')->find($id);
-            return $this->returnData('Menu', $menu, 'done');
 
-        } catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
-        }
-    }
     public function getRestaurant($id)
     {
-        try{
-            $Category=$this->MenuModel::with('Restaurant')->find($id);
+        try {
+            $Category = $this->MenuModel::with('Restaurant')->find($id);
             return $this->returnData('Restaurant Menu', $Category, 'done');
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
-
-//    public function insertToRestaurantcategoryRestaurantproduct(Request $request)
-//    {
-//        try{
-//            $menu=$this->MenuModel::find($request->restaurant_category_id);
-//            if(!$restaurantcategory)
-//                return $this->returnError('400','not found this restaurant category');
-//            $restaurantcategory->RestaurantProduct()->syncwithoutdetaching($request->restaurant_product_id);
-//            return $this->returnData('restaurant category ',$restaurantcategory,'create done');
-//        }
-//        catch(\Exception $ex){
-//            return $this->returnError($ex->getcode(),$ex->getMessage());
-//        }
-//    }
-//
-//    public function insertToRestaurantcategoryItem(Request $request)
-//    {
-//        try{
-//            $restaurantcategory=RestaurantCategory::find($request->restaurant_category_id);
-//            if(!$restaurantcategory)
-//
-//                return $this->returnError('400','not found this restaurant category');
-//            $restaurantcategory->Item()->syncwithoutdetaching($request->item_id);
-//            return $this->returnData('restaurant category ',$restaurantcategory,'create done');
-//        }
-//        catch(\Exception $ex){
-//            return $this->returnError($ex->getcode(),$ex->getMessage());
-//        }
-//    }
 }

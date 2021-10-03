@@ -56,23 +56,19 @@ class RestaurantController extends Controller
     {
         return $this->RestaurantService->getType($id);
     }
-    public function getCategory($id)
+    public function getMenu($id)
     {
-        return $this->RestaurantService->getCategory($id);
+        return $this->RestaurantService->getMenu($id);
     }
-     public function getProduct($id)
+     public function getItem($id)
     {
-        return $this->RestaurantService->getProduct($id);
+        return $this->RestaurantService->getItem($id);
     }
     //_______________________________insert _____________________________//
-    public function insertToRestaurantRestaurantproduct(Request $request)
+    public function insertRestaurantItem(Request $request)
     {
-        return $this->RestaurantService->insertToRestaurantRestaurantproduct($request);
+        return $this->RestaurantService->insertRestaurantItem($request);
     }
-    public function insertRestaurantitem(Request $request)
-    {
-        return $this->RestaurantService->insertRestaurantitem($request);
-    }
-    
+
 }
 
