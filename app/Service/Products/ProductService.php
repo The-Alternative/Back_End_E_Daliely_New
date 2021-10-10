@@ -298,16 +298,17 @@ class ProductService
             }
             $images = $request->images;
             if ($request->has('images')) {
-                $this->uploadMultiple($request ,$unTransProduct_id);
-//                foreach ($images as $image) {
-//                    $product = $this->productModel->find($unTransProduct_id);
-//                    $product->ProductImage()->insert([
-//                        'product_id' => $unTransProduct_id,
-//                        'image' => $image['image'],
-//                        'is_cover' => $image['is_cover'],
-//                    ]);
-//                }
-            }
+//                $this->uploadMultiple($images ,$unTransProduct_id);
+                $folder = public_path('images/products' . '/' . $unTransProduct_id . '/');
+                foreach ($images as $image) {
+                    $product = $this->productModel->find($unTransProduct_id);
+                    $product->ProductImage()->insert([
+                        'product_id' => $unTransProduct_id,
+                        'image' => $this->upload( $image['image'],$unTransProduct_id,$folder),
+                        'is_cover' => $image['is_cover'],
+                    ]);
+                }
+                }
             DB::commit();
             return $this->returnData('Product', [$unTransProduct_id, $transProduct_arr], 'done');
         } catch (\Exception $ex) {
@@ -416,9 +417,9 @@ class ProductService
     }
     /*__________________________________________________________________*/
     /****  upload Product's images   ****/
-    public function uploadMultiple(Request $request ,$id)
+    public function uploadMultiple( $request ,$id)
     {
-        if (!$request->hasFile('images')) {
+        if (!$request->hasFile(['images'])) {
             return response()->json(['not found the files'], 400);
         }
         $files = $request->file(['images']);
@@ -438,11 +439,10 @@ class ProductService
             ProductImage::create([
                 'product_id' => $id,
                 'image' => $imageUrl,
-                'is_cover' => 1,
+                'is_cover' =>0,
             ]);
         }
-                return $imageUrls;
-
+        return $imageUrls;
     }
     public function filter(Request $request){
         try {
@@ -455,5 +455,20 @@ class ProductService
             return $this->returnError('400',$ex->getMessage());
 
         }
+    }
+    public function upload($image,$id,$folder)
+    {
+//         $images = $request->images;
+        $folder = public_path('images/products' . '/' . $id . '/');
+//        foreach ($images as $image){
+        $filename = time() . '.' . $image->getClientOriginalName();
+         $imageUrl[]='images/products/' . $id  . '/' .  $filename;
+
+        if (!File::exists($folder)) {
+            File::makeDirectory($folder, 0775, true, true);
+        }
+        $image->move($folder,$filename);
+        return $filename;
+
     }
 }

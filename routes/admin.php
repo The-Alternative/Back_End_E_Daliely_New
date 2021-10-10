@@ -18,12 +18,12 @@ Route::group(
             'localize','localizationRedirect','localeViewPath']
     ],
     function() {
-        Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
-            Route::post('register', 'AuthController@register');
-            Route::post('logout', 'AuthController@logout');
-            Route::post('refresh', 'AuthController@refresh');
-            Route::post('me', 'AuthController@me');
-        });
+//        Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
+//            Route::post('register', 'AuthController@register');
+//            Route::post('logout', 'AuthController@logout');
+//            Route::post('refresh', 'AuthController@refresh');
+//            Route::post('me', 'AuthController@me');
+//        });
 //        Route::group(['middleware'=>'role:superadministrator'],function() {
         /**__________________________ Roles routes  __________________________**/
         Route::group(['prefix' => 'roles', 'namespace' => 'Admin'], function () {

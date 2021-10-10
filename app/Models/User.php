@@ -2,23 +2,21 @@
 
 namespace App\Models;
 
-use App\Models\Admin\Permission;
 use App\Models\Admin\Role;
 use App\Models\Comment\Comment;
 use App\Models\Doctors\Patient;
 use App\Models\Interaction\Interaction;
-use App\Models\Offer\Offer;
 use App\Models\SocialMedia\SocialMedia;
 use App\Models\Admin\TransModel\UserTranslation;
 use App\Models\Admin\TypeUser;
 use App\Models\Stores_Orders\Stores_Order;
 use App\Scopes\UserScope;
-use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laratrust\Traits\LaratrustUserTrait;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -57,33 +55,35 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-     /**
+
+
+    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
      */
-    public function getJWTIdentifier()
-    {
+    public function getJWTIdentifier() {
         return $this->getKey();
     }
+
     /**
      * Return a key value array, containing any custom claims to be added to the JWT.
      *
      * @return array
      */
-    public function getJWTCustomClaims()
-    {
+    public function getJWTCustomClaims() {
         return [];
     }
-    protected static function booted()
-    {
-        parent::booted();
-        static::addGlobalScope(new UserScope);
-    }
-    public function UserTranslation()
-    {
-        return $this->hasMany(UserTranslation::class);
-    }
+
+//    protected static function booted()
+//    {
+//        parent::booted();
+//        static::addGlobalScope(new UserScope);
+//    }
+//    public function UserTranslation()
+//    {
+//        return $this->hasMany(UserTranslation::class);
+//    }
     public function TypeUser(){
         return $this->belongsToMany(TypeUser::class,
             'user_types',

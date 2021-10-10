@@ -116,5 +116,4 @@ class ProductImageController extends Controller
         ]);
         return $this->returnSuccessMessage('This image selected to cover', '200');
     }
-
 }

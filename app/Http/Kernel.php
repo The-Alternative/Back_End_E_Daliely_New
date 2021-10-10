@@ -53,7 +53,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \App\Http\Middleware\Authenticate::class,
+//        'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
@@ -72,7 +72,7 @@ class Kernel extends HttpKernel
         'permission'              =>\Laratrust\Middleware\LaratrustPermission::class,
         'ability'                 =>\Laratrust\Middleware\LaratrustAbility::class,
         'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
-//        'jwt.auth' => 'Tymon\JWTAuth\Middleware\GetUserFromToken',
-//        'jwt.refresh' => 'Tymon\JWTAuth\Middleware\RefreshToken',
+        'jwt.auth' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
+        'jwt.refresh' => \Tymon\JWTAuth\Http\Middleware\RefreshToken::class,
     ];
 }

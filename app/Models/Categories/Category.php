@@ -20,7 +20,8 @@ class Category extends Model
         'created_at', 'updated_at','section_id','category_id','parent_id','pivot'
     ];
     protected $casts = [
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
+        'image'=>'string'
     ];
     public $timestamps = false;
     public function getIsActiveAttribute($value)

@@ -44,18 +44,8 @@ return [
         'api' => [
             'driver' => 'jwt',
             'provider' => 'users',
-            'hash' => false
+//            'hash' => false
         ],
-//        'users' => [
-//            'driver' => 'jwt',
-//            'provider' => 'users',
-////            'hash' => true
-//        ],
-//        'employees' =>[
-//            'driver' => 'jwt',
-//            'provider' => 'employees',
-////            'hash' => true
-//        ],
     ],
 
     /*
@@ -81,10 +71,10 @@ return [
             'model' => App\Models\User::class,
         ],
 
-         'employees' => [
-             'driver' => 'eloquent',
-             'model' => App\Models\Admin\Employee::class,
-         ],
+//         'employees' => [
+//             'driver' => 'eloquent',
+//             'model' => App\Models\Admin\Employee::class,
+//         ],
     ],
 
     /*
