@@ -434,7 +434,6 @@ class ProductService
         foreach ($filename as $f) {
             $imageUrls[]='images/products/' . $id  . '/' .  $f;
         }
-//        return $imageUrls;
         foreach ($imageUrls as $imageUrl){
             ProductImage::create([
                 'product_id' => $id,
@@ -442,6 +441,10 @@ class ProductService
                 'is_cover' =>0,
             ]);
         }
+        $coverImage=ProductImage::where('product_id',$id)->first();
+        $coverImage->update([
+            'is_cover' =>1,
+        ]);
         return $imageUrls;
     }
     public function filter(Request $request){
@@ -453,22 +456,17 @@ class ProductService
 //            }
         }catch (\Exception $ex) {
             return $this->returnError('400',$ex->getMessage());
-
         }
     }
     public function upload($image,$id,$folder)
     {
-//         $images = $request->images;
         $folder = public_path('images/products' . '/' . $id . '/');
-//        foreach ($images as $image){
         $filename = time() . '.' . $image->getClientOriginalName();
          $imageUrl[]='images/products/' . $id  . '/' .  $filename;
-
         if (!File::exists($folder)) {
             File::makeDirectory($folder, 0775, true, true);
         }
         $image->move($folder,$filename);
         return $filename;
-
     }
 }

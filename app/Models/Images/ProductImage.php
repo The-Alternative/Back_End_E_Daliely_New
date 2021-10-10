@@ -16,7 +16,7 @@ class ProductImage extends Model
     protected $hidden=['product_id','created_at','updated_at'];
     protected $casts = [
         'is_cover' => 'boolean',
-//        'image'=>'string'
+        'image'=>'string'
     ];
 
     public function getIsCoverAttribute($value)
@@ -26,7 +26,7 @@ class ProductImage extends Model
 //
     public function getImageAttribute($image)
     {
-        return  public_path('images/products' . '/' .  $this->product_id . '/' . $image  );
+        return  'images/products' . '/' .  $this->product_id . '/' . $image ;
     }
 
     public function Product()
