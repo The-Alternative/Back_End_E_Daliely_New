@@ -27,7 +27,7 @@ class CustomFieldRequest extends FormRequest
             'is_active'=>'required|in:0,1',
             'custom_field'=>'required|array|min:1',
             'custom_field.*.name'=>'required|min:3|string',
-            'custom_field.*.description'=>'required|min:10|max:255',
+            'custom_field.*.description'=>'required|min:3|max:255',
             'custom_field.*.local'=>'required'
         ];
     }

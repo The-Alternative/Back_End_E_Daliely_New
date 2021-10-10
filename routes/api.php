@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActiveTime\ActiveTimeController;
 use App\Http\Controllers\Appointment\AppointmentController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Clinic\ClinicController;
 use App\Http\Controllers\Comment\CommentController;
 use App\Http\Controllers\DoctorRate\DoctorRateController;
@@ -53,6 +54,7 @@ Route::group(
                 Route::DELETE('/delete/{id}','ProductsController@delete');
                 Route::post('upload-multi/{id}', 'ProductsController@uploadMultiple');
                 Route::get('filter', 'ProductsController@filter');
+                Route::post('upload/{id}', 'ProductsController@upload');
 
             });
         /**__________________________ Payment routes  __________________________**/
@@ -475,8 +477,6 @@ Route::group(
            });
                  Route::get('/interactions/gettrashed',[InteractionController::class,'getTrashed']);
 
-
-
              Route::group(['prefix'=>'upload','namespace'=>'Images'],function ()
              {
                  Route::post('product/{id}', 'ProductImageController@upload');
@@ -489,3 +489,14 @@ Route::group(
                  Route::put('get_is_cover/{pro_id}/{img_id}', 'ProductImageController@get_is_cover');
              });
         });
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::get('/user-profile', [AuthController::class, 'userProfile']);
+});

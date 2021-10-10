@@ -77,4 +77,8 @@ class ProductsController extends Controller
         {
             return $this->ProductService->filter($request );
         }
+        public function upload(Request $request,$id )
+        {
+            return $this->ProductService->upload($request,$id );
+        }
 }

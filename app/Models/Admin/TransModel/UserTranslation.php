@@ -12,8 +12,8 @@ class UserTranslation extends Model
     protected $table='user_translation';
 
 
-    public function User()
-    {
-        return $this->belongsTo(User::class);
-    }
+//    public function User()
+//    {
+//        return $this->belongsTo(User::class);
+//    }
 }

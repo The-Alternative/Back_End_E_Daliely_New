@@ -88,9 +88,9 @@ class BrandsService
             $brand = $this->BrandModel->where('is_active', 0)->get();
 
             if (count($brand) > 0) {
-                return $response = $this->returnData('Brand', $brand, 'done');
+                return $this->returnData('Brand', $brand, 'done');
             } else {
-                return $response = $this->returnSuccessMessage('Brand', 'Brands trashed doesnt exist yet');
+                return $this->returnSuccessMessage('Brand', 'Brands trashed doesnt exist yet');
             }
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());

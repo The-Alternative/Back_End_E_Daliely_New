@@ -33,6 +33,10 @@ class Product extends Model
         'is_active' => 'boolean',
         'is_appear'=>'boolean'
     ];
+//    public function getImagePathAttribute($value)
+//    {
+//        return $value=public_path('images/products/' . $this->image);
+//    }
     //________________ scopes begin _________________//
     /****ــــــ This Local Scopes For Products ــــــ  ***
      * @param $query

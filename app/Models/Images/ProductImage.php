@@ -14,10 +14,19 @@ class ProductImage extends Model
     protected $table ='product_images';
     protected $fillable =['product_id','image','is_cover','is_check'];
     protected $hidden=['product_id','created_at','updated_at'];
+    protected $casts = [
+        'is_cover' => 'boolean',
+//        'image'=>'string'
+    ];
 
-    public function getImagePathAttribute($value)
+    public function getIsCoverAttribute($value)
     {
-        return $value=public_path('images/products' . '/' . $this -> product_id . '/' . $this->image);
+        return $value==1 ? 'cover' : 'Not cover';
+    }
+//
+    public function getImageAttribute($image)
+    {
+        return  public_path('images/products' . '/' .  $this->product_id . '/' . $image  );
     }
 
     public function Product()
