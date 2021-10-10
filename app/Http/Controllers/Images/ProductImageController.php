@@ -75,45 +75,54 @@ class ProductImageController extends Controller
         }
         for ($i = 1; $i <$imagesdb_count; $i++) {
         foreach ($images as $image) {
-//            for ($j = 1; $j <= $images_count; $j++) {
-                        $image->update([
-                            'product_id' => $id,
-                            'image' => $imageUrl[$i],
-                            'is_cover' => 0
-                        ]);
-                }
-//        }
+            $image->update([
+                'product_id' => $id,
+                'image' => $imageUrl[$i],
+                'is_cover' => 0
+            ]);
+        }
     }
         return $imageUrl;
     }
 
     public function delete_image($id){
-        $image=ProductImage::find($id);
-        if (!is_null($image)) {
-            $image_name=$image->image;
-            $old = public_path( $image_name);
-            if (File::exists($old)) {
-                unlink($old);
+        try {
+            $image=ProductImage::find($id);
+            if (!is_null($image)) {
+                $image_name=$image->image;
+                $old = public_path( $image_name);
+                if (File::exists($old)) {
+                    unlink($old);
+                }
+                $delete=$image->destroy($id);
+                return  $this->returnSuccessMessage('image', 'delete success');
+            } else {
+                return $this->returnSuccessMessage('image', 'image doesnt exist yet');
             }
-            $delete=$image->destroy($id);
-            return  $this->returnSuccessMessage('image', 'delete success');
-        } else {
-            return $this->returnSuccessMessage('image', 'image doesnt exist yet');
+        }catch (\Exception $ex){
+            return $this->returnError('400', $ex->getMessage());
         }
-
     }
 
     public function get_is_cover($pro_id,$img_id){
-        $images=ProductImage::where('product_id',$pro_id)->get();
-        foreach($images as $image){
-            $image->update([
-               'is_cover'=>0
+        try{
+             $images=ProductImage::where('product_id',$pro_id)->get();
+            if (count($images) == 0) {
+                return $this->returnSuccessMessage('Images', 'Images doesnt exist yet');
+            }
+            foreach($images as $image){
+                $image->update([
+                    'is_cover'=>0
+                ]);
+            }
+            $cover_image=ProductImage::where('product_id',$pro_id)->find($img_id);
+            $cover_image->update([
+                'is_cover'=>1
             ]);
+            return $this->returnSuccessMessage('This image selected to cover', '200');
+        }catch (\Exception $ex){
+            return $this->returnError('400', $ex->getMessage());
         }
-        $cover_image=ProductImage::where('product_id',$pro_id)->find($img_id);
-        $cover_image->update([
-            'is_cover'=>1
-        ]);
-        return $this->returnSuccessMessage('This image selected to cover', '200');
     }
+
 }
