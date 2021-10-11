@@ -432,8 +432,9 @@ class ProductService
             $file->move($folder,  time() . '.' . $file->getClientOriginalName() );
         }
         foreach ($filename as $f) {
-            $imageUrls[]='images/products/' . $id  . '/' .  $f;
+            $imageUrls[]= $f;
         }
+//        return $imageUrls;
         foreach ($imageUrls as $imageUrl){
             ProductImage::create([
                 'product_id' => $id,

@@ -14,6 +14,16 @@ class Custom_Field extends Model
     protected $table='custom_fields';
     protected $fillable = ['image','is_active'];
 
+    protected $casts = [
+        'is_active' => 'boolean',
+        'image'=>'string'
+    ];
+
+    public function getIsActiveAttribute($value)
+    {
+        return $value==1 ? 'Active' : 'Not Active';
+    }
+
     protected static function booted()
     {
         parent::booted();

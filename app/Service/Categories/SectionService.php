@@ -140,10 +140,12 @@ class SectionService
                 //transformation to collection
                 $allsections = collect($request->section)->all();
                 DB::beginTransaction();
+                $folder = public_path('images/sections' . '/');
+
                 // //create the default language's section
                 $unTransSection_id=$this->SectionModel->insertGetId([
                     'slug' => $request['slug'],
-                    'image' => $request['image'],
+                    'image' => $this->upload( $request['image'],$folder),
                     'is_active' => $request['is_active']
                 ]);
                 //check the category and request
@@ -251,11 +253,11 @@ class SectionService
         }
     }
     /****  Upload Section's Image   ****/
-    public function upload(Request $request)
+    public function upload($image,$folder)
     {
-        $image = $request->file('image');
         $folder = public_path('images/sections' . '/');
         $filename = time() . '.' . $image->getClientOriginalName();
+        $imageUrl[]='images/sections/' .  $filename;
         if (!File::exists($folder)) {
             File::makeDirectory($folder, 0775, true, true);
         }
