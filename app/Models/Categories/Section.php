@@ -24,9 +24,9 @@ class Section extends Model
     {
         return $value==1 ? 'Active' : 'Not Active';
     }
-    public function getImagePathAttribute($value)
+    public function getImageAttribute($image)
     {
-        return $value=public_path('images/sections' . '/' . $this->image);
+        return  'images/sections' . '/' . $image ;
     }
 //________________ scopes begin _________________//
 //    public function scopeAllStores($value)

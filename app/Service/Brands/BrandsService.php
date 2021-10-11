@@ -148,12 +148,14 @@ class BrandsService
             $request->is_active ? $is_active = true : $is_active = false;
             /** transformation to collection */
             $allbrands = collect($request->brand)->all();
+            $folder = public_path('images/brands' . '/');
+
             DB::beginTransaction();
             // //create the default language's brand
             $unTransBrand_id = $this->BrandModel->insertGetId([
                 'slug' => $request['slug'],
                 'is_active' => $request['is_active'],
-                'image' => $request['image'],
+                'image' => $this->upload( $request['image'],$folder),
             ]);
             //check the Brand and request
             if (isset($allbrands) && count($allbrands)) {
@@ -247,11 +249,11 @@ class BrandsService
             return $this->returnError('400', $ex->getMessage());
         }
     }
-    public function upload(Request $request)
+    public function upload($image,$folder)
     {
-        $image = $request->file('image');
         $folder = public_path('images/brands' . '/');
         $filename = time() . '.' . $image->getClientOriginalName();
+        $imageUrl[]='images/brands/' .  $filename;
         if (!File::exists($folder)) {
             File::makeDirectory($folder, 0775, true, true);
         }
