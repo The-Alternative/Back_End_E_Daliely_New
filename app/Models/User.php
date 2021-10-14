@@ -21,7 +21,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JWTSubject
 {
     use LaratrustUserTrait;
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable ;
     /**
      * The attributes that are mass assignable.
      *
@@ -36,6 +36,7 @@ class User extends Authenticatable implements JWTSubject
         'is_active',
         'email',
         'password',
+        'remember_token'
 //        'first_name',
 //        'last_name',
 //        'age',
