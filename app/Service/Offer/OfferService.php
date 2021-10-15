@@ -15,9 +15,10 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\OfferMail;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 //use Notification;
-use App\Service\Mail\MailService;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Notification;
+use App\Service\Mail\MailService;
 
 class OfferService
 {

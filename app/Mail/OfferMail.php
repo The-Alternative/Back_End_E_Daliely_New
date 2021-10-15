@@ -11,15 +11,14 @@ class OfferMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $details;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($details)
+    public function __construct()
     {
-        $this->details=$details;
+        //
     }
 
     /**
@@ -29,6 +28,7 @@ class OfferMail extends Mailable
      */
     public function build()
     {
-        return $this->view('email.sendmail');
+        return $this->subject('Your offer is awaiting approval')
+            ->view('email.sendmail');
     }
 }

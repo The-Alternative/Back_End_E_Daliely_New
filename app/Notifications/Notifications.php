@@ -52,11 +52,11 @@ class Notifications extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notification)
     {
         return [
             'title'=>'New Notification',
-            'message'=>$notifiable
+            'message'=>$notification
         ];
     }
 }

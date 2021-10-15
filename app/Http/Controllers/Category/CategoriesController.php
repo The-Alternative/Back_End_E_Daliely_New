@@ -68,4 +68,9 @@ class CategoriesController extends Controller
     {
         return $this->CategoryService->upload($request);
     }
+    public function update_upload(Request $request,$id)
+    {
+        return $this->CategoryService->update_upload($request,$id);
+
+    }
 }

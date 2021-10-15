@@ -7,13 +7,10 @@ use App\Models\Stores\Store;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
-
 
 class Offer extends Model
 {
-    use HasFactory,Notifiable;
+    use HasFactory;
 
     protected $table='offers';
     protected  $fillable=['id','user_email','image','store_id','store_product_id','price','selling_price','quantity'
@@ -45,6 +42,4 @@ class Offer extends Model
     {
         return $this->hasMany(Comment::class);
     }
-
-
 }

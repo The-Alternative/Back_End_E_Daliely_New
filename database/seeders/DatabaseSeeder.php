@@ -17,8 +17,8 @@ class DatabaseSeeder extends Seeder
     {
 //         \App\Models\User::factory(10)->create();
         $this->call([
-            LaratrustSeeder::class,
-            RolePermissionSeeder::class,
+//            LaratrustSeeder::class,
+//            RolePermissionSeeder::class,
             BrandSeeder::class,
             ProductSectionSeeder::class,
             BrandSectionSeeder::class,
@@ -59,9 +59,14 @@ class DatabaseSeeder extends Seeder
             RestaurantSeeder::class,
             RestaurantTypeSeeder::class,
             RestaurantTypeRestaurantSeeder::class,
+            RestaurantCategorySeeder::class,
+            RestaurantProductSeeder::class,
             ItemSeeder::class,
+            RestauranCategoryItemSeeder::class,
+            RestauranCategoryProductSeeder::class,
             RestaurantItemSeeder::class,
-            MenuSeeder::class,
+            RestaurantRestauranCategorySeeder::class,
+            RestaurantRestauranProductSeeder::class,
             RestaurantManagerSeeder::class,
 
             OfferSeeder::class,

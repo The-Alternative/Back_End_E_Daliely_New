@@ -3,7 +3,8 @@
 namespace App\Models\Restaurant;
 
 use App\Models\Item\Item;
-use App\Models\Menu\Menu;
+use App\Models\RestaurantCategory\RestaurantCategory;
+use App\Models\RestaurantProduct\RestaurantProduct;
 use App\Models\RestaurantType\RestaurantType;
 use App\Scopes\RestaurantScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -41,11 +42,14 @@ class Restaurant extends Model
         return $this->belongsToMany(RestaurantType::class,'restaurant_restaurant_type','restaurant_id','restaurant_type_id','id','id');
     }
 
-    public function Menu()
+    public function RestaurantCategory()
     {
-        return $this->belongsToMany(Menu::class,'restaurant_menu','restaurant_id','menu_id','id','id');
+        return $this->belongsToMany(RestaurantCategory::class,'restaurant_restaurant_category','restaurant_id','restaurant_category_id','id','id');
     }
-
+    public function RestaurantProduct()
+    {
+        return $this->belongsToMany(RestaurantProduct::class,'restaurant_restaurant_product','restaurant_id','restaurant_product_id','id','id');
+    }
     public function Item()
     {
         return $this->belongsToMany(Item::class,'restaurant_item','restaurant_id','item_id','id','id');

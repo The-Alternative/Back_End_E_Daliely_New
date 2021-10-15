@@ -63,5 +63,9 @@ class SectionsController extends Controller
     {
         return $this->sectionService->upload($request);
     }
+    public function update_upload(Request $request,$id)
+    {
+        return $this->sectionService->update_upload($request,$id);
+    }
 }
 

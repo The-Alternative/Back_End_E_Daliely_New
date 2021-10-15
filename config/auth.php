@@ -46,14 +46,6 @@ return [
             'provider' => 'users',
 //            'hash' => false
         ],
-//        'users' => [
-//            'driver' => 'jwt',
-//            'provider' => 'users',
-//        ],
-        'employees' =>[
-            'driver' => 'jwt',
-            'provider' => 'employees',
-        ],
     ],
 
     /*
@@ -79,10 +71,10 @@ return [
             'model' => App\Models\User::class,
         ],
 
-         'employees' => [
-             'driver' => 'eloquent',
-             'model' => App\Models\Admin\Employee::class,
-         ],
+//         'employees' => [
+//             'driver' => 'eloquent',
+//             'model' => App\Models\Admin\Employee::class,
+//         ],
     ],
 
     /*

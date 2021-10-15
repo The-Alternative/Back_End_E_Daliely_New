@@ -20,6 +20,7 @@ class  StoreService
     {
         $this->storeModel=$store;
         $this->storeTranslation=$storeTranslation;
+        $this->PAGINATION_COUNT=25;
     }
     /****________________   admins dashboard ________________****/
     /****________________   Store's approved ________________****/
@@ -87,7 +88,7 @@ class  StoreService
                                 ])->get();
                         }])->get();},
                 'StoreImage'=>function($q){
-                return $q->where('is_cover',1)->get();}])->get();
+                return $q->where('is_cover',1)->get();}])->paginate($this->PAGINATION_COUNT);
             if (count($store) > 0){
                 return $this->returnData('Stores',$store,'done');
             }else{

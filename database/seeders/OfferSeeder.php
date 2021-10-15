@@ -20,7 +20,6 @@ class OfferSeeder extends Seeder
             $s = DB::table('offers')->insertGetId([
                 'is_offer' => $faker->boolean,
                 'is_active' => $faker->boolean,
-                'is_approved' =>0,
                 'store_id' => $faker->numberBetween(1, 10),
                 'user_email' => $faker->email,
                 'store_product_id' => $faker->numberBetween(1, 1000),

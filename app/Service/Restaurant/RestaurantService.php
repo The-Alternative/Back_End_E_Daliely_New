@@ -3,6 +3,7 @@
 
 namespace App\Service\Restaurant;
 
+
 use App\Http\Requests\Restaurant\RestaurantRequest;
 use App\Models\Restaurant\Restaurant;
 use App\Models\Restaurant\RestaurantItem;
@@ -10,6 +11,7 @@ use App\Models\Restaurant\RestaurantTranslation;
 use App\Traits\GeneralTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+
 
 class RestaurantService
 {
@@ -71,7 +73,7 @@ class RestaurantService
                 'is_approved' => $request['is_approved'],
                 'is_active' => $request['is_active'],
             ]);
-
+        
             if (isset($allrestaurant)) {
                 foreach ($allrestaurant as $allrestaurants) {
                     $transrestaurant[] = [
@@ -84,9 +86,9 @@ class RestaurantService
                 }
                 RestaurantTranslation::insert( $transrestaurant);
             }
-                if($request->has('Menu')){
+                if($request->has('RestaurantCategory')){
                     $restaurant=$this->RestaurantModel::find($unTransrestaurant_id);
-                    $restaurant->Menu()->syncWithoutDetaching($request->get('Menu'));
+                    $restaurant->RestaurantCategory()->syncWithoutDetaching($request->get('RestaurantCategory'));
                 }
 
                 if($request->has('RestaurantType')){
@@ -110,7 +112,7 @@ class RestaurantService
             DB::commit();
             return $this->returnData('restaurant', [$unTransrestaurant_id,  $transrestaurant], 'done');
             }
-
+        
         catch(\Exception $ex)
         {
             DB::rollback();
@@ -164,9 +166,9 @@ class RestaurantService
                         ]);
                 }
             }
-            if ($request->has('Menu')){
+            if ($request->has('RestaurantCategory')){
                 $restaurant=$this->RestaurantModel::find($id);
-                $restaurant->Menu()->syncWithoutDetaching($request->get('Menu'));
+                $restaurant->RestaurantCategory()->syncWithoutDetaching($request->get('RestaurantCategory'));
             }
 
             if($request->has('RestaurantType')){
@@ -278,7 +280,7 @@ class RestaurantService
               return $this->returnError('400', $ex->getMessage());
           }
      }
-     public function getMenu($id)
+     public function getCategory($id)
      {
           try{
               $restaurant= Restaurant::with('RestaurantCategory')->find($id);
@@ -287,7 +289,7 @@ class RestaurantService
               return $this->returnError('400', $ex->getMessage());
           }
      }
-     public function getItem($id)
+     public function getProduct($id)
      {
           try{
               $restaurant= Restaurant::with('RestaurantProduct')->find($id);
@@ -299,14 +301,26 @@ class RestaurantService
           }
      }
 //_____________________________________insert_______________________________//
-
-public function insertRestaurantItem(Request $request)
+public function insertToRestaurantRestaurantproduct(Request $request)
+{
+    try{
+    $restaurant=Restaurant::find($request->restaurant_id);
+    if(!$restaurant)
+    return $this->returnError('400','not found this restaurant');
+    $restaurant->RestaurantProduct()->syncwithoutdetaching($request->restaurant_product_id);
+    return $this->returnData('restaurant',$restaurant,'create done');
+}
+catch(\Exception $ex){
+    return $this->returnError($ex->getcode(),$ex->getMessage());
+}
+}
+public function insertRestaurantitem(Request $request)
 {
     try{
 
      $restaurant=collect($request->restaurant)->all();
      $item = $this->RestaurantModel->find($request->restaurant_id);
-
+          
      $restaurantitem=new RestaurantItem();
 
      $restaurantitem->item_id   =$request->item_id;
@@ -318,7 +332,7 @@ public function insertRestaurantItem(Request $request)
 
     $result= $restaurantitem->save();
     if(!$result) {
-        return $this->returnError('400','save field');
+        return $this0>returnError('400','faield save');
     }else{
     return $this->returnData('restaurantItem',$result,'create done');
     }

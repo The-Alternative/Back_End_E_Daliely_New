@@ -64,12 +64,5 @@ class OfferController extends Controller
     {
         return $this->OfferService->getTrashed();
     }
-
-    public function OfferApproved($offer_id)
-    {
-        return $this->OfferService->OfferApproved($offer_id);
-
-    }
-
 }
 

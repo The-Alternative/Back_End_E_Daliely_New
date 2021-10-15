@@ -18,6 +18,8 @@ class CategoryService
     use GeneralTrait;
     private $categoryModel;
     private $categoryTranslation;
+    private $PAGINATION_COUNT;
+
     /**
      * Category Service constructor.
      * @param Category $category
@@ -26,6 +28,7 @@ class CategoryService
     public function __construct(Category $category , CategoryTranslation $categoryTranslation)
     {
         $this->categoryModel=$category;
+        $this->PAGINATION_COUNT=25;
         $this->categoryTranslation=$categoryTranslation;
     }
     /*___________________________________________________________________________*/
@@ -52,13 +55,12 @@ class CategoryService
          return $this->returnError('400', $ex->getMessage());
      }
     }
-
     /*___________________________________________________________________________*/
     /****Get All Active category Or By ID  ****/
     public function getAll()
     {
         try{
-        $category = $this->categoryModel->with(['Section','Parent'])->paginate(10);
+        $category = $this->categoryModel->with(['Section','Parent'])->paginate($this->PAGINATION_COUNT);
             if (count($category) > 0){
                 return $this->returnData('Category',$category,'done');
             }else{
@@ -157,12 +159,14 @@ class CategoryService
             $allcategories = collect($request->category)->all();
             DB::beginTransaction();
             // //create the default language's product
+            $folder = public_path('images/categories' . '/');
+
             $unTransCategory_id = $this->categoryModel->insertGetId([
                 'slug' => $request['slug'],
                 'is_active' => $request['is_active'],
                 'section_id' => $request['section_id'],
                 'parent_id' => $request['parent_id'],
-                'image' =>$request['image']
+                'image' =>$this->upload( $request['image'],$folder)
 
             ]);
             //check the category and request
@@ -196,7 +200,8 @@ class CategoryService
     {
         try{
             $request->validated();
-            $category= $this->categoryModel->find($id);
+             $category= $this->categoryModel->find($id);
+//            $old_image=$category->image;
             if(!$category)
                 return $this->returnError('400', 'not found this Category');
             if (!($request->has('category.is_active')))
@@ -209,7 +214,7 @@ class CategoryService
                    'is_active' =>$request['is_active'],
                    'section_id' =>$request['section_id'],
                    'parent_id' =>$request['parent_id'],
-                   'image' =>$request['image']
+//                   'image' =>$request['image']
             ]);
               $request_category = array_values($request->category);
                     foreach($request_category as $request_categor){
@@ -270,16 +275,44 @@ class CategoryService
             return $this->returnError('400', $ex->getMessage());
         }
     }
-    public function upload(Request $request)
+
+    public function upload($image,$folder)
     {
-        $image = $request->file('image');
+//        $image = $request->file('image');
+//        $folder = public_path('images/categories' . '/');
+//        $filename = time() . '.' . $image->getClientOriginalName();
+//        if (!File::exists($folder)) {
+//            File::makeDirectory($folder, 0775, true, true);
+//        }
+//        $image->move($folder,$filename);
+//        return $filename;
         $folder = public_path('images/categories' . '/');
         $filename = time() . '.' . $image->getClientOriginalName();
-        $imageUrl='images/categories' . '/' . $filename;
+        $imageUrl[]='images/categories/' .  $filename;
         if (!File::exists($folder)) {
             File::makeDirectory($folder, 0775, true, true);
         }
         $image->move($folder,$filename);
-        return $imageUrl;
+        return $filename;
+    }
+
+
+    public function update_upload(Request $request,$id)
+    {
+        $category= $this->categoryModel->find($id);
+        if (is_null($category) ){
+            return $this->returnSuccessMessage('This Category not found','done');
+        }
+        $old_image=$category->image;
+        $image = $request->file('image');
+        $old_images=public_path('images/categories' . '/' .$old_image);
+        if(File::exists($old_images)){
+            unlink($old_images);
+        }
+        $folder = public_path('images/categories' . '/');
+        $filename = time() . '.' . $image->getClientOriginalName();
+        $category->update(['image' => $filename]);/**update in database**/
+        $image->move($folder,$filename);
+        return $filename;
     }
 }

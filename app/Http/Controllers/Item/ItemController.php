@@ -54,5 +54,13 @@ class ItemController extends Controller
     {
         return $this->ItemService->getRestaurant($id);
     }
+    public function getCategory($id)
+    {
+        return $this->ItemService->getCategory($id);
+    }
+    public function getProduct($id)
+    {
+        return $this->ItemService->getProduct($id);
+    }
 
 }

@@ -17,17 +17,20 @@ class BrandsService
 {
     private $BrandModel;
     private $brandTranslation;
+    private $PAGINATION_COUNT;
+
     use GeneralTrait;
 
     public function __construct(Brand $brand, BrandTranslation $brandTranslation)
     {
         $this->brandTranslation = $brandTranslation;
         $this->BrandModel = $brand;
+        $this->PAGINATION_COUNT = 25;
     }
     public function list()
     {
         try{
-            $list =$this->BrandModel->paginate(5);
+            $list =$this->BrandModel->paginate($this->PAGINATION_COUNT);
 //            $list = $this->BrandModel->withoutGlobalScope(BrandScope::class)
 //                ->select(['brands.id','brands.is_active'])
 //                ->with(['BrandTranslation'=>function($q){
@@ -49,7 +52,7 @@ class BrandsService
     public function getAll()
     {
         try {
-            $brands = $this->BrandModel->with(['Product'])->paginate(10);
+            $brands = $this->BrandModel->with(['Product'])->paginate($this->PAGINATION_COUNT);
             if (count($brands) > 0) {
                 return $response = $this->returnData('Brand', $brands, 'done');
             } else {
@@ -85,9 +88,9 @@ class BrandsService
             $brand = $this->BrandModel->where('is_active', 0)->get();
 
             if (count($brand) > 0) {
-                return $response = $this->returnData('Brand', $brand, 'done');
+                return $this->returnData('Brand', $brand, 'done');
             } else {
-                return $response = $this->returnSuccessMessage('Brand', 'Brands trashed doesnt exist yet');
+                return $this->returnSuccessMessage('Brand', 'Brands trashed doesnt exist yet');
             }
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
@@ -145,12 +148,14 @@ class BrandsService
             $request->is_active ? $is_active = true : $is_active = false;
             /** transformation to collection */
             $allbrands = collect($request->brand)->all();
+            $folder = public_path('images/brands' . '/');
+
             DB::beginTransaction();
             // //create the default language's brand
             $unTransBrand_id = $this->BrandModel->insertGetId([
                 'slug' => $request['slug'],
                 'is_active' => $request['is_active'],
-                'image' => $request['image'],
+                'image' => $this->upload( $request['image'],$folder),
             ]);
             //check the Brand and request
             if (isset($allbrands) && count($allbrands)) {
@@ -192,7 +197,7 @@ class BrandsService
                 ->update([
                     'slug' => $request['slug'],
                     'is_active' => $request['is_active'],
-                    'image' => $request['image'],
+//                    'image' => $request['image'],
                 ]);
             $request_brands = array_values($request->brand);
                 foreach ($request_brands as $request_brand) {
@@ -244,16 +249,33 @@ class BrandsService
             return $this->returnError('400', $ex->getMessage());
         }
     }
-    public function upload(Request $request)
+    public function upload($image,$folder)
     {
-        $image = $request->file('image');
         $folder = public_path('images/brands' . '/');
         $filename = time() . '.' . $image->getClientOriginalName();
-        $imageUrl='images/brands' . '/' . $filename;
+        $imageUrl[]='images/brands/' .  $filename;
         if (!File::exists($folder)) {
             File::makeDirectory($folder, 0775, true, true);
         }
         $image->move($folder,$filename);
-        return $imageUrl;
+        return $filename;
+    }
+    public function update_upload(Request $request, $id)
+    {
+        $brand= $this->BrandModel->find($id);
+        if (!isset($brand)) {
+            return $this->returnSuccessMessage('This Brand not found', 'done');
+        }
+        $old_image=$brand->image;
+        $image = $request->file('image');
+        $old_images=public_path('images/brands' . '/' .$old_image);
+        if(File::exists($old_images)){
+            unlink($old_images);
+        }
+        $folder = public_path('images/brands' . '/');
+        $filename = time() . '.' . $image->getClientOriginalName();
+        $brand->update(['image' => $filename]);/**update in database**/
+        $image->move($folder,$filename);
+        return $filename;
     }
 }

@@ -31,12 +31,13 @@ class UserService
     public function getAll()
     {
         try{
-            $user = $this->userModel->get();
-            if (count($user) > 0){
+            return $token = JWTAuth::getToken();
+            $user = JWTAuth::toUser($token)->get();
+//            if (count($user) > 0){
                 return $response= $this->returnData('User',$user,'done');
-            }else{
-                return $response= $this->returnSuccessMessage('User','User doesnt exist yet');
-            }
+//            }else{
+//                return $response= $this->returnSuccessMessage('User','User doesnt exist yet');
+//            }
         }catch(\Exception $ex){
             return $this->returnError('400', $ex->getMessage());
         }
@@ -118,6 +119,7 @@ class UserService
             DB::beginTransaction();
 
             $user=$this->userModel->create([
+                'name' => $request->name,
                 'age' => $request->age,
                 'location_id' => $request->location_id,
                 'social_media_id' => $request->social_media_id,
@@ -126,19 +128,19 @@ class UserService
                 'email' => $request->email,
                 'password' =>bcrypt($request->password)
             ]);
-            $userid=$user->id;
-            if (isset($allusers) && count($allusers)) {
-                //insert other traslations for users
-                foreach ($allusers as $alluser) {
-                    $transUser_arr[] = [
-                        'first_name' => $alluser ['first_name'],
-                        'last_name' => $alluser ['last_name'],
-                        'local' => $alluser['local'],
-                        'user_id' => $userid
-                    ];
-                }
-                $this->userTranslation->insert($transUser_arr);
-            }
+//            $userid=$user->id;
+//            if (isset($allusers) && count($allusers)) {
+//                //insert other traslations for users
+//                foreach ($allusers as $alluser) {
+//                    $transUser_arr[] = [
+//                        'first_name' => $alluser ['first_name'],
+//                        'last_name' => $alluser ['last_name'],
+//                        'local' => $alluser['local'],
+//                        'user_id' => $userid
+//                    ];
+//                }
+//                $this->userTranslation->insert($transUser_arr);
+//            }
             $token = JWTAuth::fromUser($user);
             if ($request->has('roles')) {
                 $role = $this->userModel->find($user->id);
