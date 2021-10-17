@@ -1051,6 +1051,7 @@
         },
         {
             "name": "laravel/framework",
+<<<<<<< HEAD
             "version": "v8.64.0",
             "source": {
                 "type": "git",
@@ -1061,6 +1062,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/framework/zipball/3337c029e1bb31d9712d27437cc27010ba302c9e",
                 "reference": "3337c029e1bb31d9712d27437cc27010ba302c9e",
+=======
+            "version": "v8.63.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/framework.git",
+                "reference": "8f3d280f36a427730c8c8fa34316c79eed38781e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/8f3d280f36a427730c8c8fa34316c79eed38781e",
+                "reference": "8f3d280f36a427730c8c8fa34316c79eed38781e",
+>>>>>>> 2f05e6735cb57b1848dba63c0006986c9c125fe3
                 "shasum": ""
             },
             "require": {
@@ -1218,7 +1231,11 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
+<<<<<<< HEAD
             "time": "2021-10-12T13:43:13+00:00"
+=======
+            "time": "2021-10-05T14:04:25+00:00"
+>>>>>>> 2f05e6735cb57b1848dba63c0006986c9c125fe3
         },
         {
             "name": "laravel/serializable-closure",
@@ -6098,6 +6115,7 @@
         },
         {
             "name": "facade/ignition",
+<<<<<<< HEAD
             "version": "2.15.0",
             "source": {
                 "type": "git",
@@ -6108,6 +6126,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/facade/ignition/zipball/3ee6e94815462bcf09bca0efc1c9069685df8da3",
                 "reference": "3ee6e94815462bcf09bca0efc1c9069685df8da3",
+=======
+            "version": "2.14.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/facade/ignition.git",
+                "reference": "6d89c4c99537f487ad29f646d57ebf107ef714ed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/facade/ignition/zipball/6d89c4c99537f487ad29f646d57ebf107ef714ed",
+                "reference": "6d89c4c99537f487ad29f646d57ebf107ef714ed",
+>>>>>>> 2f05e6735cb57b1848dba63c0006986c9c125fe3
                 "shasum": ""
             },
             "require": {
@@ -6171,7 +6201,11 @@
                 "issues": "https://github.com/facade/ignition/issues",
                 "source": "https://github.com/facade/ignition"
             },
+<<<<<<< HEAD
             "time": "2021-10-11T15:24:06+00:00"
+=======
+            "time": "2021-10-08T12:34:52+00:00"
+>>>>>>> 2f05e6735cb57b1848dba63c0006986c9c125fe3
         },
         {
             "name": "facade/ignition-contracts",
@@ -6415,6 +6449,7 @@
         },
         {
             "name": "laravel/sail",
+<<<<<<< HEAD
             "version": "v1.12.0",
             "source": {
                 "type": "git",
@@ -6425,6 +6460,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/sail/zipball/80f6cd93844e87ebc2e7310f9a9b9917473f5eb0",
                 "reference": "80f6cd93844e87ebc2e7310f9a9b9917473f5eb0",
+=======
+            "version": "v1.11.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/sail.git",
+                "reference": "5c91d33949e43500dc1d49abc5d7c2ffb6c96f44"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/5c91d33949e43500dc1d49abc5d7c2ffb6c96f44",
+                "reference": "5c91d33949e43500dc1d49abc5d7c2ffb6c96f44",
+>>>>>>> 2f05e6735cb57b1848dba63c0006986c9c125fe3
                 "shasum": ""
             },
             "require": {
@@ -6471,7 +6518,11 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
+<<<<<<< HEAD
             "time": "2021-10-12T15:38:11+00:00"
+=======
+            "time": "2021-10-01T13:32:17+00:00"
+>>>>>>> 2f05e6735cb57b1848dba63c0006986c9c125fe3
         },
         {
             "name": "mockery/mockery",

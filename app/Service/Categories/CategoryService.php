@@ -159,14 +159,22 @@ class CategoryService
             $allcategories = collect($request->category)->all();
             DB::beginTransaction();
             // //create the default language's product
+<<<<<<< HEAD
             $folder = public_path('images/categories' . '/');
+=======
+//            $folder = public_path('images/categories' . '/');
+>>>>>>> 2f05e6735cb57b1848dba63c0006986c9c125fe3
 
             $unTransCategory_id = $this->categoryModel->insertGetId([
                 'slug' => $request['slug'],
                 'is_active' => $request['is_active'],
                 'section_id' => $request['section_id'],
                 'parent_id' => $request['parent_id'],
+<<<<<<< HEAD
                 'image' =>$this->upload( $request['image'],$folder)
+=======
+                'image' => $request['image']
+>>>>>>> 2f05e6735cb57b1848dba63c0006986c9c125fe3
 
             ]);
             //check the category and request
@@ -276,7 +284,11 @@ class CategoryService
         }
     }
 
+<<<<<<< HEAD
     public function upload($image,$folder)
+=======
+    public function upload(Request $request)
+>>>>>>> 2f05e6735cb57b1848dba63c0006986c9c125fe3
     {
 //        $image = $request->file('image');
 //        $folder = public_path('images/categories' . '/');
@@ -288,12 +300,26 @@ class CategoryService
 //        return $filename;
         $folder = public_path('images/categories' . '/');
         $filename = time() . '.' . $image->getClientOriginalName();
+<<<<<<< HEAD
         $imageUrl[]='images/categories/' .  $filename;
+=======
+>>>>>>> 2f05e6735cb57b1848dba63c0006986c9c125fe3
         if (!File::exists($folder)) {
             File::makeDirectory($folder, 0775, true, true);
         }
         $image->move($folder,$filename);
         return $filename;
+<<<<<<< HEAD
+=======
+//        $folder = public_path('images/categories' . '/');
+//        $filename = time() . '.' . $image->getClientOriginalName();
+//        $imageUrl[]='images/categories/' .  $filename;
+//        if (!File::exists($folder)) {
+//            File::makeDirectory($folder, 0775, true, true);
+//        }
+//        $image->move($folder,$filename);
+//        return $filename;
+>>>>>>> 2f05e6735cb57b1848dba63c0006986c9c125fe3
     }
 
 

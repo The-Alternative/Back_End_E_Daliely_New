@@ -148,7 +148,11 @@ class BrandsService
             $request->is_active ? $is_active = true : $is_active = false;
             /** transformation to collection */
             $allbrands = collect($request->brand)->all();
+<<<<<<< HEAD
             $folder = public_path('images/brands' . '/');
+=======
+//            $folder = public_path('images/brands' . '/');
+>>>>>>> 2f05e6735cb57b1848dba63c0006986c9c125fe3
 
             DB::beginTransaction();
             // //create the default language's brand
@@ -253,12 +257,26 @@ class BrandsService
     {
         $folder = public_path('images/brands' . '/');
         $filename = time() . '.' . $image->getClientOriginalName();
+<<<<<<< HEAD
         $imageUrl[]='images/brands/' .  $filename;
+=======
+>>>>>>> 2f05e6735cb57b1848dba63c0006986c9c125fe3
         if (!File::exists($folder)) {
             File::makeDirectory($folder, 0775, true, true);
         }
         $image->move($folder,$filename);
         return $filename;
+<<<<<<< HEAD
+=======
+//        $folder = public_path('images/brands' . '/');
+//        $filename = time() . '.' . $image->getClientOriginalName();
+//        $imageUrl[]='images/brands/' .  $filename;
+//        if (!File::exists($folder)) {
+//            File::makeDirectory($folder, 0775, true, true);
+//        }
+//        $image->move($folder,$filename);
+//        return $filename;
+>>>>>>> 2f05e6735cb57b1848dba63c0006986c9c125fe3
     }
     public function update_upload(Request $request, $id)
     {
