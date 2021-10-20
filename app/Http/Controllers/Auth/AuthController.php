@@ -10,10 +10,7 @@ use App\Traits\GeneralTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-<<<<<<< HEAD
-=======
 use Tymon\JWTAuth\Facades\JWTAuth;
->>>>>>> 2f05e6735cb57b1848dba63c0006986c9c125fe3
 
 class AuthController extends Controller
 {
@@ -34,11 +31,7 @@ class AuthController extends Controller
         $this->userModel=$userModel;
         $this->roleModel=$roleModel;
         $this->userTranslation=$userTranslation;
-<<<<<<< HEAD
-        $this->middleware('auth:api', ['except' => ['login']]);
-=======
         $this->middleware('auth:api', ['except' => ['login','register']]);
->>>>>>> 2f05e6735cb57b1848dba63c0006986c9c125fe3
     }
     /**
      * Get a JWT via given credentials.
@@ -48,20 +41,11 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         try{
-<<<<<<< HEAD
-//            return $user=$this->userModel->where('users.id',1)->get();
-             $credentials = $request->only('email', 'password');
-            $token = auth()->attempt(['email'=>'superadminstrator@app.com','password'=>bcrypt('password')]);
-//            if (! $token ) {
-//                return response()->json(['error' => 'Unauthorized'], 401);
-//            }
-=======
              $credentials = $request->only('email', 'password');
             $token = auth()->attempt($credentials);
             if (! $token ) {
                 return response()->json(['error' => 'Unauthorized'], 401);
             }
->>>>>>> 2f05e6735cb57b1848dba63c0006986c9c125fe3
             return $this->respondWithToken($token);
         }catch(\Exception $ex){
             return $this->returnError('400',$ex->getMessage());
@@ -137,12 +121,8 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-<<<<<<< HEAD
-            'expires_in' => auth()->factory()->getTTL() * 60
-=======
             'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => auth()->user()
->>>>>>> 2f05e6735cb57b1848dba63c0006986c9c125fe3
         ]);
     }
 }

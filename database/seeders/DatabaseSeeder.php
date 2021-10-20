@@ -17,8 +17,8 @@ class DatabaseSeeder extends Seeder
     {
 //         \App\Models\User::factory(10)->create();
         $this->call([
-//            LaratrustSeeder::class,
-//            RolePermissionSeeder::class,
+            LaratrustSeeder::class,
+            RolePermissionSeeder::class,
             BrandSeeder::class,
             ProductSectionSeeder::class,
             BrandSectionSeeder::class,
