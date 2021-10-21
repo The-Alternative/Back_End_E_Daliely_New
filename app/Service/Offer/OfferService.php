@@ -7,9 +7,17 @@ use App\Models\Offer\Offer;
 use App\Models\Offer\OfferTranslation;
 use App\Models\Stores\Store;
 use App\Models\User;
+use App\Notifications\Notifications;
 use App\Traits\GeneralTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OfferMail;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+//use Notification;
+use App\Service\Mail\MailService;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Notification;
 
 class OfferService
 {
@@ -17,11 +25,14 @@ class OfferService
     use GeneralTrait;
     protected $OfferModel;
     protected $StoreModel;
+    protected $MailService;
 
-    public function __construct(Offer $offer,Store $store)
+    public function __construct(Offer $offer,Store $store,MailService $MailService)
     {
         $this->OfferModel=$offer;
         $this->StoreModel=$store;
+        $this->MailService=$MailService;
+
     }
 
     //get all offer
@@ -75,7 +86,9 @@ class OfferService
                 'started_at'      =>$request->started_at,
                 'ended_at'        =>$request->ended_at,
                 'is_active'       =>$request->is_active,
-                'is_offer'        =>$request->is_offer
+                'is_offer'        =>$request->is_offer,
+                'is_approved'        =>$request->is_approved
+
             ]);
              if(isset($offer)) {
                  foreach ($offer as $offers) {
@@ -91,12 +104,17 @@ class OfferService
              }
               DB::commit();
 
-              return $this->returnData('offer', [$untransId,$transOffer], 'done');
-
+               //Send Mail
+               $this->MailService->SendMail($untransId,Offer::class, $request->user_email);
+               
+               //Send Notification
+               $notification=Offer::find($untransId);
+               Notification::send($notification,new Notifications($notification));
+               
+               return $this->returnData('offer', [$untransId,$transOffer], 'Mail Send Successfully');
+               
               
-              Mail::To($untransId->user_email)->send(new OfferMail($untransId->user_email));
-
-              return $this->returnData('email',$eamil,'An email has been sent to you');
+            
             
         }
 
@@ -131,7 +149,9 @@ class OfferService
               'started_at'      =>$request->started_at,
               'ended_at'        =>$request->ended_at,
               'is_active'       =>$request->is_active,
-              'is_offer'        =>$request->is_offer
+              'is_offer'        =>$request->is_offer,
+              'is_approved'        =>$request->is_approved
+
           ]);
           $db_offer=array_values(OfferTranslation::where('offer_translations.offer_id',$id)
               ->get()->all());
@@ -288,4 +308,23 @@ class OfferService
             return $this->returnError($ex->getCode(),$ex->getMessage());
         }
     }
+        public function OfferApproved($offer_id)
+        {
+           
+            try{
+                $offer=$this->OfferModel::find($offer_id);
+                if(!$offer)
+                return $this->returnError('400','not found this offer');
+                else {
+                    $offer->is_approved=1;
+                    $offer->save();
+                return $this->returnData('offer',$offer,'offer is approved');
+                }
+            }
+            catch(\Exception $ex)
+            {
+                return $this->returnError($ex->getcode(),$ex->getmessage());
+            }
+        }
+       
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\ActiveTime\ActiveTimeController;
 use App\Http\Controllers\Appointment\AppointmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Clinic\ClinicController;
+use App\Http\Controllers\Notification\NotificationController;
 use App\Http\Controllers\Comment\CommentController;
 use App\Http\Controllers\DoctorRate\DoctorRateController;
 use App\Http\Controllers\Doctors\DoctorController;
@@ -445,9 +446,12 @@ Route::group(
                Route::delete('/offer/{id}', 'OfferController@delete');
                Route::get('/offer/get-store/{Offer_id}','OfferController@getStoreByOfferId');
                Route::get('/offer/get-offer/{store_id}','OfferController@getOfferByStoreId');
+               Route::put('/offer/approved/{offer_id}','OfferController@OfferApproved');
+
            });
                 Route::get('offers/gettrashed',[OfferController::class,'getTrashed']);
                 Route::get('offer/get-advertisement',[OfferController::class,'get_advertisement']);
+
              //////////////// Comment  Route ////////////////////////////
 
            Route::group(['namespace'=>'Comment'],function ()
@@ -476,6 +480,8 @@ Route::group(
                 Route::delete('/interaction/{id}', 'InteractionController@delete');
            });
                  Route::get('/interactions/gettrashed',[InteractionController::class,'getTrashed']);
+                 //Notification Route
+                 Route::get('/notification',[NotificationController::class,'get']);
 
              Route::group(['prefix'=>'upload','namespace'=>'Images'],function ()
              {
@@ -488,6 +494,7 @@ Route::group(
                  Route::delete('delete/{id}', 'ProductImageController@delete_image');
                  Route::put('get_is_cover/{pro_id}/{img_id}', 'ProductImageController@get_is_cover');
              });
+
         });
 Route::group([
     'middleware' => 'api',
