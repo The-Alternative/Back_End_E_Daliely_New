@@ -21,10 +21,18 @@ class OfferScope implements Scope
       $builder->join('offer_translations','offers.id','=','offer_translations.offer_id')
               ->where('offer_translations.locale','=',config::get('app.locale'))
 
-              ->select(['offers.id','offers.is_active','offers.is_approved','offers.image',
+              ->select(['offers.id','offers.is_active','offers.is_approved','offers.is_offer','offers.image',
                         'offers.price','offers.selling_price','offers.started_at','offers.ended_at',
                         'offer_translations.name','offer_translations.short_description',
                         'offer_translations.long_description','offer_translations.locale']);
+                        
 
     }
-}
+    // public function Active($valueActive){
+    //   $valueActive=('offers.is_active');
+    //   return $valueActive ==1 ?'Active' :'Not Active';
+
+    //   $valueApproved=('offers.is_approved');
+    //     return $valueApproved ==1 ?'Approved' :'Not Approved';
+    // }
+  }

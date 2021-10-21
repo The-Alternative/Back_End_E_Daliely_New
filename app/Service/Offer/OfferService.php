@@ -39,7 +39,7 @@ class OfferService
     public function get()
     {
         try{
-            $offer=$this->OfferModel::IsActiveValue()->paginate(5);
+            $offer=$this->OfferModel::paginate(5);
             return $this->returnData('Offer',$offer,'Done');
         }
         catch (\Exception $ex)
@@ -308,4 +308,23 @@ class OfferService
             return $this->returnError($ex->getCode(),$ex->getMessage());
         }
     }
+        public function OfferApproved($offer_id)
+        {
+           
+            try{
+                $offer=$this->OfferModel::find($offer_id);
+                if(!$offer)
+                return $this->returnError('400','not found this offer');
+                else {
+                    $offer->is_approved=1;
+                    $offer->save();
+                return $this->returnData('offer',$offer,'offer is approved');
+                }
+            }
+            catch(\Exception $ex)
+            {
+                return $this->returnError($ex->getcode(),$ex->getmessage());
+            }
+        }
+       
 }

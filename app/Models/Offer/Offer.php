@@ -21,6 +21,12 @@ class Offer extends Model
 
     protected $hidden=['position','store_id','store_product_id','created_at','updated_at'];
 
+    protected  $cast=[
+        'is_active'=>'boolean',
+        'is_approved'=>'boolean',
+        'is_offer'=>'boolean'
+
+    ];
 
     protected static function booted()
     {
@@ -36,18 +42,20 @@ class Offer extends Model
     {
         return $query->select('id','image')->where('is_active',1)->get();
     }
-    public function scopeIsActiveValue($Val)
+    /////////////////////////////
+    public function getIsActiveAttribute($val)
     {
-        $val->where('is_active');
-        if($val ==1 )
-        {
-         return 'Active';
-        } 
-        else 
-        {return 'NotActive';
-        }
+        return $val == 1 ? 'Active':'Not Active';
     }
-  
+    public function getIsApprovedAttribute($val)
+    {
+        return $val == 1 ? 'Approved':'Not Approved';
+    }
+    public function getIsOfferAttribute($val)
+    {
+        return $val ==1 ? 'Is Offer' : 'Not Offer';
+    }
+  ////////////////////////////////////////////////
    public function OfferTranslation()
     {
         return $this->hasMany(OfferTranslation::class);
