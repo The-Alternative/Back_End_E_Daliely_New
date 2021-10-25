@@ -113,6 +113,7 @@ class UserService
     public function create(Request $request)
     {
         try {
+//            return $request;
 //            $validated = $request->validated();
 //            $request->is_active ? $is_active = true : $is_active = false;
             $allusers = collect($request->user)->all();
@@ -128,7 +129,7 @@ class UserService
                 'email' => $request->email,
                 'password' =>bcrypt($request->password)
             ]);
-//            $userid=$user->id;
+            $userid=$user->id;
 //            if (isset($allusers) && count($allusers)) {
 //                //insert other traslations for users
 //                foreach ($allusers as $alluser) {

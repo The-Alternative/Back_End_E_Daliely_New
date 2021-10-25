@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 use Laratrust\Laratrust;
 
 class ProductService
@@ -154,6 +155,8 @@ class ProductService
     public function getAll()
     {
         try {
+            Gate::authorize('Read Product');
+
             $products = $this->productModel
                 ->with(['Store', 'ProductImage'])
                 ->paginate($this->PAGINATION_COUNT);
@@ -169,6 +172,8 @@ class ProductService
     public function getProductByCategory($id)
     {
         try {
+            Gate::authorize('Read Product');
+
             $products = $this->categoryModel->with('Product')->find($id);
             if (is_null($products)) {
                 return $this->returnSuccessMessage('This category not have products', 'done');
@@ -184,6 +189,8 @@ class ProductService
     public function getById($id)
     {
         try {
+            Gate::authorize('Read Product');
+
             $product = $this->productModel
                 ->with(['Store', 'Category', 'ProductImage', 'Brand', 'StoreProduct'])
                 ->where('products.is_active','=',1)
@@ -202,6 +209,8 @@ class ProductService
     public function getTrashed()
     {
         try {
+            Gate::authorize('Read Product');
+
             $product = $this->productModel->where('products.is_active','=',0)->get();
 
             if (count($product) > 0) {
@@ -218,6 +227,8 @@ class ProductService
     public function restoreTrashed($id)
     {
         try {
+            Gate::authorize('Restore Product');
+
             $product = $this->productModel->find($id);
             if (is_null($product)) {
                 return $response = $this->returnSuccessMessage('Product', 'This Products not found');
@@ -236,6 +247,8 @@ class ProductService
 
     {
         try {
+            Gate::authorize('Delete Product');
+
             $product = $this->productModel->find($id);
             if (is_null($product)) {
                 return $response = $this->returnSuccessMessage('Product', 'This Products not found');
@@ -255,6 +268,8 @@ class ProductService
     {
 
         try {
+            Gate::authorize('Create Product');
+
             $request->validated();
             $request->is_active ? $is_active = true : $is_active = false;
             $request->is_appear ? $is_appear = true : $is_appear = false;
@@ -321,6 +336,8 @@ class ProductService
     public function update(ProductRequest $request,$id)
     {
         try {
+            Gate::authorize('Update Product');
+
             $request->validated();
             $product = $this->productModel->find($id);
             if (!$product)
@@ -387,7 +404,9 @@ class ProductService
     public function search($title)
     {
         try{
-        $product= $this->productModel->searchTitle();
+            Gate::authorize('Read Product');
+
+            $product= $this->productModel->searchTitle();
         if (!$product)
         {
             return $this->returnError('400', 'not found this Product');
@@ -405,7 +424,9 @@ class ProductService
     public function delete( $id)
     {
         try{
-        $product=$this->productModel->find($id);
+            Gate::authorize('Delete Product');
+
+            $product=$this->productModel->find($id);
         if ($product->is_active=0)
             {
                 $product=$this->productModel->destroy($id);

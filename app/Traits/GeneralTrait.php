@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Models\User;
 use Error;
 use http\Env\Request;
 use http\Exception;
@@ -16,6 +17,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 trait GeneralTrait
 {
+
+    public function author($perm,$user){
+        $roles=$user->roles()->with('Permission')->get();
+        foreach ($roles as $role){
+             $permission = $role->permission->where('slug',$perm)->first();
+        }
+        if (isset($permission)) {
+            return true;
+        } else
+            return false;
+    }
 
     public function returnValidationError($code, $validator)
     {

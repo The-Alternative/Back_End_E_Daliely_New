@@ -42,16 +42,16 @@ Route::group(
 
         Route::group(['prefix'=>'products','namespace'=>'Product'],function()
             {
-                Route::GET('/getAll','ProductsController@getAll');
-                Route::GET('/getProductByCategory/{id}','ProductsController@getProductByCategory');
-                Route::GET('/getById/{id}','ProductsController@getById');
-                Route::POST('/create','ProductsController@create');
-                Route::PUT('/update/{id}','ProductsController@update');
-                Route::GET('/search/{title}','ProductsController@search');
-                Route::PUT('/trash/{id}','ProductsController@trash');
-                Route::PUT('/restoreTrashed/{id}','ProductsController@restoreTrashed');
-                Route::GET('/getTrashed','ProductsController@getTrashed');
-                Route::DELETE('/delete/{id}','ProductsController@delete');
+                Route::GET('/getAll','ProductsController@getAll')->middleware('can:Read Brand');
+                Route::GET('/getProductByCategory/{id}','ProductsController@getProductByCategory')->middleware('can:Read Product');
+                Route::GET('/getById/{id}','ProductsController@getById')->middleware('can:Read Product');
+                Route::POST('/create','ProductsController@create')->middleware('can:Create Product');
+                Route::PUT('/update/{id}','ProductsController@update')->middleware('can:Update Product');
+                Route::GET('/search/{title}','ProductsController@search')->middleware('can:Read Product');
+                Route::PUT('/trash/{id}','ProductsController@trash')->middleware('can:Delete Product');;
+                Route::PUT('/restoreTrashed/{id}','ProductsController@restoreTrashed')->middleware('can:Restore Product');
+                Route::GET('/getTrashed','ProductsController@getTrashed')->middleware('can:Read Product');
+                Route::DELETE('/delete/{id}','ProductsController@delete')->middleware('can:Delete Product');
                 Route::post('upload-multi/{id}', 'ProductsController@uploadMultiple');
                 Route::get('filter', 'ProductsController@filter');
                 Route::post('upload/{id}', 'ProductsController@upload');
@@ -115,15 +115,15 @@ Route::group(
         /**__________________________ Brand routes    __________________________**/
         Route::group(['prefix'=>'brands','namespace'=>'Brand'],function()
             {
-                Route::GET('/getAll','BrandController@getAll');
-                Route::GET('/getById/{id}','BrandController@getById');
-                Route::POST('/create','BrandController@create');
-                Route::PUT('/update/{id}','BrandController@update');
-                Route::GET('/search/{title}','BrandController@search');
-                Route::PUT('/trash/{id}','BrandController@trash');
-                Route::PUT('/restoreTrashed/{id}','BrandController@restoreTrashed');
-                Route::GET('/getTrashed','BrandController@getTrashed');
-                Route::DELETE('/delete/{id}','BrandController@delete');
+                Route::GET('/getAll','BrandController@getAll')->middleware('can:Read Brand');
+                Route::GET('/getById/{id}','BrandController@getById')->middleware('can:Read Brand');
+                Route::POST('/create','BrandController@create')->middleware('can:Create Brand');
+                Route::PUT('/update/{id}','BrandController@update')->middleware('can:Update Brand');
+                Route::GET('/search/{title}','BrandController@search')->middleware('can:Read Brand');
+                Route::PUT('/trash/{id}','BrandController@trash')->middleware('can:Delete Brand');
+                Route::PUT('/restoreTrashed/{id}','BrandController@restoreTrashed')->middleware('can:Restore Brand');
+                Route::GET('/getTrashed','BrandController@getTrashed')->middleware('can:Read Brand');
+                Route::DELETE('/delete/{id}','BrandController@delete')->middleware('can:Delete Brand');
                 Route::post('/upload', 'BrandController@upload');
                 Route::post('/upload/{id}', 'BrandController@update_upload');
 

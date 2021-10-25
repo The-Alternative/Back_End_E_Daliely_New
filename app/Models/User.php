@@ -14,13 +14,13 @@ use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laratrust\Traits\LaratrustUserTrait;
+//use Laratrust\Traits\LaratrustUserTrait;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 
 class User extends Authenticatable implements JWTSubject
 {
-    use LaratrustUserTrait;
+//    use LaratrustUserTrait;
     use HasFactory, Notifiable;
     /**
      * The attributes that are mass assignable.
@@ -36,6 +36,7 @@ class User extends Authenticatable implements JWTSubject
         'is_active',
         'email',
         'password',
+        'remember_token'
 //        'first_name',
 //        'last_name',
 //        'age',

@@ -7,11 +7,11 @@ use App\Models\User;
 use App\Scopes\UserTypeScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Laratrust\Traits\LaratrustUserTrait;
+//use Laratrust\Traits\LaratrustUserTrait;
 
 class TypeUser extends Model
 {
-    use LaratrustUserTrait;
+//    use LaratrustUserTrait;
     use HasFactory;
     protected $fillable = ['is_active'];
     protected $table = 'type_users';

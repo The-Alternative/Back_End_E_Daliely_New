@@ -12,11 +12,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laratrust\Traits\LaratrustUserTrait;
+//use Laratrust\Traits\LaratrustUserTrait;
 
 class Employee extends Authenticatable implements JWTSubject
 {
-    use LaratrustUserTrait;
+//    use LaratrustUserTrait;
     use HasFactory, Notifiable;
     public $guarded = [];
     protected $primaryKey = 'id';

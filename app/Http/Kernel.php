@@ -68,11 +68,8 @@ class Kernel extends HttpKernel
         'localeCookieRedirect'    => \Mcamara\LaravelLocalization\Middleware\LocaleCookieRedirect::class,
         'localeViewPath'          => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class,
         'ChangeLanguage'          => \App\Http\Middleware\ChangeLanguage::class,
-        'role'                    =>\Laratrust\Middleware\LaratrustRole::class,
-        'permission'              =>\Laratrust\Middleware\LaratrustPermission::class,
-        'ability'                 =>\Laratrust\Middleware\LaratrustAbility::class,
-        'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
-        'jwt.auth' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
-        'jwt.refresh' => \Tymon\JWTAuth\Http\Middleware\RefreshToken::class,
+        'jwt.verify'              => \App\Http\Middleware\JwtMiddleware::class,
+        'jwt.auth'                => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
+        'jwt.refresh'             => \Tymon\JWTAuth\Http\Middleware\RefreshToken::class,
     ];
 }

@@ -5,9 +5,10 @@ namespace App\Models\Admin;
 use App\Models\Admin\TransModel\PermissionTranslation;
 use App\Models\User;
 use App\Scopes\PermissionScope;
+use Illuminate\Database\Eloquent\Model;
 use Laratrust\Models\LaratrustPermission;
 
-class Permission extends LaratrustPermission
+class Permission extends Model
 {
     public $guarded = [];
     protected $primaryKey = 'id';

@@ -5,9 +5,10 @@ namespace App\Models\Admin;
 use App\Models\Admin\TransModel\RoleTranslation;
 use App\Models\User;
 use App\Scopes\RoleScope;
+use Illuminate\Database\Eloquent\Model;
 use Laratrust\Models\LaratrustRole;
 
-class Role extends LaratrustRole
+class Role extends Model
 {
     public $guarded = [];
     protected $primaryKey = 'id';

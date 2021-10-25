@@ -4,12 +4,11 @@ namespace App\Service\Brands;
 
 use App\Models\Brands\Brand;
 use App\Models\Brands\BrandTranslation;
-use App\Scopes\BrandScope;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use App\Traits\GeneralTrait;
 use App\Http\Requests\Brands\BrandRequest;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -26,6 +25,9 @@ class BrandsService
         $this->brandTranslation = $brandTranslation;
         $this->BrandModel = $brand;
         $this->PAGINATION_COUNT = 25;
+//        $this->middleware('auth:user');
+
+
     }
     public function list()
     {
@@ -52,12 +54,15 @@ class BrandsService
     public function getAll()
     {
         try {
-            $brands = $this->BrandModel->with(['Product'])->paginate($this->PAGINATION_COUNT);
-            if (count($brands) > 0) {
-                return $response = $this->returnData('Brand', $brands, 'done');
-            } else {
-                return $response = $this->returnSuccessMessage('Brand', 'Brands doesnt exist yet');
+            Gate::authorize('Read Brand');
+                $brands = $this->BrandModel->with(['Product'])->paginate($this->PAGINATION_COUNT);
+                if (count($brands) > 0) {
+                    return $response = $this->returnData('Brand', $brands, 'done');
+                } else {
+                    return $response = $this->returnSuccessMessage('Brand', 'Brands doesnt exist yet');
             }
+
+
         } catch (\Exception $ex) {
             return $this->returnError('400', $ex->getMessage());
         }
@@ -70,6 +75,7 @@ class BrandsService
     public function getById($id)
     {
         try {
+            Gate::authorize('Read Brand');
             $brand = $this->BrandModel->with('Product')->find($id);
             if (!isset($brand)) {
                 return $response = $this->returnSuccessMessage('This Brand not found', 'done');
@@ -85,6 +91,8 @@ class BrandsService
     public function getTrashed()
     {
         try {
+            Gate::authorize('Read Brand');
+
             $brand = $this->BrandModel->where('is_active', 0)->get();
 
             if (count($brand) > 0) {
@@ -104,6 +112,8 @@ class BrandsService
     public function restoreTrashed($id)
     {
         try {
+            Gate::authorize('Restore Brand');
+
             $brand = $this->BrandModel->find($id);
             if (is_null($brand)) {
                 return $response = $this->returnSuccessMessage('Brand', 'This Products not found');
@@ -124,6 +134,8 @@ class BrandsService
     public function trash($id)
     {
         try {
+            Gate::authorize('Delete Brand');
+
             $brand = $this->BrandModel->find($id);
             if (is_null($brand)) {
                 return $response = $this->returnSuccessMessage('Brand', 'This Brands not found');
@@ -144,12 +156,14 @@ class BrandsService
     public function create(BrandRequest $request)
     {
         try {
-                $validated = $request->validated();
+
+            Gate::authorize('Create Brand');
+
+            $validated = $request->validated();
             $request->is_active ? $is_active = true : $is_active = false;
             /** transformation to collection */
             $allbrands = collect($request->brand)->all();
             $folder = public_path('images/brands' . '/');
-
             DB::beginTransaction();
             // //create the default language's brand
             $unTransBrand_id = $this->BrandModel->insertGetId([
@@ -221,6 +235,8 @@ class BrandsService
     public function search($title)
     {
         try {
+            Gate::authorize('Read Brand');
+
             $brand = $this->BrandModel->searchTitle();
             if (!$brand) {
                 return $this->returnError('400', 'not found this Brand');
@@ -239,6 +255,8 @@ class BrandsService
     public function delete($id)
     {
         try {
+            Gate::authorize('Delete Brand');
+
             $brand = $this->BrandModel->find($id);
 
                 $brand ->destroy($id);

@@ -9,6 +9,7 @@ use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 use Laratrust\Laratrust;
 use Laratrust\Traits\LaratrustUserTrait;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ProductsController extends Controller
 {
@@ -18,6 +19,12 @@ class ProductsController extends Controller
     public function __construct(ProductService $ProductService)
     {
         $this->ProductService=$ProductService;
+        $this->user = JWTAuth::parseToken()->authenticate();
+        $this->middleware('can:Read Product')->only(['getAll','getById','getTrashed']);
+        $this->middleware('can:Create Product')->only('create');
+        $this->middleware('can:Update Product')->only('update');
+        $this->middleware('can:Delete Product')->only(['trash','delete']);
+        $this->middleware('can:Restore Product')->only('restoreTrashed');
     }
     /*** this function for dashboard ***/
         public function dashgetAll()

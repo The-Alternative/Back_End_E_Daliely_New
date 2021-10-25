@@ -6,15 +6,25 @@ use App\Http\Requests\Brands\BrandRequest;
 use App\Models\Brands\Brand;
 use App\Service\Brands\BrandsService;
 use App\Traits\GeneralTrait;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
-class BrandController
+class BrandController extends Controller
 {
     use GeneralTrait;
     private $BrandsService;
     public function __construct(BrandsService $BrandsService)
     {
         $this->BrandsService=$BrandsService;
+        $this->user = JWTAuth::parseToken()->authenticate();
+        $this->middleware('can:Read Brand')->only(['getAll','getById','getTrashed']);
+        $this->middleware('can:Create Brand')->only('create');
+        $this->middleware('can:Update Brand')->only('update');
+        $this->middleware('can:Delete Brand')->only(['trash','delete']);
+        $this->middleware('can:Restore Brand')->only('restoreTrashed');
+
+
     }
     public function list()
     {

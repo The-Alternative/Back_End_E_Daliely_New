@@ -42,7 +42,7 @@ class AuthController extends Controller
         try{
 //            return $user=$this->userModel->where('users.id',1)->get();
              $credentials = $request->only('email', 'password');
-            $token = auth()->attempt(['email'=>'superadminstrator@app.com','password'=>bcrypt('password')]);
+            $token = auth()->attempt($credentials);
 //            if (! $token ) {
 //                return response()->json(['error' => 'Unauthorized'], 401);
 //            }
@@ -120,7 +120,8 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60,
+            'user' => auth()->user()
         ]);
     }
 }
