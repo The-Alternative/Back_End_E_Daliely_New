@@ -11,6 +11,11 @@ class Notification extends Model
     
     protected $table='notifications';
 
-    protected $fillable=['id','type','notifiable','data','read_at'];
+    protected $fillable=['id','type','notifiable_id','notifiable_type','data','read_at'];
+    protected $casts = [
+        'id' => 'string',
+        'data'=>'array'
+      ];
 
+      protected $hidden=['type'];
 }

@@ -4,11 +4,13 @@ namespace App\Service\Offer;
 
 use App\Http\Requests\Offer\OfferRequest;
 use App\Models\Offer\Offer;
+use App\Models\Offer\OfferImage;
 use App\Models\Offer\OfferTranslation;
 use App\Models\Stores\Store;
 use App\Models\User;
 use App\Notifications\Notifications;
 use App\Traits\GeneralTrait;
+use App\Traits\ImageTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -18,20 +20,27 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Service\Mail\MailService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\File;
+use App\Http\Controllers\Offer\OfferImageController;
+use Illuminate\Http\Request;
+
+
 
 class OfferService
 {
 
     use GeneralTrait;
     protected $OfferModel;
+    protected $OfferImageModel;
     protected $StoreModel;
     protected $MailService;
 
-    public function __construct(Offer $offer,Store $store,MailService $MailService)
+    public function __construct(Offer $offer,Store $store,MailService $MailService,OfferImage $offerImage)
     {
         $this->OfferModel=$offer;
         $this->StoreModel=$store;
         $this->MailService=$MailService;
+        $this->OfferImageModel=$offerImage;
 
     }
 
@@ -72,13 +81,12 @@ class OfferService
     {
     
         try {
-            $offer=collect($request->Offer)->all();
+             $offer=collect($request->Offer)->all();
             DB::beginTransaction();
             $untransId=$this->OfferModel::insertGetId([
                 'store_id'        =>$request->store_id,
                 'store_product_id'=>$request->store_product_id,
                 'user_email'      =>$request->user_email,
-                'image'           =>$request->image,
                 'price'           =>$request->price,
                 'selling_price'   =>$request->selling_price,
                 'quantity'        =>$request->quantity,
@@ -87,7 +95,7 @@ class OfferService
                 'ended_at'        =>$request->ended_at,
                 'is_active'       =>$request->is_active,
                 'is_offer'        =>$request->is_offer,
-                'is_approved'        =>$request->is_approved
+                'is_approved'     =>$request->is_approved
 
             ]);
              if(isset($offer)) {
@@ -104,6 +112,19 @@ class OfferService
              }
               DB::commit();
 
+              $images=$request->images;
+              if ($request->has('images')){
+                $folder = public_path('images/offers' . '/' . $untransId . '/');
+                foreach ($images as $image) {
+                    $product = $this->OfferModel->find($untransId);
+                    $product->OfferImage()->insert([
+                        'offer_id' => $untransId,
+                        'image' => $this->upload( $image['image'],$untransId,$folder),
+                        'is_cover' => $image['is_cover'],
+                    ]);
+
+              }
+            }
                //Send Mail
                $this->MailService->SendMail($untransId,Offer::class, $request->user_email);
                
@@ -112,10 +133,7 @@ class OfferService
                Notification::send($notification,new Notifications($notification));
                
                return $this->returnData('offer', [$untransId,$transOffer], 'Mail Send Successfully');
-               
-              
-            
-            
+  
         }
 
         catch(\Exception $ex)
@@ -141,7 +159,6 @@ class OfferService
               'store_id'        =>$request->store_id,
               'store_product_id'=>$request->store_product_id,
               'user_email'      =>$request->user_email,
-              'image'           =>$request->image,
               'price'           =>$request->price,
               'selling_price'   =>$request->selling_price,
               'quantity'        =>$request->quantity,
@@ -326,5 +343,28 @@ class OfferService
                 return $this->returnError($ex->getcode(),$ex->getmessage());
             }
         }
+
+
+        public function UploadImage(Request $request)
+        {
+            // return $request;
+            if ($request->hasfile('image')){
+                            $image=$request->image->getClientOriginalName();
+                            $image=time().'.'.$image;
+                            $request->image->move('images/offers',$image);
+            
+            
+                        // return "success save Image";
+        }
+
+            $offerImage=$this->OfferImageModel::create([
+                'offer_id'=>$request->offer_id,
+                'image'=>$image,
+                'is_cover'=>$request->is_cover,
+                'is_check'=>$request->is_check
+            ]);
+          return "success save Image";
+    }
+   
        
 }

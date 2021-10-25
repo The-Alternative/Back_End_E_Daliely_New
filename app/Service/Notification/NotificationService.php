@@ -25,12 +25,25 @@ class NotificationService
     public function get()
     {
         try{
-            $notification=$this->NotificationModel::paginate(5);
+            $notification=$this->NotificationModel::get();
             return $this->returnData('Notification',$notification,'Done');
         }
         catch (\Exception $ex)
         {
             return $this->returnError($ex->getCode(),$ex->getMessage());
         }
+    }
+
+    public function updateRead_at()
+    {
+        try{
+            $notification=$this->NotificationModel::get();
+            return $this->returnData('Notification',$notification,'Done');
+        }
+        catch (\Exception $ex)
+        {
+            return $this->returnError($ex->getCode(),$ex->getMessage());
+        }
+
     }
 }

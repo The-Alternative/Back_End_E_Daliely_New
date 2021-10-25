@@ -416,7 +416,7 @@ class ProductService
         }
     }
     /*__________________________________________________________________*/
-    /****  upload Product's images   ****/
+    /****  Product's images   ****/
     public function uploadMultiple( $request ,$id)
     {
         if (!$request->hasFile(['images'])) {

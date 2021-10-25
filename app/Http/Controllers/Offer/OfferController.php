@@ -68,6 +68,11 @@ class OfferController extends Controller
     {
         return $this->OfferService->OfferApproved($offer_id);
     }
+
+    public function UploadImage(Request $request) 
+    {
+        return $this->OfferService->UploadImage($request);
+    }
     
 }
 

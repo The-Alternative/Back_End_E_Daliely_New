@@ -447,6 +447,7 @@ Route::group(
                Route::get('/offer/get-store/{Offer_id}','OfferController@getStoreByOfferId');
                Route::get('/offer/get-offer/{store_id}','OfferController@getOfferByStoreId');
                Route::put('/offer/approved/{offer_id}','OfferController@OfferApproved');
+               Route::post('/offer/image','OfferController@UploadImage');
 
            });
                 Route::get('offers/gettrashed',[OfferController::class,'getTrashed']);
@@ -507,3 +508,5 @@ Route::group([
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
 });
+
+route::get('/save-image',[OfferController::class ,'UploadImage']);
