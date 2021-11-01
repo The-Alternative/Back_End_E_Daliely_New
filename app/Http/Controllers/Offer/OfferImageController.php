@@ -22,26 +22,23 @@ class OfferImageController extends Controller
     public function UploadImage(Request $request)
         {
             try{
-        //     // return $request;
-            if ($request->hasfile('image')){
+                    if ($request->file('image')){
                             $image=$request->image->getClientOriginalName();
                             $image=time().$image;
                             $request->image->move('images/offers',$image);
             
-            
-                        // return "success save Image";
-        }
+                        }
 
-            $offerImage=$this->OfferImageModel::create([
-                'offer_id'=>$request->offer_id,
-                'image'=>$image,
-                'is_cover'=>$request->is_cover,  
-                'is_check'=>$request->is_check
-            ]);
-            return $this->returnData('image',$image,'The image has been saved successfully');
-        
-          return "success save Image";
-        }catch(\Exception $ex)
+                 $offerImage=$this->OfferImageModel::create([
+                      'offer_id'=>$request->offer_id,
+                      'image'=>$image,
+                      'is_cover'=>$request->is_cover,  
+                      'is_check'=>$request->is_check
+                  ]);
+                   return $this->returnData('Image',$offerImage,'The image has been saved successfully');
+       
+               }
+        catch(\Exception $ex)
         {
             return $this->returnError($ex->getcode(),$ex->getmessage());
 
@@ -64,6 +61,27 @@ class OfferImageController extends Controller
             catch(\Exception $ex)
             {
                 return $this->returnError($ex->getcode(),$ex->getmessage());
+            }
+        }
+
+        public function changeIsCover($image_id)
+        {
+            try{
+                $offerimage=OfferImage::find($image_id);
+                if(!$offerimage)
+                {
+                  return  $this->returnError('400','not found this Image');
+                }
+                else
+                {
+                    $offerimage->is_cover=0;
+                    $offerimage->save();
+                return $this->returnData('Image',$offerimage,'this Image is cover = 0 now');
+                }
+            }
+            catch (\Exception $ex)
+            {
+                return $this->returnError($ex->getCode(),$ex->getMessage());
             }
         }
    

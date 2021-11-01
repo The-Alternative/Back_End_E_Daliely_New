@@ -458,8 +458,8 @@ Route::group(
                 Route::group(['namespace'=>'Offer'],function ()
                 {
                 Route::post('/offer/image','OfferImageController@UploadImage');
-                Route::put('/offer/delete/image/{image_id}','OfferImageController@deleteImage');
-                Route::put('/offer/iscover/image/{image_id}','OfferImageController@ImageIsCover');
+                Route::delete('/offer/delete/image/{image_id}','OfferImageController@deleteImage');
+                Route::put('/offer/iscover/image/{image_id}','OfferImageController@changeIsCover');
 
                 });
              //////////////// Comment  Route ////////////////////////////

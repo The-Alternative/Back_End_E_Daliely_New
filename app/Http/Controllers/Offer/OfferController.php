@@ -69,21 +69,6 @@ class OfferController extends Controller
         return $this->OfferService->OfferApproved($offer_id);
     }
 
-    public function UploadImage(Request $request) 
-    {
-        return $this->OfferService->UploadImage($request);
-    }
-    
-    public function  deleteImage($id)
-    {
-        return $this->OfferService-> deleteImage($id);
-    }
-
-    public function ImageIsCover($image_id)
-    {
-       
-        return $this->OfferService-> ImageIsCover($image_id);
-    }
     
     
 }
