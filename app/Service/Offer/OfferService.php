@@ -112,20 +112,21 @@ class OfferService
              }
               DB::commit();
 
-              $images=$request->images;
-              if ($request->has('images')){
-                $folder = public_path('images/offers' . '/' . $untransId . '/');
-                foreach ($images as $image) {
-                    $product = $this->OfferModel->find($untransId);
-                    $product->OfferImage()->insert([
-                        'offer_id' => $untransId,
-                        'image' => $this->upload( $image['image'],$untransId,$folder),
-                        'is_cover' => $image['is_cover'],
-                    ]);
+              $image=$request->image;
+              if ($request->file('image')){
+                  $image=$request->image->getClientOriginalName();
+                  $image=time().$image;
+                  $request->image->move('images/offers',$image);
+                    
 
-              }
+                $offerImage=$this->OfferImage()->insert([
+                    'offer_id'=>$untransId,
+                    'image'=>$image['image'],
+                    'is_cover'=>$request['is_cover'],
+                    'is_check'=>$request['is_check']
+                ]);
             }
-               //Send Mail
+                       //Send Mail
                $this->MailService->SendMail($untransId,Offer::class, $request->user_email);
                
                //Send Notification
@@ -135,7 +136,7 @@ class OfferService
                return $this->returnData('offer', [$untransId,$transOffer], 'Mail Send Successfully');
   
         }
-
+    
         catch(\Exception $ex)
         {
             DB::rollBack();
@@ -252,6 +253,9 @@ class OfferService
             elseif($offer->is_active==0){
                 $offer->delete();
                 $offer->OfferTranslation()->delete();
+                $offer->OfferImage()->delete();
+                return($offer);
+
                 return $this->returnData('offer',$offer,'this offer is deleted now');
             }
             else{
@@ -347,10 +351,11 @@ class OfferService
 
         public function UploadImage(Request $request)
         {
-            // return $request;
+            try{
+        //     // return $request;
             if ($request->hasfile('image')){
                             $image=$request->image->getClientOriginalName();
-                            $image=time().'.'.$image;
+                            $image=time().$image;
                             $request->image->move('images/offers',$image);
             
             
@@ -360,11 +365,57 @@ class OfferService
             $offerImage=$this->OfferImageModel::create([
                 'offer_id'=>$request->offer_id,
                 'image'=>$image,
-                'is_cover'=>$request->is_cover,
+                'is_cover'=>$request->is_cover,  
                 'is_check'=>$request->is_check
             ]);
+            return $this->returnData('image',$image,'The image has been saved successfully');
+        
           return "success save Image";
-    }
+        }catch(\Exception $ex)
+        {
+            return $this->returnError($ex->getcode(),$ex->getmessage());
+
+        }
+    
+        }
+
+        public function deleteImage($id)
+        {
+            try
+            {
+               $image=OfferImage::find($id);
+               if(!$image)
+               return $this->returnError('400','Not Found This Image');
+               else{
+                   $image->destroy($id);
+               return $this->returnData('Image',$image,'The image has been deleted successfully');
+            }
+        }
+            catch(\Exception $ex)
+            {
+                return $this->returnError($ex->getcode(),$ex->getmessage());
+            }
+        }
+        public function ImageIsCover($image_id)
+        {
+            try{
+                $image=OfferImage::find($image_id);
+                if(!$image)
+                {
+                  return  $this->returnError('400','not found this image');
+                }
+                else
+                {
+                    $image->is_cover=0;
+                    $image->save();
+                return $this->returnData('Image',$image,'this image is cover change now');
+                }
+            }
+            catch (\Exception $ex)
+            {
+                return $this->returnError($ex->getCode(),$ex->getMessage());
+            }
+        }
    
        
 }

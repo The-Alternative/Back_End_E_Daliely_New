@@ -447,12 +447,21 @@ Route::group(
                Route::get('/offer/get-store/{Offer_id}','OfferController@getStoreByOfferId');
                Route::get('/offer/get-offer/{store_id}','OfferController@getOfferByStoreId');
                Route::put('/offer/approved/{offer_id}','OfferController@OfferApproved');
-               Route::post('/offer/image','OfferController@UploadImage');
+             
 
            });
                 Route::get('offers/gettrashed',[OfferController::class,'getTrashed']);
                 Route::get('offer/get-advertisement',[OfferController::class,'get_advertisement']);
 
+
+                /////////////////Offer Image Controller /////////
+                Route::group(['namespace'=>'Offer'],function ()
+                {
+                Route::post('/offer/image','OfferImageController@UploadImage');
+                Route::put('/offer/delete/image/{image_id}','OfferImageController@deleteImage');
+                Route::put('/offer/iscover/image/{image_id}','OfferImageController@ImageIsCover');
+
+                });
              //////////////// Comment  Route ////////////////////////////
 
            Route::group(['namespace'=>'Comment'],function ()
