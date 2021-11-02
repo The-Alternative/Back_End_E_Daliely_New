@@ -451,7 +451,7 @@ Route::group(
 
            });
                 Route::get('offers/gettrashed',[OfferController::class,'getTrashed']);
-                Route::get('offer/get-advertisement',[OfferController::class,'get_advertisement']);
+                Route::get('offer/get/advertisement',[OfferController::class,'getAdvertisement']);
 
 
                 /////////////////Offer Image Controller /////////
@@ -490,8 +490,10 @@ Route::group(
                 Route::delete('/interaction/{id}', 'InteractionController@delete');
            });
                  Route::get('/interactions/gettrashed',[InteractionController::class,'getTrashed']);
+                
                  //Notification Route
                  Route::get('/notification',[NotificationController::class,'get']);
+                 Route::put('/notification/{id}',[NotificationController::class,'updateRead_at']);
 
              Route::group(['prefix'=>'upload','namespace'=>'Images'],function ()
              {

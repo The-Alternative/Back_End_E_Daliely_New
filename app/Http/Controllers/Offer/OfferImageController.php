@@ -11,6 +11,7 @@ use App\Models\Offer\OfferImage;
 class OfferImageController extends Controller
 {
     use GeneralTrait;
+
     protected $OfferImageModel;
 
     public function __construct(OfferImage $offerImage)
@@ -21,6 +22,7 @@ class OfferImageController extends Controller
 
     public function UploadImage(Request $request)
         {
+            
             try{
                     if ($request->file('image')){
                             $image=$request->image->getClientOriginalName();
@@ -28,13 +30,14 @@ class OfferImageController extends Controller
                             $request->image->move('images/offers',$image);
             
                         }
-
+                      
                  $offerImage=$this->OfferImageModel::create([
                       'offer_id'=>$request->offer_id,
                       'image'=>$image,
                       'is_cover'=>$request->is_cover,  
                       'is_check'=>$request->is_check
                   ]);
+              
                    return $this->returnData('Image',$offerImage,'The image has been saved successfully');
        
                }

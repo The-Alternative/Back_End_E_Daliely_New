@@ -132,7 +132,7 @@ class OfferService
                //Send Notification
                $notification=Offer::find($untransId);
                Notification::send($notification,new Notifications($notification));
-               
+            
                return $this->returnData('offer', [$untransId,$transOffer], 'Mail Send Successfully');
   
         }
@@ -143,6 +143,8 @@ class OfferService
            return  $this->returnError($ex->getCode(),$ex->getMessage());
         }
     }
+
+    
 //update old offer
     public function update(OfferRequest $request,$id)
     {
@@ -250,14 +252,13 @@ class OfferService
             {
                 return $this->returnError('400','not found this offer');
             }
-            elseif($offer->is_active==0){
+            elseif($offer->is_active == "Not Active"){
                 $offer->delete();
                 $offer->OfferTranslation()->delete();
-                $offer->OfferImage()->delete();
-                return($offer);
 
                 return $this->returnData('offer',$offer,'this offer is deleted now');
             }
+
             else{
                 return $this->returnError('400','this offer can not deleted now');
             }
@@ -318,7 +319,7 @@ class OfferService
         }
     }
 //get the advertisement
-    public function get_advertisement()
+    public function getAdvertisement()
     {
         try{
             $offer=$this->OfferModel::Advertisement();

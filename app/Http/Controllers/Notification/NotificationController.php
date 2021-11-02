@@ -4,21 +4,59 @@ namespace App\Http\Controllers\Notification;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Service\Notification\NotificationService;
 use App\Traits\GeneralTrait;
+use App\Models\Notification\Notification;
+use Illuminate\Notifications\Notifiable;
+use Carbon\Carbon;
 
 class NotificationController extends Controller
 {
     use GeneralTrait;
-     private $NotificationService;
 
-    public function __construct (NotificationService $notificationService)
+    private $NotificationModel;
+  
+
+    public function __construct(Notification $notification)
     {
-       $this->NotificationService=$notificationService;
+        $this->NotificationModel=$notification;
     }
 
+    //get all notification
     public function get()
     {
-        return $this->NotificationService->get();
+        try{
+            $notification=$this->NotificationModel::get();
+            return $this->returnData('Notification',$notification,'Done');
+        }
+        catch (\Exception $ex)
+        {
+            return $this->returnError($ex->getCode(),$ex->getMessage());
+        }
     }
+
+    public function updateRead_at($id)
+    {
+        
+        try{
+            $notification=$this->NotificationModel::find($id);
+
+            if(! $notification){
+            return $this->returnError('400','not found this notification');
+            }
+            else{
+                $notification->update(['read_at' =>Carbon::now()]);
+
+                $notification->save();
+                                
+        }
+            return $this->returnData('notification',$notification,'this notification read now');
+    
+        }
+        catch (\Exception $ex)
+        {
+            return $this->returnError($ex->getCode(),$ex->getMessage());
+        }
+
+    }
+
 }
