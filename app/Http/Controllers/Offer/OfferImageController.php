@@ -37,7 +37,6 @@ class OfferImageController extends Controller
                   'offer_id'=>$request->offer_id,
                   'image'=>$image,
                   'is_cover'=>1,  
-                  'is_check'=>$request->is_check
               ]);
           
                return $this->returnData('Image',$offerImage,'The image has been saved successfully');
