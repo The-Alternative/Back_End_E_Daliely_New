@@ -22,7 +22,9 @@ class OfferScope implements Scope
               ->where('offer_translations.locale','=',config::get('app.locale'))
 
               ->select(['offers.id','offers.is_active','offers.is_approved','offers.is_offer',
-                        'offers.price','offers.selling_price','offers.started_at','offers.ended_at',
+                        'offers.price','offers.selling_price','offers.started_at',
+                        'offers.ended_at','offers.quantity',
+                        'offers.store_product_id','offers.store_id','offers.position',
                         'offer_translations.name','offer_translations.short_description',
                         'offer_translations.long_description','offer_translations.locale']);
                         

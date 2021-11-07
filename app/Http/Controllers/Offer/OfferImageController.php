@@ -74,12 +74,12 @@ class OfferImageController extends Controller
                
                          $offerImage->offer_id = $id;
                          $offerImage->is_cover=0;
-                         $offerImage->image=json_encode($data);
+                         $offerImage->image=$data;
                          $offerImage->save();
                   }  
                 
                }
-                return $this->returnData('images',$offerImage,'image created successfully.');
+                return $this->returnData('images',[$data],'image created successfully.');
                     }
             catch(\Exception $ex)
             {

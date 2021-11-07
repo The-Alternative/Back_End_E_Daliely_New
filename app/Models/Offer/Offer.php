@@ -20,7 +20,7 @@ class Offer extends Model
     protected  $fillable=['id','user_email','store_id','store_product_id','price','selling_price','quantity'
     ,'started_at','ended_at','position','is_active','is_offer','is_approved'];
 
-    protected $hidden=['position','store_id','store_product_id','created_at','updated_at'];
+    // protected $hidden=['position','store_id','store_product_id','created_at','updated_at'];
 
     protected  $cast=[
         'is_active'=>'boolean',
