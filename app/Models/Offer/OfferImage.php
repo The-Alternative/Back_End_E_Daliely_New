@@ -17,6 +17,9 @@ class OfferImage extends Model
 
     protected $hidden=['offer_id'];
 
+    protected $casts=[
+        'image'=>'array',
+    ];
     public function Offer()
     {
         return $this->belongsTo(Offer::class);

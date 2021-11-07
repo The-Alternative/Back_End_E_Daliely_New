@@ -53,57 +53,34 @@ class OfferImageController extends Controller
     public function UploadMultiImage(Request $request,$id)
         {
             try{
-         
-                $validator = Validator::make($request->all(),
-                     ['offer_id'=>'required',
-                      'images' => 'array',
-                      'images.*' => 'image|mimes:jpeg,png,jpg|max:2048'
-                     ]);
-
-                    $images=$request->file(['images']);
-                    //  $path='images/offers';
-                     $files          =       array();
-               return($images);
-                if($request->hasfile('images')){
-                    foreach($request->file('images') as $image)
-                    {
-                        $name =time().'.'.$image->getClientOriginalName();
-        
-                        if($image->move(public_path('offers'), $name)) {
-    
-                            $files[]=$name;
-
-                        $upload_status=$this->OfferImageModel::create([
-                                               'offer_id'=>$request->offer_id,
-                                                'image'=>$files,
-                            ]);
-                            return $this->returnData('Images', $upload_status,'The image has been saved successfully');
-        
-                        }
+                $data = array();
+             
+                if($request->hasfile(['images']))
+                {        
+                    $folder = public_path('images/offers' . '/' . $id . '/');
+                    if (!File::exists($folder)) {
+                        File::makeDirectory($folder, 0775, true, true);
                     }
-                }
-                    // foreach ($images as $image) {
-                    //      $name= $image->getClientOriginalName();
-                    //      $image=time().$name;
-                    //      $image->move($path,$name);
-                    //      $data[]= $name;
-                    // }
-                  
-
-                //   $offerImage=$this->OfferImageModel::create([
-                //         'offer_id'=>$request->offer_id,
-                //         'image'=>$data['image_'],
-                //     //     // 'is_cover'=>$request->is_cover,  
-                //     //     // 'is_check'=>$request->is_check
-                //     ]);
-                    //  return $this->returnData('Image',$offerImage,'The image has been saved successfully');
-                    // return response()->json(['message'=>'success']);
-
-                }
+                 
+                    foreach($request->file(['images']) as $image)
+                    {
+                        $name=time().$image->getClientOriginalName();;
+                        $image->move($folder, $name);
+            
+                        //populate array here
+                      array_push($data, $name);
+                   
+                       $offerImage= new OfferImage();
                
-
-               // return $request;
-            // }
+                         $offerImage->offer_id = $id;
+                         $offerImage->is_cover=0;
+                         $offerImage->image=json_encode($data);
+                         $offerImage->save();
+                  }  
+                
+               }
+                return $this->returnData('images',$offerImage,'image created successfully.');
+                    }
             catch(\Exception $ex)
             {
 
