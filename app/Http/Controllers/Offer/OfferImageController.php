@@ -36,7 +36,7 @@ class OfferImageController extends Controller
              $offerImage=$this->OfferImageModel::create([
                   'offer_id'=>$request->offer_id,
                   'image'=>$image,
-                  'is_cover'=>1,  
+                  'is_cover'=>0,  
               ]);
           
                return $this->returnData('Image',$offerImage,'The image has been saved successfully');
@@ -64,22 +64,23 @@ class OfferImageController extends Controller
                  
                     foreach($request->file(['images']) as $image)
                     {
-                        $name=time().$image->getClientOriginalName();;
+                        $name=time().$image->getClientOriginalName();
                         $image->move($folder, $name);
             
                         //populate array here
                       array_push($data, $name);
-                   
+                    }
+                   foreach($data as $D){
                        $offerImage= new OfferImage();
                
                          $offerImage->offer_id = $id;
                          $offerImage->is_cover=0;
-                         $offerImage->image=$data;
+                         $offerImage->image=$D;
                          $offerImage->save();
                   }  
-                
-               }
-                return $this->returnData('images',[$data],'image created successfully.');
+                    }
+               
+                return $this->returnData('images',$offerImage,'image created successfully.');
                     }
             catch(\Exception $ex)
             {
