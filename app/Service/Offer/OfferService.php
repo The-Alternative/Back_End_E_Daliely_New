@@ -112,20 +112,7 @@ class OfferService
              }
               DB::commit();
 
-              $image=$request->image;
-              if ($request->file('image')){
-                  $image=$request->image->getClientOriginalName();
-                  $image=time().$image;
-                  $request->image->move('images/offers',$image);
-                    
-
-                $offerImage=$this->OfferImage()->insert([
-                    'offer_id'=>$untransId,
-                    'image'=>$image['image'],
-                    'is_cover'=>$request['is_cover'],
-                    'is_check'=>$request['is_check']
-                ]);
-            }
+             
                        //Send Mail
                $this->MailService->SendMail($untransId,Offer::class, $request->user_email);
                
