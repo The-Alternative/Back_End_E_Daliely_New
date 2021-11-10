@@ -9,8 +9,17 @@ Route::middleware('auth:api')
 {
     return $request->user();
 });
-Route::post('auth/login', 'Auth\AuthController@login');
+//Route::group([
+//    'middleware' => 'api',
+//    'prefix' => 'employee',
+//    'namespace'=>'Admin'
+//
+//], function ($router) {
+//    Route::POST('/login', 'EmployeeAuthController@login');
+//});
 
+Route::post('auth/login', 'Auth\AuthController@login');
+Route::post('employee/login', 'Auth\EmployeeAuthController@login');
 Route::group(
     [
         'prefix'     => LaravelLocalization::setLocale(),
@@ -18,6 +27,7 @@ Route::group(
             'localize','localizationRedirect','localeViewPath']
     ],
     function() {
+
 //        Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
 //            Route::post('register', 'AuthController@register');
 //            Route::post('logout', 'AuthController@logout');
@@ -75,12 +85,9 @@ Route::group(
             Route::GET('/getTrashed','EmployeesController@getTrashed');
             Route::DELETE('/delete/{id}','EmployeesController@delete');
             Route::GET('/profile/{id}','EmployeesController@profile');
-
-
-
         });
         Route::group(['prefix' => 'employee', 'namespace' => 'Auth'], function () {
-            Route::POST('/login', 'EmployeeAuthController@login');
+//            Route::POST('/login', 'EmployeeAuthController@login');
         });
         /**__________________________ user type routes  __________________________**/
         Route::group(['prefix' => 'type', 'namespace' => 'Admin'], function () {

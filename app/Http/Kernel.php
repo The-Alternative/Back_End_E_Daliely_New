@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AssignGuard;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -68,8 +69,9 @@ class Kernel extends HttpKernel
         'localeCookieRedirect'    => \Mcamara\LaravelLocalization\Middleware\LocaleCookieRedirect::class,
         'localeViewPath'          => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class,
         'ChangeLanguage'          => \App\Http\Middleware\ChangeLanguage::class,
-        'jwt.verify'              => \App\Http\Middleware\JwtMiddleware::class,
-        'jwt.auth'                => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
+        'auth.jwt'                => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
         'jwt.refresh'             => \Tymon\JWTAuth\Http\Middleware\RefreshToken::class,
+        'jwt.verify'              => \App\Http\Middleware\JwtMiddleware::class,
+        'assign.guard'            => \App\Http\Middleware\AssignGuard::class,
     ];
 }

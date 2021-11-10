@@ -14,8 +14,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'api',
-        'passwords' => 'users',
+        'guard' => 'employee-api',
+        'passwords' => 'employees',
     ],
 
     /*
@@ -40,11 +40,20 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-
         'api' => [
             'driver' => 'jwt',
             'provider' => 'users',
-//            'hash' => false
+            'hash' => false,
+        ],
+        'user-api' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+        ],
+        'employee-api' => [
+            'driver' => 'jwt',
+            'provider' => 'employees',
+            'hash' => false,
+
         ],
     ],
 
@@ -69,12 +78,12 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
-        ],
+        ], 'employees' => [
+             'driver' => 'eloquent',
+             'model' => App\Models\Admin\Employee::class,
+             'table' => 'employees',
 
-//         'employees' => [
-//             'driver' => 'eloquent',
-//             'model' => App\Models\Admin\Employee::class,
-//         ],
+         ],
     ],
 
     /*
@@ -99,12 +108,12 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
-//        'employees' => [
-//            'provider' => 'employees',
-//            'table' => 'password_resets',
-//            'expire' => 60,
-//            'throttle' => 60,
-//        ],
+        'employees' => [
+            'provider' => 'employees',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
 
     ],
 

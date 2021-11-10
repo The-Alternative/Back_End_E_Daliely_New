@@ -31,7 +31,7 @@ class EmployeeService
     public function getAll()
     {
         try{
-            $employee = $this->employeeModel->get();
+            $employee = $this->employeeModel->with('roles')->get();
             if (count($employee) > 0){
                 return $response= $this->returnData('Employee',$employee,'done');
             }else{
@@ -146,10 +146,6 @@ class EmployeeService
             if ($request->has('roles')) {
                 $role = $this->employeeModel->find($employee->id);
                 $role->roles()->syncWithoutDetaching($request->get('roles'));
-            }
-            if ($request->has('permissions')) {
-                $permissions = $this->employeeModel->find($employee->id);
-                $permissions->permissions()->syncWithoutDetaching($request->get('permissions'));
             }
             DB::commit();
             return $this->returnData('Employee', [$token,$employee],'Done');

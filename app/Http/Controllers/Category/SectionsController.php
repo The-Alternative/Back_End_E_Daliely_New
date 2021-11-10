@@ -7,6 +7,7 @@ use App\Traits\GeneralTrait;
 use App\Http\Controllers\Controller;
 use App\Service\Categories\SectionService;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class SectionsController extends Controller
 {
@@ -18,6 +19,12 @@ class SectionsController extends Controller
     public function __construct(SectionService $SectionService)
     {
         $this->sectionService=$SectionService;
+        $this->user = JWTAuth::parseToken()->authenticate();
+        $this->middleware('can:Read Section')->only(['getAll','getById','getTrashed']);
+        $this->middleware('can:Create Section')->only('create');
+        $this->middleware('can:Update Section')->only('update');
+        $this->middleware('can:Delete Section')->only(['trash','delete']);
+        $this->middleware('can:Restore Section')->only('restoreTrashed');
     }
     public function getAll()
     {

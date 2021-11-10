@@ -162,7 +162,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
-        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+//        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 //        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
 
 
@@ -180,6 +180,11 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+//        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+
+
 
     ],
 
@@ -236,7 +241,6 @@ return [
         'LaravelLocalization' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
-
     ],
 
 ];

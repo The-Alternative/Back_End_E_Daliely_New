@@ -65,16 +65,16 @@ Route::group(
         /**__________________________ Category routes __________________________**/
         Route::group(['prefix'=>'categories','namespace'=>'Category'],function()
             {
-                Route::GET('/getAll','CategoriesController@getAll');
-                Route::GET('/getById/{id}','CategoriesController@getById');
-                Route::GET('/getCategoryBySelf/{id}','CategoriesController@getCategoryBySelf');
-                Route::POST('/create','CategoriesController@create');
-                Route::PUT('/update/{id}','CategoriesController@update');
-                Route::PUT('/trash/{id}','CategoriesController@trash');
-                Route::PUT('/restoreTrashed/{id}','CategoriesController@restoreTrashed');
-                Route::GET('/search/{name}','CategoriesController@search');
-                Route::GET('/getTrashed','CategoriesController@getTrashed');
-                Route::DELETE('/delete/{id}','CategoriesController@delete');
+                Route::GET('/getAll','CategoriesController@getAll')->middleware('can:Read Category');
+                Route::GET('/getById/{id}','CategoriesController@getById')->middleware('can:Read Category');
+                Route::GET('/getCategoryBySelf/{id}','CategoriesController@getCategoryBySelf')->middleware('can:Read Category');
+                Route::POST('/create','CategoriesController@create')->middleware('can:Create Category');
+                Route::PUT('/update/{id}','CategoriesController@update')->middleware('can:Update Category');
+                Route::PUT('/trash/{id}','CategoriesController@trash')->middleware('can:Delete Category');
+                Route::PUT('/restoreTrashed/{id}','CategoriesController@restoreTrashed')->middleware('can:Restore Category');
+                Route::GET('/search/{name}','CategoriesController@search')->middleware('can:Read Category');
+                Route::GET('/getTrashed','CategoriesController@getTrashed')->middleware('can:Read Category');
+                Route::DELETE('/delete/{id}','CategoriesController@delete')->middleware('can:Delete Category');
                 Route::post('/upload', 'CategoriesController@upload');
                 Route::post('/upload/{id}', 'CategoriesController@update_upload');
 
@@ -82,32 +82,32 @@ Route::group(
         /**__________________________ Section routes  __________________________**/
         Route::group(['prefix'=>'sections','namespace'=>'Category'],function()
         {
-            Route::GET('/getAll','SectionsController@getAll');
-            Route::GET('/getCategoryBySection','SectionsController@getCategoryBySection');
-            Route::GET('/getById/{id}','SectionsController@getById');
-            Route::POST('/create','SectionsController@create');
-            Route::PUT('/update/{id}','SectionsController@update');
-            Route::PUT('/trash/{id}','SectionsController@trash');
-            Route::PUT('/restoreTrashed/{id}','SectionsController@restoreTrashed');
-            Route::GET('/search/{name}','SectionsController@search');
-            Route::GET('/getTrashed','SectionsController@getTrashed');
-            Route::DELETE('/delete/{id}','SectionsController@delete');
+            Route::GET('/getAll','SectionsController@getAll')->middleware('can:Read Section');
+            Route::GET('/getCategoryBySection','SectionsController@getCategoryBySection')->middleware('can:Read Section');
+            Route::GET('/getById/{id}','SectionsController@getById')->middleware('can:Read Section');
+            Route::POST('/create','SectionsController@create')->middleware('can:Create Section');
+            Route::PUT('/update/{id}','SectionsController@update')->middleware('can:Update Section');
+            Route::PUT('/trash/{id}','SectionsController@trash')->middleware('can:Delete Section');
+            Route::PUT('/restoreTrashed/{id}','SectionsController@restoreTrashed')->middleware('can:Read Section');
+            Route::GET('/search/{name}','SectionsController@search')->middleware('can:Read Section');
+            Route::GET('/getTrashed','SectionsController@getTrashed')->middleware('can:Read Section');
+            Route::DELETE('/delete/{id}','SectionsController@delete')->middleware('can:Delete Section');
             Route::POST('upload', 'SectionsController@upload');
             Route::post('/upload/{id}', 'SectionsController@update_upload');
         });
         /**__________________________ customfields routes __________________________**/
         Route::group(['prefix'=>'customfields','namespace'=>'Custom_fields'],function()
             {
-                Route::GET('/getAll','CustomFieldsController@getAll');
-                Route::GET('/getById/{id}','CustomFieldsController@getById');
-                Route::GET('/getCategoryBySelf/{id}','CustomFieldsController@getCategoryBySelf');
-                Route::POST('/create','CustomFieldsController@create');
-                Route::PUT('/update/{id}','CustomFieldsController@update');
-                Route::PUT('/trash/{id}','CustomFieldsController@trash');
-                Route::PUT('/restoreTrashed/{id}','CustomFieldsController@restoreTrashed');
-                Route::GET('/search/{name}','CustomFieldsController@search');
-                Route::GET('/getTrashed','CustomFieldsController@getTrashed');
-                Route::DELETE('/delete/{id}','CustomFieldsController@delete');
+                Route::GET('/getAll','CustomFieldsController@getAll')->middleware('can:Read Custom_field');
+                Route::GET('/getById/{id}','CustomFieldsController@getById')->middleware('can:Read Custom_field');
+                Route::GET('/getCategoryBySelf/{id}','CustomFieldsController@getCategoryBySelf')->middleware('can:Read Custom_field');
+                Route::POST('/create','CustomFieldsController@create')->middleware('can:Create Custom_field');
+                Route::PUT('/update/{id}','CustomFieldsController@update')->middleware('can:Update Custom_field');
+                Route::PUT('/trash/{id}','CustomFieldsController@trash')->middleware('can:Delete Custom_field');
+                Route::PUT('/restoreTrashed/{id}','CustomFieldsController@restoreTrashed')->middleware('can:Read Custom_field');
+                Route::GET('/search/{name}','CustomFieldsController@search')->middleware('can:Read Custom_field');
+                Route::GET('/getTrashed','CustomFieldsController@getTrashed')->middleware('can:Read Custom_field');
+                Route::DELETE('/delete/{id}','CustomFieldsController@delete')->middleware('can:Delete Custom_field');
                 Route::post('/upload', 'CustomFieldsController@upload');
                 Route::post('/upload/{id}', 'CustomFieldsController@update_upload');
 
@@ -489,14 +489,14 @@ Route::group(
                  Route::put('get_is_cover/{pro_id}/{img_id}', 'ProductImageController@get_is_cover');
              });
         });
-Route::group([
-    'middleware' => 'api',
-    'prefix' => 'auth'
-
-], function ($router) {
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/refresh', [AuthController::class, 'refresh']);
-    Route::get('/user-profile', [AuthController::class, 'userProfile']);
-});
+//Route::group([
+//    'middleware' => 'api',
+//    'prefix' => 'auth'
+//
+//], function ($router) {
+//    Route::post('/login', [AuthController::class, 'login']);
+//    Route::post('/register', [AuthController::class, 'register']);
+//    Route::post('/logout', [AuthController::class, 'logout']);
+//    Route::post('/refresh', [AuthController::class, 'refresh']);
+//    Route::get('/user-profile', [AuthController::class, 'userProfile']);
+//});

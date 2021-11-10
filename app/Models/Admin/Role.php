@@ -6,7 +6,6 @@ use App\Models\Admin\TransModel\RoleTranslation;
 use App\Models\User;
 use App\Scopes\RoleScope;
 use Illuminate\Database\Eloquent\Model;
-use Laratrust\Models\LaratrustRole;
 
 class Role extends Model
 {

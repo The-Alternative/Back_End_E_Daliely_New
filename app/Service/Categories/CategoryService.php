@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 
 class CategoryService
 {
@@ -60,7 +61,9 @@ class CategoryService
     public function getAll()
     {
         try{
-        $category = $this->categoryModel->with(['Section','Parent'])->paginate($this->PAGINATION_COUNT);
+            Gate::authorize('Read Category');
+
+            $category = $this->categoryModel->with(['Section','Parent'])->paginate($this->PAGINATION_COUNT);
             if (count($category) > 0){
                 return $this->returnData('Category',$category,'done');
             }else{
@@ -74,7 +77,8 @@ class CategoryService
     public function getById($id)
     {
         try{
-        $category =$this->categoryModel->with(['Section','Parent'])->find($id);
+            Gate::authorize('Read Category');
+            $category =$this->categoryModel->with(['Section','Parent'])->find($id);
             if (is_null($category) ){
                 return $this->returnSuccessMessage('This Category not found','done');
             }else{
@@ -96,7 +100,8 @@ class CategoryService
     public function getTrashed()
     {
         try{
-        $category = $this->categoryModel->where('categories.is_active',0)->get();
+            Gate::authorize('Read Category');
+            $category = $this->categoryModel->where('categories.is_active',0)->get();
           return $this -> returnData('Category',$category,'done');
         }catch(\Exception $ex){
             return $this->returnError('400', $ex->getMessage());
@@ -110,7 +115,8 @@ class CategoryService
     public function restoreTrashed( $id)
     {
         try{
-        $category=$this->categoryModel->find($id);
+            Gate::authorize('Restore Category');
+            $category=$this->categoryModel->find($id);
             if (is_null($category) ){
                 return $response= $this->returnSuccessMessage('This Category not found','done');
             }else{
@@ -130,7 +136,9 @@ class CategoryService
     public function trash( $id)
     {
         try{
-        $category=$this->categoryModel->find($id);
+            Gate::authorize('Delete Category');
+
+            $category=$this->categoryModel->find($id);
             $category=$this->categoryModel->find($id);
             if (is_null($category) ){
                 return $response= $this->returnSuccessMessage('This Category not found','done');
@@ -152,6 +160,8 @@ class CategoryService
     public function create(CategoryRequest $request)
     {
         try {
+            Gate::authorize('Create Category');
+
             $request->validated();
             $request->is_active ? $is_active = true : $is_active = false;
             $request->is_appear ? $is_appear = true : $is_appear = false;
@@ -199,6 +209,8 @@ class CategoryService
     public function update(CategoryRequest $request,$id)
     {
         try{
+            Gate::authorize('Update Category');
+
             $request->validated();
              $category= $this->categoryModel->find($id);
 //            $old_image=$category->image;
@@ -242,6 +254,8 @@ class CategoryService
     public function search($name)
     {
         try {
+            Gate::authorize('Read Category');
+
             $category = DB::table('categories')
                 ->where("name","like","%".$name."%")
                 ->get();
@@ -265,7 +279,9 @@ class CategoryService
     public function delete($id)
     {
         try{
-        $category=$this->categoryModel->find($id);
+            Gate::authorize('Delete Category');
+
+            $category=$this->categoryModel->find($id);
         if ($category->is_active=0)
             {
                 $category=$this->categoryModel->destroy($id);

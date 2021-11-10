@@ -7,8 +7,9 @@ use App\Traits\GeneralTrait;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
-class ProductPolicy
+class CategoryPolicy
 {
+
     use HandlesAuthorization;
     use GeneralTrait;
 
@@ -26,11 +27,11 @@ class ProductPolicy
      * Determine whether the user can view any models.
      *
      * @param User $user
-     * @return Response|bool
+     * @return bool
      */
     public function viewAny(User $user)
     {
-        return $this->author('Read Product',$user);
+        return $this->author('Read Category',$user);
     }
 
     /**
@@ -41,7 +42,7 @@ class ProductPolicy
      */
     public function view(User $user)
     {
-        return $this->author('Read Product',$user);
+        return $this->author('Read Category',$user);
     }
 
     /**
@@ -52,7 +53,7 @@ class ProductPolicy
      */
     public function create(User $user)
     {
-        return $this->author('Create Product',$user);
+        return $this->author('Create Category',$user);
     }
 
     /**
@@ -63,7 +64,7 @@ class ProductPolicy
      */
     public function update(User $user)
     {
-        return $this->author('Update Product',$user);
+        return $this->author('Update Category',$user);
     }
 
     /**
@@ -74,7 +75,7 @@ class ProductPolicy
      */
     public function delete(User $user)
     {
-        return $this->author('Delete Product',$user);
+        return $this->author('Delete Category',$user);
     }
 
     /**
@@ -85,17 +86,17 @@ class ProductPolicy
      */
     public function restore(User $user)
     {
-        return $this->author('Restore Product',$user);
+        return $this->author('Restore Category',$user);
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param User $user
-     * @return bool
+     * @return Response|bool
      */
     public function forceDelete(User $user)
     {
-        return $this->author('Delete Product',$user);
+        return $this->author('Delete Category',$user);
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Service\Categories\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CategoriesController extends Controller
 {
@@ -19,6 +20,12 @@ class CategoriesController extends Controller
     {
         $this->CategoryService=$CategoryService;
         $this->response=$response;
+        $this->user = JWTAuth::parseToken()->authenticate();
+        $this->middleware('can:Read Category')->only(['getAll','getById','getTrashed']);
+        $this->middleware('can:Create Category')->only('create');
+        $this->middleware('can:Update Category')->only('update');
+        $this->middleware('can:Delete Category')->only(['trash','delete']);
+        $this->middleware('can:Restore Category')->only('restoreTrashed');
     }
     public function list()
     {

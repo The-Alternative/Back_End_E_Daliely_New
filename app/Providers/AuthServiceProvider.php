@@ -2,10 +2,18 @@
 
 namespace App\Providers;
 
+use App\Models\Admin\Role;
 use App\Models\Brands\Brand;
-use App\Models\User;
+use App\Models\Categories\Category;
+use App\Models\Categories\Section;
+use App\Models\Custom_Fieldes\Custom_Field;
+use App\Models\Products\Product;
 use App\Policies\BrandPolicy;
+use App\Policies\CategoryPolicy;
+use App\Policies\Custom_fieldPolicy;
 use App\Policies\ProductPolicy;
+use App\Policies\RolePolicy;
+use App\Policies\SectionPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -18,8 +26,12 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
 //         'App\Models\Brand' => 'App\Policies\BrandPolicy',
-        Brand::class => BrandPolicy::class,
-
+        Brand::class            => BrandPolicy::class,
+        Product::class          => ProductPolicy::class,
+        Category::class         => CategoryPolicy::class,
+        Custom_field::class     => Custom_fieldPolicy::class,
+        Role::class             => RolePolicy::class,
+        Section::class          => SectionPolicy::class,
     ];
 
     /**
@@ -41,5 +53,29 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('Update Product',[ProductPolicy::class,'update']);
         Gate::define('Delete Product',[ProductPolicy::class,'delete']);
         Gate::define('Restore Product',[ProductPolicy::class,'restore']);
+
+        Gate::define('Read Category',[CategoryPolicy::class,'view']);
+        Gate::define('Create Category',[CategoryPolicy::class,'create']);
+        Gate::define('Update Category',[CategoryPolicy::class,'update']);
+        Gate::define('Delete Category',[CategoryPolicy::class,'delete']);
+        Gate::define('Restore Category',[CategoryPolicy::class,'restore']);
+
+        Gate::define('Read Custom_field',[Custom_fieldPolicy::class,'view']);
+        Gate::define('Create Custom_field',[Custom_fieldPolicy::class,'create']);
+        Gate::define('Update Custom_field',[Custom_fieldPolicy::class,'update']);
+        Gate::define('Delete Custom_field',[Custom_fieldPolicy::class,'delete']);
+        Gate::define('Restore Custom_field',[Custom_fieldPolicy::class,'restore']);
+
+        Gate::define('Read Role',[RolePolicy::class,'view']);
+        Gate::define('Create Role',[RolePolicy::class,'create']);
+        Gate::define('Update Role',[RolePolicy::class,'update']);
+        Gate::define('Delete Role',[RolePolicy::class,'delete']);
+        Gate::define('Restore Role',[RolePolicy::class,'restore']);
+
+        Gate::define('Read Section',[SectionPolicy::class,'view']);
+        Gate::define('Create Section',[SectionPolicy::class,'create']);
+        Gate::define('Update Section',[SectionPolicy::class,'update']);
+        Gate::define('Delete Section',[SectionPolicy::class,'delete']);
+        Gate::define('Restore Section',[SectionPolicy::class,'restore']);
    }
 }

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 
 class CustomFieldService
 {
@@ -32,6 +33,7 @@ class CustomFieldService
     public function getAll()
     {
         try{
+            Gate::authorize('Read Custom_field');
             $custom_field = $this->CustomFieldModel->with('Custom_Field_Value')->get();
             if (count($custom_field) > 0){
                 return $this->returnData('Custom_fields',$custom_field,'done');
@@ -46,6 +48,7 @@ class CustomFieldService
     public function getById($id)
     {
         try{
+            Gate::authorize('Read Custom_field');
             $custom_field =$this->CustomFieldModel->with('Custom_Field_Value')->find($id);
             if (is_null($custom_field) ){
                 return $this->returnSuccessMessage('not found this Custom_field','done');
@@ -59,6 +62,7 @@ class CustomFieldService
     /*___________________________________________________________________________*/
     public function getCustomFieldsByProduct($id)
     {
+        Gate::authorize('Read Custom_field');
         $custom_field=$this->CustomFieldModel->with('Product')->get();
         return $this->returnData('Custom_field',$custom_field,'done');
     }
@@ -67,6 +71,7 @@ class CustomFieldService
     /****Get All Trashed Products Or By ID  ****/
     public function getTrashed()
     {
+        Gate::authorize('Read Custom_field');
         try{
             $custom_field = $this->CustomFieldModel->where('is_active',0)->get();
             return $this -> returnData('Custom_field',$custom_field,'done');
@@ -82,6 +87,7 @@ class CustomFieldService
     public function restoreTrashed( $id)
     {
         try{
+            Gate::authorize('Restore Custom_field');
             $custom_field=$this->CustomFieldModel->find($id);
             if (is_null($custom_field) ){
                 return $response= $this->returnSuccessMessage('This Custom_field not found','done');
@@ -102,6 +108,7 @@ class CustomFieldService
     public function trash($id)
     {
         try{
+            Gate::authorize('Delete Custom_field');
             $custom_field=$this->CustomFieldModel->find($id);
             if (is_null($custom_field) ){
                 return $response= $this->returnSuccessMessage('This Custom_field not found','done');
@@ -124,6 +131,7 @@ class CustomFieldService
     {
         try
         {
+            Gate::authorize('Create Custom_field');
             $request->validated();
             $request->is_active?$is_active=true:$is_active=false;
             //transformation to collection
@@ -177,6 +185,7 @@ class CustomFieldService
     public function update(CustomFieldRequest $request,$id)
     {
         try{
+            Gate::authorize('Update Custom_field');
             $request->validated();
             $custom_field= $this->CustomFieldModel->find($id);
             if(!$custom_field)
@@ -234,6 +243,7 @@ class CustomFieldService
     public function search($name)
     {
         try {
+            Gate::authorize('Read Custom_field');
             $custom_field = DB::table('custom_fields')
                 ->where("name","like","%".$name."%")
                 ->get();
@@ -257,6 +267,7 @@ class CustomFieldService
     public function delete($id)
     {
         try{
+            Gate::authorize('Delete Custom_field');
             $custom_field=$this->CustomFieldModel->find($id);
             if ($custom_field->is_active=0)
             {

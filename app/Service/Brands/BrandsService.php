@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 
 class BrandsService
 {
@@ -76,13 +77,17 @@ class BrandsService
     {
         try {
             Gate::authorize('Read Brand');
-            $brand = $this->BrandModel->with('Product')->find($id);
+            $brand = $this->BrandModel->with('Product')->findOrFail($id);
             if (!isset($brand)) {
                 return $response = $this->returnSuccessMessage('This Brand not found', 'done');
             }
             return $response = $this->returnData('Brand', $brand, 'done');
         } catch (\Exception $ex) {
+            if ($ex instanceof TokenExpiredException){
+                return $this->returnError('400', $ex->getMessage());
+            }
             return $this->returnError('400', $ex->getMessage());
+
         }
     }
     /*__________________________________________________________________*/

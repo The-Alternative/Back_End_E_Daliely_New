@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 
 class SectionService
 {
@@ -34,7 +35,9 @@ class SectionService
     public function getAll()
     {
         try{
-        $section = $this->SectionModel
+            Gate::authorize('Read Section');
+
+            $section = $this->SectionModel
             ->with(['Category','Product'])
             ->paginate($this->PAGINATION_COUNT);
 
@@ -51,7 +54,8 @@ class SectionService
     public function getById($id )
     {
         try{
-         $section = $this->SectionModel
+            Gate::authorize('Read Section');
+            $section = $this->SectionModel
             ->with(['Category'=>function($q){
                 return $q->with(['Product'=>function($q){
                     return $q->with(['StoreProduct'])->get();
@@ -70,6 +74,7 @@ class SectionService
     /*___________________________________________________________________________*/
     public function getCategoryBySection()
     {
+        Gate::authorize('Read Section');
         $sec=$this->SectionModel->with('Category')->get();
         if (is_null($sec) ){
             return $this->returnSuccessMessage('This section not found','done');
@@ -83,6 +88,7 @@ class SectionService
     public function getTrashed()
     {
         try{
+            Gate::authorize('Read Section');
         $section = $this->SectionModel->where('is_active',0)->get();
             if (count($section) > 0){
                 return $this -> returnData('Section',$section,'done');
@@ -98,6 +104,7 @@ class SectionService
     public function restoreTrashed( $id)
     {
         try{
+            Gate::authorize('Restore Section');
         $section=$this->SectionModel->find($id);
             if (is_null($section) ){
                 return $this->returnSuccessMessage('This Section not found','done');
@@ -115,6 +122,7 @@ class SectionService
     public function trash( $id)
     {
         try{
+            Gate::authorize('Delete Section');
         $section=$this->SectionModel->find($id);
             if (is_null($section) ){
                 return $this->returnSuccessMessage('This Section not found','done');
@@ -135,6 +143,7 @@ class SectionService
         public function create(SectionRequest $request)
         {
             try{
+                Gate::authorize('Create Section');
                 $request->validated();
                 $request->is_active?$is_active=true:$is_active=false;
                 //transformation to collection
@@ -181,6 +190,7 @@ class SectionService
     public function update(SectionRequest $request,$id)
     {
         try{
+            Gate::authorize('Update Section');
             $request->validated();
             $section= $this->SectionModel->find($id);
             if(!$section)
@@ -222,6 +232,7 @@ class SectionService
     public function search($name)
     {
         try{
+            Gate::authorize('Read Section');
         $section = DB::table('sections')
                 ->where("name","like","%".$name."%")
                 ->get();
@@ -242,6 +253,7 @@ class SectionService
     public function delete($id)
     {
         try{
+            Gate::authorize('Delete Section');
         $section=$this->SectionModel->find($id);
         if ($section->is_active=0)
             {

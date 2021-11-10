@@ -10,17 +10,17 @@ use App\Traits\GeneralTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
+    use GeneralTrait;
 
     /**
      * Create a new AuthController instance.
      *
      * @return void
      */
-    use GeneralTrait;
-
     private $userModel;
     private $roleModel;
     private $userTranslation;
@@ -30,7 +30,7 @@ class AuthController extends Controller
         $this->userModel=$userModel;
         $this->roleModel=$roleModel;
         $this->userTranslation=$userTranslation;
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:user-api', ['except' => ['login']]);
     }
     /**
      * Get a JWT via given credentials.
@@ -40,15 +40,20 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         try{
-//            return $user=$this->userModel->where('users.id',1)->get();
              $credentials = $request->only('email', 'password');
-            $token = auth()->attempt($credentials);
-//            if (! $token ) {
-//                return response()->json(['error' => 'Unauthorized'], 401);
-//            }
+            $token = auth('user-api')->attempt($credentials);
+            if (! $token ) {
+                return $this->returnError('401', 'Unauthorized');
+            }
             return $this->respondWithToken($token);
-        }catch(\Exception $ex){
-            return $this->returnError('400',$ex->getMessage());
+        }catch(\Throwable $ex){
+            if ($ex instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
+                return $this->returnError('401', 'TokenInvalidException');
+            }else if ($ex instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
+                return $this->returnError('401', 'TokenInvalidException');
+            } else if ( $ex instanceof \Tymon\JWTAuth\Exceptions\JWTException) {
+                return $this->returnError('401', $ex->getMessage());
+            }
         }
 
     }
@@ -120,8 +125,8 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user()
+            'expires_in' => auth('user-api')->factory()->getTTL() * 60,
+            'user' => auth('user-api')->user()
         ]);
     }
 }

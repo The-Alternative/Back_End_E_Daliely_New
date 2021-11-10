@@ -8,6 +8,7 @@ use App\Service\CustomFields\CustomFieldService;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CustomFieldsController extends Controller
 {
@@ -21,6 +22,12 @@ class CustomFieldsController extends Controller
     public function __construct(CustomFieldService $CustomFieldService)
     {
         $this->customfieldService=$CustomFieldService;
+        $this->user = JWTAuth::parseToken()->authenticate();
+        $this->middleware('can:Read Custom_field')->only(['getAll','getById','getTrashed']);
+        $this->middleware('can:Create Custom_field')->only('create');
+        $this->middleware('can:Update Custom_field')->only('update');
+        $this->middleware('can:Delete Custom_field')->only(['trash','delete']);
+        $this->middleware('can:Restore Custom_field')->only('restoreTrashed');
     }
     public function getAll()
     {

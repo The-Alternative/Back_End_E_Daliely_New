@@ -14,13 +14,10 @@ use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-//use Laratrust\Traits\LaratrustUserTrait;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-
 
 class User extends Authenticatable implements JWTSubject
 {
-//    use LaratrustUserTrait;
     use HasFactory, Notifiable;
     /**
      * The attributes that are mass assignable.
@@ -35,17 +32,7 @@ class User extends Authenticatable implements JWTSubject
         'image',
         'is_active',
         'email',
-        'password',
-        'remember_token'
-//        'first_name',
-//        'last_name',
-//        'age',
-//        'location_id',
-//        'social_media_id',
-//        'is_active',
-//        'image',
-//        'email',
-//        'password',
+        'password'
     ];
     /**
      * The attributes that should be hidden for arrays.
@@ -64,8 +51,6 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
@@ -74,16 +59,15 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTIdentifier() {
         return $this->getKey();
     }
-
     /**
      * Return a key value array, containing any custom claims to be added to the JWT.
      *
      * @return array
      */
-    public function getJWTCustomClaims() {
+    public function getJWTCustomClaims(): array
+    {
         return [];
     }
-
 //    protected static function booted()
 //    {
 //        parent::booted();
@@ -113,7 +97,6 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Stores_Order::class);
     }
-
     public function Patient()
     {
         return $this->hasMany(Patient::class);
@@ -122,7 +105,6 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(SocialMedia::class);
     }
-
     public function Comment()
     {
         return $this->hasMany(Comment::class);
@@ -131,7 +113,6 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(Interaction::class);
     }
-
     Public function Doctor()
     {
         return $this->hasOne(Doctor::class);
