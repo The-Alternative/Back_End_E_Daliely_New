@@ -30,11 +30,4 @@ class OfferScope implements Scope
                         
 
     }
-    // public function Active($valueActive){
-    //   $valueActive=('offers.is_active');
-    //   return $valueActive ==1 ?'Active' :'Not Active';
-
-    //   $valueApproved=('offers.is_approved');
-    //     return $valueApproved ==1 ?'Approved' :'Not Approved';
-    // }
   }

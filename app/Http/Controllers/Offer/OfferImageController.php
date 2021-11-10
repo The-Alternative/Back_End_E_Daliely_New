@@ -55,32 +55,39 @@ class OfferImageController extends Controller
             try{
                 $data = array();
              
-                if($request->hasfile(['images']))
-                {        
+                if(!$request->hasfile('images'))
+                {    return response()->json(['not found the files'], 400);
+                }
+
+                $files=$request->file(['images']);
                     $folder = public_path('images/offers' . '/' . $id . '/');
                     if (!File::exists($folder)) {
                         File::makeDirectory($folder, 0775, true, true);
                     }
                  
-                    foreach($request->file(['images']) as $image)
+                    foreach($files as $image)
                     {
-                        $name=time().$image->getClientOriginalName();
-                        $image->move($folder, $name);
+                        $name[]=time().$image->getClientOriginalName();
+                        $image->move($folder, time().$image->getClientOriginalName());
             
                         //populate array here
-                      array_push($data, $name);
+                    //   array_push($data, $name);
                     }
-                   foreach($data as $D){
+                    foreach ($name as $f) {
+                        $imageUrl[]='images/offers/' . $id  . '/' .  $f;
+                    }
+                                   
+                   foreach($imageUrl as $D){
                        $offerImage= new OfferImage();
                
                          $offerImage->offer_id = $id;
-                         $offerImage->is_cover=0;
+                         $offerImage->is_cover=1;
                          $offerImage->image=$D;
                          $offerImage->save();
                   }  
-                    }
+                  return $imageUrl;
                
-                return $this->returnData('images',$offerImage,'image created successfully.');
+                // return $this->returnData('images',[$offerImage,$folder],'image created successfully.');
                     }
             catch(\Exception $ex)
             {
@@ -94,13 +101,22 @@ class OfferImageController extends Controller
             try
             {
                $image=OfferImage::find($id);
-               if(!$image)
-               return $this->returnError('400','Not Found This Image');
-               else{
+               if($image){
+                   $image_old=$image->image;
+                  $old = public_path($image_old);
+
+                if (File::exists($old)) {
+                   unlink($old);     
+                }   
                    $image->destroy($id);
-               return $this->returnData('Image',$image,'The image has been deleted successfully');
+                   return  $this->returnSuccessMessage('image', 'delete success');
             }
-        }
+        
+               else{
+                return  $this->returnSuccessMessage('image', ' Not deleted');
+               }
+            }
+           
             catch(\Exception $ex)
             {
                 return $this->returnError($ex->getcode(),$ex->getmessage());
@@ -117,7 +133,7 @@ class OfferImageController extends Controller
                 }
                 else
                 {
-                    $offerimage->is_cover=0;
+                    $offerimage->is_cover=1;
                     $offerimage->save();
                 return $this->returnData('Image',$offerimage,'this Image is cover = 0 now');
                 }

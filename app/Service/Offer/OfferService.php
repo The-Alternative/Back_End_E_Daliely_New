@@ -60,7 +60,7 @@ class OfferService
     public function getById($id)
     {
         try{
-            $offer=$this->OfferModel::find($id);
+            $offer=Offer::with('OfferImage')->find($id);
             if(!$offer)
             {
                 return $this->returnError('400','not found this offer');
@@ -112,7 +112,18 @@ class OfferService
              }
               DB::commit();
 
-             
+              $images = $request->images;
+              if ($request->has('images')) {
+                  $folder = public_path('images/offers' . '/' . $untransId . '/');
+                  foreach ($images as $image) {
+                      $offer = $this->OfferModel->find($untransId);
+                      $offer->OfferImage()->insert([
+                          'offer_id' => $untransId,
+                          'image' => $this->upload( $image['image'],$untransId,$folder),
+                          'is_cover' => $image['is_cover'],
+                      ]);
+                  }
+                  }
                        //Send Mail
                $this->MailService->SendMail($untransId,Offer::class, $request->user_email);
                
