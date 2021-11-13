@@ -113,7 +113,7 @@ class OfferService
               DB::commit();
 
               $images = $request->images;
-              if ($request->has('images')) {
+              if ($request->hasfile('images')) {
                   $folder = public_path('images/offers' . '/' . $untransId . '/');
                   foreach ($images as $image) {
                       $offer = $this->OfferModel->find($untransId);

@@ -25,7 +25,6 @@ class OfferSeeder extends Seeder
                 'store_id' => $faker->numberBetween(1, 10),
                 'user_email' => $faker->email,
                 'store_product_id' => $faker->numberBetween(1, 1000),
-                'image'=>$faker->sentence(2),
                 'position' => $faker->numberBetween(1, 10),
                 'price' => $faker->numberBetween(1000, 6000),
                 'selling_price' => $faker->numberBetween(500, 5000),

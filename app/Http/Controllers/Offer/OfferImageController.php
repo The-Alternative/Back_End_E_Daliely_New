@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Traits\GeneralTrait;
 use App\Models\Offer\OfferImage;
+use App\Models\Offer\Offer;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
@@ -76,12 +77,12 @@ class OfferImageController extends Controller
                     foreach ($name as $f) {
                         $imageUrl[]='images/offers/' . $id  . '/' .  $f;
                     }
-                                   
+                   
                    foreach($imageUrl as $D){
                        $offerImage= new OfferImage();
                
                          $offerImage->offer_id = $id;
-                         $offerImage->is_cover=1;
+                         $offerImage->is_cover=0;
                          $offerImage->image=$D;
                          $offerImage->save();
                   }  
