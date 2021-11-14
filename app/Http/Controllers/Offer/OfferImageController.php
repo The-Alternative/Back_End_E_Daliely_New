@@ -37,7 +37,7 @@ class OfferImageController extends Controller
              $offerImage=$this->OfferImageModel::create([
                   'offer_id'=>$request->offer_id,
                   'image'=>$image,
-                  'is_cover'=>0,  
+                  'is_cover'=>1,  
               ]);
           
                return $this->returnData('Image',$offerImage,'The image has been saved successfully');
@@ -53,36 +53,37 @@ class OfferImageController extends Controller
 
     public function UploadMultiImage(Request $request,$id)
         {
-            try{
-                $data = array();
-             
+            try{         
                 if(!$request->hasfile('images'))
                 {    return response()->json(['not found the files'], 400);
                 }
 
-                $files=$request->file(['images']);
+                    $files=$request->file(['images']);
                     $folder = public_path('images/offers' . '/' . $id . '/');
                     if (!File::exists($folder)) {
                         File::makeDirectory($folder, 0775, true, true);
                     }
-                 
+
                     foreach($files as $image)
                     {
                         $name[]=time().$image->getClientOriginalName();
                         $image->move($folder, time().$image->getClientOriginalName());
+                    
                     }
+                   
                     foreach ($name as $f) {
                         $imageUrl[]='images/offers/' . $id  . '/' .  $f;
                     }
-                   
-                   foreach($imageUrl as $D){
+
+                   foreach($imageUrl as $index=>$D){
                        $offerImage= new OfferImage();
                
                          $offerImage->offer_id = $id;
-                         $offerImage->is_cover=0;
                          $offerImage->image=$D;
+                         $offerImage->is_cover=$index == 0 ?1:0;
                          $offerImage->save();
-                  }  
+                    }      
+                
                   return $imageUrl;
                
                     }
