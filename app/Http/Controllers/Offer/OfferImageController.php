@@ -70,9 +70,6 @@ class OfferImageController extends Controller
                     {
                         $name[]=time().$image->getClientOriginalName();
                         $image->move($folder, time().$image->getClientOriginalName());
-            
-                        //populate array here
-                    //   array_push($data, $name);
                     }
                     foreach ($name as $f) {
                         $imageUrl[]='images/offers/' . $id  . '/' .  $f;
@@ -88,7 +85,6 @@ class OfferImageController extends Controller
                   }  
                   return $imageUrl;
                
-                // return $this->returnData('images',[$offerImage,$folder],'image created successfully.');
                     }
             catch(\Exception $ex)
             {
