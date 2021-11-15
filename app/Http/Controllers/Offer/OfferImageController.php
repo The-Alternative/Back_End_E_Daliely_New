@@ -80,7 +80,7 @@ class OfferImageController extends Controller
                
                          $offerImage->offer_id = $id;
                          $offerImage->image=$D;
-                         $offerImage->is_cover=$index == 0 ?1:0;
+                         $offerImage->is_cover=$index == 0 ? 1:0;
                          $offerImage->save();
                     }      
                 
@@ -121,20 +121,28 @@ class OfferImageController extends Controller
             }
         }
 
-        public function changeIsCover($image_id)
+        public function changeIsCover($offer_id,$image_id)
         {
             try{
-                $offerimage=OfferImage::find($image_id);
-                if(!$offerimage)
+                $offerimages=OfferImage::where('offer_id',$offer_id)->get();
+                if(count($offerimages)==0)
                 {
                   return  $this->returnError('400','not found this Image');
                 }
-                else
-                {
-                    $offerimage->is_cover=1;
-                    $offerimage->save();
-                return $this->returnData('Image',$offerimage,'this Image is cover = 0 now');
+                foreach($offerimages as $image){
+                    $image->update([
+                        'is_cover'=>0,
+                    ]);
                 }
+                
+                $Offerimagecover=OfferImage::where('offer_id',$offer_id)->find($image_id);
+                   
+                    $Offerimagecover->Update([
+                   'is_cover'=>1 ,
+                ]);
+
+                return $this->returnSuccessMessage('Images', 'update the image successfully' );
+                
             }
             catch (\Exception $ex)
             {

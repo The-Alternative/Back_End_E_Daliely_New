@@ -34,24 +34,15 @@ class NotificationController extends Controller
         }
     }
 
-    public function updateRead_at($id)
-    {
-        
+    public function updateRead_at($notification_id)
+    {   
         try{
-            $notification=$this->NotificationModel::find($id);
+             $notification=Notification::where('notification_id',$notification_id)->update([
+                'read_at'=>Carbon::now(),
+            ]);
+            return $this->returnSuccessMessage('notification','this notification read now');
 
-            if(! $notification){
-            return $this->returnError('400','not found this notification');
             }
-            else{
-                $notification->update(['read_at' =>Carbon::now()]);
-
-                $notification->save();
-                                
-        }
-            return $this->returnData('notification',$notification,'this notification read now');
-    
-        }
         catch (\Exception $ex)
         {
             return $this->returnError($ex->getCode(),$ex->getMessage());

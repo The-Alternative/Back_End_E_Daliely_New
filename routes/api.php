@@ -460,7 +460,7 @@ Route::group(
                 Route::post('/offer/image','OfferImageController@UploadImage');
                 Route::post('/offer/image/{offer_id}','OfferImageController@UploadMultiImage');
                 Route::delete('/offer/delete/image/{image_id}','OfferImageController@deleteImage');
-                Route::put('/offer/iscover/image/{image_id}','OfferImageController@changeIsCover');
+                Route::put('/offer/iscover/image/{offer_id}/{image_id}','OfferImageController@changeIsCover');
 
                 });
              //////////////// Comment  Route ////////////////////////////
@@ -494,7 +494,7 @@ Route::group(
                 
                  //Notification Route
                  Route::get('/notification',[NotificationController::class,'get']);
-                 Route::put('/notification/{id}',[NotificationController::class,'updateRead_at']);
+                 Route::put('/notification/{notification_id}',[NotificationController::class,'updateRead_at']);
 
              Route::group(['prefix'=>'upload','namespace'=>'Images'],function ()
              {
