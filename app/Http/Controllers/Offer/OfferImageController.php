@@ -8,9 +8,6 @@ use App\Traits\GeneralTrait;
 use App\Models\Offer\OfferImage;
 use App\Models\Offer\Offer;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Validator;
-
-
 
 class OfferImageController extends Controller
 {
