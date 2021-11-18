@@ -8,6 +8,9 @@ use App\Traits\GeneralTrait;
 use App\Models\Offer\OfferImage;
 use App\Models\Offer\Offer;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
+
+
 
 class OfferImageController extends Controller
 {
@@ -20,37 +23,13 @@ class OfferImageController extends Controller
         $this->OfferImageModel=$offerImage;
     
     }
-    public function UploadImage(Request $request)
-    {
-        
-        try{
-                if ($request->file('image')){
-                        $image=$request->image->getClientOriginalName();
-                        $image=time().$image;
-                        $request->image->move('images/offers',$image);
-        
-                    }
-                  
-             $offerImage=$this->OfferImageModel::create([
-                  'offer_id'=>$request->offer_id,
-                  'image'=>$image,
-                  'is_cover'=>1,  
-              ]);
-          
-               return $this->returnData('Image',$offerImage,'The image has been saved successfully');
-   
-           }
-    catch(\Exception $ex)
-    {
-        return $this->returnError($ex->getcode(),$ex->getmessage());
-
-    }
-
-    }
+  
 
     public function UploadMultiImage(Request $request,$id)
         {
-            try{         
+            
+            try{
+                  
                 if(!$request->hasfile('images'))
                 {    return response()->json(['not found the files'], 400);
                 }
@@ -127,6 +106,7 @@ class OfferImageController extends Controller
                   return  $this->returnError('400','not found this Image');
                 }
                 foreach($offerimages as $image){
+                    
                     $image->update([
                         'is_cover'=>0,
                     ]);
