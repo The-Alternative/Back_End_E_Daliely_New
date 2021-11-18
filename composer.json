@@ -19,6 +19,7 @@
         "laravel/ui": "^3.2",
         "mcamara/laravel-localization": "^1.6",
         "santigarcor/laratrust": "^6.3",
+        "spatie/laravel-medialibrary": "9.6.0",
         "tymon/jwt-auth": "dev-develop"
     },
     "require-dev": {

@@ -56,7 +56,9 @@ class Notifications extends Notification
     {
         return [
             'title'=>'New Notification',
-            'message'=>$notification
+            'message'=>'have new notification',
+            $notification
+           
         ];
     }
 }

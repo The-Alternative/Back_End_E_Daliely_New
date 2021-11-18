@@ -447,11 +447,22 @@ Route::group(
                Route::get('/offer/get-store/{Offer_id}','OfferController@getStoreByOfferId');
                Route::get('/offer/get-offer/{store_id}','OfferController@getOfferByStoreId');
                Route::put('/offer/approved/{offer_id}','OfferController@OfferApproved');
+             
 
            });
                 Route::get('offers/gettrashed',[OfferController::class,'getTrashed']);
-                Route::get('offer/get-advertisement',[OfferController::class,'get_advertisement']);
+                Route::get('offer/get/advertisement',[OfferController::class,'getAdvertisement']);
 
+
+                /////////////////Offer Image Controller /////////
+                Route::group(['namespace'=>'Offer'],function ()
+                {
+                Route::post('/offer/image','OfferImageController@UploadImage');
+                Route::post('/offer/image/{offer_id}','OfferImageController@UploadMultiImage');
+                Route::delete('/offer/delete/image/{image_id}','OfferImageController@deleteImage');
+                Route::put('/offer/iscover/image/{offer_id}/{image_id}','OfferImageController@changeIsCover');
+
+                });
              //////////////// Comment  Route ////////////////////////////
 
            Route::group(['namespace'=>'Comment'],function ()
@@ -480,8 +491,10 @@ Route::group(
                 Route::delete('/interaction/{id}', 'InteractionController@delete');
            });
                  Route::get('/interactions/gettrashed',[InteractionController::class,'getTrashed']);
+                
                  //Notification Route
                  Route::get('/notification',[NotificationController::class,'get']);
+                 Route::put('/notification/{notification_id}',[NotificationController::class,'updateRead_at']);
 
              Route::group(['prefix'=>'upload','namespace'=>'Images'],function ()
              {
@@ -507,3 +520,4 @@ Route::group([
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
 });
+
