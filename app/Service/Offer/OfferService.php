@@ -48,7 +48,7 @@ class OfferService
     public function get()
     {
         try{
-            $offer=$this->OfferModel::paginate(5);
+            $offer=$this->OfferModel::with('OfferImage')->paginate(5);
             return $this->returnData('Offer',$offer,'Done');
         }
         catch (\Exception $ex)
@@ -124,7 +124,7 @@ class OfferService
                       ]);
                   }
                   }
-                       //Send Mail
+                    //Send Mail
                $this->MailService->SendMail($untransId,Offer::class, $request->user_email);
                
                //Send Notification
