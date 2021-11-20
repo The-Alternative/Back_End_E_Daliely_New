@@ -33,6 +33,19 @@ class NotificationController extends Controller
             return $this->returnError($ex->getCode(),$ex->getMessage());
         }
     }
+    public function getById($notification_id)
+    {
+        
+        try{
+            $notification=Notification::where('notification_id',$notification_id)->get();
+           return $this->returnData('notification',$notification,'this notification read now');
+
+           }
+       catch (\Exception $ex)
+       {
+           return $this->returnError($ex->getCode(),$ex->getMessage());
+       }
+    }
 
     public function updateRead_at($notification_id)
     {   
@@ -49,5 +62,5 @@ class NotificationController extends Controller
         }
 
     }
-
+   
 }

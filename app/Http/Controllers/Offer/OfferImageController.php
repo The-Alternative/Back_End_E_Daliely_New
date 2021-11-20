@@ -23,23 +23,26 @@ class OfferImageController extends Controller
         $this->OfferImageModel=$offerImage;
     
     }
+
   
 
-    public function UploadMultiImage(Request $request,$id)
+    public function UploadMultiImage(Request $request,$offer_id)
         {
             
-            try{
-                  
+            try{           
+                $offerid=OfferImage::where('offer_id',$offer_id)->get();    
+              
                 if(!$request->hasfile('images'))
-                {    return response()->json(['not found the files'], 400);
+                {    
+                    return response()->json(['not found the files'], 400);
                 }
 
                     $files=$request->file(['images']);
-                    $folder = public_path('images/offers' . '/' . $id . '/');
+                    $folder = public_path('images/offers' . '/' . $offer_id . '/');
                     if (!File::exists($folder)) {
                         File::makeDirectory($folder, 0775, true, true);
                     }
-
+                 
                     foreach($files as $image)
                     {
                         $name[]=time().$image->getClientOriginalName();
@@ -48,20 +51,35 @@ class OfferImageController extends Controller
                     }
                    
                     foreach ($name as $f) {
-                        $imageUrl[]='images/offers/' . $id  . '/' .  $f;
+                        $imageUrl[]='images/offers/' . $offer_id  . '/' .  $f;
                     }
+                  
+               
+                      $offer= count($offerid);
 
-                   foreach($imageUrl as $index=>$D){
-                       $offerImage= new OfferImage();
-               
-                         $offerImage->offer_id = $id;
+                    if($offer == 0){
+                          
+                    foreach($imageUrl as $index=>$D){
+
+                         $offerImage= new OfferImage();
+                         $offerImage->offer_id = $offer_id;
                          $offerImage->image=$D;
-                         $offerImage->is_cover=$index == 0 ? 1:0;
-                         $offerImage->save();
-                    }      
-                
-                  return $imageUrl;
-               
+                         $offerImage->is_cover=  $index== 0 ?1:0 ;
+                         $offerImage->save();  
+                    }
+                }else{
+                  
+                    foreach($imageUrl as  $index=>$s){
+
+                        $offerImage= new OfferImage();
+                        $offerImage->offer_id = $offer_id;
+                        $offerImage->image=$s;
+                        $offerImage->is_cover=0 ;
+                        $offerImage->save();  
+                          
+                }
+            }
+                          return $imageUrl;   
                     }
             catch(\Exception $ex)
             {
@@ -127,4 +145,5 @@ class OfferImageController extends Controller
             }
         }
    
+       
 }
