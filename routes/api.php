@@ -494,6 +494,7 @@ Route::group(
                  //Notification Route
                  Route::get('/notification',[NotificationController::class,'get']);
                  Route::put('/notification/{notification_id}',[NotificationController::class,'updateRead_at']);
+                 Route::get('/notification/{notification_id}',[NotificationController::class,'getById']);
 
              Route::group(['prefix'=>'upload','namespace'=>'Images'],function ()
              {

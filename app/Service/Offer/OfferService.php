@@ -120,7 +120,7 @@ class OfferService
                       $offer->OfferImage()->insert([
                           'offer_id' => $untransId,
                           'image' => $this->upload( $image['image'],$untransId,$folder),
-                          'is_cover' => $image['is_cover'],
+                          'is_cover' => 0,
                       ]);
                   }
                   }
