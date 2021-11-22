@@ -69,6 +69,10 @@ class OfferController extends Controller
     {
         return $this->OfferService->OfferApproved($offer_id);
     }
+    public function OfferNotApproved($offer_id)
+    {
+        return $this->OfferService->OfferNotApproved($offer_id);
+    }
 
     
     

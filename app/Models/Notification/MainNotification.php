@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class Notification extends Model
+
+class MainNotification extends Model
 {
+    use HasFactory;
     use HasFactory,Notifiable;
     
     protected $table='notifications';
