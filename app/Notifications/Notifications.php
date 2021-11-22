@@ -57,7 +57,7 @@ class Notifications extends Notification
         return [
             'title'=>'New Notification',
             'message'=>'have new notification',
-            $notification
+            'notification'=>[$notification]
            
         ];
     }

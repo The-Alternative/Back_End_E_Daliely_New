@@ -447,6 +447,7 @@ Route::group(
                Route::get('/offer/get-store/{Offer_id}','OfferController@getStoreByOfferId');
                Route::get('/offer/get-offer/{store_id}','OfferController@getOfferByStoreId');
                Route::put('/offer/approved/{offer_id}','OfferController@OfferApproved');
+               Route::put('/offer/notapproved/{offer_id}','OfferController@OfferNotApproved');
              
 
            });

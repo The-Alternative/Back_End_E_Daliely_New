@@ -6,8 +6,10 @@ use App\Http\Requests\Offer\OfferRequest;
 use App\Models\Offer\Offer;
 use App\Models\Offer\OfferImage;
 use App\Models\Offer\OfferTranslation;
+use App\Models\Notification\MainNotification;
 use App\Models\Stores\Store;
 use App\Models\User;
+
 use App\Notifications\Notifications;
 use App\Traits\GeneralTrait;
 use App\Traits\ImageTrait;
@@ -16,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OfferMail;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-//use Notification;
+
 use App\Service\Mail\MailService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Notification;
@@ -95,7 +97,7 @@ class OfferService
                 'ended_at'        =>$request->ended_at,
                 'is_active'       =>$request->is_active,
                 'is_offer'        =>$request->is_offer,
-                'is_approved'     =>$request->is_approved
+                'is_approved'     =>0
 
             ]);
              if(isset($offer)) {
@@ -168,7 +170,7 @@ class OfferService
               'ended_at'        =>$request->ended_at,
               'is_active'       =>$request->is_active,
               'is_offer'        =>$request->is_offer,
-              'is_approved'        =>$request->is_approved
+              'is_approved'     =>$request->is_approved
 
           ]);
           $db_offer=array_values(OfferTranslation::where('offer_translations.offer_id',$id)
@@ -328,16 +330,24 @@ class OfferService
             return $this->returnError($ex->getCode(),$ex->getMessage());
         }
     }
-        public function OfferApproved($offer_id)
-        {
-           
-            try{
+    public function OfferApproved($offer_id)
+    {
+         try{
                 $offer=$this->OfferModel::find($offer_id);
                 if(!$offer)
                 return $this->returnError('400','not found this offer');
                 else {
                     $offer->is_approved=1;
                     $offer->save();
+
+                  $notification= MainNotification::where('notifiable_id',$offer_id)->update([
+                           'data'=>[
+                                'title'=>'offer',
+                                'message'=>'The offer was approved',
+                                'notification'=>[$offer]
+                           
+                           ]
+                           ]);
                 return $this->returnData('offer',$offer,'offer is approved');
                 }
             }
@@ -345,5 +355,34 @@ class OfferService
             {
                 return $this->returnError($ex->getcode(),$ex->getmessage());
             }
-        }
     }
+    public function OfferNotApproved($offer_id)
+    {
+           
+      try{
+           $offer=$this->OfferModel::find($offer_id);
+           if(!$offer)
+           return $this->returnError('400','not found this offer');
+           else {
+               $offer->is_approved=0;
+               $offer->save();
+
+               $notification= MainNotification::where('notifiable_id',$offer_id)->update([
+                'data'=>[
+                       'title'=>'New Notification',
+                       'message'=>'have new notification',
+                       'notification'=>[$offer]
+                
+                ]
+         ]);
+
+               
+           return $this->returnData('offer',$offer,'offer is approved');
+           }
+        }
+        catch(\Exception $ex)
+        {
+            return $this->returnError($ex->getcode(),$ex->getmessage());
+        }
+    }        
+}

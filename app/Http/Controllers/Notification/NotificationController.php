@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Notification;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Traits\GeneralTrait;
-use App\Models\Notification\Notification;
+use App\Models\Notification\MainNotification;
 use Illuminate\Notifications\Notifiable;
 use Carbon\Carbon;
 
@@ -16,7 +16,7 @@ class NotificationController extends Controller
     private $NotificationModel;
   
 
-    public function __construct(Notification $notification)
+    public function __construct(MainNotification $notification)
     {
         $this->NotificationModel=$notification;
     }
@@ -37,7 +37,7 @@ class NotificationController extends Controller
     {
         
         try{
-            $notification=Notification::where('notification_id',$notification_id)->get();
+            $notification=MainNotification::where('notification_id',$notification_id)->get();
            return $this->returnData('notification',$notification,'this notification read now');
 
            }
@@ -50,7 +50,7 @@ class NotificationController extends Controller
     public function updateRead_at($notification_id)
     {   
         try{
-             $notification=Notification::where('notification_id',$notification_id)->update([
+             $notification=MainNotification::where('notification_id',$notification_id)->update([
                 'read_at'=>Carbon::now(),
             ]);
             return $this->returnSuccessMessage('notification','this notification read now');
