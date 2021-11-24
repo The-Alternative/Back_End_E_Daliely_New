@@ -2,14 +2,15 @@
 
 namespace App\Http\Middleware;
 
+use App\Traits\GeneralTrait;
 use Closure;
 use Exception;
+use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 
-class JwtMiddleware extends BaseMiddleware
+class CheckEmployeeToken
 {
-
+    use GeneralTrait;
     /**
      * Handle an incoming request.
      *
@@ -19,17 +20,21 @@ class JwtMiddleware extends BaseMiddleware
      */
     public function handle($request, Closure $next)
     {
+        $user=null;
         try {
             $user = JWTAuth::parseToken()->authenticate();
         } catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
-                return response()->json(['status' => 'Token is Invalid']);
+                return $this->returnError('E300','INVALID_TOKEN'.$e->getMessage());
             }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
-                return response()->json(['status' => 'Token is Expired']);
+                return $this->returnError('E300','EXPIRED_TOKEN '.$e->getMessage());
             }else{
-                return response()->json(['status' => 'Authorization Token not found']);
+                return $this->returnError('E300','AUTHORIZATION TOKEN NOT FOUND '.$e->getMessage());
             }
         }
+        if(!$user)
+//            return response()->json(['sucess'=>false,'msg'=>trans('UnAuthenticationUser')]);
+        return $this->returnError(trans('UnAuthenticationUser'));
         return $next($request);
     }
 }

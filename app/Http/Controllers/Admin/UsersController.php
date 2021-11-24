@@ -14,7 +14,8 @@ class UsersController extends Controller
     private $userService;
     public function __construct(UserService $userService)
     {
-//        $this->middleware(['role:superadministrator']);
+        $this->middleware('auth:api');
+        //        $this->middleware(['role:superadministrator']);
 //        $this->middleware(['permission:user-read'])->only('getAll','getById');
 //        $this->middleware(['permission:user-create'])->only('create');
 //        $this->middleware(['permission:user-update'])->only('update');

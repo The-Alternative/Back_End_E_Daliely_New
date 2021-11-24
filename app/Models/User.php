@@ -32,7 +32,7 @@ class User extends Authenticatable implements JWTSubject
         'image',
         'is_active',
         'email',
-        'password'
+        'password',
     ];
     /**
      * The attributes that should be hidden for arrays.
@@ -73,12 +73,13 @@ class User extends Authenticatable implements JWTSubject
 //        parent::booted();
 //        static::addGlobalScope(new UserScope);
 //    }
-//    public function UserTranslation()
-//    {
-//        return $this->hasMany(UserTranslation::class);
-//    }
+    public function UserTranslation()
+    {
+        return $this->hasMany(UserTranslation::class);
+    }
     public function TypeUser(){
-        return $this->belongsToMany(TypeUser::class,
+        return $this->belongsToMany(
+            TypeUser::class,
             'user_types',
             'user_id',
             'type_id');

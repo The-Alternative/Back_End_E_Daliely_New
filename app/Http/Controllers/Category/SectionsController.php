@@ -19,7 +19,7 @@ class SectionsController extends Controller
     public function __construct(SectionService $SectionService)
     {
         $this->sectionService=$SectionService;
-        $this->user = JWTAuth::parseToken()->authenticate();
+//        $this->user = JWTAuth::parseToken()->authenticate();
         $this->middleware('can:Read Section')->only(['getAll','getById','getTrashed']);
         $this->middleware('can:Create Section')->only('create');
         $this->middleware('can:Update Section')->only('update');

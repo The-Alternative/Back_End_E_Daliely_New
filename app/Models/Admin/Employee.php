@@ -21,12 +21,11 @@ class Employee extends Authenticatable implements JWTSubject
      */
 //    protected $guard = 'employee-api';
     protected $table='employees';
-
     protected $fillable = [
         'first_name','last_name','age',
         'email','email_verified_at','password','location_id',
         'social_media_id','image','is_active','salary',
-        'certificate','start_date'
+        'certificate','start_date',
     ];
     /**
      * The attributes that should be hidden for arrays.
@@ -55,7 +54,7 @@ class Employee extends Authenticatable implements JWTSubject
     }
     /**
      * Return a key value array, containing any custom claims to be added to the JWT.
-     *
+     *s
      * @return array
      */
     public function getJWTCustomClaims(): array

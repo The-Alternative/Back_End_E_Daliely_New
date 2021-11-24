@@ -19,7 +19,7 @@ class ProductsController extends Controller
     public function __construct(ProductService $ProductService)
     {
         $this->ProductService=$ProductService;
-        $this->user = JWTAuth::parseToken()->authenticate();
+//        $this->user = JWTAuth::parseToken()->authenticate();
         $this->middleware('can:Read Product')->only(['getAll','getById','getTrashed']);
         $this->middleware('can:Create Product')->only('create');
         $this->middleware('can:Update Product')->only('update');

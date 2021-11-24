@@ -20,7 +20,7 @@ class CategoriesController extends Controller
     {
         $this->CategoryService=$CategoryService;
         $this->response=$response;
-        $this->user = JWTAuth::parseToken()->authenticate();
+//        $this->user = JWTAuth::parseToken()->authenticate();
         $this->middleware('can:Read Category')->only(['getAll','getById','getTrashed']);
         $this->middleware('can:Create Category')->only('create');
         $this->middleware('can:Update Category')->only('update');

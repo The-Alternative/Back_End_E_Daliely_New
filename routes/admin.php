@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\EmployeeAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -9,17 +11,23 @@ Route::middleware('auth:api')
 {
     return $request->user();
 });
-//Route::group([
-//    'middleware' => 'api',
-//    'prefix' => 'employee',
-//    'namespace'=>'Admin'
-//
-//], function ($router) {
-//    Route::POST('/login', 'EmployeeAuthController@login');
-//});
+//Route::post('employee/login', [EmployeeAuthController::class, 'authenticate'])->middleware('api');
+//Route::post('employee/register', [EmployeeAuthController::class, 'register']);
 
-Route::post('auth/login', 'Auth\AuthController@login');
-Route::post('employee/login', 'Auth\EmployeeAuthController@login');
+Route::group(['prefix'=>'employee','middleware' => ['auth:employee-api','jwt.verify']], function() {
+    Route::get('logout', [EmployeeAuthController::class, 'logout']);
+    Route::get('get_user', [EmployeeAuthController::class, 'get_user']);
+});
+//Route::post('auth/login', [AuthController::class, 'login']);
+//Route::post('auth/register', [AuthController::class, 'register']);
+
+Route::group(['prefix'=>'auth','middleware' => ['jwt.verify']], function() {
+    Route::get('logout', [AuthController::class, 'logout']);
+    Route::get('refresh', [AuthController::class, 'refresh']);
+    Route::get('me', [AuthController::class, 'me']);
+});
+
+
 Route::group(
     [
         'prefix'     => LaravelLocalization::setLocale(),
@@ -28,13 +36,10 @@ Route::group(
     ],
     function() {
 
-//        Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
-//            Route::post('register', 'AuthController@register');
-//            Route::post('logout', 'AuthController@logout');
-//            Route::post('refresh', 'AuthController@refresh');
-//            Route::post('me', 'AuthController@me');
-//        });
-//        Route::group(['middleware'=>'role:superadministrator'],function() {
+        Route::post('employee/login', [EmployeeAuthController::class, 'login']);
+        Route::post('employee/register', [EmployeeAuthController::class, 'register']);
+        Route::post('auth/login', [AuthController::class, 'login']);
+        Route::post('auth/register', [AuthController::class, 'register']);
         /**__________________________ Roles routes  __________________________**/
         Route::group(['prefix' => 'roles', 'namespace' => 'Admin'], function () {
                 Route::GET('/getAll','RolesController@getAll');
@@ -86,9 +91,6 @@ Route::group(
             Route::DELETE('/delete/{id}','EmployeesController@delete');
             Route::GET('/profile/{id}','EmployeesController@profile');
         });
-        Route::group(['prefix' => 'employee', 'namespace' => 'Auth'], function () {
-//            Route::POST('/login', 'EmployeeAuthController@login');
-        });
         /**__________________________ user type routes  __________________________**/
         Route::group(['prefix' => 'type', 'namespace' => 'Admin'], function () {
             Route::GET('/getAll','TypeUsersController@getAll');
@@ -122,7 +124,6 @@ Route::group(
             Route::PUT('/aprrove/{id}','storeController@aprrove');
             Route::GET('/getAll','storeController@dashgetAll');
         });
-
         /**_______________________ Category dashboard routes  ___________________**/
         Route::group(['prefix'=>'dashcategories','namespace'=>'Category'],function()
         {
@@ -133,6 +134,13 @@ Route::group(
         {
             Route::GET('/list','BrandController@list');
         });
-
+        Route::get('/doctor_dashboard', function () {
+            echo 'doctor_dashboard';        })->name('doctor_dashboard');
+        Route::get('/profile', function () {
+             echo 'profile';
+        })->name('profile');
+        Route::get('/store_dashboard', function () {
+            echo 'store_dashboard';
+        })->name('store_dashboard');
     });
 

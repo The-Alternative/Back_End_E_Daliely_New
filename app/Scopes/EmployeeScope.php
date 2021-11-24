@@ -28,8 +28,8 @@ class EmployeeScope implements Scope
                 'employee_translation.last_name',
                 'employee_translation.local','age','location_id',
                 'social_media_id', 'employees.is_active',
-                'image','email', 'salary', 'certificate',
-                'start_date',
+                'image','employees.email', 'salary', 'certificate',
+                'start_date','employees.password'
 
                 ]);
     }

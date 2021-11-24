@@ -54,7 +54,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-//        'auth' => \App\Http\Middleware\Authenticate::class,
+        'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
@@ -69,9 +69,10 @@ class Kernel extends HttpKernel
         'localeCookieRedirect'    => \Mcamara\LaravelLocalization\Middleware\LocaleCookieRedirect::class,
         'localeViewPath'          => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class,
         'ChangeLanguage'          => \App\Http\Middleware\ChangeLanguage::class,
-        'auth.jwt'                => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
-        'jwt.refresh'             => \Tymon\JWTAuth\Http\Middleware\RefreshToken::class,
-        'jwt.verify'              => \App\Http\Middleware\JwtMiddleware::class,
         'assign.guard'            => \App\Http\Middleware\AssignGuard::class,
+        'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
+        'jwt.auth' => 'Tymon\JWTAuth\Middleware\GetUserFromToken',
+        'jwt.refresh' => 'Tymon\JWTAuth\Middleware\RefreshToken',
+        'CheckEmployeeToken'=> \App\Http\Middleware\CheckEmployeeToken::class,
     ];
 }

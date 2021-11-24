@@ -52,4 +52,13 @@ $app->singleton(
 |
 */
 
+//$app->routeMiddleware([
+//    'auth' => App\Http\Middleware\Authenticate::class,
+//    'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
+//    'assign.guard' => \App\Http\Middleware\AssignGuard::class,
+//]);
+//$app->register(App\Providers\AuthServiceProvider::class);
+//$app->register(Tymon\JWTAuth\Providers\LaravelServiceProvider::class);
+////$app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
+
 return $app;

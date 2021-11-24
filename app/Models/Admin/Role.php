@@ -59,14 +59,4 @@ class Role extends Model
             'id',
             'id');
     }
-    public function TypeUser()
-    {
-        return $this->belongsToMany(
-            TypeUser::class,
-            'role_type',
-            'role_id',
-            'type_id',
-            'id',
-            'id');
-    }
 }

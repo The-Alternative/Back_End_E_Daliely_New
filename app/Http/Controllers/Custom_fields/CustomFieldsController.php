@@ -22,7 +22,7 @@ class CustomFieldsController extends Controller
     public function __construct(CustomFieldService $CustomFieldService)
     {
         $this->customfieldService=$CustomFieldService;
-        $this->user = JWTAuth::parseToken()->authenticate();
+//        $this->user = JWTAuth::parseToken()->authenticate();
         $this->middleware('can:Read Custom_field')->only(['getAll','getById','getTrashed']);
         $this->middleware('can:Create Custom_field')->only('create');
         $this->middleware('can:Update Custom_field')->only('update');

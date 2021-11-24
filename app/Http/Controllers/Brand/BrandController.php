@@ -17,7 +17,7 @@ class BrandController extends Controller
     public function __construct(BrandsService $BrandsService)
     {
         $this->BrandsService=$BrandsService;
-        $this->user = JWTAuth::parseToken()->authenticate();
+//        $this->user = JWTAuth::parseToken()->authenticate();
         $this->middleware('can:Read Brand')->only(['getAll','getById','getTrashed']);
         $this->middleware('can:Create Brand')->only('create');
         $this->middleware('can:Update Brand')->only('update');

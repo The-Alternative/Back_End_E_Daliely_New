@@ -5,9 +5,11 @@ namespace App\Service\Admin;
 use App\Models\Admin\Role;
 use App\Models\Admin\TransModel\UserTranslation;
 //use App\Models\Order\Order;
+use App\Models\Admin\TypeUser;
 use App\Models\User;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -22,6 +24,7 @@ class UserService
     public function __construct(User $userModel , Role $roleModel
         , UserTranslation $userTranslation)
     {
+//        $this->user = JWTAuth::parseToken()->authenticate();
         $this->userModel=$userModel;
         $this->roleModel=$roleModel;
         $this->userTranslation=$userTranslation;
@@ -31,10 +34,31 @@ class UserService
     public function getAll()
     {
         try{
-            return $token = JWTAuth::getToken();
-            $user = JWTAuth::toUser($token)->get();
-//            if (count($user) > 0){
-                return $response= $this->returnData('User',$user,'done');
+//            return $token = JWTAuth::getToken();
+//            $user_type=null;
+
+             $user =$this->userModel->with('TypeUser')->find(2);
+//             $user = auth('api')->user();
+
+            $types=$user->TypeUser()->get();
+            foreach ($types as $type){
+                   $name[] = $type['name'];
+
+            switch ($type['name']){
+                case 'doctor':
+                    return redirect()->route('doctor.dashboard');
+                    break;
+                case 'store_admin':
+                    return redirect()->route('store_admin.dashboard');
+                    break;
+                default:
+                    return route('profile');
+            }
+            }
+
+
+            //            if (count($user) > 0){
+//                return $response= $this->returnData('User',$user,'done');
 //            }else{
 //                return $response= $this->returnSuccessMessage('User','User doesnt exist yet');
 //            }
@@ -153,7 +177,6 @@ class UserService
 //            }
             DB::commit();
             return $this->returnData('User', [$token,$user],'Done');
-
         }
         catch(\Exception $ex)
         {
