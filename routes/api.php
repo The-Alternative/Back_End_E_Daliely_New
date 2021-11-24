@@ -462,6 +462,8 @@ Route::group(
                 Route::delete('/offer/delete/image/{image_id}','OfferImageController@deleteImage');
                 Route::put('/offer/iscover/image/{offer_id}/{image_id}','OfferImageController@changeIsCover');
 
+
+                
                 });
              //////////////// Comment  Route ////////////////////////////
 
